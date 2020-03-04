@@ -11,9 +11,9 @@ interface Props {
     onDelete?: (virksomhet: Virksomhet) => void;
 }
 
-const bem = bemUtils('virksomhetListe');
+const bem = bemUtils('virksomhetList');
 
-const VirksomhetListe: React.FunctionComponent<Props> = ({ virksomheter = [], onDelete, onEdit }) => {
+const VirksomhetList: React.FunctionComponent<Props> = ({ virksomheter = [], onDelete, onEdit }) => {
     const næringLabel = (næring: Virksomhet): React.ReactNode => {
         return (
             <div className={bem.element('label')}>
@@ -37,4 +37,4 @@ const VirksomhetListe: React.FunctionComponent<Props> = ({ virksomheter = [], on
     );
 };
 
-export default VirksomhetListe;
+export default VirksomhetList;

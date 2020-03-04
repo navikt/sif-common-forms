@@ -5,7 +5,7 @@ import {
 import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
-import UtenlandsoppholdListe from './UtenlandsoppholdListe';
+import UtenlandsoppholdListe from './UtenlandsoppholdList';
 
 interface Props<FieldNames> {
     name: FieldNames;

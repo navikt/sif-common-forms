@@ -4,7 +4,7 @@ import {
 } from '@navikt/sif-common-formik';
 import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import FerieuttakForm from './FerieuttakForm';
-import FerieuttakListe from './FerieuttakList';
+import FerieuttakList from './FerieuttakList';
 import { Ferieuttak } from './types';
 
 interface Props<FieldNames> {
@@ -34,7 +34,7 @@ function FerieuttakListAndDialog<FieldNames>({ name, minDate, maxDate, validate,
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
-                    <FerieuttakListe ferieuttak={items} onEdit={onEdit} onDelete={onDelete} />
+                    <FerieuttakList ferieuttak={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
             />
         </>

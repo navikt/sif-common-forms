@@ -5,7 +5,7 @@ import {
 import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { Virksomhet } from './types';
 import VirksomhetForm from './VirksomhetForm';
-import VirksomhetListe from './VirksomhetListe';
+import VirksomhetListe from './VirksomhetList';
 
 interface Props<FieldNames> {
     name: FieldNames;

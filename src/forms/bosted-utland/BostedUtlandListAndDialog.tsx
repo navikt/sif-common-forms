@@ -4,7 +4,7 @@ import {
 } from '@navikt/sif-common-formik';
 import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import BostedUtlandForm from './BostedUtlandForm';
-import BostedUtlandListe from './BostedUtlandListe';
+import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';
 
 interface Props<FieldNames> {

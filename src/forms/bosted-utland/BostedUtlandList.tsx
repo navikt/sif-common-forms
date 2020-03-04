@@ -6,7 +6,7 @@ import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemLis
 import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
 import { prettifyDateExtended } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { BostedUtland } from './types';
-import './bostedUtlandListe.less';
+import './bostedUtlandList.less';
 
 interface Props {
     bosteder: BostedUtland[];
@@ -14,9 +14,9 @@ interface Props {
     onDelete?: (opphold: BostedUtland) => void;
 }
 
-const bem = bemUtils('bostedUtlandListe');
+const bem = bemUtils('bostedUtlandList');
 
-const BostedUtlandListe: React.FunctionComponent<Props> = ({ bosteder, onDelete, onEdit }) => {
+const BostedUtlandList: React.FunctionComponent<Props> = ({ bosteder, onDelete, onEdit }) => {
     const intl = useIntl();
     const renderBostedUtlandLabel = (opphold: BostedUtland): React.ReactNode => {
         const navn = getCountryName(opphold.landkode, intl.locale);
@@ -45,4 +45,4 @@ const BostedUtlandListe: React.FunctionComponent<Props> = ({ bosteder, onDelete,
     );
 };
 
-export default BostedUtlandListe;
+export default BostedUtlandList;

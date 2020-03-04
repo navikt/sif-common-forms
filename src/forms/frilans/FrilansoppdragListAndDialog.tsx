@@ -4,7 +4,7 @@ import {
 } from '@navikt/sif-common-formik';
 import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import FrilansoppdragForm from './FrilansoppdragForm';
-import FrilansoppdragListe from './FrilansoppdragListe';
+import FrilansoppdragList from './FrilansoppdragList';
 import { Frilansoppdrag } from './types';
 
 interface Props<FieldNames> {
@@ -33,7 +33,7 @@ function FrilansoppdragListAndDialog<FieldNames>({ name, minDate, maxDate, valid
                 />
             )}
             listRenderer={({ items, onEdit, onDelete }) => (
-                <FrilansoppdragListe oppdrag={items} onEdit={onEdit} onDelete={onDelete} />
+                <FrilansoppdragList oppdrag={items} onEdit={onEdit} onDelete={onDelete} />
             )}
         />
     );

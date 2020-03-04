@@ -26,7 +26,7 @@ interface Props {
     onCancel: () => void;
 }
 
-export enum UtenlandsoppholdFormFields {
+enum UtenlandsoppholdFormFields {
     fom = 'fom',
     tom = 'tom',
     landkode = 'landkode',

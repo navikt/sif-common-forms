@@ -6,7 +6,7 @@ import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemLis
 import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
 import { prettifyDateExtended } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { Utenlandsopphold } from './types';
-import './utenlandsoppholdListe.less';
+import './utenlandsoppholdList.less';
 
 interface Props {
     utenlandsopphold: Utenlandsopphold[];
@@ -14,9 +14,9 @@ interface Props {
     onDelete?: (opphold: Utenlandsopphold) => void;
 }
 
-const bem = bemUtils('utenlandsoppholdListe');
+const bem = bemUtils('utenlandsoppholdList');
 
-const UtenlandsoppholdListe: React.FunctionComponent<Props> = ({ utenlandsopphold, onDelete, onEdit }) => {
+const UtenlandsoppholdList: React.FunctionComponent<Props> = ({ utenlandsopphold, onDelete, onEdit }) => {
     const intl = useIntl();
     const renderUtenlandsoppholdLabel = (opphold: Utenlandsopphold): React.ReactNode => {
         const navn = getCountryName(opphold.landkode, intl.locale);
@@ -45,4 +45,4 @@ const UtenlandsoppholdListe: React.FunctionComponent<Props> = ({ utenlandsopphol
     );
 };
 
-export default UtenlandsoppholdListe;
+export default UtenlandsoppholdList;

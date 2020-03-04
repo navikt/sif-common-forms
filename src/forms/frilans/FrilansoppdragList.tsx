@@ -4,7 +4,7 @@ import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemLis
 import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
 import { prettifyDateExtended } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { Frilansoppdrag } from './types';
-import './frilansoppdragListe.less';
+import './frilansoppdragList.less';
 
 interface Props {
     oppdrag: Frilansoppdrag[];
@@ -12,9 +12,9 @@ interface Props {
     onDelete?: (opphold: Frilansoppdrag) => void;
 }
 
-const bem = bemUtils('frilansoppdragListe');
+const bem = bemUtils('frilansoppdragList');
 
-const FrilansoppdragListe: React.FunctionComponent<Props> = ({ oppdrag, onDelete, onEdit }) => {
+const FrilansoppdragList: React.FunctionComponent<Props> = ({ oppdrag, onDelete, onEdit }) => {
     const renderOppdragLabel = (o: Frilansoppdrag): React.ReactNode => {
         return (
             <div className={bem.element('label')}>
@@ -42,4 +42,4 @@ const FrilansoppdragListe: React.FunctionComponent<Props> = ({ oppdrag, onDelete
     );
 };
 
-export default FrilansoppdragListe;
+export default FrilansoppdragList;
