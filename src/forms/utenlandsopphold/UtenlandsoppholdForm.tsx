@@ -14,9 +14,7 @@ import {
     validateRequiredField, validateRequiredSelect, validateYesOrNoIsAnswered
 } from '@navikt/sif-common/lib/common/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common/lib/common/validation/hasValue';
-import {
-    isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak
-} from '../../forms/utenlandsopphold/types';
+import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
 
 interface Props {
     minDate: Date;
