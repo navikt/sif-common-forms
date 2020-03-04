@@ -12,13 +12,15 @@ import {
     validateOrgNumber, validateRequiredField, validateRequiredList, validateYesOrNoIsAnswered
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import {
+    FormikYesOrNoQuestion, getTypedFormComponents, YesOrNo
+} from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Panel } from 'nav-frontend-paneler';
 import { Systemtittel } from 'nav-frontend-typografi';
 import InfoTilFisker from './parts/InfoTilFisker';
-import { Fiskerinfo, isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField } from './types';
+import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
 
 interface Props {
@@ -28,8 +30,7 @@ interface Props {
 }
 
 const initialValues: FormValues = {
-    næringstyper: [],
-    fiskerinfo: []
+    næringstyper: []
 };
 
 type FormValues = Partial<Virksomhet>;
@@ -88,28 +89,10 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
 
                         {harFiskerNæringstype(values.næringstyper || []) && (
                             <Box margin="xl">
-                                <Form.CheckboxPanelGroup
-                                    name={VirksomhetFormField.fiskerinfo}
-                                    legend="Fisker"
-                                    checkboxes={[
-                                        {
-                                            value: Fiskerinfo.BLAD_A,
-                                            label: 'Blad A'
-                                        },
-                                        {
-                                            value: Fiskerinfo.BLAD_B,
-                                            label: 'Blad B'
-                                        },
-                                        {
-                                            value: Fiskerinfo.LOTT,
-                                            label: 'Lott'
-                                        },
-                                        {
-                                            value: Fiskerinfo.HYRE,
-                                            label: 'Hyre'
-                                        }
-                                    ]}
-                                    validate={validateRequiredField}
+                                <FormikYesOrNoQuestion<VirksomhetFormField>
+                                    name={VirksomhetFormField.fiskerErPåPlanB}
+                                    legend="Er du fisker på Plan B"
+                                    validate={validateYesOrNoIsAnswered}
                                 />
                             </Box>
                         )}

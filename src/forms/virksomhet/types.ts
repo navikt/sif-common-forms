@@ -1,5 +1,5 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -8,16 +8,9 @@ export enum Næringstype {
     'ANNEN' = 'ANNEN'
 }
 
-export enum Fiskerinfo {
-    'LOTT' = 'LOTT',
-    'HYRE' = 'HYRE',
-    'BLAD_A' = 'BLAD_A',
-    'BLAD_B' = 'BLAD_B'
-}
-
 export enum VirksomhetFormField {
     'næringstyper' = 'næringstyper',
-    'fiskerinfo' = 'fiskerinfo',
+    'fiskerErPåPlanB' = 'fiskerErPåPlanB',
     'fom' = 'fom',
     'tom' = 'tom',
     'næringsinntekt' = 'næringsinntekt',
@@ -46,7 +39,7 @@ export enum VirksomhetFormField {
 export interface Virksomhet {
     id?: string;
     [VirksomhetFormField.næringstyper]: Næringstype[];
-    [VirksomhetFormField.fiskerinfo]?: Fiskerinfo[];
+    [VirksomhetFormField.fiskerErPåPlanB]?: YesOrNo;
     [VirksomhetFormField.fom]: Date;
     [VirksomhetFormField.tom]?: Date;
     [VirksomhetFormField.næringsinntekt]?: number;
@@ -76,7 +69,7 @@ export const isVirksomhet = (virksomhet: Partial<Virksomhet>): virksomhet is Vir
 
 export interface VirksomhetApiData {
     naringstype: Næringstype[];
-    fiskerinfo?: Fiskerinfo[];
+    fiskerErPåPlanB?: boolean;
     fra_og_med: ApiStringDate;
     til_og_med?: ApiStringDate | null;
     er_pagaende?: boolean;
