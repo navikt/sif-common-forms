@@ -2,7 +2,6 @@ import * as React from 'react';
 import '@formatjs/intl-pluralrules/dist/locale-data/nb';
 import '@formatjs/intl-pluralrules/dist/locale-data/nn';
 import '@formatjs/intl-pluralrules/polyfill';
-import '@navikt/sif-common-core/lib/ts/app-intl-provider/AppIntlProvider';
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import {
     getLocaleFromSessionStorage, setLocaleInSessionStorage
