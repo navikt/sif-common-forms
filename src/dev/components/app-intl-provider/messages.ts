@@ -1,3 +1,8 @@
+const commonNb = require('@navikt/sif-common-core/lib/i18n/common.nb.json');
+const commonNn = require('@navikt/sif-common-core/lib/i18n/common.nn.json');
+const validationNb = require('@navikt/sif-common-core/lib/i18n/validationErrors.nb.json');
+const validationNn = require('@navikt/sif-common-core/lib/i18n/validationErrors.nn.json');
+
 const ferieMessagesNb = require('../../../forms/ferieuttak/ferieuttak.nb.json');
 const ferieMessagesNn = require('../../../forms/ferieuttak/ferieuttak.nn.json');
 const utenlandsoppholdNb = require('../../../forms/utenlandsopphold/utenlandsopphold.nb.json');
@@ -8,12 +13,16 @@ const bostedUtlandNn = require('../../../forms/bosted-utland/bostedUtland.nn.jso
 const bokmålstekster = {
     ...ferieMessagesNb,
     ...utenlandsoppholdNb,
-    ...bostedUtlandNb
+    ...bostedUtlandNb,
+    ...commonNb,
+    ...validationNb
 };
 const nynorsktekster = {
     ...ferieMessagesNn,
     ...utenlandsoppholdNn,
-    ...bostedUtlandNn
+    ...bostedUtlandNn,
+    ...commonNn,
+    ...validationNn
 };
 
 export const appMessages = {
