@@ -131,5 +131,7 @@
     "bugs": {
         "url": "https://github.com/navikt/sif-common-forms/issues"
     },
-    "homepage": "https://navikt.github.io/sif-common-forms"
+    "homepage": "https://navikt.github.io/sif-common-forms",
+    "main": "lib/index.js",
+    "types": "lib/index.d.js"
 }
