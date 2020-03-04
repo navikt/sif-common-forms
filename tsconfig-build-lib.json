@@ -21,6 +21,6 @@
         "noEmit": false,
         "baseUrl": "./src/forms"
     },
-    "include": ["src/common"],
+    "include": ["src/forms"],
     "exclude": ["node_modules", "src/dev"]
 }
