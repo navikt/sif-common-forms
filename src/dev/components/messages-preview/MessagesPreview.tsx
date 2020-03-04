@@ -1,8 +1,8 @@
 import React from 'react';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
-import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
 import {
     createMultiLocaleObject, getMissingMessageKeys, MessageFileFormat
 } from '../../utils/devIntlUtils';

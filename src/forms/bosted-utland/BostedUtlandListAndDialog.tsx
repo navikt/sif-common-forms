@@ -1,8 +1,8 @@
 import React from 'react';
+import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
     FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels
 } from '@navikt/sif-common-formik';
-import { sortItemsByFom } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';

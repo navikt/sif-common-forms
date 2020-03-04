@@ -4,7 +4,7 @@ import '@formatjs/intl-pluralrules/dist/locale-data/en';
 import '@formatjs/intl-pluralrules/dist/locale-data/nb';
 import '@formatjs/intl-pluralrules/dist/locale-data/nn';
 import '@formatjs/intl-pluralrules/polyfill';
-import { Locale } from '@navikt/sif-common/lib/common/types/Locale';
+import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import { appMessages } from './messages';
 
 export interface IntlProviderProps {

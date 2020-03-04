@@ -1,4 +1,4 @@
-import { formatDateToApiFormat } from '@navikt/sif-common/lib/common/utils/dateUtils';
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Frilansoppdrag, FrilansoppdragApiData } from './types';
 
 export const mapFrilansOppdragToApiData = (frilansoppdrag: Frilansoppdrag): FrilansoppdragApiData | undefined => {

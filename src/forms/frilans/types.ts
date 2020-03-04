@@ -1,4 +1,4 @@
-import { ApiStringDate } from '@navikt/sif-common/lib/common/types/ApiStringDate';
+import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 
 export enum FrilansoppdragFormField {
     'arbeidsgiverNavn' = 'arbeidsgiverNavn',

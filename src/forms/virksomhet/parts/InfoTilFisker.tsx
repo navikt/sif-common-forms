@@ -1,5 +1,5 @@
 import React from 'react';
-import CounsellorPanel from '@navikt/sif-common/lib/common/components/counsellor-panel/CounsellorPanel';
+import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 
 interface Props {
     navnPåNæringen: string;

@@ -1,19 +1,19 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import {
+    commonFieldErrorRenderer
+} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import {
+    validateRequiredField, validateRequiredSelect, validateYesOrNoIsAnswered
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { getCountryName, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common/lib/common/utils/commonFieldErrorRenderer';
-import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common/lib/common/utils/countryUtils';
-import intlHelper from '@navikt/sif-common/lib/common/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common/lib/common/validation/dateRangeValidation';
-import {
-    validateRequiredField, validateRequiredSelect, validateYesOrNoIsAnswered
-} from '@navikt/sif-common/lib/common/validation/fieldValidations';
-import { hasValue } from '@navikt/sif-common/lib/common/validation/hasValue';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
 
 interface Props {

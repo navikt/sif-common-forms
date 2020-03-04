@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import {
     commonFieldErrorRenderer
-} from '@navikt/sif-common/lib/common/utils/commonFieldErrorRenderer';
-import intlHelper from '@navikt/sif-common/lib/common/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common/lib/common/validation/dateRangeValidation';
-import { validateRequiredSelect } from '@navikt/sif-common/lib/common/validation/fieldValidations';
+} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
 
 export interface BostedUtlandFormLabels {

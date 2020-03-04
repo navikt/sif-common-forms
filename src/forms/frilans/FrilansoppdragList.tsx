@@ -1,8 +1,8 @@
 import React from 'react';
-import ActionLink from '@navikt/sif-common/lib/common/components/action-link/ActionLink';
-import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemList';
-import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
-import { prettifyDateExtended } from '@navikt/sif-common/lib/common/utils/dateUtils';
+import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
+import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
+import { prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Frilansoppdrag } from './types';
 import './frilansoppdragList.less';
 

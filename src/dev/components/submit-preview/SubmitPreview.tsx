@@ -1,6 +1,6 @@
 import React from 'react';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Panel } from 'nav-frontend-paneler';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
 
 interface Props {
     values?: {};

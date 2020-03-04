@@ -1,12 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import {
     commonFieldErrorRenderer
-} from '@navikt/sif-common/lib/common/utils/commonFieldErrorRenderer';
-import dateRangeValidation from '@navikt/sif-common/lib/common/validation/dateRangeValidation';
+} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { Systemtittel } from 'nav-frontend-typografi';
 import { Ferieuttak, isFerieuttak } from './types';
 
 export interface FerieuttakFormLabels {

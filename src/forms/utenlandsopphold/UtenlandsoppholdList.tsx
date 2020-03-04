@@ -1,10 +1,10 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
+import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
+import { prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { getCountryName } from '@navikt/sif-common-formik';
-import ActionLink from '@navikt/sif-common/lib/common/components/action-link/ActionLink';
-import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemList';
-import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
-import { prettifyDateExtended } from '@navikt/sif-common/lib/common/utils/dateUtils';
 import { Utenlandsopphold } from './types';
 import './utenlandsoppholdList.less';
 

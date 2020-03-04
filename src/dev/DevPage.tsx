@@ -1,9 +1,9 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { HashRouter } from 'react-router-dom';
+import LanguageToggle from '@navikt/sif-common-core/lib/components/language-toggle/LanguageToggle';
+import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import { Systemtittel } from 'nav-frontend-typografi';
-import LanguageToggle from '@navikt/sif-common/lib/common/components/language-toggle/LanguageToggle';
-import { Locale } from '@navikt/sif-common/lib/common/types/Locale';
 import NAVLogo from './components/svg/NAVLogo';
 import DevContent from './DevContent';
 import './styles/dev.less';

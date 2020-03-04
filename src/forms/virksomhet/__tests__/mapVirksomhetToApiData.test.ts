@@ -1,6 +1,6 @@
+import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { formatDateToApiFormat } from '@navikt/sif-common/lib/common/utils/dateUtils';
-import { jsonSort } from '@navikt/sif-common/lib/common/utils/jsonSort';
 import { mapVirksomhetToVirksomhetApiData } from '../mapVirksomhetToApiData';
 import { Næringstype, Virksomhet, VirksomhetApiData } from '../types';
 

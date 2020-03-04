@@ -1,22 +1,22 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import {
+    commonFieldErrorRenderer
+} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import {
+    date3YearsAgo, date4YearsAgo, dateToday
+} from '@navikt/sif-common-core/lib/utils/dateUtils';
+import {
+    validateOrgNumber, validateRequiredField, validateRequiredList, validateYesOrNoIsAnswered
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Panel } from 'nav-frontend-paneler';
 import { Systemtittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
-import CounsellorPanel from '@navikt/sif-common/lib/common/components/counsellor-panel/CounsellorPanel';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common/lib/common/utils/commonFieldErrorRenderer';
-import {
-    date3YearsAgo, date4YearsAgo, dateToday
-} from '@navikt/sif-common/lib/common/utils/dateUtils';
-import {
-    validateOrgNumber, validateRequiredField, validateRequiredList, validateYesOrNoIsAnswered
-} from '@navikt/sif-common/lib/common/validation/fieldValidations';
-import { hasValue } from '@navikt/sif-common/lib/common/validation/hasValue';
 import InfoTilFisker from './parts/InfoTilFisker';
 import { Fiskerinfo, isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';

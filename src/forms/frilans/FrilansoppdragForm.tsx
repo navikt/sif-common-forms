@@ -1,14 +1,14 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import {
+    commonFieldErrorRenderer
+} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import { Systemtittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common/lib/common/utils/commonFieldErrorRenderer';
-import dateRangeValidation from '@navikt/sif-common/lib/common/validation/dateRangeValidation';
-import { validateRequiredField } from '@navikt/sif-common/lib/common/validation/fieldValidations';
 import { Frilansoppdrag, FrilansoppdragFormField, isFrilansoppdrag } from './types';
 
 interface Props {

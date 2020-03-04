@@ -1,5 +1,5 @@
+import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { ApiStringDate } from '@navikt/sif-common/lib/common/types/ApiStringDate';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',

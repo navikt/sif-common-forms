@@ -1,6 +1,6 @@
 import React from 'react';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Ingress, Undertittel } from 'nav-frontend-typografi';
-import Box from '@navikt/sif-common/lib/common/components/box/Box';
 
 interface Props {
     title: string;
