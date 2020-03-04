@@ -3,7 +3,7 @@ import ActionLink from '@navikt/sif-common/lib/common/components/action-link/Act
 import ItemList from '@navikt/sif-common/lib/common/components/item-list/ItemList';
 import bemUtils from '@navikt/sif-common/lib/common/utils/bemUtils';
 import { Virksomhet } from './types';
-import './virksomhetListe.less';
+import './virksomhetList.less';
 
 interface Props {
     virksomheter: Virksomhet[];
