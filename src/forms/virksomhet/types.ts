@@ -10,7 +10,7 @@ export enum Næringstype {
 
 export enum VirksomhetFormField {
     'næringstyper' = 'næringstyper',
-    'fiskerErPåPlanB' = 'fiskerErPåPlanB',
+    'fiskerErPåBladB' = 'fiskerErPåBladB',
     'fom' = 'fom',
     'tom' = 'tom',
     'næringsinntekt' = 'næringsinntekt',
@@ -39,7 +39,7 @@ export enum VirksomhetFormField {
 export interface Virksomhet {
     id?: string;
     [VirksomhetFormField.næringstyper]: Næringstype[];
-    [VirksomhetFormField.fiskerErPåPlanB]?: YesOrNo;
+    [VirksomhetFormField.fiskerErPåBladB]?: YesOrNo;
     [VirksomhetFormField.fom]: Date;
     [VirksomhetFormField.tom]?: Date;
     [VirksomhetFormField.næringsinntekt]?: number;
@@ -69,7 +69,7 @@ export const isVirksomhet = (virksomhet: Partial<Virksomhet>): virksomhet is Vir
 
 export interface VirksomhetApiData {
     naringstype: Næringstype[];
-    fiskerErPåPlanB?: boolean;
+    fiskerErPåBladB?: boolean;
     fra_og_med: ApiStringDate;
     til_og_med?: ApiStringDate | null;
     er_pagaende?: boolean;

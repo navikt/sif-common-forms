@@ -48,8 +48,8 @@ export const mapVirksomhetToVirksomhetApiData = (virksomhet: Virksomhet): Virkso
         }
     }
 
-    if (harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåPlanB) {
-        data.fiskerErPåPlanB = virksomhet.fiskerErPåPlanB === YesOrNo.YES;
+    if (harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB) {
+        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
     }
 
     if (virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene) {

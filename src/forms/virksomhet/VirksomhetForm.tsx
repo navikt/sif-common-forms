@@ -90,7 +90,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         {harFiskerNæringstype(values.næringstyper || []) && (
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
-                                    name={VirksomhetFormField.fiskerErPåPlanB}
+                                    name={VirksomhetFormField.fiskerErPåBladB}
                                     legend="Er du fisker på Plan B"
                                     validate={validateYesOrNoIsAnswered}
                                 />
