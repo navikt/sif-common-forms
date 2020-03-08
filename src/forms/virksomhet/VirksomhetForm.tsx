@@ -19,6 +19,7 @@ import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Panel } from 'nav-frontend-paneler';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { VirksomhetTextNB } from './i18n/virksomhetForm.texts';
 import InfoTilFisker from './parts/InfoTilFisker';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
@@ -47,6 +48,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
     };
 
     const intl = useIntl();
+    const txt = VirksomhetTextNB;
 
     return (
         <Form.FormikWrapper
@@ -61,27 +63,27 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Box padBottom="l">
-                            <Systemtittel tag="h1">Opplysninger om virksomheten din</Systemtittel>
+                            <Systemtittel tag="h1">{txt.form_title}</Systemtittel>
                         </Box>
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
-                            legend="Hvilken type virksomhet har du?"
+                            legend={txt.hva_heter_virksomheten}
                             checkboxes={[
                                 {
                                     value: Næringstype.FISKER,
-                                    label: 'Fisker'
+                                    label: txt.næringstype_fisker
                                 },
                                 {
                                     value: Næringstype.JORDBRUK,
-                                    label: 'Jordbruker'
+                                    label: txt.næringstype_jordbruker
                                 },
                                 {
                                     value: Næringstype.DAGMAMMA,
-                                    label: 'Dagmamma i eget hjem'
+                                    label: txt.næringstype_dagmamma
                                 },
                                 {
                                     value: Næringstype.ANNEN,
-                                    label: 'Annet'
+                                    label: txt.næringstype_annet
                                 }
                             ]}
                             validate={validateRequiredList}
@@ -91,7 +93,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
                                     name={VirksomhetFormField.fiskerErPåBladB}
-                                    legend="Er du fisker på Plan B"
+                                    legend={txt.fisker_bladB}
                                     validate={validateYesOrNoIsAnswered}
                                 />
                             </Box>
@@ -100,7 +102,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         <Box margin="xl">
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
-                                label="Hva heter virksomheten din?"
+                                label={txt.hva_heter_virksomheten}
                                 validate={validateRequiredField}
                             />
                         </Box>
@@ -116,7 +118,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         <Box margin="xl">
                             <Form.YesOrNoQuestion
                                 name={VirksomhetFormField.registrertINorge}
-                                legend={`Er ${navnPåVirksomheten} registrert i Norge`}
+                                legend={txt.registert_i_norge(navnPåVirksomheten)}
                                 validate={validateYesOrNoIsAnswered}
                             />
                         </Box>
@@ -125,7 +127,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             <Box margin="xl">
                                 <Form.CountrySelect
                                     name={VirksomhetFormField.registrertILand}
-                                    label={`I hvilket land er ${navnPåVirksomheten} din registrert i?`}
+                                    label={txt.registert_i_hvilket_land(navnPåVirksomheten)}
                                     validate={validateRequiredField}
                                 />
                             </Box>
@@ -135,7 +137,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             <Box margin="xl">
                                 <Form.Input
                                     name={VirksomhetFormField.organisasjonsnummer}
-                                    label="Hva er organisasjonsnummeret?"
+                                    label={txt.organisasjonsnummer}
                                     style={{ maxWidth: '10rem' }}
                                     maxLength={9}
                                     validate={(value) =>
@@ -148,9 +150,9 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         {(values.registrertINorge === YesOrNo.YES || values.registrertINorge === YesOrNo.NO) && (
                             <Box margin="xl">
                                 <Form.DateIntervalPicker
-                                    legend={`Når startet du ${navnPåVirksomheten}?`}
+                                    legend={txt.startdato(navnPåVirksomheten)}
                                     fromDatepickerProps={{
-                                        label: 'Startdato',
+                                        label: txt.kalenderFom,
                                         name: VirksomhetFormField.fom,
                                         showYearSelector: true,
                                         dateLimitations: {
@@ -159,7 +161,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         validate: validateRequiredField
                                     }}
                                     toDatepickerProps={{
-                                        label: 'Eventuell avsluttet dato',
+                                        label: txt.kalenderTom,
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
                                         showYearSelector: true,
@@ -170,7 +172,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     }}
                                 />
                                 <Form.Checkbox
-                                    label="Er pågående"
+                                    label={txt.kalenderPågående}
                                     name={VirksomhetFormField.erPågående}
                                     afterOnChange={(checked) => {
                                         if (checked) {
@@ -186,7 +188,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                 <Box margin="xl">
                                     <Form.Input
                                         name={VirksomhetFormField.næringsinntekt}
-                                        label="Næringsinntekt"
+                                        label={txt.næringsinntekt}
                                         validate={validateRequiredField}
                                         type="number"
                                         maxLength={10}
@@ -198,7 +200,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         name={
                                             VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                                         }
-                                        legend="Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?"
+                                        legend={txt.blittYrkesaktiv}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -206,7 +208,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     <Panel>
                                         <Form.DatePicker
                                             name={VirksomhetFormField.oppstartsdato}
-                                            label="Oppgi dato for når du ble yrkesaktiv"
+                                            label={txt.dateYrkesaktiv}
                                             showYearSelector={true}
                                             dateLimitations={{
                                                 minDato: date3YearsAgo,
@@ -223,7 +225,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
                                         name={VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
-                                        legend="Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste fire årene?"
+                                        legend={txt.varigEndringSiste4år}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -232,7 +234,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         <Box margin="xl">
                                             <Form.DatePicker
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
-                                                label="Oppgi dato for endringen"
+                                                label={txt.varigEndrinDato}
                                                 validate={validateRequiredField}
                                                 dateLimitations={{
                                                     minDato: date4YearsAgo,
@@ -245,14 +247,14 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                                 name={
                                                     VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
                                                 }
-                                                label="Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner."
+                                                label={txt.variEndringInntekt}
                                                 validate={validateRequiredField}
                                             />
                                         </Box>
                                         <Box margin="xl">
                                             <Form.Textarea
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_forklaring}
-                                                label="Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din"
+                                                label={txt.varigEndingBeskrivelse}
                                                 validate={validateRequiredField}
                                                 maxLength={1000}
                                             />
@@ -267,7 +269,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
                                         name={VirksomhetFormField.harRegnskapsfører}
-                                        legend="Har du regnskapsfører?"
+                                        legend={txt.regnskapsfører_spm}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -276,13 +278,13 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     <Panel>
                                         <Form.Input
                                             name={VirksomhetFormField.regnskapsfører_navn}
-                                            label="Oppgi navnet til regnskapsfører"
+                                            label={txt.regnskapsfører_navn}
                                             validate={validateRequiredField}
                                         />
                                         <Box margin="xl">
                                             <Form.Input
                                                 name={VirksomhetFormField.regnskapsfører_telefon}
-                                                label="Oppgi telefonnummeret til regnskapsfører"
+                                                label={txt.regnskapsfører_telefon}
                                                 validate={validateRequiredField}
                                             />
                                         </Box>
@@ -294,7 +296,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         <Box margin="xl">
                                             <Form.YesOrNoQuestion
                                                 name={VirksomhetFormField.harRevisor}
-                                                legend="Har du revisor?"
+                                                legend={txt.revisor_spm}
                                                 validate={validateYesOrNoIsAnswered}
                                             />
                                         </Box>
@@ -303,20 +305,20 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                             <Panel>
                                                 <Form.Input
                                                     name={VirksomhetFormField.revisor_navn}
-                                                    label="Oppgi navnet til revisor"
+                                                    label={txt.revisor_navn}
                                                     validate={validateRequiredField}
                                                 />
                                                 <Box margin="xl">
                                                     <Form.Input
                                                         name={VirksomhetFormField.revisor_telefon}
-                                                        label="Oppgi telefonnummeret til revisor"
+                                                        label={txt.revisor_telefon}
                                                         validate={validateRequiredField}
                                                     />
                                                 </Box>
                                                 <Box margin="xl">
                                                     <Form.YesOrNoQuestion
                                                         name={VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor}
-                                                        legend="Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?"
+                                                        legend={txt.revisor_fullmakt}
                                                         validate={validateYesOrNoIsAnswered}
                                                     />
                                                 </Box>
@@ -330,8 +332,8 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             (values.harRevisor && values.harRevisor !== YesOrNo.UNANSWERED)) && (
                             <Box margin="xl">
                                 <CounsellorPanel>
-                                    Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre.
-                                    Vi tar kontakt med deg hvis vi trenger flere opplysninger.
+                                    {txt.veileder_innhenter_info_html()}
+
                                     {/* /** Nynorsk:
                                      Vi hentar inn opplysningar om verksemda og inntekta di frå offentlege register. Vi tek kontakt med deg viss vi treng fleire opplysningar.
                                       */}

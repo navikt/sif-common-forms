@@ -1,0 +1,31 @@
+export interface VirksomhetFormText {
+    næringstype_fisker: string;
+    næringstype_jordbruker: string;
+    næringstype_dagmamma: string;
+    næringstype_annet: string;
+    form_title: string;
+    hva_heter_virksomheten: string;
+    fisker_bladB: string;
+    registert_i_norge: (virksomhet: string) => string;
+    registert_i_hvilket_land: (virksomhet: string) => string;
+    organisasjonsnummer: string;
+    startdato: (virksomhet: string) => string;
+    kalenderFom: string;
+    kalenderTom: string;
+    kalenderPågående: string;
+    næringsinntekt: string;
+    blittYrkesaktiv: string;
+    dateYrkesaktiv: string;
+    varigEndringSiste4år: string;
+    varigEndrinDato: string;
+    variEndringInntekt: string;
+    varigEndingBeskrivelse: string;
+    regnskapsfører_spm: string;
+    regnskapsfører_navn: string;
+    regnskapsfører_telefon: string;
+    revisor_spm: string;
+    revisor_navn: string;
+    revisor_telefon: string;
+    revisor_fullmakt: string;
+    veileder_innhenter_info_html: () => React.ReactNode;
+}
