@@ -93,7 +93,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
                                     name={VirksomhetFormField.fiskerErPåBladB}
-                                    legend={txt.fisker_bladB}
+                                    legend={txt.fisker_blad_b}
                                     validate={validateYesOrNoIsAnswered}
                                 />
                             </Box>
@@ -152,7 +152,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                 <Form.DateIntervalPicker
                                     legend={txt.startdato(navnPåVirksomheten)}
                                     fromDatepickerProps={{
-                                        label: txt.kalenderFom,
+                                        label: txt.kalender_fom,
                                         name: VirksomhetFormField.fom,
                                         showYearSelector: true,
                                         dateLimitations: {
@@ -161,7 +161,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         validate: validateRequiredField
                                     }}
                                     toDatepickerProps={{
-                                        label: txt.kalenderTom,
+                                        label: txt.kalender_tom,
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
                                         showYearSelector: true,
@@ -172,7 +172,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     }}
                                 />
                                 <Form.Checkbox
-                                    label={txt.kalenderPågående}
+                                    label={txt.kalender_pågående}
                                     name={VirksomhetFormField.erPågående}
                                     afterOnChange={(checked) => {
                                         if (checked) {
@@ -200,7 +200,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         name={
                                             VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                                         }
-                                        legend={txt.blittYrkesaktiv}
+                                        legend={txt.har_blitt_yrkesaktiv}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -208,7 +208,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     <Panel>
                                         <Form.DatePicker
                                             name={VirksomhetFormField.oppstartsdato}
-                                            label={txt.dateYrkesaktiv}
+                                            label={txt.har_blitt_yrkesakriv_dato}
                                             showYearSelector={true}
                                             dateLimitations={{
                                                 minDato: date3YearsAgo,
@@ -225,7 +225,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
                                         name={VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
-                                        legend={txt.varigEndringSiste4år}
+                                        legend={txt.varig_endring_spm}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -234,7 +234,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         <Box margin="xl">
                                             <Form.DatePicker
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
-                                                label={txt.varigEndrinDato}
+                                                label={txt.varig_endring_dato}
                                                 validate={validateRequiredField}
                                                 dateLimitations={{
                                                     minDato: date4YearsAgo,
@@ -247,14 +247,14 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                                 name={
                                                     VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
                                                 }
-                                                label={txt.variEndringInntekt}
+                                                label={txt.varig_endring_inntekt}
                                                 validate={validateRequiredField}
                                             />
                                         </Box>
                                         <Box margin="xl">
                                             <Form.Textarea
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_forklaring}
-                                                label={txt.varigEndingBeskrivelse}
+                                                label={txt.varig_endring_tekst}
                                                 validate={validateRequiredField}
                                                 maxLength={1000}
                                             />
