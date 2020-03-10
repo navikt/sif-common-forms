@@ -16,8 +16,8 @@
     },
     "dependencies": {},
     "peerDependencies": {
-        "@navikt/sif-common-core": "0.0.11",
-        "@navikt/sif-common-formik": "^2.2.29"
+        "@navikt/sif-common-core": "0.1.0",
+        "@navikt/sif-common-formik": "^2.2.31"
     },
     "jest": {
         "testEnvironment": "node"
@@ -46,8 +46,8 @@
         "rimraf": "^3.0.2",
         "@craco/craco": "^5.6.3",
         "@formatjs/intl-pluralrules": "^1.5.2",
-        "@navikt/sif-common-core": "0.0.11",
-        "@navikt/sif-common-formik": "^2.2.29",
+        "@navikt/sif-common-core": "0.1.0",
+        "@navikt/sif-common-formik": "^2.2.31",
         "@testing-library/jest-dom": "^5.1.0",
         "@testing-library/react": "^9.4.0",
         "@testing-library/user-event": "^8.1.0",
