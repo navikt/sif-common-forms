@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import {
     commonFieldErrorRenderer
 } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
@@ -54,13 +54,11 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
                     <Form.Form
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                        <Box padBottom="l">
-                            <Systemtittel tag="h1">
-                                <FormattedMessage id="bostedUtland.form.tittel" />
-                            </Systemtittel>
-                        </Box>
+                        <Systemtittel tag="h1">
+                            <FormattedMessage id="bostedUtland.form.tittel" />
+                        </Systemtittel>
 
-                        <Box padBottom="l">
+                        <FormBlock>
                             <Form.DateIntervalPicker
                                 legend={intlHelper(intl, 'bostedUtland.form.tidsperiode.spm')}
                                 fromDatepickerProps={{
@@ -86,13 +84,14 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
                                 }}
                             />
-                        </Box>
-
-                        <Form.CountrySelect
-                            name={BostedUtlandFormFields.landkode}
-                            label={intlHelper(intl, 'bostedUtland.form.land.spm')}
-                            validate={validateRequiredSelect}
-                        />
+                        </FormBlock>
+                        <FormBlock>
+                            <Form.CountrySelect
+                                name={BostedUtlandFormFields.landkode}
+                                label={intlHelper(intl, 'bostedUtland.form.land.spm')}
+                                validate={validateRequiredSelect}
+                            />
+                        </FormBlock>
                     </Form.Form>
                 );
             }}

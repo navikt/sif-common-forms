@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import {
     commonFieldErrorRenderer
 } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
@@ -73,44 +73,44 @@ const FerieuttakForm: React.FunctionComponent<Props> = ({
                     <Form.Form
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                        <Box padBottom="l">
-                            <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
-                        </Box>
-                        <Form.DateIntervalPicker
-                            legend={formLabels.intervalTitle}
-                            fromDatepickerProps={{
-                                label: formLabels.fromDate,
-                                name: FerieuttakFormFields.fom,
-                                fullscreenOverlay: true,
-                                dateLimitations: {
-                                    minDato: minDate,
-                                    maksDato: maxDate || formik.values.tom
-                                },
-                                validate: (date: Date) =>
-                                    dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
-                                onChange: () => {
-                                    setTimeout(() => {
-                                        formik.validateField(FerieuttakFormFields.tom);
-                                    });
-                                }
-                            }}
-                            toDatepickerProps={{
-                                label: formLabels.toDate,
-                                name: FerieuttakFormFields.tom,
-                                fullscreenOverlay: true,
-                                dateLimitations: {
-                                    minDato: minDate || formik.values.fom,
-                                    maksDato: maxDate
-                                },
-                                validate: (date: Date) =>
-                                    dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
-                                onChange: () => {
-                                    setTimeout(() => {
-                                        formik.validateField(FerieuttakFormFields.fom);
-                                    });
-                                }
-                            }}
-                        />
+                        <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
+                        <FormBlock>
+                            <Form.DateIntervalPicker
+                                legend={formLabels.intervalTitle}
+                                fromDatepickerProps={{
+                                    label: formLabels.fromDate,
+                                    name: FerieuttakFormFields.fom,
+                                    fullscreenOverlay: true,
+                                    dateLimitations: {
+                                        minDato: minDate,
+                                        maksDato: maxDate || formik.values.tom
+                                    },
+                                    validate: (date: Date) =>
+                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
+                                    onChange: () => {
+                                        setTimeout(() => {
+                                            formik.validateField(FerieuttakFormFields.tom);
+                                        });
+                                    }
+                                }}
+                                toDatepickerProps={{
+                                    label: formLabels.toDate,
+                                    name: FerieuttakFormFields.tom,
+                                    fullscreenOverlay: true,
+                                    dateLimitations: {
+                                        minDato: minDate || formik.values.fom,
+                                        maksDato: maxDate
+                                    },
+                                    validate: (date: Date) =>
+                                        dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
+                                    onChange: () => {
+                                        setTimeout(() => {
+                                            formik.validateField(FerieuttakFormFields.fom);
+                                        });
+                                    }
+                                }}
+                            />
+                        </FormBlock>
                     </Form.Form>
                 )}
             />

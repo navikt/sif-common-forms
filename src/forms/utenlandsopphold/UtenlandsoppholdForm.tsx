@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import {
     commonFieldErrorRenderer
 } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
@@ -82,7 +82,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                         <Systemtittel tag="h1">
                             <FormattedMessage id="utenlandsopphold.form.tittel" />
                         </Systemtittel>
-                        <Box margin="l">
+                        <FormBlock>
                             <Form.DateIntervalPicker
                                 legend={intlHelper(intl, 'utenlandsopphold.form.tidsperiode.spm')}
                                 fromDatepickerProps={{
@@ -108,19 +108,19 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
                                 }}
                             />
-                        </Box>
+                        </FormBlock>
 
-                        <Box margin="l">
+                        <FormBlock>
                             <Form.CountrySelect
                                 name={UtenlandsoppholdFormFields.landkode}
                                 label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
                                 validate={validateRequiredSelect}
                             />
-                        </Box>
+                        </FormBlock>
 
                         {showInnlagtQuestion && values.landkode && (
                             <>
-                                <Box margin="m">
+                                <FormBlock>
                                     <Form.YesOrNoQuestion
                                         name={UtenlandsoppholdFormFields.erBarnetInnlagt}
                                         legend={intlHelper(intl, 'utenlandsopphold.form.erBarnetInnlagt.spm', {
@@ -128,40 +128,42 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         })}
                                         validate={validateYesOrNoIsAnswered}
                                     />
-                                </Box>
+                                </FormBlock>
                                 {values.erBarnetInnlagt === YesOrNo.YES && (
                                     <>
-                                        <Form.RadioPanelGroup
-                                            legend={intlHelper(intl, 'utenlandsopphold.form.årsak.spm', {
-                                                land: getCountryName(values.landkode, intl.locale)
-                                            })}
-                                            name={UtenlandsoppholdFormFields.årsak}
-                                            validate={validateRequiredField}
-                                            radios={[
-                                                {
-                                                    value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE,
-                                                    label: intlHelper(
-                                                        intl,
-                                                        `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE}`
-                                                    )
-                                                },
-                                                {
-                                                    value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND,
-                                                    label: intlHelper(
-                                                        intl,
-                                                        `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND}`,
-                                                        { land: getCountryName(values.landkode, intl.locale) }
-                                                    )
-                                                },
-                                                {
-                                                    value: UtenlandsoppholdÅrsak.ANNET,
-                                                    label: intlHelper(
-                                                        intl,
-                                                        `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.ANNET}`
-                                                    )
-                                                }
-                                            ]}
-                                        />
+                                        <FormBlock>
+                                            <Form.RadioPanelGroup
+                                                legend={intlHelper(intl, 'utenlandsopphold.form.årsak.spm', {
+                                                    land: getCountryName(values.landkode, intl.locale)
+                                                })}
+                                                name={UtenlandsoppholdFormFields.årsak}
+                                                validate={validateRequiredField}
+                                                radios={[
+                                                    {
+                                                        value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE,
+                                                        label: intlHelper(
+                                                            intl,
+                                                            `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE}`
+                                                        )
+                                                    },
+                                                    {
+                                                        value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND,
+                                                        label: intlHelper(
+                                                            intl,
+                                                            `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND}`,
+                                                            { land: getCountryName(values.landkode, intl.locale) }
+                                                        )
+                                                    },
+                                                    {
+                                                        value: UtenlandsoppholdÅrsak.ANNET,
+                                                        label: intlHelper(
+                                                            intl,
+                                                            `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.ANNET}`
+                                                        )
+                                                    }
+                                                ]}
+                                            />
+                                        </FormBlock>
                                     </>
                                 )}
                             </>
