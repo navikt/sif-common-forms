@@ -192,6 +192,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                         validate={validateRequiredField}
                                         type="number"
                                         maxLength={10}
+                                        info={txt.næringsinntekt_info}
                                         style={{ maxWidth: '10rem' }}
                                     />
                                 </Box>

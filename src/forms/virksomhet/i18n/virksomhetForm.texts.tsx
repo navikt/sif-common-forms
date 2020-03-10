@@ -14,9 +14,11 @@ export const VirksomhetTextNB: VirksomhetFormText = {
     organisasjonsnummer: 'Hva er organisasjonsnummeret?',
     startdato: (navnPåVirksomheten) => `Når startet du ${navnPåVirksomheten}?`,
     kalender_fom: 'Startdato',
-    kalender_tom: 'Eventuell avsluttet dato',
+    kalender_tom: 'Eventuell sluttdato',
     kalender_pågående: 'Er pågående',
-    næringsinntekt: 'Næringsinntekt',
+    næringsinntekt:
+        'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+    næringsinntekt_info: 'Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.',
     har_blitt_yrkesaktiv: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
     har_blitt_yrkesakriv_dato: 'Oppgi dato for når du ble yrkesaktiv',
     varig_endring_spm:
