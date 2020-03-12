@@ -49,7 +49,7 @@ export const mapVirksomhetToVirksomhetApiData = (virksomhet: Virksomhet): Virkso
     }
 
     if (harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB) {
-        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
+        data.fisker_er_paa_blad_b = virksomhet.fiskerErPåBladB === YesOrNo.YES;
     }
 
     if (virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene) {
