@@ -69,7 +69,7 @@ export const isVirksomhet = (virksomhet: Partial<Virksomhet>): virksomhet is Vir
 
 export interface VirksomhetApiData {
     naringstype: Næringstype[];
-    fisker_er_paa_blad_b?: boolean;
+    fisker_er_pa_blad_b?: boolean;
     fra_og_med: ApiStringDate;
     til_og_med?: ApiStringDate | null;
     er_pagaende?: boolean;
