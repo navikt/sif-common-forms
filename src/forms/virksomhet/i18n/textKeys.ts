@@ -6,6 +6,7 @@ export interface VirksomhetFormText {
     form_title: string;
     hva_heter_virksomheten: string;
     fisker_blad_b: string;
+    veielder_fisker: (virksomhet: string) => string;
     registert_i_norge: (virksomhet: string) => string;
     registert_i_hvilket_land: (virksomhet: string) => string;
     organisasjonsnummer: string;

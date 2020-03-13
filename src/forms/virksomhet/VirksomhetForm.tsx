@@ -111,7 +111,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             values.navnPåVirksomheten !== undefined &&
                             hasValue(navnPåVirksomheten) && (
                                 <Box margin="xl">
-                                    <InfoTilFisker navnPåNæringen={values.navnPåVirksomheten} />
+                                    <InfoTilFisker navnPåVirksomhet={values.navnPåVirksomheten} />
                                 </Box>
                             )}
 

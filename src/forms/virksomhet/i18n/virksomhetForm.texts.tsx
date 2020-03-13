@@ -9,6 +9,8 @@ export const VirksomhetTextNB: VirksomhetFormText = {
     form_title: 'Opplysninger om virksomheten din',
     hva_heter_virksomheten: 'Hva heter virksomheten?',
     fisker_blad_b: 'Er du fisker på blad B?',
+    veielder_fisker: (virksomhet) =>
+        `Hvis du ikke har organisasjonsnummer, svarer du nei på spørsmålet "Er ${virksomhet} registrert i Norge?" I nedtrekkslisten velger du at virksomheten er registrert i Norge.`,
     registert_i_norge: (virksomhet: string) => `Er ${virksomhet} registert i Norge?`,
     registert_i_hvilket_land: (virksomhet: string) => `I hvilket land er ${virksomhet} din registrert i?`,
     organisasjonsnummer: 'Hva er organisasjonsnummeret?',
