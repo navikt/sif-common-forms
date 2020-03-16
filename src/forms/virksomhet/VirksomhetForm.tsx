@@ -67,7 +67,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                         </Box>
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
-                            legend={txt.hva_heter_virksomheten}
+                            legend={txt.hvilken_type_virksomhet}
                             checkboxes={[
                                 {
                                     value: Næringstype.FISKER,

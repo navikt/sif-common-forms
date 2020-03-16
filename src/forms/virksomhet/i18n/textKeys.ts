@@ -4,6 +4,7 @@ export interface VirksomhetFormText {
     næringstype_dagmamma: string;
     næringstype_annet: string;
     form_title: string;
+    hvilken_type_virksomhet: string;
     hva_heter_virksomheten: string;
     fisker_blad_b: string;
     veielder_fisker: (virksomhet: string) => string;

@@ -3,10 +3,11 @@ import { VirksomhetFormText } from './textKeys';
 
 export const VirksomhetTextNB: VirksomhetFormText = {
     næringstype_fisker: 'Fisker',
-    næringstype_jordbruker: 'Jorbruker',
+    næringstype_jordbruker: 'Jordbruker',
     næringstype_dagmamma: 'Dagmamma eller familiebarnehage i eget hjem',
     næringstype_annet: 'Annet',
     form_title: 'Opplysninger om virksomheten din',
+    hvilken_type_virksomhet: 'Hvilken type virksomhet har du?',
     hva_heter_virksomheten: 'Hva heter virksomheten?',
     fisker_blad_b: 'Er du fisker på blad B?',
     veielder_fisker: (virksomhet) =>
