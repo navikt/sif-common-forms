@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "1.2.2",
+    "version": "2.0.0",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -16,8 +16,8 @@
     },
     "dependencies": {},
     "peerDependencies": {
-        "@navikt/sif-common-core": "^0.1.1",
-        "@navikt/sif-common-formik": "^3.0.0"
+        "@navikt/sif-common-core": "^2.0.0",
+        "@navikt/sif-common-formik": "^4.0.1"
     },
     "jest": {
         "testEnvironment": "node"
@@ -44,8 +44,8 @@
     "devDependencies": {
         "@craco/craco": "^5.6.3",
         "@formatjs/intl-pluralrules": "^1.5.2",
-        "@navikt/sif-common-core": "^0.1.1",
-        "@navikt/sif-common-formik": "^3.0.1",
+        "@navikt/sif-common-core": "^2.0.0",
+        "@navikt/sif-common-formik": "^4.0.1",
         "@testing-library/jest-dom": "^5.1.0",
         "@testing-library/react": "^9.4.0",
         "@testing-library/user-event": "^8.1.0",
@@ -65,7 +65,7 @@
         "jest-css-modules": "^2.1.0",
         "less-plugin-npm-import": "^2.1.0",
         "moment": "^2.24.0",
-        "nav-datovelger": "^4.3.0",
+        "nav-datovelger": "^5.0.9",
         "nav-frontend-alertstriper": "^3.0.9",
         "nav-frontend-alertstriper-style": "^2.0.7",
         "nav-frontend-chevron": "^1.0.10",
@@ -86,7 +86,7 @@
         "nav-frontend-paneler": "^1.0.23",
         "nav-frontend-paneler-style": "^0.3.17",
         "nav-frontend-popover": "0.0.23",
-        "nav-frontend-popover-style": "0.0.2",
+        "nav-frontend-popover-style": "0.0.3",
         "nav-frontend-skjema": "^2.0.11",
         "nav-frontend-skjema-style": "^2.0.3",
         "nav-frontend-spinner": "^2.0.1",
