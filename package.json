@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -65,7 +65,7 @@
         "jest-css-modules": "^2.1.0",
         "less-plugin-npm-import": "^2.1.0",
         "moment": "^2.24.0",
-        "nav-datovelger": "^5.0.9",
+        "nav-datovelger": "^5.0.10",
         "nav-frontend-alertstriper": "^3.0.9",
         "nav-frontend-alertstriper-style": "^2.0.7",
         "nav-frontend-chevron": "^1.0.10",
