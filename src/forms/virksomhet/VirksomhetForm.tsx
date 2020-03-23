@@ -209,7 +209,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                     <Panel>
                                         <Form.DatePicker
                                             name={VirksomhetFormField.oppstartsdato}
-                                            label={txt.har_blitt_yrkesakriv_dato}
+                                            label={txt.har_blitt_yrkesaktiv_dato}
                                             showYearSelector={true}
                                             dateLimitations={{
                                                 minDato: date3YearsAgo,
