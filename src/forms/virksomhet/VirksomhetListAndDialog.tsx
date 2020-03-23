@@ -11,9 +11,10 @@ interface Props<FieldNames> {
     name: FieldNames;
     validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
+    onAfterChange?: (virksomheter: Virksomhet[]) => void;
 }
 
-function VirksomhetListAndDialog<FieldNames>({ name, validate, labels }: Props<FieldNames>) {
+function VirksomhetListAndDialog<FieldNames>({ name, validate, labels, onAfterChange }: Props<FieldNames>) {
     return (
         <FormikModalFormAndList<FieldNames, Virksomhet>
             name={name}
@@ -27,6 +28,7 @@ function VirksomhetListAndDialog<FieldNames>({ name, validate, labels }: Props<F
             listRenderer={({ items, onEdit, onDelete }) => (
                 <VirksomhetListe virksomheter={items} onEdit={onEdit} onDelete={onDelete} />
             )}
+            onAfterChange={onAfterChange}
         />
     );
 }

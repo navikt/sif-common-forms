@@ -23,7 +23,7 @@ export const VirksomhetTextNB: VirksomhetFormText = {
         'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
     næringsinntekt_info: 'Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.',
     har_blitt_yrkesaktiv: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
-    har_blitt_yrkesakriv_dato: 'Oppgi dato for når du ble yrkesaktiv',
+    har_blitt_yrkesaktiv_dato: 'Oppgi dato for når du ble yrkesaktiv',
     varig_endring_spm:
         'Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste fire årene?',
     varig_endring_dato: 'Oppgi dato for endringen',

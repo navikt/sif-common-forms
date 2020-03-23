@@ -18,7 +18,7 @@ export interface VirksomhetFormText {
     næringsinntekt: string;
     næringsinntekt_info: string;
     har_blitt_yrkesaktiv: string;
-    har_blitt_yrkesakriv_dato: string;
+    har_blitt_yrkesaktiv_dato: string;
     varig_endring_spm: string;
     varig_endring_dato: string;
     varig_endring_inntekt: string;
