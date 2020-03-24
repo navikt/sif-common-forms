@@ -75,6 +75,16 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                     hasValue(values.landkode) &&
                     !countryIsMemberOfEøsOrEfta(values.landkode);
 
+                const fromDateLimitations = {
+                    minDato: minDate,
+                    maksDato: values.tom || maxDate
+                };
+
+                const toDateLimitations = {
+                    minDato: values.fom || minDate,
+                    maksDato: maxDate
+                };
+
                 return (
                     <Form.Form
                         onCancel={onCancel}
@@ -89,23 +99,27 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: values.tom || maxDate
-                                    },
+                                    dateLimitations: fromDateLimitations,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom)
+                                        dateRangeValidation.validateFromDate(
+                                            date,
+                                            fromDateLimitations.minDato,
+                                            fromDateLimitations.maksDato,
+                                            values.tom
+                                        )
                                 }}
                                 toDatepickerProps={{
                                     name: UtenlandsoppholdFormFields.tom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.tilDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: values.fom || minDate,
-                                        maksDato: maxDate
-                                    },
+                                    dateLimitations: toDateLimitations,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
+                                        dateRangeValidation.validateToDate(
+                                            date,
+                                            toDateLimitations.minDato,
+                                            toDateLimitations.maksDato,
+                                            values.fom
+                                        )
                                 }}
                             />
                         </FormBlock>
