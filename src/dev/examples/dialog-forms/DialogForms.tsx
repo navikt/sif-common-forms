@@ -5,6 +5,7 @@ import PageIntro from '../../components/page-intro/PageIntro';
 import { RouteConfig } from '../../config/routeConfig';
 import BostedUtlandExample from './BostedUtlandExample';
 import FerieuttakExample from './FerieuttakExample';
+import FosterbarnExample from './FosterbarnExample';
 import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
 
 interface Props {}
@@ -24,6 +25,11 @@ const tabRoutes: RouteConfig[] = [
         path: 'utenlandsopphold',
         renderContent: () => <UtenlandsoppholdIPeriodenExample />,
         title: 'Utenlandsopphold i perioden'
+    },
+    {
+        path: 'fosterbarn',
+        renderContent: () => <FosterbarnExample />,
+        title: 'Fosterbarn'
     }
 ];
 
