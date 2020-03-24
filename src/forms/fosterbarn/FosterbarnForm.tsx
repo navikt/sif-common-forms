@@ -68,7 +68,6 @@ const FosterbarnForm: React.FunctionComponent<Props> = ({
                                 style={{ width: '11rem' }}
                             />
                         </FormBlock>
-
                         <Tiles columns={2}>
                             <FormBlock>
                                 <Form.Input

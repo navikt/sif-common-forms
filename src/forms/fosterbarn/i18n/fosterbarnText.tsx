@@ -6,6 +6,5 @@ export const FosterbarnTextsNb: FosterbarnTextKeys = {
     form_fødselsnummer_label: 'Fødselsnummer',
     liste_legg_til_knapp: 'Legg til fosterbarn',
     liste_tittel: 'Registrerte fosterbarn',
-    modal_tittel: 'Fosterbarn',
-    liste_tom_liste_tekst: 'Ingen fosterbarn er lagt til'
+    modal_tittel: 'Fosterbarn'
 };
