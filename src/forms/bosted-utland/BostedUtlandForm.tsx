@@ -50,6 +50,15 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
                 const { values } = formik;
+
+                const fomDateLimits = {
+                    minDato: minDate,
+                    maksDato: values.tom || maxDate
+                };
+                const tomDateLimits = {
+                    minDato: values.fom || minDate,
+                    maksDato: maxDate
+                };
                 return (
                     <Form.Form
                         onCancel={onCancel}
@@ -65,23 +74,27 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: values.tom || maxDate
-                                    },
+                                    dateLimitations: fomDateLimits,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom)
+                                        dateRangeValidation.validateFromDate(
+                                            date,
+                                            fomDateLimits.minDato,
+                                            fomDateLimits.maksDato,
+                                            values.tom
+                                        )
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: values.fom || minDate,
-                                        maksDato: maxDate
-                                    },
+                                    dateLimitations: tomDateLimits,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
+                                        dateRangeValidation.validateToDate(
+                                            date,
+                                            tomDateLimits.minDato,
+                                            tomDateLimits.maksDato,
+                                            values.fom
+                                        )
                                 }}
                             />
                         </FormBlock>
