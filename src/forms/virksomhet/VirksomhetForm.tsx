@@ -38,10 +38,24 @@ type FormValues = Partial<Virksomhet>;
 
 const Form = getTypedFormComponents<VirksomhetFormField, FormValues>();
 
+const visNæringsinntekt = (values: Virksomhet): boolean => {
+    return values.fom && moment(values.fom).isAfter(date4YearsAgo);
+};
+
+const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
+    if (visNæringsinntekt(values)) {
+        return values.næringsinntekt;
+    }
+    return undefined;
+};
+
 const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet = initialValues, onSubmit }) => {
     const onFormikSubmit = (values: Partial<Virksomhet>) => {
         if (isVirksomhet(values)) {
-            onSubmit(values);
+            onSubmit({
+                ...values,
+                næringsinntekt: ensureValidNæringsinntekt(values)
+            });
         } else {
             throw new Error('VirksomhetForm: Formvalues is not a valid Virksomhet on submit.');
         }
@@ -249,6 +263,8 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                                                     VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
                                                 }
                                                 label={txt.varig_endring_inntekt}
+                                                type="number"
+                                                maxLength={10}
                                                 validate={validateRequiredField}
                                             />
                                         </Box>
