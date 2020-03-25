@@ -9,7 +9,8 @@ import {
     date3YearsAgo, date4YearsAgo, dateToday
 } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
-    validateOrgNumber, validateRequiredField, validateRequiredList, validateYesOrNoIsAnswered
+    validateOrgNumber, validateRequiredField, validateRequiredList, validateRequiredNumber,
+    validateYesOrNoIsAnswered
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import {
@@ -37,6 +38,7 @@ const initialValues: FormValues = {
     næringstyper: []
 };
 
+const MAKS_INNTEKT = 999999999;
 type FormValues = Partial<Virksomhet>;
 
 const Form = getTypedFormComponents<VirksomhetFormField, FormValues>();
@@ -71,8 +73,6 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
 
     const intl = useIntl();
     const txt = VirksomhetTextNB;
-
-    console.log(hideFormFields);
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
 
     return (
@@ -214,11 +214,12 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                     <Form.Input
                                         name={VirksomhetFormField.næringsinntekt}
                                         label={txt.næringsinntekt}
-                                        validate={validateRequiredField}
+                                        info={txt.næringsinntekt_info}
                                         type="number"
                                         maxLength={10}
-                                        info={txt.næringsinntekt_info}
+                                        max={MAKS_INNTEKT}
                                         style={{ maxWidth: '10rem' }}
+                                        validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
                                     />
                                 </Box>
                                 <Box margin="xl">
@@ -276,7 +277,9 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                 label={txt.varig_endring_inntekt}
                                                 type="number"
                                                 maxLength={10}
-                                                validate={validateRequiredField}
+                                                max={MAKS_INNTEKT}
+                                                style={{ maxWidth: '10rem' }}
+                                                validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
                                             />
                                         </Box>
                                         <Box margin="xl">
