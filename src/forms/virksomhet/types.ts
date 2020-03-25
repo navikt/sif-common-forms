@@ -36,6 +36,10 @@ export enum VirksomhetFormField {
     'kanInnhenteOpplsyningerFraRevisor' = 'kanInnhenteOpplsyningerFraRevisor'
 }
 
+export interface VirksomhetHideFields {
+    [VirksomhetFormField.fiskerErPåBladB]: boolean;
+}
+
 export interface Virksomhet {
     id?: string;
     [VirksomhetFormField.næringstyper]: Næringstype[];

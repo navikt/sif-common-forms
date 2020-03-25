@@ -21,11 +21,14 @@ import { Panel } from 'nav-frontend-paneler';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { VirksomhetTextNB } from './i18n/virksomhetForm.texts';
 import InfoTilFisker from './parts/InfoTilFisker';
-import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField } from './types';
+import {
+    isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetHideFields
+} from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
 
 interface Props {
     virksomhet?: Virksomhet;
+    hideFormFields?: VirksomhetHideFields;
     onSubmit: (oppdrag: Virksomhet) => void;
     onCancel: () => void;
 }
@@ -49,7 +52,12 @@ const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
     return undefined;
 };
 
-const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet = initialValues, onSubmit }) => {
+const VirksomhetForm: React.FunctionComponent<Props> = ({
+    onCancel,
+    virksomhet = initialValues,
+    onSubmit,
+    hideFormFields
+}) => {
     const onFormikSubmit = (values: Partial<Virksomhet>) => {
         if (isVirksomhet(values)) {
             onSubmit({
@@ -63,6 +71,9 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
 
     const intl = useIntl();
     const txt = VirksomhetTextNB;
+
+    console.log(hideFormFields);
+    const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
 
     return (
         <Form.FormikWrapper
@@ -103,7 +114,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({ onCancel, virksomhet =
                             validate={validateRequiredList}
                         />
 
-                        {harFiskerNæringstype(values.næringstyper || []) && (
+                        {harFiskerNæringstype(values.næringstyper || []) && hideFiskerPåBladB !== true && (
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
                                     name={VirksomhetFormField.fiskerErPåBladB}

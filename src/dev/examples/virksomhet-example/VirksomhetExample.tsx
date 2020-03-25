@@ -8,6 +8,7 @@ import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fie
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { Panel } from 'nav-frontend-paneler';
+import { Checkbox } from 'nav-frontend-skjema';
 import { Undertittel } from 'nav-frontend-typografi';
 import { mapVirksomhetToVirksomhetApiData } from '../../../forms/virksomhet/mapVirksomhetToApiData';
 import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhet/types';
@@ -48,6 +49,7 @@ const initialValues: FormValues = { virksomheter: [] };
 const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Virksomhet> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
+    const [hideFisker, setHideFisker] = useState<boolean>(false);
     const intl = useIntl();
     return (
         <>
@@ -68,6 +70,7 @@ const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
                                 <VirksomhetListAndDialog<FormField>
                                     name={FormField.virksomheter}
                                     validate={validateRequiredList}
+                                    hideFormFields={{ fiskerErPåBladB: hideFisker }}
                                     labels={{
                                         addLabel: 'Legg til',
                                         listTitle: 'Virksomhet',
@@ -87,9 +90,21 @@ const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
             <DialogFormWrapper width="wide">
                 <Panel border={true}>
                     <VirksomhetForm
+                        hideFormFields={{ fiskerErPåBladB: hideFisker }}
                         onCancel={() => setSingleFormValues({})}
                         onSubmit={(values) => setSingleFormValues(values)}
                     />
+                    <Box margin="l">
+                        <hr />
+                        <Panel style={{ padding: '1rem' }}>
+                            <Box padBottom="m">Spørsmål som kan skjules:</Box>
+                            <Checkbox
+                                label="Fisker på Blad B"
+                                checked={hideFisker}
+                                onChange={(evt) => setHideFisker(evt.currentTarget.checked)}
+                            />
+                        </Panel>
+                    </Box>
                     <Box margin="l">
                         <SubmitPreview values={singleFormValues} />
                     </Box>
