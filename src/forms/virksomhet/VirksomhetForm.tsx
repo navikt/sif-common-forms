@@ -129,6 +129,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                 name={VirksomhetFormField.navnPåVirksomheten}
                                 label={txt.hva_heter_virksomheten}
                                 validate={validateRequiredField}
+                                maxLength={50}
                             />
                         </Box>
 
@@ -311,12 +312,14 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                             name={VirksomhetFormField.regnskapsfører_navn}
                                             label={txt.regnskapsfører_navn}
                                             validate={validateRequiredField}
+                                            maxLength={50}
                                         />
                                         <Box margin="xl">
                                             <Form.Input
                                                 name={VirksomhetFormField.regnskapsfører_telefon}
                                                 label={txt.regnskapsfører_telefon}
                                                 validate={validateRequiredField}
+                                                maxLength={15}
                                             />
                                         </Box>
                                     </Panel>
@@ -338,12 +341,14 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                     name={VirksomhetFormField.revisor_navn}
                                                     label={txt.revisor_navn}
                                                     validate={validateRequiredField}
+                                                    maxLength={50}
                                                 />
                                                 <Box margin="xl">
                                                     <Form.Input
                                                         name={VirksomhetFormField.revisor_telefon}
                                                         label={txt.revisor_telefon}
                                                         validate={validateRequiredField}
+                                                        maxLength={15}
                                                     />
                                                 </Box>
                                                 <Box margin="xl">
