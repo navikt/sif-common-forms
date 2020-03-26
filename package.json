@@ -12,7 +12,10 @@
         "copy-files-to-lib": "copyfiles -u 2 \"src/forms/**/*.less\" lib/ && copyfiles -u 2 \"src/forms/**/assets/**/*\" lib/ && copyfiles -u 2 \"src/forms/**/*.json\" lib/",
         "build-dev-app": "craco build",
         "predeploy": "npm run build-dev-app",
-        "deploy": "gh-pages -d build"
+        "deploy": "gh-pages -d build",
+        "patchit": "npm-run-all build-lib patch publish",
+        "patch": "npm version patch",
+        "publish": "npm publish"
     },
     "jest": {
         "testEnvironment": "node"
@@ -38,13 +41,13 @@
     ],
     "dependencies": {},
     "peerDependencies": {
-        "@navikt/sif-common-core": "^2.2.4",
+        "@navikt/sif-common-core": "^2.2.8",
         "@navikt/sif-common-formik": "^4.0.11"
     },
     "devDependencies": {
         "@craco/craco": "^5.6.3",
         "@formatjs/intl-pluralrules": "^1.5.2",
-        "@navikt/sif-common-core": "^2.2.4",
+        "@navikt/sif-common-core": "^2.2.8",
         "@navikt/sif-common-formik": "^4.0.11",
         "@testing-library/jest-dom": "^5.1.0",
         "@testing-library/react": "^9.4.0",

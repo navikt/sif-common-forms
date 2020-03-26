@@ -2,6 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import {
     commonFieldErrorRenderer
 } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
@@ -18,7 +20,6 @@ import {
 } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import moment from 'moment';
-import { Panel } from 'nav-frontend-paneler';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { VirksomhetTextNB } from './i18n/virksomhetForm.texts';
 import InfoTilFisker from './parts/InfoTilFisker';
@@ -233,18 +234,20 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                     />
                                 </Box>
                                 {values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES && (
-                                    <Panel>
-                                        <Form.DatePicker
-                                            name={VirksomhetFormField.oppstartsdato}
-                                            label={txt.har_blitt_yrkesaktiv_dato}
-                                            showYearSelector={true}
-                                            dateLimitations={{
-                                                minDato: date3YearsAgo,
-                                                maksDato: dateToday
-                                            }}
-                                            validate={validateRequiredField}
-                                        />
-                                    </Panel>
+                                    <FormBlock margin="m">
+                                        <ResponsivePanel>
+                                            <Form.DatePicker
+                                                name={VirksomhetFormField.oppstartsdato}
+                                                label={txt.har_blitt_yrkesaktiv_dato}
+                                                showYearSelector={true}
+                                                dateLimitations={{
+                                                    minDato: date3YearsAgo,
+                                                    maksDato: dateToday
+                                                }}
+                                                validate={validateRequiredField}
+                                            />
+                                        </ResponsivePanel>
+                                    </FormBlock>
                                 )}
                             </>
                         )}
@@ -307,22 +310,24 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                 </Box>
 
                                 {values.harRegnskapsfører === YesOrNo.YES && (
-                                    <Panel>
-                                        <Form.Input
-                                            name={VirksomhetFormField.regnskapsfører_navn}
-                                            label={txt.regnskapsfører_navn}
-                                            validate={validateRequiredField}
-                                            maxLength={50}
-                                        />
-                                        <Box margin="xl">
+                                    <FormBlock margin="m">
+                                        <ResponsivePanel>
                                             <Form.Input
-                                                name={VirksomhetFormField.regnskapsfører_telefon}
-                                                label={txt.regnskapsfører_telefon}
+                                                name={VirksomhetFormField.regnskapsfører_navn}
+                                                label={txt.regnskapsfører_navn}
                                                 validate={validateRequiredField}
-                                                maxLength={15}
+                                                maxLength={50}
                                             />
-                                        </Box>
-                                    </Panel>
+                                            <Box margin="xl">
+                                                <Form.Input
+                                                    name={VirksomhetFormField.regnskapsfører_telefon}
+                                                    label={txt.regnskapsfører_telefon}
+                                                    validate={validateRequiredField}
+                                                    maxLength={15}
+                                                />
+                                            </Box>
+                                        </ResponsivePanel>
+                                    </FormBlock>
                                 )}
 
                                 {values.harRegnskapsfører === YesOrNo.NO && (
@@ -336,29 +341,31 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                         </Box>
 
                                         {values.harRevisor === YesOrNo.YES && (
-                                            <Panel>
-                                                <Form.Input
-                                                    name={VirksomhetFormField.revisor_navn}
-                                                    label={txt.revisor_navn}
-                                                    validate={validateRequiredField}
-                                                    maxLength={50}
-                                                />
-                                                <Box margin="xl">
+                                            <FormBlock margin="m">
+                                                <ResponsivePanel>
                                                     <Form.Input
-                                                        name={VirksomhetFormField.revisor_telefon}
-                                                        label={txt.revisor_telefon}
+                                                        name={VirksomhetFormField.revisor_navn}
+                                                        label={txt.revisor_navn}
                                                         validate={validateRequiredField}
-                                                        maxLength={15}
+                                                        maxLength={50}
                                                     />
-                                                </Box>
-                                                <Box margin="xl">
-                                                    <Form.YesOrNoQuestion
-                                                        name={VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor}
-                                                        legend={txt.revisor_fullmakt}
-                                                        validate={validateYesOrNoIsAnswered}
-                                                    />
-                                                </Box>
-                                            </Panel>
+                                                    <Box margin="xl">
+                                                        <Form.Input
+                                                            name={VirksomhetFormField.revisor_telefon}
+                                                            label={txt.revisor_telefon}
+                                                            validate={validateRequiredField}
+                                                            maxLength={15}
+                                                        />
+                                                    </Box>
+                                                    <Box margin="xl">
+                                                        <Form.YesOrNoQuestion
+                                                            name={VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor}
+                                                            legend={txt.revisor_fullmakt}
+                                                            validate={validateYesOrNoIsAnswered}
+                                                        />
+                                                    </Box>
+                                                </ResponsivePanel>
+                                            </FormBlock>
                                         )}
                                     </>
                                 )}
