@@ -21,7 +21,7 @@ const DevPage: React.FunctionComponent<Props> = ({ onChangeLocale }) => {
                     <NAVLogo />
                 </span>
                 <span className="header__title">
-                    <Systemtittel>Sykdom i familien - SIF-Common</Systemtittel>
+                    <Systemtittel>Sykdom i familien - sif-common-forms</Systemtittel>
                 </span>
                 <span className="languageToggler">
                     <LanguageToggle toggle={onChangeLocale} locale={intl.locale as Locale} />
