@@ -13,9 +13,9 @@
         "build-dev-app": "craco build",
         "predeploy": "npm run build-dev-app",
         "deploy": "gh-pages -d build",
-        "patchit": "npm-run-all build-lib patch publish",
+        "patchit": "npm-run-all build-lib patch do-publish",
         "patch": "npm version patch",
-        "publish": "npm publish"
+        "do-publish": "npm publish"
     },
     "jest": {
         "testEnvironment": "node"
