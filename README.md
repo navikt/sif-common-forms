@@ -1,6 +1,6 @@
-# sif-common
+# sif-common-forms
 
-Felleskomponenter for sykdom i familien søknadsskjema
+Fellesdialoger/skjema for sykdom i familien
 
 # Release ny versjon til npmjs
 
@@ -17,9 +17,7 @@ VELG EN AV DISSE:
 npm publish
 ```
 
-# Kjøre SIF-common guide
-
-Starter guiden som viser noen av komponentene som er i biblioteket
+# Kjøre dev-app som viser dialoger
 
 ```
 npm run dev
