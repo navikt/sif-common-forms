@@ -2,19 +2,17 @@ import React from 'react';
 import { FormikModalFormAndList, FormikValidateFunction } from '@navikt/sif-common-formik';
 import FosterbarnForm from './FosterbarnForm';
 import FosterbarnList from './FosterbarnList';
-import { FosterbarnTextsNb } from './i18n/fosterbarnText';
-import { FosterbarnTextKeys } from './i18n/fosterbarnTextKeys';
 import { Fosterbarn } from './types';
 
 interface Props<FieldNames> {
     name: FieldNames;
     validate?: FormikValidateFunction;
-    texts?: FosterbarnTextKeys;
+    texts?: FosterbarnListAndDialogText;
     info?: string;
 }
 
 function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info }: Props<FieldNames>) {
-    const txt = { ...FosterbarnTextsNb, ...texts };
+    const txt = { ...defaultText, ...texts };
     return (
         <>
             <FormikModalFormAndList<FieldNames, Fosterbarn>
@@ -38,5 +36,18 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info }: Pr
         </>
     );
 }
+
+export interface FosterbarnListAndDialogText {
+    liste_legg_til_knapp: string;
+    liste_tittel?: string;
+    liste_tom_liste_tekst?: string;
+    modal_tittel: string;
+}
+
+export const defaultText: FosterbarnListAndDialogText = {
+    liste_legg_til_knapp: 'Legg til fosterbarn',
+    liste_tittel: 'Registrerte fosterbarn',
+    modal_tittel: 'Fosterbarn'
+};
 
 export default FosterbarnListAndDialog;

@@ -2,23 +2,17 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Tiles from '@navikt/sif-common-core/lib/components/tiles/Tiles';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import {
-    validateFødselsnummer, validateRequiredField
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { FosterbarnTextsNb } from './i18n/fosterbarnText';
-import { FosterbarnTextKeys as FosterbarnTexts } from './i18n/fosterbarnTextKeys';
 import { Fosterbarn, isFosterbarn } from './types';
 
 interface Props {
     fosterbarn?: Partial<Fosterbarn>;
     onSubmit: (values: Fosterbarn) => void;
     onCancel: () => void;
-    text?: FosterbarnTexts;
+    text?: FosterbarnFormText;
 }
 
 enum FosterbarnFormField {
@@ -46,7 +40,7 @@ const FosterbarnForm: React.FunctionComponent<Props> = ({
         }
     };
 
-    const txt = { ...FosterbarnTextsNb, ...text };
+    const txt = { ...defaultText, ...text };
 
     return (
         <>
@@ -89,6 +83,18 @@ const FosterbarnForm: React.FunctionComponent<Props> = ({
             />
         </>
     );
+};
+
+interface FosterbarnFormText {
+    form_fødselsnummer_label: string;
+    form_fornavn_label: string;
+    form_etternavn_label: string;
+}
+
+const defaultText: FosterbarnFormText = {
+    form_etternavn_label: 'Etternavn',
+    form_fornavn_label: 'Fornavn',
+    form_fødselsnummer_label: 'Fødselsnummer'
 };
 
 export default FosterbarnForm;
