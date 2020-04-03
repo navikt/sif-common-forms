@@ -12,6 +12,7 @@ interface Props {
     fosterbarn?: Partial<Fosterbarn>;
     onSubmit: (values: Fosterbarn) => void;
     onCancel: () => void;
+    includeName?: boolean;
     text?: FosterbarnFormText;
 }
 
@@ -28,12 +29,13 @@ const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
 const FosterbarnForm: React.FunctionComponent<Props> = ({
     fosterbarn: initialValues = { fornavn: '', etternavn: '', fødselsnummer: '' },
     text,
+    includeName,
     onSubmit,
     onCancel
 }) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
-        if (isFosterbarn(formValues)) {
+        if (isFosterbarn(formValues, includeName)) {
             onSubmit(formValues);
         } else {
             throw new Error('Fosterbarn skjema: Formvalues is not a valid Fosterbarn on submit.');
@@ -62,22 +64,24 @@ const FosterbarnForm: React.FunctionComponent<Props> = ({
                                 style={{ width: '11rem' }}
                             />
                         </FormBlock>
-                        <Tiles columns={2}>
-                            <FormBlock>
-                                <Form.Input
-                                    name={FosterbarnFormField.fornavn}
-                                    label={txt.form_fornavn_label}
-                                    validate={validateRequiredField}
-                                />
-                            </FormBlock>
-                            <FormBlock>
-                                <Form.Input
-                                    name={FosterbarnFormField.etternavn}
-                                    label={txt.form_etternavn_label}
-                                    validate={validateRequiredField}
-                                />
-                            </FormBlock>
-                        </Tiles>
+                        {includeName && (
+                            <Tiles columns={2}>
+                                <FormBlock>
+                                    <Form.Input
+                                        name={FosterbarnFormField.fornavn}
+                                        label={txt.form_fornavn_label}
+                                        validate={validateRequiredField}
+                                    />
+                                </FormBlock>
+                                <FormBlock>
+                                    <Form.Input
+                                        name={FosterbarnFormField.etternavn}
+                                        label={txt.form_etternavn_label}
+                                        validate={validateRequiredField}
+                                    />
+                                </FormBlock>
+                            </Tiles>
+                        )}
                     </Form.Form>
                 )}
             />

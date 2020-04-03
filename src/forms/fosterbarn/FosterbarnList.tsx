@@ -15,7 +15,7 @@ const FosterbarnList: React.FunctionComponent<Props> = ({ fosterbarn = [], onDel
         return (
             <>
                 <span style={{ paddingRight: '1rem' }}>{barn.fødselsnummer}</span>{' '}
-                <span>{formatName(barn.fornavn, barn.etternavn)}</span>
+                {barn.fornavn && barn.etternavn && <span>{formatName(barn.fornavn, barn.etternavn)}</span>}
             </>
         );
     };
@@ -31,7 +31,9 @@ const FosterbarnList: React.FunctionComponent<Props> = ({ fosterbarn = [], onDel
     return (
         <ItemList<Fosterbarn>
             getItemId={(barn) => barn.id}
-            getItemTitle={(barn) => formatName(barn.fornavn, barn.etternavn)}
+            getItemTitle={(barn) =>
+                barn.fornavn && barn.etternavn ? formatName(barn.fornavn, barn.etternavn) : barn.fødselsnummer
+            }
             onDelete={onDelete}
             onEdit={onEdit}
             labelRenderer={renderFosterbarnLabel}

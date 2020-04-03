@@ -9,9 +9,10 @@ interface Props<FieldNames> {
     validate?: FormikValidateFunction;
     texts?: FosterbarnListAndDialogText;
     info?: string;
+    includeName?: boolean;
 }
 
-function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info }: Props<FieldNames>) {
+function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, includeName }: Props<FieldNames>) {
     const txt = { ...defaultText, ...texts };
     return (
         <>
@@ -27,7 +28,12 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info }: Pr
                 dialogWidth="narrow"
                 validate={validate}
                 formRenderer={({ onSubmit, onCancel, item }) => (
-                    <FosterbarnForm fosterbarn={item} onSubmit={onSubmit} onCancel={onCancel} />
+                    <FosterbarnForm
+                        fosterbarn={item}
+                        onSubmit={onSubmit}
+                        onCancel={onCancel}
+                        includeName={includeName}
+                    />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
                     <FosterbarnList fosterbarn={items} onEdit={onEdit} onDelete={onDelete} />
