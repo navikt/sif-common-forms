@@ -1,38 +1,43 @@
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo, getCountryName } from '@navikt/sif-common-formik/lib';
 import { Virksomhet, VirksomhetApiData } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
 
-export const mapVirksomhetToVirksomhetApiData = (virksomhet: Virksomhet): VirksomhetApiData => {
+export const mapVirksomhetToVirksomhetApiData = (
+    locale: string,
+    virksomhet: Virksomhet,
+    harBesvartFikserPåBladB?: boolean
+): VirksomhetApiData => {
     const registrertINorge = virksomhet.registrertINorge === YesOrNo.YES;
     const harRegnskapsfører = virksomhet.harRegnskapsfører === YesOrNo.YES;
 
     const data: VirksomhetApiData = {
-        naringstype: [...virksomhet.næringstyper],
-        navn_pa_virksomheten: virksomhet.navnPåVirksomheten,
-        registrert_i_norge: registrertINorge,
+        næringstyper: [...virksomhet.næringstyper],
+        navnPåVirksomheten: virksomhet.navnPåVirksomheten,
+        registrertINorge,
         ...(registrertINorge
             ? {
-                  organisasjonsnummer: virksomhet.organisasjonsnummer
+                  organisasjonsnummer: virksomhet.organisasjonsnummer,
               }
             : {
-                  registrert_i_land: virksomhet.registrertILand
+                  registrertILand: virksomhet.registrertILand
+                      ? {
+                            kode: virksomhet.registrertILand,
+                            navn: getCountryName(virksomhet.registrertILand, locale),
+                        }
+                      : undefined,
               }),
-        fra_og_med: formatDateToApiFormat(virksomhet.fom),
-        til_og_med:
-            virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
-        er_pagaende: virksomhet.erPågående,
-        naringsinntekt: virksomhet.næringsinntekt,
-        har_regnskapsforer: harRegnskapsfører
+        fraOgMed: formatDateToApiFormat(virksomhet.fom),
+        tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
+        næringsinntekt: virksomhet.næringsinntekt,
     };
 
     if (virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
         const harHatt = virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES;
-        data.har_varig_endring_av_inntekt_siste_4_kalenderar = harHatt;
         const {
             varigEndringINæringsinntekt_dato,
             varigEndringINæringsinntekt_forklaring,
-            varigEndringINæringsinntekt_inntektEtterEndring
+            varigEndringINæringsinntekt_inntektEtterEndring,
         } = virksomhet;
         if (
             harHatt &&
@@ -40,42 +45,40 @@ export const mapVirksomhetToVirksomhetApiData = (virksomhet: Virksomhet): Virkso
             varigEndringINæringsinntekt_inntektEtterEndring !== undefined &&
             varigEndringINæringsinntekt_forklaring
         ) {
-            data.varig_endring = {
+            data.varigEndring = {
                 dato: formatDateToApiFormat(varigEndringINæringsinntekt_dato),
                 forklaring: varigEndringINæringsinntekt_forklaring,
-                inntekt_etter_endring: varigEndringINæringsinntekt_inntektEtterEndring
+                inntektEtterEndring: varigEndringINæringsinntekt_inntektEtterEndring,
             };
         }
     }
 
-    if (harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB) {
-        data.fisker_er_pa_blad_b = virksomhet.fiskerErPåBladB === YesOrNo.YES;
+    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFikserPåBladB !== true) {
+        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
     }
 
     if (virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene) {
         const harBlittAktiv = virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES;
-        data.har_blitt_yrkesaktiv_siste_tre_ferdigliknede_arene = harBlittAktiv;
         if (harBlittAktiv && virksomhet.oppstartsdato) {
-            data.yrkesaktiv_siste_tre_ferdigliknede_arene = {
-                oppstartsdato: formatDateToApiFormat(virksomhet.oppstartsdato)
+            data.yrkesaktivSisteTreFerdigliknedeÅrene = {
+                oppstartsdato: formatDateToApiFormat(virksomhet.oppstartsdato),
             };
         }
     }
 
     if (harRegnskapsfører) {
-        data.regnskapsforer = {
+        data.regnskapsfører = {
             navn: virksomhet.regnskapsfører_navn!,
-            telefon: virksomhet.regnskapsfører_telefon!
+            telefon: virksomhet.regnskapsfører_telefon!,
         };
     }
 
     if (!harRegnskapsfører) {
-        data.har_revisor = virksomhet.harRevisor === YesOrNo.YES;
         if (virksomhet.harRevisor === YesOrNo.YES) {
             data.revisor = {
                 navn: virksomhet.revisor_navn!,
                 telefon: virksomhet.revisor_telefon!,
-                kan_innhente_opplysninger: virksomhet.kanInnhenteOpplsyningerFraRevisor === YesOrNo.YES
+                kanInnhenteOpplysninger: virksomhet.kanInnhenteOpplsyningerFraRevisor === YesOrNo.YES,
             };
         }
     }

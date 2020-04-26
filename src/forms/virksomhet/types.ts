@@ -5,7 +5,7 @@ export enum Næringstype {
     'FISKER' = 'FISKE',
     'JORDBRUK' = 'JORDBRUK_SKOGBRUK',
     'DAGMAMMA' = 'DAGMAMMA',
-    'ANNEN' = 'ANNEN'
+    'ANNEN' = 'ANNEN',
 }
 
 export enum VirksomhetFormField {
@@ -33,7 +33,7 @@ export enum VirksomhetFormField {
     'harRevisor' = 'harRevisor',
     'revisor_navn' = 'revisor_navn',
     'revisor_telefon' = 'revisor_telefon',
-    'kanInnhenteOpplsyningerFraRevisor' = 'kanInnhenteOpplsyningerFraRevisor'
+    'kanInnhenteOpplsyningerFraRevisor' = 'kanInnhenteOpplsyningerFraRevisor',
 }
 
 export interface VirksomhetHideFields {
@@ -72,35 +72,33 @@ export const isVirksomhet = (virksomhet: Partial<Virksomhet>): virksomhet is Vir
 };
 
 export interface VirksomhetApiData {
-    naringstype: Næringstype[];
-    fisker_er_pa_blad_b?: boolean;
-    fra_og_med: ApiStringDate;
-    til_og_med?: ApiStringDate | null;
-    er_pagaende?: boolean;
-    naringsinntekt?: number;
-    navn_pa_virksomheten: string;
+    næringstyper: Næringstype[];
+    fiskerErPåBladB?: boolean;
+    fraOgMed: ApiStringDate;
+    tilOgMed?: ApiStringDate | null;
+    næringsinntekt?: number;
+    navnPåVirksomheten: string;
     organisasjonsnummer?: string;
-    registrert_i_norge: boolean;
-    registrert_i_land?: string;
-    har_blitt_yrkesaktiv_siste_tre_ferdigliknede_arene?: boolean;
-    yrkesaktiv_siste_tre_ferdigliknede_arene?: {
+    registrertINorge: boolean;
+    registrertILand?: {
+        kode: string;
+        navn: string;
+    };
+    yrkesaktivSisteTreFerdigliknedeÅrene?: {
         oppstartsdato: ApiStringDate;
     };
-    har_varig_endring_av_inntekt_siste_4_kalenderar?: boolean;
-    varig_endring?: {
-        dato?: ApiStringDate | null;
-        inntekt_etter_endring?: number;
-        forklaring?: string;
+    varigEndring?: {
+        dato: ApiStringDate;
+        inntektEtterEndring: number;
+        forklaring: string;
     };
-    har_regnskapsforer: boolean;
-    regnskapsforer?: {
+    regnskapsfører?: {
         navn: string;
         telefon: string;
     };
-    har_revisor?: boolean;
     revisor?: {
         navn: string;
         telefon: string;
-        kan_innhente_opplysninger?: boolean;
+        kanInnhenteOpplysninger?: boolean;
     };
 }
