@@ -21,7 +21,10 @@ export const mapVirksomhetToVirksomhetApiData = (
               }
             : {
                   registrertILand: virksomhet.registrertILand
-                      ? getCountryName(virksomhet.registrertILand, locale)
+                      ? {
+                            kode: virksomhet.registrertILand,
+                            navn: getCountryName(virksomhet.registrertILand, locale),
+                        }
                       : undefined,
               }),
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
