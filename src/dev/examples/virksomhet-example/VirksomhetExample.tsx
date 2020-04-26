@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
@@ -20,7 +18,7 @@ import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 interface Props {}
 
 enum FormField {
-    'virksomheter' = 'virksomheter'
+    'virksomheter' = 'virksomheter',
 }
 
 export const mockVirksomhet: Virksomhet = {
@@ -38,7 +36,7 @@ export const mockVirksomhet: Virksomhet = {
     harRegnskapsfører: YesOrNo.YES,
     harRevisor: YesOrNo.YES,
     regnskapsfører_navn: 'Regnskapsefører Truls',
-    regnskapsfører_telefon: '98219409'
+    regnskapsfører_telefon: '98219409',
 };
 
 interface FormValues {
@@ -74,7 +72,7 @@ const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
                                     labels={{
                                         addLabel: 'Legg til',
                                         listTitle: 'Virksomhet',
-                                        modalTitle: 'Virksomhet'
+                                        modalTitle: 'Virksomhet',
                                     }}
                                 />
                             </TypedFormikForm>
@@ -113,7 +111,7 @@ const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
                         <SubmitPreview
                             values={
                                 singleFormValues && isVirksomhet(singleFormValues)
-                                    ? mapVirksomhetToVirksomhetApiData(singleFormValues)
+                                    ? mapVirksomhetToVirksomhetApiData(intl.locale, singleFormValues)
                                     : undefined
                             }
                         />
