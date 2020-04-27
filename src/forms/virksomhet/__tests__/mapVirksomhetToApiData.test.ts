@@ -78,7 +78,7 @@ describe('mapVirksomhetToApiData', () => {
             ...virksomhetApiData,
             organisasjonsnummer: undefined,
             registrertILand: {
-                kode: 'SE',
+                alpha3code: 'SE',
                 navn: 'Sverige',
             },
             registrertINorge: false,
