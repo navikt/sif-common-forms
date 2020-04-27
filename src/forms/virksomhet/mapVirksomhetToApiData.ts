@@ -20,10 +20,10 @@ export const mapVirksomhetToVirksomhetApiData = (
                   organisasjonsnummer: virksomhet.organisasjonsnummer,
               }
             : {
-                  registrertILand: virksomhet.registrertILand
+                  registrertIUtlandet: virksomhet.registrertILand
                       ? {
-                            kode: virksomhet.registrertILand,
-                            navn: getCountryName(virksomhet.registrertILand, locale),
+                            landkode: virksomhet.registrertILand,
+                            landnavn: getCountryName(virksomhet.registrertILand, locale),
                         }
                       : undefined,
               }),

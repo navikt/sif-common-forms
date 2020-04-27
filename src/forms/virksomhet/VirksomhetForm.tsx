@@ -4,28 +4,23 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import {
-    date3YearsAgo, date4YearsAgo, dateToday
-} from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    validateOrgNumber, validateRequiredField, validateRequiredList, validateRequiredNumber,
-    validateYesOrNoIsAnswered
+    validateOrgNumber,
+    validateRequiredField,
+    validateRequiredList,
+    validateRequiredNumber,
+    validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import {
-    FormikYesOrNoQuestion, getTypedFormComponents, YesOrNo
-} from '@navikt/sif-common-formik/lib';
+import { FormikYesOrNoQuestion, getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { VirksomhetTextNB } from './i18n/virksomhetForm.texts';
 import InfoTilFisker from './parts/InfoTilFisker';
-import {
-    isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetHideFields
-} from './types';
+import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetHideFields } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
 
 interface Props {
@@ -36,7 +31,7 @@ interface Props {
 }
 
 const initialValues: FormValues = {
-    næringstyper: []
+    næringstyper: [],
 };
 
 const MAKS_INNTEKT = 999999999;
@@ -59,13 +54,13 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
     onCancel,
     virksomhet = initialValues,
     onSubmit,
-    hideFormFields
+    hideFormFields,
 }) => {
     const onFormikSubmit = (values: Partial<Virksomhet>) => {
         if (isVirksomhet(values)) {
             onSubmit({
                 ...values,
-                næringsinntekt: ensureValidNæringsinntekt(values)
+                næringsinntekt: ensureValidNæringsinntekt(values),
             });
         } else {
             throw new Error('VirksomhetForm: Formvalues is not a valid Virksomhet on submit.');
@@ -97,20 +92,20 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                             checkboxes={[
                                 {
                                     value: Næringstype.FISKER,
-                                    label: txt.næringstype_fisker
+                                    label: txt.næringstype_fisker,
                                 },
                                 {
                                     value: Næringstype.JORDBRUK,
-                                    label: txt.næringstype_jordbruker
+                                    label: txt.næringstype_jordbruker,
                                 },
                                 {
                                     value: Næringstype.DAGMAMMA,
-                                    label: txt.næringstype_dagmamma
+                                    label: txt.næringstype_dagmamma,
                                 },
                                 {
                                     value: Næringstype.ANNEN,
-                                    label: txt.næringstype_annet
-                                }
+                                    label: txt.næringstype_annet,
+                                },
                             ]}
                             validate={validateRequiredList}
                         />
@@ -156,6 +151,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                     name={VirksomhetFormField.registrertILand}
                                     label={txt.registert_i_hvilket_land(navnPåVirksomheten)}
                                     validate={validateRequiredField}
+                                    useAlpha3Code={true}
                                 />
                             </Box>
                         )}
@@ -183,9 +179,9 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                         name: VirksomhetFormField.fom,
                                         showYearSelector: true,
                                         dateLimitations: {
-                                            maksDato: dateToday
+                                            maksDato: dateToday,
                                         },
-                                        validate: validateRequiredField
+                                        validate: validateRequiredField,
                                     }}
                                     toDatepickerProps={{
                                         label: txt.kalender_tom,
@@ -194,8 +190,8 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                         showYearSelector: true,
                                         dateLimitations: {
                                             minDato: values.fom || undefined,
-                                            maksDato: dateToday
-                                        }
+                                            maksDato: dateToday,
+                                        },
                                     }}
                                 />
                                 <Form.Checkbox
@@ -242,7 +238,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                 showYearSelector={true}
                                                 dateLimitations={{
                                                     minDato: date3YearsAgo,
-                                                    maksDato: dateToday
+                                                    maksDato: dateToday,
                                                 }}
                                                 validate={validateRequiredField}
                                             />
@@ -269,7 +265,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                 validate={validateRequiredField}
                                                 dateLimitations={{
                                                     minDato: date4YearsAgo,
-                                                    maksDato: dateToday
+                                                    maksDato: dateToday,
                                                 }}
                                             />
                                         </Box>
