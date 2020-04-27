@@ -151,6 +151,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                     name={VirksomhetFormField.registrertILand}
                                     label={txt.registert_i_hvilket_land(navnPåVirksomheten)}
                                     validate={validateRequiredField}
+                                    useAlpha3Code={true}
                                 />
                             </Box>
                         )}

@@ -72,14 +72,14 @@ describe('mapVirksomhetToApiData', () => {
             ...virksomhetFormData,
             organisasjonsnummer: '123',
             registrertINorge: YesOrNo.NO,
-            registrertILand: 'SE',
+            registrertILand: 'SWE',
         });
         const apiData: VirksomhetApiData = {
             ...virksomhetApiData,
             organisasjonsnummer: undefined,
-            registrertILand: {
-                kode: 'SE',
-                navn: 'Sverige',
+            registrertIUtlandet: {
+                landkode: 'SWE',
+                landnavn: 'Sverige',
             },
             registrertINorge: false,
         };
