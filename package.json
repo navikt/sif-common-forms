@@ -48,7 +48,7 @@
         "@craco/craco": "^5.6.3",
         "@formatjs/intl-pluralrules": "^1.5.2",
         "@navikt/sif-common-core": "^3.1.2",
-        "@navikt/sif-common-formik": "^7.0.0",
+        "@navikt/sif-common-formik": "^7.1.1",
         "@testing-library/jest-dom": "^5.1.0",
         "@testing-library/react": "^9.4.0",
         "@testing-library/user-event": "^8.1.0",
