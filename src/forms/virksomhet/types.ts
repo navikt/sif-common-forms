@@ -80,9 +80,9 @@ export interface VirksomhetApiData {
     navnPåVirksomheten: string;
     organisasjonsnummer?: string;
     registrertINorge: boolean;
-    registrertILand?: {
-        alpha3code: string;
-        navn: string;
+    registrertIUtlandet?: {
+        landkode: string;
+        landnavn: string;
     };
     yrkesaktivSisteTreFerdigliknedeÅrene?: {
         oppstartsdato: ApiStringDate;
