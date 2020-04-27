@@ -81,7 +81,7 @@ export interface VirksomhetApiData {
     organisasjonsnummer?: string;
     registrertINorge: boolean;
     registrertILand?: {
-        kode: string;
+        alpha3code: string;
         navn: string;
     };
     yrkesaktivSisteTreFerdigliknedeÅrene?: {

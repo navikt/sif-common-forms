@@ -22,7 +22,7 @@ export const mapVirksomhetToVirksomhetApiData = (
             : {
                   registrertILand: virksomhet.registrertILand
                       ? {
-                            kode: virksomhet.registrertILand,
+                            alpha3code: virksomhet.registrertILand,
                             navn: getCountryName(virksomhet.registrertILand, locale),
                         }
                       : undefined,
