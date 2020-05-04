@@ -11,6 +11,7 @@ import {
     validateRequiredField,
     validateRequiredList,
     validateRequiredNumber,
+    validatePhoneNumber,
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
@@ -318,7 +319,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                 <Form.Input
                                                     name={VirksomhetFormField.regnskapsfører_telefon}
                                                     label={txt.regnskapsfører_telefon}
-                                                    validate={validateRequiredField}
+                                                    validate={validatePhoneNumber}
                                                     maxLength={15}
                                                 />
                                             </Box>
@@ -349,7 +350,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                                         <Form.Input
                                                             name={VirksomhetFormField.revisor_telefon}
                                                             label={txt.revisor_telefon}
-                                                            validate={validateRequiredField}
+                                                            validate={validatePhoneNumber}
                                                             maxLength={15}
                                                         />
                                                     </Box>
