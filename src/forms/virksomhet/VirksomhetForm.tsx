@@ -8,10 +8,10 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
     validateOrgNumber,
+    validatePhoneNumber,
     validateRequiredField,
     validateRequiredList,
     validateRequiredNumber,
-    validatePhoneNumber,
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
@@ -31,10 +31,6 @@ interface Props {
     onCancel: () => void;
 }
 
-const initialValues: FormValues = {
-    næringstyper: [],
-};
-
 const MAKS_INNTEKT = 999999999;
 type FormValues = Partial<Virksomhet>;
 
@@ -53,7 +49,7 @@ const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
 
 const VirksomhetForm: React.FunctionComponent<Props> = ({
     onCancel,
-    virksomhet = initialValues,
+    virksomhet = { næringstyper: [] },
     onSubmit,
     hideFormFields,
 }) => {
@@ -71,6 +67,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const txt = VirksomhetTextNB;
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
+    console.log(virksomhet);
 
     return (
         <Form.FormikWrapper
