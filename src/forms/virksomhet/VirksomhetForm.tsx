@@ -67,7 +67,6 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const txt = VirksomhetTextNB;
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
-    console.log(virksomhet);
 
     return (
         <Form.FormikWrapper
