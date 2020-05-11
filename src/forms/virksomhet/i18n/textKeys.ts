@@ -16,8 +16,11 @@ export interface VirksomhetFormText {
     kalender_tom: string;
     kalender_pågående: string;
     næringsinntekt: string;
+    næringsinntekt_info_title: string;
     næringsinntekt_info: string;
     har_blitt_yrkesaktiv: string;
+    har_blitt_yrkesaktiv_info_title: string;
+    har_blitt_yrkesaktiv_info: string;
     har_blitt_yrkesaktiv_dato: string;
     varig_endring_spm: string;
     varig_endring_dato: string;

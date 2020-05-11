@@ -4,6 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import {
@@ -209,12 +210,16 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                     <Form.Input
                                         name={VirksomhetFormField.næringsinntekt}
                                         label={txt.næringsinntekt}
-                                        info={txt.næringsinntekt_info}
                                         type="number"
                                         maxLength={10}
                                         max={MAKS_INNTEKT}
                                         style={{ maxWidth: '10rem' }}
                                         validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
+                                        description={
+                                            <ExpandableInfo title={txt.næringsinntekt_info_title}>
+                                                {txt.næringsinntekt_info}
+                                            </ExpandableInfo>
+                                        }
                                     />
                                 </Box>
                                 <Box margin="xl">
@@ -224,6 +229,11 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
                                         }
                                         legend={txt.har_blitt_yrkesaktiv}
                                         validate={validateYesOrNoIsAnswered}
+                                        description={
+                                            <ExpandableInfo title={txt.har_blitt_yrkesaktiv_info_title}>
+                                                {txt.har_blitt_yrkesaktiv_info}
+                                            </ExpandableInfo>
+                                        }
                                     />
                                 </Box>
                                 {values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES && (
