@@ -7,6 +7,7 @@ import BostedUtlandExample from './BostedUtlandExample';
 import FerieuttakExample from './FerieuttakExample';
 import FosterbarnExample from './FosterbarnExample';
 import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
+import FraværExample from './FraværExample';
 
 interface Props {}
 
@@ -30,6 +31,11 @@ const tabRoutes: RouteConfig[] = [
         path: 'fosterbarn',
         renderContent: () => <FosterbarnExample />,
         title: 'Fosterbarn'
+    },
+    {
+        path: 'fravær',
+        renderContent: () => <FraværExample />,
+        title: 'Fravær'
     }
 ];
 
