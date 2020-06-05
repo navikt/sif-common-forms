@@ -1,9 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
@@ -21,17 +19,9 @@ interface Props {
 
 type FormValues = Partial<Frilansoppdrag>;
 
-const initialValues: FormValues = {};
-
 const Form = getTypedFormComponents<FrilansoppdragFormField, FormValues>();
 
-const FrilansoppdragForm: React.FunctionComponent<Props> = ({
-    onCancel,
-    oppdrag = initialValues,
-    onSubmit,
-    minDate,
-    maxDate
-}) => {
+const FrilansoppdragForm = ({ onCancel, oppdrag, onSubmit, minDate, maxDate }: Props) => {
     const onFormikSubmit = (values: Partial<Frilansoppdrag>) => {
         if (isFrilansoppdrag(values)) {
             onSubmit(values);
@@ -71,10 +61,10 @@ const FrilansoppdragForm: React.FunctionComponent<Props> = ({
                                     showYearSelector: true,
                                     dateLimitations: {
                                         minDato: minDate,
-                                        maksDato: values.tom || maxDate
+                                        maksDato: values.tom || maxDate,
                                     },
                                     validate: (date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom)
+                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
                                 }}
                                 toDatepickerProps={{
                                     label: 'Til og med',
@@ -84,13 +74,13 @@ const FrilansoppdragForm: React.FunctionComponent<Props> = ({
                                     showYearSelector: true,
                                     dateLimitations: {
                                         minDato: values.fom || minDate,
-                                        maksDato: maxDate
+                                        maksDato: maxDate,
                                     },
                                     validate:
                                         values.erPågående !== true
                                             ? (date: Date) =>
                                                   dateRangeValidation.validateToDate(date, minDate, maxDate, values.fom)
-                                            : undefined
+                                            : undefined,
                                 }}
                             />
                             <Form.Checkbox

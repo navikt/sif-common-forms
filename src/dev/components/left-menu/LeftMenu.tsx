@@ -1,15 +1,16 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import 'nav-frontend-lenker-style';
 import { isActiveRoute, routes } from '../../config/routeConfig';
 
 const lenkeBem = bemUtils('lenke');
 
-const LeftMenu: React.FunctionComponent = () => {
-    const {
-        location: { pathname }
-    } = useHistory();
+const LeftMenu = ({
+    history: {
+        location: { pathname },
+    },
+}: RouteComponentProps) => {
     return (
         <div className="leftMenu">
             {routes.map((route) => (
@@ -27,4 +28,4 @@ const LeftMenu: React.FunctionComponent = () => {
     );
 };
 
-export default LeftMenu;
+export default withRouter(LeftMenu);

@@ -12,7 +12,7 @@ interface Props {
     onChangeLocale: (locale: Locale) => void;
 }
 
-const DevPage: React.FunctionComponent<Props> = ({ onChangeLocale }) => {
+const DevPage = ({ onChangeLocale }: Props) => {
     const intl = useIntl();
     return (
         <main className="devPage">

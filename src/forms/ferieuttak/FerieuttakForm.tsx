@@ -1,9 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -33,26 +31,26 @@ const defaultLabels: FerieuttakFormLabels = {
     toDate: 'Til og med',
     intervalTitle: 'Velg tidsrom',
     okButton: 'Ok',
-    cancelButton: 'Avbryt'
+    cancelButton: 'Avbryt',
 };
 
 enum FerieuttakFormFields {
     tom = 'tom',
-    fom = 'fom'
+    fom = 'fom',
 }
 
 type FormValues = Partial<Ferieuttak>;
 
 const Form = getTypedFormComponents<FerieuttakFormFields, FormValues>();
 
-const FerieuttakForm: React.FunctionComponent<Props> = ({
+const FerieuttakForm = ({
     maxDate,
     minDate,
     labels,
     ferieuttak: initialValues = { fom: undefined, tom: undefined },
     onSubmit,
-    onCancel
-}) => {
+    onCancel,
+}: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFerieuttak(formValues)) {
@@ -83,7 +81,7 @@ const FerieuttakForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     dateLimitations: {
                                         minDato: minDate,
-                                        maksDato: maxDate || formik.values.tom
+                                        maksDato: maxDate || formik.values.tom,
                                     },
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
@@ -91,7 +89,7 @@ const FerieuttakForm: React.FunctionComponent<Props> = ({
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.tom);
                                         });
-                                    }
+                                    },
                                 }}
                                 toDatepickerProps={{
                                     label: formLabels.toDate,
@@ -99,7 +97,7 @@ const FerieuttakForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     dateLimitations: {
                                         minDato: minDate || formik.values.fom,
-                                        maksDato: maxDate
+                                        maksDato: maxDate,
                                     },
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
@@ -107,7 +105,7 @@ const FerieuttakForm: React.FunctionComponent<Props> = ({
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.fom);
                                         });
-                                    }
+                                    },
                                 }}
                             />
                         </FormBlock>

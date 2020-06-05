@@ -16,7 +16,7 @@ interface Props {
 
 const bem = bemUtils('utenlandsoppholdList');
 
-const UtenlandsoppholdList: React.FunctionComponent<Props> = ({ utenlandsopphold, onDelete, onEdit }) => {
+const UtenlandsoppholdList = ({ utenlandsopphold, onDelete, onEdit }: Props) => {
     const intl = useIntl();
     const renderUtenlandsoppholdLabel = (opphold: Utenlandsopphold): React.ReactNode => {
         const navn = getCountryName(opphold.landkode, intl.locale);

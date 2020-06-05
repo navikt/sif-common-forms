@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import {
-    validateRequiredField, validateRequiredSelect, validateYesOrNoIsAnswered
+    validateRequiredField,
+    validateRequiredSelect,
+    validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { getCountryName, YesOrNo } from '@navikt/sif-common-formik';
@@ -29,7 +29,7 @@ enum UtenlandsoppholdFormFields {
     tom = 'tom',
     landkode = 'landkode',
     årsak = 'årsak',
-    erBarnetInnlagt = 'erBarnetInnlagt'
+    erBarnetInnlagt = 'erBarnetInnlagt',
 }
 
 const defaultFormValues: Partial<Utenlandsopphold> = {
@@ -37,27 +37,21 @@ const defaultFormValues: Partial<Utenlandsopphold> = {
     tom: undefined,
     landkode: undefined,
     erBarnetInnlagt: YesOrNo.UNANSWERED,
-    årsak: undefined
+    årsak: undefined,
 };
 
 type FormValues = Partial<Utenlandsopphold>;
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, FormValues>();
 
-const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
-    maxDate,
-    minDate,
-    opphold: initialValues = defaultFormValues,
-    onSubmit,
-    onCancel
-}) => {
+const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: Partial<Utenlandsopphold>) => {
         if (isUtenlandsoppholdType(formValues)) {
             onSubmit({
                 ...formValues,
-                årsak: countryIsMemberOfEøsOrEfta(formValues.landkode) ? undefined : formValues.årsak
+                årsak: countryIsMemberOfEøsOrEfta(formValues.landkode) ? undefined : formValues.årsak,
             });
         } else {
             throw new Error('UtenlandsoppholdForm: Formvalues is not a valid Utenlandsopphold on submit.');
@@ -66,7 +60,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
 
     return (
         <Form.FormikWrapper
-            initialValues={initialValues}
+            initialValues={initialValues || defaultFormValues}
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
                 const { values } = formik;
@@ -77,12 +71,12 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
 
                 const fromDateLimitations = {
                     minDato: minDate,
-                    maksDato: values.tom || maxDate
+                    maksDato: values.tom || maxDate,
                 };
 
                 const toDateLimitations = {
                     minDato: values.fom || minDate,
-                    maksDato: maxDate
+                    maksDato: maxDate,
                 };
 
                 return (
@@ -106,7 +100,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                             fromDateLimitations.minDato,
                                             fromDateLimitations.maksDato,
                                             values.tom
-                                        )
+                                        ),
                                 }}
                                 toDatepickerProps={{
                                     name: UtenlandsoppholdFormFields.tom,
@@ -119,7 +113,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                             toDateLimitations.minDato,
                                             toDateLimitations.maksDato,
                                             values.fom
-                                        )
+                                        ),
                                 }}
                             />
                         </FormBlock>
@@ -138,7 +132,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                     <Form.YesOrNoQuestion
                                         name={UtenlandsoppholdFormFields.erBarnetInnlagt}
                                         legend={intlHelper(intl, 'utenlandsopphold.form.erBarnetInnlagt.spm', {
-                                            land: getCountryName(values.landkode, intl.locale)
+                                            land: getCountryName(values.landkode, intl.locale),
                                         })}
                                         validate={validateYesOrNoIsAnswered}
                                     />
@@ -148,7 +142,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                         <FormBlock>
                                             <Form.RadioPanelGroup
                                                 legend={intlHelper(intl, 'utenlandsopphold.form.årsak.spm', {
-                                                    land: getCountryName(values.landkode, intl.locale)
+                                                    land: getCountryName(values.landkode, intl.locale),
                                                 })}
                                                 name={UtenlandsoppholdFormFields.årsak}
                                                 validate={validateRequiredField}
@@ -158,7 +152,7 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                                         label: intlHelper(
                                                             intl,
                                                             `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE}`
-                                                        )
+                                                        ),
                                                     },
                                                     {
                                                         value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND,
@@ -166,15 +160,15 @@ const UtenlandsoppholdForm: React.FunctionComponent<Props> = ({
                                                             intl,
                                                             `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND}`,
                                                             { land: getCountryName(values.landkode, intl.locale) }
-                                                        )
+                                                        ),
                                                     },
                                                     {
                                                         value: UtenlandsoppholdÅrsak.ANNET,
                                                         label: intlHelper(
                                                             intl,
                                                             `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.ANNET}`
-                                                        )
-                                                    }
+                                                        ),
+                                                    },
                                                 ]}
                                             />
                                         </FormBlock>

@@ -1,18 +1,18 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
-import { useHistory } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import HeaderMenu from './components/header-menu/HeaderMenu';
 import LeftMenu from './components/left-menu/LeftMenu';
 import { getRouteConfig } from './config/routeConfig';
 import Intro from './Intro';
 
-interface Props {}
+type Props = RouteComponentProps;
 
-const DevContent: React.FunctionComponent<Props> = (props) => {
-    const history = useHistory();
-    const {
-        location: { pathname }
-    } = history;
+const DevContent = ({
+    history: {
+        location: { pathname },
+    },
+}: Props) => {
     const routeConfig = getRouteConfig(pathname);
     return (
         <>
@@ -36,4 +36,4 @@ const DevContent: React.FunctionComponent<Props> = (props) => {
     );
 };
 
-export default DevContent;
+export default withRouter(DevContent);

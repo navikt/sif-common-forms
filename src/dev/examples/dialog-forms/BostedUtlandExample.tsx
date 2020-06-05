@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { Panel } from 'nav-frontend-paneler';
+import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import BostedUtlandForm from '../../../forms/bosted-utland/BostedUtlandForm';
@@ -16,10 +14,8 @@ import BostedUtlandListAndDialog from '../../../forms/bosted-utland/BostedUtland
 import { BostedUtland } from '../../../forms/bosted-utland/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 
-interface Props {}
-
 enum FormField {
-    'bosted' = 'bosted'
+    'bosted' = 'bosted',
 }
 
 interface FormValues {
@@ -27,7 +23,7 @@ interface FormValues {
 }
 const initialValues: FormValues = { bosted: [] };
 
-const FormikExample: React.FunctionComponent<Props> = (props) => {
+const FormikExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<BostedUtland> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
@@ -55,7 +51,7 @@ const FormikExample: React.FunctionComponent<Props> = (props) => {
                                         addLabel: 'Legg til bosted',
                                         listTitle: 'Registrerte bosteder',
                                         modalTitle: 'Bosted',
-                                        emptyListText: 'Ingen bosteder er lagt til'
+                                        emptyListText: 'Ingen bosteder er lagt til',
                                     }}
                                 />
                             </TypedFormikForm>

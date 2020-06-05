@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
@@ -5,7 +6,7 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { Panel } from 'nav-frontend-paneler';
+import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Undertittel } from 'nav-frontend-typografi';
 import { mapVirksomhetToVirksomhetApiData } from '../../../forms/virksomhet/mapVirksomhetToApiData';
@@ -14,8 +15,6 @@ import VirksomhetForm from '../../../forms/virksomhet/VirksomhetForm';
 import VirksomhetListAndDialog from '../../../forms/virksomhet/VirksomhetListAndDialog';
 import PageIntro from '../../components/page-intro/PageIntro';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-
-interface Props {}
 
 enum FormField {
     'virksomheter' = 'virksomheter',
@@ -44,7 +43,7 @@ interface FormValues {
 }
 const initialValues: FormValues = { virksomheter: [] };
 
-const VirksomhetExample: React.FunctionComponent<Props> = (props) => {
+const VirksomhetExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Virksomhet> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const [hideFisker, setHideFisker] = useState<boolean>(false);

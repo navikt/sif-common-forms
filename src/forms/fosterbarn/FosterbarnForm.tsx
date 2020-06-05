@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
@@ -16,23 +17,35 @@ interface Props {
     text?: FosterbarnFormText;
 }
 
+interface FosterbarnFormText {
+    form_fødselsnummer_label: string;
+    form_fornavn_label: string;
+    form_etternavn_label: string;
+}
+
+const defaultText: FosterbarnFormText = {
+    form_etternavn_label: 'Etternavn',
+    form_fornavn_label: 'Fornavn',
+    form_fødselsnummer_label: 'Fødselsnummer',
+};
+
 enum FosterbarnFormField {
     fødselsnummer = 'fødselsnummer',
     fornavn = 'fornavn',
-    etternavn = 'etternavn'
+    etternavn = 'etternavn',
 }
 
 type FormValues = Partial<Fosterbarn>;
 
 const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
 
-const FosterbarnForm: React.FunctionComponent<Props> = ({
+const FosterbarnForm = ({
     fosterbarn: initialValues = { fornavn: '', etternavn: '', fødselsnummer: '' },
     text,
     includeName,
     onSubmit,
-    onCancel
-}) => {
+    onCancel,
+}: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFosterbarn(formValues, includeName)) {
@@ -87,18 +100,6 @@ const FosterbarnForm: React.FunctionComponent<Props> = ({
             />
         </>
     );
-};
-
-interface FosterbarnFormText {
-    form_fødselsnummer_label: string;
-    form_fornavn_label: string;
-    form_etternavn_label: string;
-}
-
-const defaultText: FosterbarnFormText = {
-    form_etternavn_label: 'Etternavn',
-    form_fornavn_label: 'Fornavn',
-    form_fødselsnummer_label: 'Fødselsnummer'
 };
 
 export default FosterbarnForm;

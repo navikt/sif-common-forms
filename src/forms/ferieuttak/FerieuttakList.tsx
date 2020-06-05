@@ -10,7 +10,7 @@ interface Props {
     onDelete?: (opphold: Ferieuttak) => void;
 }
 
-const FerieuttakList: React.FunctionComponent<Props> = ({ ferieuttak = [], onDelete, onEdit }) => {
+const FerieuttakList = ({ ferieuttak = [], onDelete, onEdit }: Props) => {
     const getDateTitleString = (uttak: Ferieuttak) =>
         `${prettifyDateExtended(uttak.fom)} - ${prettifyDateExtended(uttak.tom)}`;
 
