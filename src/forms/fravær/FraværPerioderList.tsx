@@ -12,7 +12,7 @@ interface Props {
 
 const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder = [], onDelete, onEdit }) => {
     const getDateTitleString = (fraværPeriode: FraværPeriode) =>
-        `${prettifyDateExtended(fraværPeriode.fom)} - ${prettifyDateExtended(fraværPeriode.tom)}`;
+        `${prettifyDateExtended(fraværPeriode.from)} - ${prettifyDateExtended(fraværPeriode.to)}`;
 
     const renderFraværPeriodeLabel = (fraværPeriode: FraværPeriode): React.ReactNode => {
         const title = getDateTitleString(fraværPeriode);

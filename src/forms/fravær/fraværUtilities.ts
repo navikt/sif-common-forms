@@ -1,19 +1,20 @@
-import { FraværDag, FraværDateRange, FraværPeriode } from './types';
+import { FraværDag, FraværPeriode } from './types';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
 import moment from 'moment';
 import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FraværFieldValidationErrors } from './fraværValidationUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
-export const fraværDagToFraværDateRange = (fraværDag: FraværDag): FraværDateRange => ({
-    fom: fraværDag.dato,
-    tom: fraværDag.dato,
+export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
+    from: fraværDag.dato,
+    to: fraværDag.dato,
 });
 
-export const datesCollideWithDateRanges = (dates: Date[], ranges: FraværDateRange[]): boolean => {
+export const datesCollideWithDateRanges = (dates: Date[], ranges: DateRange[]): boolean => {
     if (ranges.length > 0 && dates.length > 0) {
         return dates.some((d) => {
-            return ranges.some((range) => moment(d).isSameOrAfter(range.fom) && moment(d).isSameOrBefore(range.tom));
+            return ranges.some((range) => moment(d).isSameOrAfter(range.from) && moment(d).isSameOrBefore(range.to));
         });
     }
     return false;
@@ -69,3 +70,8 @@ export const validateNotHelgedag = (maybeDate: Date | undefined): FieldValidatio
 
 export const timeText = (timer: number): string =>
     timer.toString(10) === '1' || timer.toString(10).includes('.') ? 'time' : 'timer';
+
+export const dateRangeToFomTom = (dateRange: DateRange): { fom: Date; tom: Date } => ({
+    fom: dateRange.from,
+    tom: dateRange.to,
+});

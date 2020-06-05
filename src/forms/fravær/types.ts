@@ -1,11 +1,11 @@
-export interface FraværPeriode {
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+
+export interface FraværPeriode extends DateRange {
     id?: string;
-    fom: Date;
-    tom: Date;
 }
 
 export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): fraværPeriode is FraværPeriode => {
-    return fraværPeriode.fom !== undefined && fraværPeriode.tom !== undefined;
+    return fraværPeriode.from !== undefined && fraværPeriode.to !== undefined;
 };
 
 export interface FraværDag {
@@ -20,8 +20,3 @@ export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is Fra
         fraværDag.dato !== undefined && fraværDag.timerArbeidsdag !== undefined && fraværDag.timerFravær !== undefined
     );
 };
-
-export interface FraværDateRange {
-    fom: Date;
-    tom: Date;
-}

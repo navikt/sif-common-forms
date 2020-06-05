@@ -1,7 +1,7 @@
 import React from 'react';
-import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import { FraværDateRange, FraværPeriode } from './types';
+import { FraværPeriode } from './types';
 import FraværPeriodeForm, { FraværPeriodeFormLabels } from './FraværPeriodeForm';
 import FraværPerioderList from './FraværPerioderList';
 
@@ -11,7 +11,7 @@ interface Props<FieldNames> {
     maxDate: Date;
     labels: ModalFormAndListLabels;
     validate?: FormikValidateFunction;
-    dateRangesToDisable?: FraværDateRange[];
+    dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillat?: boolean;
     fraværPeriodeFormLabels?: Partial<FraværPeriodeFormLabels>;
 }
@@ -33,7 +33,9 @@ function FraværPerioderListAndDialog<FieldNames>({
                 labels={labels}
                 dialogWidth="narrow"
                 validate={validate}
-                sortFunc={sortItemsByFom}
+                sortFunc={(fraværPeriodeA: FraværPeriode, fraværPeriodeB: FraværPeriode) =>
+                    sortItemsByFom({ fom: fraværPeriodeA.from }, { fom: fraværPeriodeA.from })
+                }
                 formRenderer={({ onSubmit, onCancel, item }) => (
                     <FraværPeriodeForm
                         fraværPeriode={item}

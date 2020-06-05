@@ -1,7 +1,7 @@
 import React from 'react';
-import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import { FraværDag, FraværDateRange } from './types';
+import { FraværDag } from './types';
 import FraværDagFormView, { FraværDagFormLabels } from './FraværDagForm';
 import FraværDagerList from './FraværDagerList';
 
@@ -11,7 +11,7 @@ interface Props<FieldNames> {
     minDate: Date;
     maxDate: Date;
     labels: ModalFormAndListLabels;
-    dateRangesToDisable?: FraværDateRange[];
+    dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
     fraværDagFormLabels?: Partial<FraværDagFormLabels>;
 }

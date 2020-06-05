@@ -4,12 +4,13 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { FraværDag, FraværDateRange, isFraværDag } from './types';
+import { FraværDag, isFraværDag } from './types';
 import FraværTimerSelect from './FraværTimerSelect';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { validateNotHelgedag } from './fraværUtilities';
+import { dateRangeToFomTom, validateNotHelgedag } from './fraværUtilities';
 import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface FraværDagFormLabels {
     title: string;
@@ -24,7 +25,7 @@ interface Props {
     fraværDag?: Partial<FraværDag>;
     minDate: Date;
     maxDate: Date;
-    dateRangesToDisable?: FraværDateRange[];
+    dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
     labels?: Partial<FraværDagFormLabels>;
     onSubmit: (values: FraværDag) => void;
@@ -90,7 +91,9 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                             minDato: minDate,
                             maksDato: maxDate,
                             helgedagerIkkeTillatt: helgedagerIkkeTillatt || false,
-                            ugyldigeTidsperioder: dateRangesToDisable,
+                            ugyldigeTidsperioder: dateRangesToDisable
+                                ? dateRangesToDisable.map(dateRangeToFomTom)
+                                : undefined,
                         },
                         validate: helgedagerIkkeTillatt
                             ? validateAll([validateRequiredField, validateNotHelgedag])
