@@ -19,7 +19,6 @@ const FraværDagerList: React.FC<Props> = ({ fraværDager = [], onDelete, onEdit
 
     const renderFraværDagLabel = (fraværDag: FraværDag): React.ReactNode => {
         const title = getFraværDagListItemTitle(fraværDag);
-        console.info(JSON.stringify(fraværDag.timerFravær));
         return (
             <>
                 {onEdit && <ActionLink onClick={() => onEdit(fraværDag)}>{title}</ActionLink>}

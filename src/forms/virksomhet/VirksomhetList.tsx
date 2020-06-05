@@ -13,7 +13,7 @@ interface Props {
 
 const bem = bemUtils('virksomhetList');
 
-const VirksomhetList: React.FunctionComponent<Props> = ({ virksomheter = [], onDelete, onEdit }) => {
+const VirksomhetList = ({ virksomheter = [], onDelete, onEdit }: Props) => {
     const næringLabel = (næring: Virksomhet): React.ReactNode => {
         return (
             <div className={bem.element('label')}>

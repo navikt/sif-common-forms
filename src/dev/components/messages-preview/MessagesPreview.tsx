@@ -3,9 +3,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Undertittel } from 'nav-frontend-typografi';
-import {
-    createMultiLocaleObject, getMissingMessageKeys, MessageFileFormat
-} from '../../utils/devIntlUtils';
+import { createMultiLocaleObject, getMissingMessageKeys, MessageFileFormat } from '../../utils/devIntlUtils';
 import './messagesPreview.less';
 
 interface Props {
@@ -14,7 +12,7 @@ interface Props {
 
 const bem = bemUtils('messagesList');
 
-const MessagesPreview: React.FunctionComponent<Props> = ({ messages }) => {
+const MessagesPreview = ({ messages }: Props) => {
     const allMessages = createMultiLocaleObject(messages);
     const missingMessages = getMissingMessageKeys(allMessages);
     return (

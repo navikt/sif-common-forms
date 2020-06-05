@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
-import { useHistory } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { NedChevron } from 'nav-frontend-chevron';
 import { isActiveRoute, RouteConfig, routes } from '../../config/routeConfig';
 import './headerMenu.less';
@@ -15,10 +15,11 @@ const renderMenuItem = (route: RouteConfig) => {
     );
 };
 
-const HeaderMenu: React.StatelessComponent = () => {
-    const history = useHistory();
+type Props = RouteComponentProps;
+
+const HeaderMenu = ({ history }: Props) => {
     const {
-        location: { pathname }
+        location: { pathname },
     } = history;
 
     const toggle = (element: any) => {
@@ -44,4 +45,4 @@ const HeaderMenu: React.StatelessComponent = () => {
         </div>
     );
 };
-export default HeaderMenu;
+export default withRouter(HeaderMenu);

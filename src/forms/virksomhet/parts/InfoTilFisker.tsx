@@ -8,7 +8,7 @@ interface Props {
 
 const txt = VirksomhetTextNB;
 
-const InfoTilFisker: React.FunctionComponent<Props> = ({ navnPåVirksomhet }) => (
+const InfoTilFisker = ({ navnPåVirksomhet }: Props) => (
     <CounsellorPanel>{txt.veielder_fisker(navnPåVirksomhet)}</CounsellorPanel>
 );
 

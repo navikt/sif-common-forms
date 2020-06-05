@@ -4,9 +4,10 @@ import { Ingress, Undertittel } from 'nav-frontend-typografi';
 
 interface Props {
     title: string;
+    children: React.ReactNode;
 }
 
-const PageIntro: React.FunctionComponent<Props> = ({ title, children }) => (
+const PageIntro = ({ title, children }: Props) => (
     <>
         <Box padBottom="xl" margin="m">
             <Box padBottom={children ? 'm' : 'none'}>

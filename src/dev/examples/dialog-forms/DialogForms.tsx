@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useState } from 'react';
 import Tabs from 'nav-frontend-tabs';
 import 'nav-frontend-tabs-style';
@@ -9,23 +10,21 @@ import FosterbarnExample from './FosterbarnExample';
 import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
 import FraværExample from './FraværExample';
 
-interface Props {}
-
 const tabRoutes: RouteConfig[] = [
     {
         path: 'bosted-utland',
         renderContent: () => <BostedUtlandExample />,
-        title: 'Bosted utland'
+        title: 'Bosted utland',
     },
     {
         path: 'ferieuttak',
         renderContent: () => <FerieuttakExample />,
-        title: 'Ferieuttak i perioden'
+        title: 'Ferieuttak i perioden',
     },
     {
         path: 'utenlandsopphold',
         renderContent: () => <UtenlandsoppholdIPeriodenExample />,
-        title: 'Utenlandsopphold i perioden'
+        title: 'Utenlandsopphold i perioden',
     },
     {
         path: 'fosterbarn',
@@ -39,7 +38,7 @@ const tabRoutes: RouteConfig[] = [
     }
 ];
 
-const DialogForms: React.FunctionComponent<Props> = (props) => {
+const DialogForms = () => {
     const [path, setPath] = useState(tabRoutes[0].path);
     const activeRoute = tabRoutes.find((r) => {
         return r.path === path;
@@ -53,7 +52,7 @@ const DialogForms: React.FunctionComponent<Props> = (props) => {
                 onChange={(evt, idx) => setPath(tabRoutes[idx].path)}
                 tabs={tabRoutes.map((r) => ({
                     label: r.title,
-                    active: r.path === path ? 'true' : 'false'
+                    active: r.path === path ? 'true' : 'false',
                 }))}
             />
             {activeRoute && activeRoute.renderContent()}

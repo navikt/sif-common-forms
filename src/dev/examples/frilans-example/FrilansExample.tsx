@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { Panel } from 'nav-frontend-paneler';
+import Panel from 'nav-frontend-paneler';
 import { Undertittel } from 'nav-frontend-typografi';
 import FrilansoppdragForm from '../../../forms/frilans/FrilansoppdragForm';
 import FrilansoppdragListAndDialog from '../../../forms/frilans/FrilansoppdragListAndDialog';
@@ -17,10 +15,8 @@ import { Frilansoppdrag, isFrilansoppdrag } from '../../../forms/frilans/types';
 import PageIntro from '../../components/page-intro/PageIntro';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 
-interface Props {}
-
 enum FormField {
-    'frilansoppdrag' = 'frilansoppdrag'
+    'frilansoppdrag' = 'frilansoppdrag',
 }
 
 interface FormValues {
@@ -28,7 +24,7 @@ interface FormValues {
 }
 const initialValues: FormValues = { frilansoppdrag: [] };
 
-const FrilansExample: React.FunctionComponent<Props> = (props) => {
+const FrilansExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Frilansoppdrag> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
@@ -57,7 +53,7 @@ const FrilansExample: React.FunctionComponent<Props> = (props) => {
                                     labels={{
                                         addLabel: 'Legg til',
                                         listTitle: 'Frilansoppdrag',
-                                        modalTitle: 'Frilansoppdrag'
+                                        modalTitle: 'Frilansoppdrag',
                                     }}
                                 />
                             </TypedFormikForm>

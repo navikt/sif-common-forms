@@ -14,7 +14,7 @@ interface Props {
 
 const bem = bemUtils('frilansoppdragList');
 
-const FrilansoppdragList: React.FunctionComponent<Props> = ({ oppdrag, onDelete, onEdit }) => {
+const FrilansoppdragList = ({ oppdrag, onDelete, onEdit }: Props) => {
     const renderOppdragLabel = (o: Frilansoppdrag): React.ReactNode => {
         return (
             <div className={bem.element('label')}>

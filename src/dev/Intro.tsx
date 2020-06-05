@@ -1,9 +1,7 @@
 import React from 'react';
 import PageIntro from './components/page-intro/PageIntro';
 
-interface Props {}
-
-const Intro: React.FunctionComponent<Props> = (props) => (
+const Intro = () => (
     <>
         <PageIntro title="SIF-common guide">
             Dette er starten på en enkel guide til komponenter og konsepter i SIF-common, og som kan brukes i

@@ -6,7 +6,6 @@ import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-co
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { Panel } from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
@@ -18,6 +17,7 @@ import FraværDagFormView from '../../../forms/fravær/FraværDagForm';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { fraværDagToFraværDateRange, validateNoCollisions } from '../../../forms/fravær/fraværUtilities';
 import { validateAll } from '../../../forms/fravær/fraværValidationUtils';
+import Panel from 'nav-frontend-paneler';
 
 interface Props {}
 
@@ -101,7 +101,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                         ]}
                                         helgedagerIkkeTillatt={true}
                                         fraværDagFormLabels={{
-                                            title: 'Legg til ny dag med delvis fravær',
+                                            title: 'Dag med delvis fravær',
                                             date: 'Dato',
                                             antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
                                             timerFravær: 'Antall timer du var borte fra jobb denne dagen',

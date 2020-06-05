@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { Panel } from 'nav-frontend-paneler';
+import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Fosterbarn } from '../../../forms/fosterbarn';
@@ -15,10 +13,8 @@ import FosterbarnForm from '../../../forms/fosterbarn/FosterbarnForm';
 import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 
-interface Props {}
-
 enum FormField {
-    'fosterbarn' = 'fosterbarn'
+    'fosterbarn' = 'fosterbarn',
 }
 
 interface FormValues {
@@ -26,7 +22,7 @@ interface FormValues {
 }
 const initialValues: FormValues = { fosterbarn: [] };
 
-const FosterbarnExample: React.FunctionComponent<Props> = (props) => {
+const FosterbarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Fosterbarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();

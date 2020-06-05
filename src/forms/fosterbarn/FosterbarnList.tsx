@@ -10,7 +10,7 @@ interface Props {
     onDelete?: (opphold: Fosterbarn) => void;
 }
 
-const FosterbarnList: React.FunctionComponent<Props> = ({ fosterbarn = [], onDelete, onEdit }) => {
+const FosterbarnList = ({ fosterbarn = [], onDelete, onEdit }: Props) => {
     const getBarnTitleString = (barn: Fosterbarn) => {
         return (
             <>

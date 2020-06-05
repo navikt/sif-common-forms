@@ -48,12 +48,9 @@ const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
     return undefined;
 };
 
-const VirksomhetForm: React.FunctionComponent<Props> = ({
-    onCancel,
-    virksomhet = { næringstyper: [] },
-    onSubmit,
-    hideFormFields,
-}) => {
+const initialValues: Partial<FormValues> = { næringstyper: [] };
+
+const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Props) => {
     const onFormikSubmit = (values: Partial<Virksomhet>) => {
         if (isVirksomhet(values)) {
             onSubmit({
@@ -71,7 +68,7 @@ const VirksomhetForm: React.FunctionComponent<Props> = ({
 
     return (
         <Form.FormikWrapper
-            initialValues={virksomhet}
+            initialValues={virksomhet || initialValues}
             onSubmit={onFormikSubmit}
             renderForm={(formik: FormikProps<FormValues>) => {
                 const { values, setFieldValue } = formik;

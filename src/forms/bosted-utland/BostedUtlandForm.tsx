@@ -1,9 +1,7 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import {
-    commonFieldErrorRenderer
-} from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
@@ -26,14 +24,14 @@ interface Props {
 enum BostedUtlandFormFields {
     fom = 'fom',
     tom = 'tom',
-    landkode = 'landkode'
+    landkode = 'landkode',
 }
 
 type FormValues = Partial<BostedUtland>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
-const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bosted, onSubmit, onCancel }) => {
+const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: Partial<BostedUtland>) => {
@@ -53,11 +51,11 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
 
                 const fomDateLimits = {
                     minDato: minDate,
-                    maksDato: values.tom || maxDate
+                    maksDato: values.tom || maxDate,
                 };
                 const tomDateLimits = {
                     minDato: values.fom || minDate,
-                    maksDato: maxDate
+                    maksDato: maxDate,
                 };
                 return (
                     <Form.Form
@@ -81,7 +79,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
                                             fomDateLimits.minDato,
                                             fomDateLimits.maksDato,
                                             values.tom
-                                        )
+                                        ),
                                 }}
                                 toDatepickerProps={{
                                     name: BostedUtlandFormFields.tom,
@@ -94,7 +92,7 @@ const BostedUtlandForm: React.FunctionComponent<Props> = ({ maxDate, minDate, bo
                                             tomDateLimits.minDato,
                                             tomDateLimits.maksDato,
                                             values.fom
-                                        )
+                                        ),
                                 }}
                             />
                         </FormBlock>
