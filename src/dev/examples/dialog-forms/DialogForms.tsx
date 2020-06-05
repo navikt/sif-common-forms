@@ -29,13 +29,13 @@ const tabRoutes: RouteConfig[] = [
     {
         path: 'fosterbarn',
         renderContent: () => <FosterbarnExample />,
-        title: 'Fosterbarn'
+        title: 'Fosterbarn',
     },
     {
         path: 'fravær',
         renderContent: () => <FraværExample />,
-        title: 'Fravær'
-    }
+        title: 'Fravær',
+    },
 ];
 
 const DialogForms = () => {
