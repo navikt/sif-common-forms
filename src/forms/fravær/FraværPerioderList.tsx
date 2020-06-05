@@ -11,8 +11,8 @@ interface Props {
 }
 
 const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder = [], onDelete, onEdit }) => {
-    const getDateTitleString = (uttak: FraværPeriode) =>
-        `${prettifyDateExtended(uttak.fom)} - ${prettifyDateExtended(uttak.tom)}`;
+    const getDateTitleString = (fraværPeriode: FraværPeriode) =>
+        `${prettifyDateExtended(fraværPeriode.fom)} - ${prettifyDateExtended(fraværPeriode.tom)}`;
 
     const renderFraværPeriodeLabel = (fraværPeriode: FraværPeriode): React.ReactNode => {
         const title = getDateTitleString(fraværPeriode);
@@ -26,8 +26,8 @@ const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder =
 
     return (
         <ItemList<FraværPeriode>
-            getItemId={(uttak) => uttak.id}
-            getItemTitle={(uttak) => getDateTitleString(uttak)}
+            getItemId={(fraværPeriode) => fraværPeriode.id}
+            getItemTitle={(fraværPeriode) => getDateTitleString(fraværPeriode)}
             onDelete={onDelete}
             onEdit={onEdit}
             labelRenderer={renderFraværPeriodeLabel}

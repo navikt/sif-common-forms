@@ -62,7 +62,7 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
         if (isFraværPeriode(formValues)) {
             onSubmit(formValues);
         } else {
-            throw new Error('FerieuttakForm: Formvalues is not a valid Ferieuttak on submit.');
+            throw new Error('FraværPeriodeForm: Formvalues is not a valid FraværPeriode on submit.');
         }
     };
 
