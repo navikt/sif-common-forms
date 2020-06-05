@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
-import DialogFormWrapper
-    from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { Panel } from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -17,14 +16,14 @@ import FraværDagerListAndDialog from '../../../forms/fravær/FraværDagerListAn
 import FraværPeriodeForm from '../../../forms/fravær/FraværPeriodeForm';
 import FraværDagFormView from '../../../forms/fravær/FraværDagForm';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { fraværDagTilDateRangeToDisable } from '../../../forms/fravær/fraværUtilities';
+import { fraværDagToFraværDateRange, validateNoCollisions } from '../../../forms/fravær/fraværUtilities';
+import { validateAll } from '../../../forms/fravær/fraværValidationUtils';
 
-interface Props {
-}
+interface Props {}
 
 enum FormField {
     perioder = 'perioder',
-    dager = 'dager'
+    dager = 'dager',
 }
 
 interface FormValues {
@@ -35,8 +34,12 @@ interface FormValues {
 const initialValues: FormValues = { [FormField.perioder]: [], [FormField.dager]: [] };
 
 const FraværExample: React.FunctionComponent<Props> = (props) => {
-    const [fraværPeriodeSingleFormValues, setFraværPeriodeSingleFormValues] = useState<Partial<FraværPeriode> | undefined>(undefined);
-    const [fraværDagSingleFormValues, setFraværDagSingleFormValues] = useState<Partial<FraværDag> | undefined>(undefined);
+    const [fraværPeriodeSingleFormValues, setFraværPeriodeSingleFormValues] = useState<
+        Partial<FraværPeriode> | undefined
+    >(undefined);
+    const [fraværDagSingleFormValues, setFraværDagSingleFormValues] = useState<Partial<FraværDag> | undefined>(
+        undefined
+    );
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
     return (
@@ -59,17 +62,20 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                     <FraværPerioderListAndDialog<FormField>
                                         name={FormField.perioder}
                                         minDate={date1YearAgo}
-                                        maxDate={date1YearFromNow}
-                                        validate={validateRequiredList}
+                                        maxDate={dateToday}
+                                        validate={validateAll([
+                                            validateRequiredList,
+                                            validateNoCollisions(values[FormField.dager], values[FormField.perioder]),
+                                        ])}
                                         labels={{
                                             addLabel: 'Legg til periode',
                                             listTitle: 'Perioder med fravær',
                                             modalTitle: 'Fravær hele dager',
-                                            emptyListText: 'Ingen perioder er lagt til'
+                                            emptyListText: 'Ingen perioder er lagt til',
                                         }}
                                         dateRangesToDisable={[
                                             ...values[FormField.perioder],
-                                            ...values[FormField.dager].map(fraværDagTilDateRangeToDisable)
+                                            ...values[FormField.dager].map(fraværDagToFraværDateRange),
                                         ]}
                                         helgedagerIkkeTillat={true}
                                     />
@@ -78,26 +84,35 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                     <FraværDagerListAndDialog<FormField>
                                         name={FormField.dager}
                                         minDate={date1YearAgo}
-                                        maxDate={date1YearFromNow}
-                                        validate={validateRequiredList}
+                                        maxDate={dateToday}
+                                        validate={validateAll([
+                                            validateRequiredList,
+                                            validateNoCollisions(values[FormField.dager], values[FormField.perioder]),
+                                        ])}
                                         labels={{
                                             addLabel: 'Legg til dag med delvis fravær',
                                             listTitle: 'Dager med delvis fravær',
                                             modalTitle: 'Fravær deler av dag',
-                                            emptyListText: 'Ingen dager er lagt til'
+                                            emptyListText: 'Ingen dager er lagt til',
                                         }}
                                         dateRangesToDisable={[
                                             ...values[FormField.perioder],
-                                            ...values[FormField.dager].map(fraværDagTilDateRangeToDisable)
+                                            ...values[FormField.dager].map(fraværDagToFraværDateRange),
                                         ]}
                                         helgedagerIkkeTillatt={true}
+                                        fraværDagFormLabels={{
+                                            title: 'Legg til ny dag med delvis fravær',
+                                            date: 'Dato',
+                                            antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
+                                            timerFravær: 'Antall timer du var borte fra jobb denne dagen',
+                                        }}
                                     />
                                 </FormBlock>
                             </TypedFormikForm>
                         );
                     }}
                 />
-                <SubmitPreview values={listFormValues}/>
+                <SubmitPreview values={listFormValues} />
             </Panel>
 
             <Box margin="xxl" padBottom="l">
@@ -118,7 +133,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                             }}
                         />
                     </Panel>
-                    <SubmitPreview values={fraværPeriodeSingleFormValues}/>
+                    <SubmitPreview values={fraværPeriodeSingleFormValues} />
                 </DialogFormWrapper>
             </FormBlock>
 
@@ -136,7 +151,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                             }}
                         />
                     </Panel>
-                    <SubmitPreview values={fraværDagSingleFormValues}/>
+                    <SubmitPreview values={fraværDagSingleFormValues} />
                 </DialogFormWrapper>
             </FormBlock>
         </>

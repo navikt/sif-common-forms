@@ -1,21 +1,31 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import { DateRangeToDisable, FraværPeriode } from './types';
-import FraværPeriodeForm from './FraværPeriodeForm';
+import { FraværDateRange, FraværPeriode } from './types';
+import FraværPeriodeForm, { FraværPeriodeFormLabels } from './FraværPeriodeForm';
 import FraværPerioderList from './FraværPerioderList';
 
 interface Props<FieldNames> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     minDate: Date;
     maxDate: Date;
-    dateRangesToDisable?: DateRangeToDisable[];
-    helgedagerIkkeTillat?: boolean;
     labels: ModalFormAndListLabels;
+    validate?: FormikValidateFunction;
+    dateRangesToDisable?: FraværDateRange[];
+    helgedagerIkkeTillat?: boolean;
+    fraværPeriodeFormLabels?: Partial<FraværPeriodeFormLabels>;
 }
 
-function FraværPerioderListAndDialog<FieldNames>({ name, minDate, maxDate, dateRangesToDisable, validate, labels, helgedagerIkkeTillat }: Props<FieldNames>) {
+function FraværPerioderListAndDialog<FieldNames>({
+    name,
+    minDate,
+    maxDate,
+    dateRangesToDisable,
+    validate,
+    labels,
+    helgedagerIkkeTillat,
+    fraværPeriodeFormLabels,
+}: Props<FieldNames>) {
     return (
         <>
             <FormikModalFormAndList<FieldNames, FraværPeriode>
@@ -33,10 +43,11 @@ function FraværPerioderListAndDialog<FieldNames>({ name, minDate, maxDate, date
                         helgedagerIkkeTillat={helgedagerIkkeTillat}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
+                        labels={fraværPeriodeFormLabels}
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
-                    <FraværPerioderList fraværPerioder={items} onEdit={onEdit} onDelete={onDelete}/>
+                    <FraværPerioderList fraværPerioder={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
             />
         </>

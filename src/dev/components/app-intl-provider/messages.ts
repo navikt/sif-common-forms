@@ -9,20 +9,24 @@ const utenlandsoppholdNb = require('../../../forms/utenlandsopphold/utenlandsopp
 const utenlandsoppholdNn = require('../../../forms/utenlandsopphold/utenlandsopphold.nn.json');
 const bostedUtlandNb = require('../../../forms/bosted-utland/bostedUtland.nb.json');
 const bostedUtlandNn = require('../../../forms/bosted-utland/bostedUtland.nn.json');
+const fraværNb = require('../../../forms/fravær/fravær.nb.json');
+const fraværNn = require('../../../forms/fravær/fravær.nn.json');
 
 const bokmålstekster = {
     ...ferieMessagesNb,
     ...utenlandsoppholdNb,
     ...bostedUtlandNb,
     ...commonNb,
-    ...validationNb
+    ...validationNb,
+    ...fraværNb
 };
 const nynorsktekster = {
     ...ferieMessagesNn,
     ...utenlandsoppholdNn,
     ...bostedUtlandNn,
     ...commonNn,
-    ...validationNn
+    ...validationNn,
+    ...fraværNn
 };
 
 export const appMessages = {

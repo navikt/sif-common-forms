@@ -4,17 +4,18 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { DateRangeToDisable, FraværDag, isFraværDag } from './types';
+import { FraværDag, FraværDateRange, isFraværDag } from './types';
 import FraværTimerSelect from './FraværTimerSelect';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { validateAll, validateLessOrEqualTo } from './todo';
+import { validateNotHelgedag } from './fraværUtilities';
+import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
 
 export interface FraværDagFormLabels {
     title: string;
-    fromDate: string;
-    toDate: string;
-    intervalTitle: string;
+    date: string;
+    antallArbeidstimer: string;
+    timerFravær: string;
     okButton: string;
     cancelButton: string;
 }
@@ -23,7 +24,7 @@ interface Props {
     fraværDag?: Partial<FraværDag>;
     minDate: Date;
     maxDate: Date;
-    dateRangesToDisable?: DateRangeToDisable[];
+    dateRangesToDisable?: FraværDateRange[];
     helgedagerIkkeTillatt?: boolean;
     labels?: Partial<FraværDagFormLabels>;
     onSubmit: (values: FraværDag) => void;
@@ -31,18 +32,18 @@ interface Props {
 }
 
 const defaultLabels: FraværDagFormLabels = {
-    title: 'TODO: Tittel for FraværDagForm', // TODO
-    fromDate: 'Fra og med',
-    toDate: 'Til og med',
-    intervalTitle: 'Velg tidsrom',
+    title: 'Dag med delvis fravær',
+    date: 'Dato',
+    antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
+    timerFravær: 'Antall timer du var borte fra jobb denne dagen',
     okButton: 'Ok',
-    cancelButton: 'Avbryt'
+    cancelButton: 'Avbryt',
 };
 
 export enum FraværDagFormFields {
     dato = 'dato',
     timerArbeidsdag = 'timerArbeidsdag',
-    timerFravær = 'timerFravær'
+    timerFravær = 'timerFravær',
 }
 
 type FormValues = Partial<FraværDag>;
@@ -50,19 +51,19 @@ type FormValues = Partial<FraværDag>;
 export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FormValues>();
 
 const FraværDagFormView: React.FunctionComponent<Props> = ({
-                                                               fraværDag: initialValues = {
-                                                                   dato: undefined,
-                                                                   timerArbeidsdag: undefined,
-                                                                   timerFravær: undefined
-                                                               },
-                                                               maxDate,
-                                                               minDate,
-                                                               dateRangesToDisable,
-                                                               helgedagerIkkeTillatt,
-                                                               labels,
-                                                               onSubmit,
-                                                               onCancel
-                                                           }) => {
+    fraværDag: initialValues = {
+        dato: undefined,
+        timerArbeidsdag: undefined,
+        timerFravær: undefined,
+    },
+    maxDate,
+    minDate,
+    dateRangesToDisable,
+    helgedagerIkkeTillatt,
+    labels,
+    onSubmit,
+    onCancel,
+}) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFraværDag(formValues)) {
@@ -81,22 +82,24 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
                     const { values } = formik;
-                    const datepickerProps: FormikDatepickerProps < FraværDagFormFields > = {
-                        label: formLabels.fromDate,
+                    const datepickerProps: FormikDatepickerProps<FraværDagFormFields> = {
+                        label: formLabels.date,
                         name: FraværDagFormFields.dato,
                         fullscreenOverlay: true,
                         dateLimitations: {
                             minDato: minDate,
                             maksDato: maxDate,
                             helgedagerIkkeTillatt: helgedagerIkkeTillatt || false,
-                            ugyldigeTidsperioder: dateRangesToDisable
+                            ugyldigeTidsperioder: dateRangesToDisable,
                         },
-                        validate: validateRequiredField,
+                        validate: helgedagerIkkeTillatt
+                            ? validateAll([validateRequiredField, validateNotHelgedag])
+                            : validateRequiredField,
                         onChange: () => {
                             setTimeout(() => {
                                 formik.validateField(FraværDagFormFields.dato);
                             });
-                        }
+                        },
                     };
 
                     return (
@@ -108,16 +111,21 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                                 <FraværDagForm.DatePicker {...datepickerProps} />
                             </FormBlock>
                             <FormBlock>
-                                <FraværTimerSelect name={FraværDagFormFields.timerArbeidsdag}
-                                                   validate={validateRequiredField}/>
+                                <FraværTimerSelect
+                                    name={FraværDagFormFields.timerArbeidsdag}
+                                    validate={validateRequiredField}
+                                    label={formLabels.antallArbeidstimer}
+                                />
                             </FormBlock>
                             <FormBlock>
                                 <FraværTimerSelect
                                     name={FraværDagFormFields.timerFravær}
                                     validate={validateAll([
                                         validateRequiredField,
-                                        validateLessOrEqualTo(values.timerArbeidsdag)
-                                    ])}/>
+                                        validateLessOrEqualTo(values.timerArbeidsdag),
+                                    ])}
+                                    label={formLabels.timerFravær}
+                                />
                             </FormBlock>
                         </FraværDagForm.Form>
                     );

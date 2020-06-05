@@ -1,16 +1,18 @@
-import { validateAll } from '../todo';
 import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { FieldValidationErrors } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { isString } from 'formik';
+import { validateAll } from '../fraværValidationUtils';
 
 const etTomtObject = {};
 const etTall = 1;
 const enString = 'En string';
 
-const validerNotUndefined: FormikValidateFunction = (value => value ? undefined : FieldValidationErrors.påkrevd);
-const validerErString: FormikValidateFunction = (value => value && isString(value) ? undefined : FieldValidationErrors.ugyldig_telefonnummer);
-const validerErTalletEn: FormikValidateFunction = (value => value === 1 ? undefined : FieldValidationErrors.tall_ugyldig);
+const validerNotUndefined: FormikValidateFunction = (value) => (value ? undefined : FieldValidationErrors.påkrevd);
+const validerErString: FormikValidateFunction = (value) =>
+    value && isString(value) ? undefined : FieldValidationErrors.ugyldig_telefonnummer;
+const validerErTalletEn: FormikValidateFunction = (value) =>
+    value === 1 ? undefined : FieldValidationErrors.tall_ugyldig;
 
 describe('Fieldvalidations', () => {
     describe('validateAll', () => {
@@ -31,18 +33,23 @@ describe('Fieldvalidations', () => {
             expect(result(etTomtObject)).toBe(FieldValidationErrors.ugyldig_telefonnummer);
         });
         it('returnerer ugyldig tall', () => {
-            const result: (value: any) => FieldValidationResult =
-                validateAll([validerNotUndefined, validerErString, validerErTalletEn]);
+            const result: (value: any) => FieldValidationResult = validateAll([
+                validerNotUndefined,
+                validerErString,
+                validerErTalletEn,
+            ]);
             expect(result(enString)).toBe(FieldValidationErrors.tall_ugyldig);
         });
         it('returnerer undefiend fordi value er 1', () => {
-            const result: (value: any) => FieldValidationResult =
-                validateAll([validerNotUndefined, validerErTalletEn]);
+            const result: (value: any) => FieldValidationResult = validateAll([validerNotUndefined, validerErTalletEn]);
             expect(result(etTall)).toBe(undefined);
         });
         it('returnerer ugyldig telefonnummer', () => {
-            const result: (value: any) => FieldValidationResult =
-                validateAll([validerNotUndefined, validerErString, validerErTalletEn]);
+            const result: (value: any) => FieldValidationResult = validateAll([
+                validerNotUndefined,
+                validerErString,
+                validerErTalletEn,
+            ]);
             expect(result(enString)).toBe(FieldValidationErrors.tall_ugyldig);
         });
     });

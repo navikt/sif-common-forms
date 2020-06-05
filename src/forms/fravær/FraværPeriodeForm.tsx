@@ -5,13 +5,15 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { DateRangeToDisable, FraværPeriode, isFraværPeriode } from './types';
+import { FraværDateRange, FraværPeriode, isFraværPeriode } from './types';
+import { validateNotHelgedag } from './fraværUtilities';
+import { validateAll } from './fraværValidationUtils';
 
 export interface FraværPeriodeFormLabels {
     title: string;
+    intervalTitle: string;
     fromDate: string;
     toDate: string;
-    intervalTitle: string;
     okButton: string;
     cancelButton: string;
 }
@@ -20,7 +22,7 @@ interface Props {
     fraværPeriode?: Partial<FraværPeriode>;
     minDate: Date;
     maxDate: Date;
-    dateRangesToDisable?: DateRangeToDisable[];
+    dateRangesToDisable?: FraværDateRange[];
     helgedagerIkkeTillat?: boolean;
     labels?: Partial<FraværPeriodeFormLabels>;
     onSubmit: (values: FraværPeriode) => void;
@@ -28,17 +30,17 @@ interface Props {
 }
 
 const defaultLabels: FraværPeriodeFormLabels = {
-    title: 'TODO: Tittel for FraværPeriodeForm', // TODO
+    title: 'Periode med fravær',
+    intervalTitle: 'Velg tidsrom',
     fromDate: 'Fra og med',
     toDate: 'Til og med',
-    intervalTitle: 'Velg tidsrom',
     okButton: 'Ok',
-    cancelButton: 'Avbryt'
+    cancelButton: 'Avbryt',
 };
 
 enum FraværPeriodeFormFields {
     tom = 'tom',
-    fom = 'fom'
+    fom = 'fom',
 }
 
 type FormValues = Partial<FraværPeriode>;
@@ -53,7 +55,7 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
     helgedagerIkkeTillat,
     labels,
     onSubmit,
-    onCancel
+    onCancel,
 }) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
@@ -87,15 +89,23 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                         minDato: minDate,
                                         maksDato: maxDate || formik.values.tom,
                                         helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
-                                        ugyldigeTidsperioder: dateRangesToDisable
+                                        ugyldigeTidsperioder: dateRangesToDisable,
                                     },
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
+                                    validate: validateAll([
+                                        ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
+                                        (date: Date) =>
+                                            dateRangeValidation.validateFromDate(
+                                                date,
+                                                minDate,
+                                                maxDate,
+                                                formik.values.tom
+                                            ),
+                                    ]),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FraværPeriodeFormFields.tom);
                                         });
-                                    }
+                                    },
                                 }}
                                 toDatepickerProps={{
                                     label: formLabels.toDate,
@@ -103,15 +113,25 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     fullscreenOverlay: true,
                                     dateLimitations: {
                                         minDato: minDate || formik.values.fom,
-                                        maksDato: maxDate
+                                        maksDato: maxDate,
+                                        helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
+                                        ugyldigeTidsperioder: dateRangesToDisable,
                                     },
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
+                                    validate: validateAll([
+                                        ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
+                                        (date: Date) =>
+                                            dateRangeValidation.validateToDate(
+                                                date,
+                                                minDate,
+                                                maxDate,
+                                                formik.values.fom
+                                            ),
+                                    ]),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FraværPeriodeFormFields.fom);
                                         });
-                                    }
+                                    },
                                 }}
                             />
                         </FormBlock>

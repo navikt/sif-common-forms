@@ -16,10 +16,12 @@ export interface FraværDag {
 }
 
 export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {
-    return fraværDag.dato !== undefined && fraværDag.timerArbeidsdag !== undefined && fraværDag.timerFravær !== undefined;
+    return (
+        fraværDag.dato !== undefined && fraværDag.timerArbeidsdag !== undefined && fraværDag.timerFravær !== undefined
+    );
 };
 
-export interface DateRangeToDisable {
+export interface FraværDateRange {
     fom: Date;
     tom: Date;
 }

@@ -1,6 +1,6 @@
 const fraværMessages = {
-    nb: require('./ferieuttak.nb.json'),
-    nn: require('./ferieuttak.nn.json')
+    nb: require('./fravær.nb.json'),
+    nn: require('./fravær.nn.json'),
 };
 
 export default fraværMessages;
