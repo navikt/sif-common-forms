@@ -48,6 +48,10 @@ type FormValues = Partial<FraværPeriode>;
 
 const Form = getTypedFormComponents<FraværPeriodeFormFields, FormValues>();
 
+const outDenneHvisInkludert = (denneFraværsPerioden: Partial<FraværPeriode>): ((dateRange: DateRange) => boolean) => (
+    fraværPeriode: FraværPeriode
+) => !(fraværPeriode?.from === denneFraværsPerioden.from && fraværPeriode?.to === denneFraværsPerioden.to);
+
 const FraværPeriodeForm: React.FunctionComponent<Props> = ({
     fraværPeriode: initialValues = { from: undefined, to: undefined },
     maxDate,
@@ -91,7 +95,9 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                         maksDato: formik.values.to || maxDate,
                                         helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
                                         ugyldigeTidsperioder: dateRangesToDisable
-                                            ? dateRangesToDisable.map(dateRangeToFomTom)
+                                            ? dateRangesToDisable
+                                                  .filter(outDenneHvisInkludert(initialValues))
+                                                  .map(dateRangeToFomTom)
                                             : undefined,
                                     },
                                     validate: validateAll([

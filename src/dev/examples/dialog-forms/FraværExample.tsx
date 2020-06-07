@@ -74,6 +74,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                             emptyListText: 'Ingen perioder er lagt til',
                                         }}
                                         dateRangesToDisable={[
+                                            ...values.perioder,
                                             ...values[FormField.dager].map(fraværDagToFraværDateRange),
                                         ]}
                                         helgedagerIkkeTillat={true}
@@ -95,7 +96,8 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                             emptyListText: 'Ingen dager er lagt til',
                                         }}
                                         dateRangesToDisable={[
-                                            ...values[FormField.perioder],
+                                            ...values.perioder,
+                                            ...values.dager.map(fraværDagToFraværDateRange),
                                         ]}
                                         helgedagerIkkeTillatt={true}
                                         fraværDagFormLabels={{

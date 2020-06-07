@@ -49,6 +49,10 @@ export enum FraværDagFormFields {
 
 type FormValues = Partial<FraværDag>;
 
+export const outDenneHvisInkludert = (initialValues: Partial<FraværDag>): ((dateRange: DateRange) => boolean) => (
+    dateRange: DateRange
+) => !(dateRange.from === initialValues.dato && dateRange.to === initialValues.dato);
+
 export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FormValues>();
 
 const FraværDagFormView: React.FunctionComponent<Props> = ({
@@ -92,7 +96,9 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                             maksDato: maxDate,
                             helgedagerIkkeTillatt: helgedagerIkkeTillatt || false,
                             ugyldigeTidsperioder: dateRangesToDisable
-                                ? dateRangesToDisable.map(dateRangeToFomTom)
+                                ? dateRangesToDisable
+                                      .filter(outDenneHvisInkludert(initialValues))
+                                      .map(dateRangeToFomTom)
                                 : undefined,
                         },
                         validate: helgedagerIkkeTillatt

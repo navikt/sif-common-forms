@@ -34,7 +34,7 @@ function FraværPerioderListAndDialog<FieldNames>({
                 dialogWidth="narrow"
                 validate={validate}
                 sortFunc={(fraværPeriodeA: FraværPeriode, fraværPeriodeB: FraværPeriode) =>
-                    sortItemsByFom({ fom: fraværPeriodeA.from }, { fom: fraværPeriodeA.from })
+                    sortItemsByFom({ fom: fraværPeriodeA.from }, { fom: fraværPeriodeB.from })
                 }
                 formRenderer={({ onSubmit, onCancel, item }) => (
                     <FraværPeriodeForm
