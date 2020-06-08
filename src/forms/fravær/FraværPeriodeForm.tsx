@@ -125,7 +125,9 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                         maksDato: maxDate,
                                         helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
                                         ugyldigeTidsperioder: dateRangesToDisable
-                                            ? dateRangesToDisable.map(dateRangeToFomTom)
+                                            ? dateRangesToDisable
+                                                  .filter(outDenneHvisInkludert(initialValues))
+                                                  .map(dateRangeToFomTom)
                                             : undefined,
                                     },
                                     validate: validateAll([
