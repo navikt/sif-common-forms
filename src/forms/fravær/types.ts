@@ -11,8 +11,8 @@ export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): frav�
 export interface FraværDag {
     id?: string;
     dato: Date;
-    timerArbeidsdag: number;
-    timerFravær: number;
+    timerArbeidsdag: string;
+    timerFravær: string;
 }
 
 export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {

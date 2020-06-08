@@ -5,6 +5,7 @@ import moment from 'moment';
 import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FraværFieldValidationErrors } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { isString } from 'formik';
 
 export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
     from: fraværDag.dato,
@@ -68,10 +69,16 @@ export const dateErHelg = (date: Date) =>
 export const validateNotHelgedag = (maybeDate: Date | undefined): FieldValidationResult =>
     maybeDate && dateErHelg(maybeDate) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
 
-export const timeText = (timer: number): string =>
-    timer.toString(10) === '1' || timer.toString(10).includes('.') ? 'time' : 'timer';
+export const timeText = (timer: string): string =>
+    timer === '1' || timer.includes('.') ? 'time' : 'timer';
 
 export const dateRangeToFomTom = (dateRange: DateRange): { fom: Date; tom: Date } => ({
     fom: dateRange.from,
     tom: dateRange.to,
 });
+export const toMaybeNumber = (timerArbeidsdag: string | undefined): number | undefined => {
+    if (timerArbeidsdag && isString(timerArbeidsdag)) {
+        return parseFloat(timerArbeidsdag);
+    }
+    return undefined;
+};

@@ -8,7 +8,7 @@ import { FraværDag, isFraværDag } from './types';
 import FraværTimerSelect from './FraværTimerSelect';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { dateRangeToFomTom, validateNotHelgedag } from './fraværUtilities';
+import { dateRangeToFomTom, toMaybeNumber, validateNotHelgedag } from './fraværUtilities';
 import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
@@ -134,7 +134,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                                     name={FraværDagFormFields.timerFravær}
                                     validate={validateAll([
                                         validateRequiredField,
-                                        validateLessOrEqualTo(values.timerArbeidsdag),
+                                        validateLessOrEqualTo(toMaybeNumber(values.timerArbeidsdag)),
                                     ])}
                                     label={formLabels.timerFravær}
                                     maksTid={maksArbeidstidPerDag}

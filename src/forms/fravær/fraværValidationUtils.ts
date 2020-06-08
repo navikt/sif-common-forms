@@ -33,11 +33,14 @@ export const validateAll: FieldValidationArray = (validations: FormikValidateFun
         .map((validate: FormikValidateFunction) => validate(value))
         .reduce((prev: FieldValidationResult, curr: FieldValidationResult) => prev || curr, undefined);
 
-export const validateLessOrEqualTo = (maxValue: number | undefined): FormikValidateFunction => (
-    value: number | undefined
+export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): FormikValidateFunction => (
+    maybeValue: string | undefined
 ) => {
-    if (maxValue && value) {
-        return value <= maxValue
+    const maybeValueFloat: number | undefined = maybeValue ? parseFloat(maybeValue) : undefined;
+    if (maybeMaxValue && maybeValueFloat) {
+        console.info("typeof maxValue. " + typeof maybeMaxValue);
+        console.info("typeof value. " + typeof maybeValueFloat);
+        return maybeValueFloat <= maybeMaxValue
             ? undefined
             : createFieldValidationError(FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer);
     }

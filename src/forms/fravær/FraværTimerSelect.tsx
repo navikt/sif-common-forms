@@ -11,11 +11,14 @@ interface Props<> {
 }
 
 const getOptionsList: (maksTid: number) => JSX.Element[] = (maksTid: number) => {
-    const newOptionElement = (t: number): JSX.Element => (
-        <option key={t} value={t}>
-            {t.toString(10).replace('.', ',')} {timeText(t)}
-        </option>
-    );
+    const newOptionElement = (t: number): JSX.Element => {
+        // console.info("typeof t:" + typeof t);
+        return (
+            <option key={t} value={t}>
+                {t.toString(10).replace('.', ',')} {timeText(t.toString(10))}
+            </option>
+        );
+    };
     const go = (jsxList: JSX.Element[], tid: number): JSX.Element[] => {
         return tid >= maksTid
             ? [...jsxList, newOptionElement(tid)]
