@@ -14,6 +14,7 @@ interface Props<FieldNames> {
     dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
     fraværDagFormLabels?: Partial<FraværDagFormLabels>;
+    maksArbeidstidPerDag?: number;
 }
 
 function FraværDagerListAndDialog<FieldNames>({
@@ -25,6 +26,7 @@ function FraværDagerListAndDialog<FieldNames>({
     dateRangesToDisable,
     helgedagerIkkeTillatt,
     fraværDagFormLabels,
+    maksArbeidstidPerDag
 }: Props<FieldNames>) {
     return (
         <>
@@ -46,6 +48,7 @@ function FraværDagerListAndDialog<FieldNames>({
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                         labels={fraværDagFormLabels}
+                        maksArbeidstidPerDag={maksArbeidstidPerDag}
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (

@@ -8,9 +8,10 @@ interface Props {
     fraværPerioder: FraværPeriode[];
     onEdit?: (fraværPeriode: FraværPeriode) => void;
     onDelete?: (fraværPeriode: FraværPeriode) => void;
+    useTrashcan?: boolean;
 }
 
-const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder = [], onDelete, onEdit }) => {
+const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder = [], onDelete, onEdit, useTrashcan }) => {
     const getDateTitleString = (fraværPeriode: FraværPeriode) =>
         `${prettifyDateExtended(fraværPeriode.from)} - ${prettifyDateExtended(fraværPeriode.to)}`;
 
@@ -32,6 +33,7 @@ const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder =
             onEdit={onEdit}
             labelRenderer={renderFraværPeriodeLabel}
             items={fraværPerioder.filter((fraværPeriode) => fraværPeriode.id !== undefined)}
+            useTrashcan={useTrashcan || false}
         />
     );
 };

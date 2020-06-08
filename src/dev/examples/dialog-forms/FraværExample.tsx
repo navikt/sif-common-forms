@@ -69,13 +69,11 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                         ])}
                                         labels={{
                                             addLabel: 'Legg til periode',
-                                            listTitle: 'Perioder med fravær',
-                                            modalTitle: 'Fravær hele dager',
-                                            emptyListText: 'Ingen perioder er lagt til',
+                                            modalTitle: 'Fravær hele dager'
                                         }}
                                         dateRangesToDisable={[
                                             ...values.perioder,
-                                            ...values[FormField.dager].map(fraværDagToFraværDateRange),
+                                            ...values.dager.map(fraværDagToFraværDateRange),
                                         ]}
                                         helgedagerIkkeTillat={true}
                                     />
@@ -106,6 +104,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                             antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
                                             timerFravær: 'Antall timer du var borte fra jobb denne dagen',
                                         }}
+                                        maksArbeidstidPerDag={24}
                                     />
                                 </FormBlock>
                             </TypedFormikForm>

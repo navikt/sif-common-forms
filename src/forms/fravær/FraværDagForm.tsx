@@ -28,6 +28,7 @@ interface Props {
     dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
     labels?: Partial<FraværDagFormLabels>;
+    maksArbeidstidPerDag?: number;
     onSubmit: (values: FraværDag) => void;
     onCancel: () => void;
 }
@@ -66,6 +67,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
     dateRangesToDisable,
     helgedagerIkkeTillatt,
     labels,
+    maksArbeidstidPerDag,
     onSubmit,
     onCancel,
 }) => {
@@ -134,6 +136,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                                         validateLessOrEqualTo(values.timerArbeidsdag),
                                     ])}
                                     label={formLabels.timerFravær}
+                                    maksTid={maksArbeidstidPerDag}
                                 />
                             </FormBlock>
                         </FraværDagForm.Form>
