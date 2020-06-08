@@ -126,6 +126,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                                     name={FraværDagFormFields.timerArbeidsdag}
                                     validate={validateRequiredField}
                                     label={formLabels.antallArbeidstimer}
+                                    maksTid={maksArbeidstidPerDag}
                                 />
                             </FormBlock>
                             <FormBlock>
