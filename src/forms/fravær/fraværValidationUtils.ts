@@ -38,8 +38,6 @@ export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): Formik
 ) => {
     const maybeValueFloat: number | undefined = maybeValue ? parseFloat(maybeValue) : undefined;
     if (maybeMaxValue && maybeValueFloat) {
-        console.info("typeof maxValue. " + typeof maybeMaxValue);
-        console.info("typeof value. " + typeof maybeValueFloat);
         return maybeValueFloat <= maybeMaxValue
             ? undefined
             : createFieldValidationError(FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer);
