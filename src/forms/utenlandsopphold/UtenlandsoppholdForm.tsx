@@ -163,11 +163,23 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                                             minDate={fom}
                                             maxDate={tom}
                                             validate={validateRequiredList}
-                                            formTitle="Periode barnet er innlagt"
+                                            formTitle={intlHelper(
+                                                intl,
+                                                'utenlandsopphold.form.perioderBarnetErInnlag.formTitle'
+                                            )}
                                             labels={{
-                                                addLabel: 'Legg til periode barnet er innlagt',
-                                                modalTitle: 'Periode barnet er innlagt',
-                                                listTitle: 'Periode(r) barnet er innlagt',
+                                                addLabel: intlHelper(
+                                                    intl,
+                                                    'utenlandsopphold.form.perioderBarnetErInnlag.addLabel'
+                                                ),
+                                                modalTitle: intlHelper(
+                                                    intl,
+                                                    'utenlandsopphold.form.perioderBarnetErInnlag.modalTitle'
+                                                ),
+                                                listTitle: intlHelper(
+                                                    intl,
+                                                    'utenlandsopphold.form.perioderBarnetErInnlag.listTitle'
+                                                ),
                                             }}
                                         />
                                     </FormBlock>
