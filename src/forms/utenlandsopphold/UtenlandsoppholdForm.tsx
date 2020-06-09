@@ -90,11 +90,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
 
                 const areAllQuestionsAnswered: boolean =
-                    fom !== undefined &&
-                    tom !== undefined &&
-                    landkode !== undefined &&
-                    erBarnetInnlagt !== YesOrNo.UNANSWERED &&
-                    (erBarnetInnlagt === YesOrNo.YES ? barnInnlagtPerioder.length > 0 && årsak !== undefined : true);
+                    fom !== undefined && tom !== undefined && landkode !== undefined && includeInnlagtQuestion === false
+                        ? true
+                        : erBarnetInnlagt !== YesOrNo.UNANSWERED &&
+                          (erBarnetInnlagt === YesOrNo.YES
+                              ? barnInnlagtPerioder.length > 0 && årsak !== undefined
+                              : true);
 
                 return (
                     <Form.Form
