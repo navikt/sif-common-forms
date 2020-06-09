@@ -1,7 +1,7 @@
 {
     "utenlandsopphold.list.add": "+ Legg til opphold",
     "utenlandsopphold.form.tittel": "Utenlandsopphold",
-    "utenlandsopphold.form.tidsperiode.spm": "Tidsperiode",
+    "utenlandsopphold.form.tidsperiode.spm": "Velg tidsperiode for oppholdet",
     "utenlandsopphold.form.tidsperiode.fraDato": "Fra og med",
     "utenlandsopphold.form.tidsperiode.tilDato": "Til og med",
     "utenlandsopphold.form.land.spm": "Velg land",

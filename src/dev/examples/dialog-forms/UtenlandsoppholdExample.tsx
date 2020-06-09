@@ -20,7 +20,9 @@ enum FormField {
 interface FormValues {
     [FormField.utenlandsopphold]: Utenlandsopphold[];
 }
-const initialValues: FormValues = { utenlandsopphold: [] };
+const initialValues: FormValues = {
+    utenlandsopphold: [],
+};
 
 const UtenlandsoppholdExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Utenlandsopphold> | undefined>(undefined);
@@ -35,7 +37,7 @@ const UtenlandsoppholdExample = () => {
                 <TypedFormikWrapper<FormValues>
                     initialValues={initialValues}
                     onSubmit={setListFormValues}
-                    renderForm={(formik) => {
+                    renderForm={() => {
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
@@ -66,6 +68,7 @@ const UtenlandsoppholdExample = () => {
             <DialogFormWrapper>
                 <Panel border={true}>
                     <UtenlandsoppholdForm
+                        opphold={initialValues.utenlandsopphold[0]}
                         minDate={date1YearAgo}
                         maxDate={date1YearFromNow}
                         onSubmit={setSingleFormValues}

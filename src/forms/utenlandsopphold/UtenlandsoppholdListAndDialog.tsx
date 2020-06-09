@@ -1,8 +1,6 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels
-} from '@navikt/sif-common-formik';
+import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import UtenlandsoppholdListe from './UtenlandsoppholdList';

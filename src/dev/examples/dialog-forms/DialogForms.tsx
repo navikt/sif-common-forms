@@ -12,6 +12,11 @@ import FraværExample from './FraværExample';
 
 const tabRoutes: RouteConfig[] = [
     {
+        path: 'utenlandsopphold',
+        renderContent: () => <UtenlandsoppholdIPeriodenExample />,
+        title: 'Utenlandsopphold i perioden',
+    },
+    {
         path: 'bosted-utland',
         renderContent: () => <BostedUtlandExample />,
         title: 'Bosted utland',
@@ -20,11 +25,6 @@ const tabRoutes: RouteConfig[] = [
         path: 'ferieuttak',
         renderContent: () => <FerieuttakExample />,
         title: 'Ferieuttak i perioden',
-    },
-    {
-        path: 'utenlandsopphold',
-        renderContent: () => <UtenlandsoppholdIPeriodenExample />,
-        title: 'Utenlandsopphold i perioden',
     },
     {
         path: 'fosterbarn',
