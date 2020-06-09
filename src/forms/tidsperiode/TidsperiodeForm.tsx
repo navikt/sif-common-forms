@@ -5,7 +5,7 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { Tidsperiode, isTidsperiode } from './types';
+import { isTidsperiode, Tidsperiode } from './types';
 
 export interface TidsperiodeFormLabels {
     title?: string;

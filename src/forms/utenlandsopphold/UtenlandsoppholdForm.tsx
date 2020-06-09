@@ -7,16 +7,16 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import {
     validateRequiredField,
+    validateRequiredList,
     validateRequiredSelect,
     validateYesOrNoIsAnswered,
-    validateRequiredList,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { getCountryName, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
+import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
 
 interface Props {
     minDate: Date;

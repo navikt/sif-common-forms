@@ -1,5 +1,5 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export enum UtenlandsoppholdÅrsak {
     'INNLAGT_DEKKET_NORGE' = 'BARNET_INNLAGT_I_HELSEINSTITUSJON_FOR_NORSK_OFFENTLIG_REGNING',
