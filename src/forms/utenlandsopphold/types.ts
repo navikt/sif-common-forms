@@ -1,9 +1,10 @@
 import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export enum UtenlandsoppholdÅrsak {
     'INNLAGT_DEKKET_NORGE' = 'BARNET_INNLAGT_I_HELSEINSTITUSJON_FOR_NORSK_OFFENTLIG_REGNING',
     'INNLAGT_DEKKET_ANNET_LAND' = 'BARNET_INNLAGT_I_HELSEINSTITUSJON_DEKKET_ETTER_AVTALE_MED_ET_ANNET_LAND_OM_TRYGD',
-    'ANNET' = 'ANNET'
+    'ANNET' = 'ANNET',
 }
 
 export interface Utenlandsopphold {
@@ -12,6 +13,7 @@ export interface Utenlandsopphold {
     tom: Date;
     landkode: string;
     erBarnetInnlagt?: YesOrNo;
+    barnInnlagtPerioder?: DateRange[];
     årsak?: UtenlandsoppholdÅrsak;
 }
 

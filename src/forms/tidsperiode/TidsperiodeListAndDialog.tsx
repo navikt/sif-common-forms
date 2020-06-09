@@ -1,30 +1,39 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import FerieuttakForm from './FerieuttakForm';
-import FerieuttakList from './FerieuttakList';
-import { Ferieuttak } from './types';
+import TidsperiodeForm from './TidsperiodeForm';
+import TidsperiodeList from './TidsperiodeList';
+import { Tidsperiode } from './types';
 
 interface Props<FieldNames> {
     name: FieldNames;
     validate?: FormikValidateFunction;
+    formTitle?: string;
     minDate: Date;
     maxDate: Date;
     labels: ModalFormAndListLabels;
 }
 
-function FerieuttakListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
+function TidsperiodeListAndDialog<FieldNames>({
+    name,
+    minDate,
+    maxDate,
+    validate,
+    labels,
+    formTitle,
+}: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Ferieuttak>
+            <FormikModalFormAndList<FieldNames, Tidsperiode>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"
                 validate={validate}
                 sortFunc={sortItemsByFom}
                 formRenderer={({ onSubmit, onCancel, item }) => (
-                    <FerieuttakForm
-                        ferieuttak={item}
+                    <TidsperiodeForm
+                        tidsperiode={item}
+                        formLabels={{ title: formTitle }}
                         minDate={minDate}
                         maxDate={maxDate}
                         onSubmit={onSubmit}
@@ -32,11 +41,11 @@ function FerieuttakListAndDialog<FieldNames>({ name, minDate, maxDate, validate,
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
-                    <FerieuttakList ferieuttak={items} onEdit={onEdit} onDelete={onDelete} />
+                    <TidsperiodeList tidsperiode={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
             />
         </>
     );
 }
 
-export default FerieuttakListAndDialog;
+export default TidsperiodeListAndDialog;

@@ -9,12 +9,14 @@ import {
     validateRequiredField,
     validateRequiredSelect,
     validateYesOrNoIsAnswered,
+    validateRequiredList,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { getCountryName, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
+import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 
 interface Props {
     minDate: Date;
@@ -30,6 +32,7 @@ enum UtenlandsoppholdFormFields {
     landkode = 'landkode',
     årsak = 'årsak',
     erBarnetInnlagt = 'erBarnetInnlagt',
+    barnInnlagtPerioder = 'barnInnlagtPerioder',
 }
 
 const defaultFormValues: Partial<Utenlandsopphold> = {
@@ -37,6 +40,7 @@ const defaultFormValues: Partial<Utenlandsopphold> = {
     tom: undefined,
     landkode: undefined,
     erBarnetInnlagt: YesOrNo.UNANSWERED,
+    barnInnlagtPerioder: [],
     årsak: undefined,
 };
 
@@ -63,24 +67,38 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
             initialValues={initialValues || defaultFormValues}
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
-                const { values } = formik;
-                const showInnlagtQuestion: boolean =
-                    values.landkode !== undefined &&
-                    hasValue(values.landkode) &&
-                    !countryIsMemberOfEøsOrEfta(values.landkode);
+                const {
+                    values: { fom, tom, landkode, erBarnetInnlagt, barnInnlagtPerioder = [], årsak },
+                } = formik;
 
                 const fromDateLimitations = {
                     minDato: minDate,
-                    maksDato: values.tom || maxDate,
+                    maksDato: tom || maxDate,
                 };
 
                 const toDateLimitations = {
-                    minDato: values.fom || minDate,
+                    minDato: fom || minDate,
                     maksDato: maxDate,
                 };
 
+                const includeInnlagtPerioderQuestion =
+                    fom !== undefined && tom !== undefined && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
+
+                const includeInnlagtQuestion: boolean =
+                    landkode !== undefined && hasValue(landkode) && !countryIsMemberOfEøsOrEfta(landkode);
+
+                const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
+
+                const areAllQuestionsAnswered: boolean =
+                    fom !== undefined &&
+                    tom !== undefined &&
+                    landkode !== undefined &&
+                    erBarnetInnlagt !== YesOrNo.UNANSWERED &&
+                    (erBarnetInnlagt === YesOrNo.YES ? barnInnlagtPerioder.length > 0 && årsak !== undefined : true);
+
                 return (
                     <Form.Form
+                        includeButtons={areAllQuestionsAnswered}
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Systemtittel tag="h1">
@@ -99,7 +117,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                                             date,
                                             fromDateLimitations.minDato,
                                             fromDateLimitations.maksDato,
-                                            values.tom
+                                            tom
                                         ),
                                 }}
                                 toDatepickerProps={{
@@ -112,37 +130,54 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                                             date,
                                             toDateLimitations.minDato,
                                             toDateLimitations.maksDato,
-                                            values.fom
+                                            fom
                                         ),
                                 }}
                             />
                         </FormBlock>
+                        {fom !== undefined && tom !== undefined && (
+                            <FormBlock>
+                                <Form.CountrySelect
+                                    name={UtenlandsoppholdFormFields.landkode}
+                                    label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
+                                    validate={validateRequiredSelect}
+                                />
+                            </FormBlock>
+                        )}
 
-                        <FormBlock>
-                            <Form.CountrySelect
-                                name={UtenlandsoppholdFormFields.landkode}
-                                label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
-                                validate={validateRequiredSelect}
-                            />
-                        </FormBlock>
-
-                        {showInnlagtQuestion && values.landkode && (
+                        {includeInnlagtQuestion && landkode && fom && tom && (
                             <>
                                 <FormBlock>
                                     <Form.YesOrNoQuestion
                                         name={UtenlandsoppholdFormFields.erBarnetInnlagt}
                                         legend={intlHelper(intl, 'utenlandsopphold.form.erBarnetInnlagt.spm', {
-                                            land: getCountryName(values.landkode, intl.locale),
+                                            land: getCountryName(landkode, intl.locale),
                                         })}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </FormBlock>
-                                {values.erBarnetInnlagt === YesOrNo.YES && (
+                                {includeInnlagtPerioderQuestion && (
+                                    <FormBlock margin="l">
+                                        <TidsperiodeListAndDialog
+                                            name={UtenlandsoppholdFormFields.barnInnlagtPerioder}
+                                            minDate={fom}
+                                            maxDate={tom}
+                                            validate={validateRequiredList}
+                                            formTitle="Periode barnet er innlagt"
+                                            labels={{
+                                                addLabel: 'Legg til periode',
+                                                modalTitle: 'Periode barnet er innlagt',
+                                                listTitle: 'Periode(r) barnet er innlagt',
+                                            }}
+                                        />
+                                    </FormBlock>
+                                )}
+                                {showÅrsakQuestion && (
                                     <>
                                         <FormBlock>
                                             <Form.RadioPanelGroup
                                                 legend={intlHelper(intl, 'utenlandsopphold.form.årsak.spm', {
-                                                    land: getCountryName(values.landkode, intl.locale),
+                                                    land: getCountryName(landkode, intl.locale),
                                                 })}
                                                 name={UtenlandsoppholdFormFields.årsak}
                                                 validate={validateRequiredField}
@@ -159,7 +194,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                                                         label: intlHelper(
                                                             intl,
                                                             `utenlandsopphold.form.årsak.${UtenlandsoppholdÅrsak.INNLAGT_DEKKET_ANNET_LAND}`,
-                                                            { land: getCountryName(values.landkode, intl.locale) }
+                                                            { land: getCountryName(landkode, intl.locale) }
                                                         ),
                                                     },
                                                     {
