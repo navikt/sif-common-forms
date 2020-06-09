@@ -165,7 +165,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                                             validate={validateRequiredList}
                                             formTitle="Periode barnet er innlagt"
                                             labels={{
-                                                addLabel: 'Legg til periode',
+                                                addLabel: 'Legg til periode barnet er innlagt',
                                                 modalTitle: 'Periode barnet er innlagt',
                                                 listTitle: 'Periode(r) barnet er innlagt',
                                             }}
