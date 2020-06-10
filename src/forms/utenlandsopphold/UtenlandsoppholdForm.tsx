@@ -18,6 +18,8 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
 import { Tidsperiode } from '../tidsperiode';
+import { getMaxDateForDateInDateIntervalPicker } from '@navikt/sif-common-core/lib/utils/dateIntervalPickerUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     minDate: Date;
@@ -50,6 +52,11 @@ type FormValues = Partial<Utenlandsopphold>;
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, FormValues>();
 
+export const mapTidsperiodeToDateRange = (tidsperiode: Tidsperiode): DateRange => ({
+    from: tidsperiode.fom,
+    to: tidsperiode.tom,
+});
+
 const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
@@ -64,7 +71,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
         }
     };
 
-    const ugyldigeTidsperioder: Tidsperiode[] | undefined =
+    const registrerteTidsperioder: Tidsperiode[] | undefined =
         opphold === undefined ? alleOpphold : alleOpphold.filter((o) => o.id !== opphold.id);
 
     return (
@@ -78,14 +85,26 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
 
                 const fromDateLimitations = {
                     minDato: minDate,
-                    maksDato: tom || maxDate,
-                    ugyldigeTidsperioder,
+                    maksDato:
+                        getMaxDateForDateInDateIntervalPicker({
+                            fromDate: fom,
+                            maxDate,
+                            toDate: tom,
+                            dateRanges: registrerteTidsperioder.map(mapTidsperiodeToDateRange),
+                        }) || maxDate,
+                    ugyldigeTidsperioder: registrerteTidsperioder,
                 };
 
                 const toDateLimitations = {
                     minDato: fom || minDate,
-                    maksDato: maxDate,
-                    ugyldigeTidsperioder,
+                    maksDato:
+                        getMaxDateForDateInDateIntervalPicker({
+                            fromDate: fom,
+                            maxDate,
+                            toDate: tom,
+                            dateRanges: registrerteTidsperioder.map(mapTidsperiodeToDateRange),
+                        }) || maxDate,
+                    ugyldigeTidsperioder: registrerteTidsperioder,
                 };
 
                 const includeInnlagtPerioderQuestion =
