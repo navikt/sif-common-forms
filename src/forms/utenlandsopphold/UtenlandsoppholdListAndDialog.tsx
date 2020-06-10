@@ -21,9 +21,10 @@ function UtenlandsoppholdListAndDialog<FieldNames>({ name, minDate, maxDate, val
             validate={validate}
             dialogWidth="narrow"
             sortFunc={sortItemsByFom}
-            formRenderer={({ onSubmit, onCancel, item }) => (
+            formRenderer={({ onSubmit, onCancel, item, allItems }) => (
                 <UtenlandsoppholdForm
                     opphold={item}
+                    alleOpphold={allItems}
                     minDate={minDate}
                     maxDate={maxDate}
                     onSubmit={onSubmit}

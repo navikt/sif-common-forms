@@ -17,11 +17,13 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
+import { Tidsperiode } from '../tidsperiode';
 
 interface Props {
     minDate: Date;
     maxDate: Date;
     opphold?: Utenlandsopphold;
+    alleOpphold?: Utenlandsopphold[];
     onSubmit: (values: Utenlandsopphold) => void;
     onCancel: () => void;
 }
@@ -48,7 +50,7 @@ type FormValues = Partial<Utenlandsopphold>;
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, FormValues>();
 
-const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubmit, onCancel }: Props) => {
+const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: Partial<Utenlandsopphold>) => {
@@ -62,9 +64,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
         }
     };
 
+    const ugyldigeTidsperioder: Tidsperiode[] | undefined =
+        opphold === undefined ? alleOpphold : alleOpphold.filter((o) => o.id !== opphold.id);
+
     return (
         <Form.FormikWrapper
-            initialValues={initialValues || defaultFormValues}
+            initialValues={opphold || defaultFormValues}
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
                 const {
@@ -74,11 +79,13 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold: initialValues, onSubm
                 const fromDateLimitations = {
                     minDato: minDate,
                     maksDato: tom || maxDate,
+                    ugyldigeTidsperioder,
                 };
 
                 const toDateLimitations = {
                     minDato: fom || minDate,
                     maksDato: maxDate,
+                    ugyldigeTidsperioder,
                 };
 
                 const includeInnlagtPerioderQuestion =
