@@ -5,7 +5,7 @@
     "utenlandsopphold.form.tidsperiode.fraDato": "Fra og med",
     "utenlandsopphold.form.tidsperiode.tilDato": "Til og med",
     "utenlandsopphold.form.land.spm": "Velg land",
-    "utenlandsopphold.form.erBarnetInnlagt.spm": "Er, eller skal, barnet bli innlagt i helseinstitusjon i {land}?",
+    "utenlandsopphold.form.erBarnetInnlagt.spm": "Er, eller skal, barnet være innlagt i helseinstitusjon i {land}?",
     "utenlandsopphold.form.perioderBarnetErInnlag.formTitle": "Periode barnet er innlagt",
     "utenlandsopphold.form.perioderBarnetErInnlag.addLabel": "Legg til periode barnet er innlagt",
     "utenlandsopphold.form.perioderBarnetErInnlag.modalTitle": "Periode(r) barnet er innlagt",
