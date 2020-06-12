@@ -167,22 +167,19 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
 
                         {(values.registrertINorge === YesOrNo.YES || values.registrertINorge === YesOrNo.NO) && (
                             <Box margin="xl">
-                                <Form.DateIntervalPicker
+                                <Form.DateRangePicker
                                     legend={txt.startdato(navnPåVirksomheten)}
-                                    fromDatepickerProps={{
+                                    showYearSelector={true}
+                                    maxDate={dateToday}
+                                    fromInputProps={{
                                         label: txt.kalender_fom,
                                         name: VirksomhetFormField.fom,
-                                        showYearSelector: true,
-                                        maxDate: dateToday,
                                         validate: validateRequiredField,
                                     }}
-                                    toDatepickerProps={{
+                                    toInputProps={{
                                         label: txt.kalender_tom,
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
-                                        showYearSelector: true,
-                                        minDate: values.fom || undefined,
-                                        maxDate: dateToday,
                                     }}
                                 />
                                 <Form.Checkbox

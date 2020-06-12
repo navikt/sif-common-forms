@@ -52,26 +52,22 @@ const FrilansoppdragForm = ({ onCancel, oppdrag, onSubmit, minDate, maxDate }: P
                             validate={validateRequiredField}
                         />
                         <Box margin="l">
-                            <Form.DateIntervalPicker
+                            <Form.DateRangePicker
                                 legend={'Periode'}
-                                fromDatepickerProps={{
+                                fullscreenOverlay={true}
+                                showYearSelector={true}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                fromInputProps={{
                                     label: 'Fra og med',
-                                    fullscreenOverlay: true,
                                     name: FrilansoppdragFormField.fom,
-                                    showYearSelector: true,
-                                    minDate,
-                                    maxDate: values.tom || maxDate,
                                     validate: (date) =>
                                         dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
                                 }}
-                                toDatepickerProps={{
+                                toInputProps={{
                                     label: 'Til og med',
                                     name: FrilansoppdragFormField.tom,
-                                    fullscreenOverlay: true,
                                     disabled: values.erPågående === true,
-                                    showYearSelector: true,
-                                    minDate: values.fom || minDate,
-                                    maxDate,
                                     validate:
                                         values.erPågående !== true
                                             ? (date: Date) =>

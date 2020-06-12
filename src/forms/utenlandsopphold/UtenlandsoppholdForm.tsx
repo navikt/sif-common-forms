@@ -17,6 +17,7 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
+import { mapFomTomToDateRange } from '../utils';
 
 interface Props {
     minDate: Date;
@@ -49,11 +50,6 @@ type FormValues = Partial<Utenlandsopphold>;
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, FormValues>();
 
-const mapUtenlandsoppholdToDateRange = (opphold: Utenlandsopphold): DateRange => ({
-    from: opphold.fom,
-    to: opphold.tom,
-});
-
 const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
@@ -70,8 +66,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
 
     const registrerteTidsperioder: DateRange[] | undefined =
         opphold === undefined
-            ? alleOpphold.map(mapUtenlandsoppholdToDateRange)
-            : alleOpphold.filter((o) => o.id !== opphold.id).map(mapUtenlandsoppholdToDateRange);
+            ? alleOpphold.map(mapFomTomToDateRange)
+            : alleOpphold.filter((o) => o.id !== opphold.id).map(mapFomTomToDateRange);
     return (
         <Form.FormikWrapper
             initialValues={opphold || defaultFormValues}

@@ -8,6 +8,7 @@ import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/f
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, isValidBostedUtland } from './types';
+import { mapFomTomToDateRange } from '../utils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -17,6 +18,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     bosted?: BostedUtland;
+    alleBosteder?: BostedUtland[];
     onSubmit: (values: BostedUtland) => void;
     onCancel: () => void;
 }
@@ -31,7 +33,7 @@ type FormValues = Partial<BostedUtland>;
 
 const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
 
-const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Props) => {
+const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: Partial<BostedUtland>) => {
@@ -57,6 +59,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                     minDate: values.fom || minDate,
                     maxDate: maxDate,
                 };
+
+                const andreBosteder =
+                    bosted === undefined
+                        ? alleBosteder.map(mapFomTomToDateRange)
+                        : alleBosteder.filter((b) => b.id !== bosted.id).map(mapFomTomToDateRange);
+
                 return (
                     <Form.Form
                         onCancel={onCancel}
@@ -66,13 +74,16 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                         </Systemtittel>
 
                         <FormBlock>
-                            <Form.DateIntervalPicker
+                            <Form.DateRangePicker
                                 legend={intlHelper(intl, 'bostedUtland.form.tidsperiode.spm')}
-                                fromDatepickerProps={{
+                                fullscreenOverlay={true}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                allowRangesToStartAndStopOnSameDate={false}
+                                disabledDateRanges={andreBosteder}
+                                fromInputProps={{
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
-                                    fullscreenOverlay: true,
-                                    ...fomDateLimits,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateFromDate(
                                             date,
@@ -81,11 +92,9 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                                             values.tom
                                         ),
                                 }}
-                                toDatepickerProps={{
+                                toInputProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
-                                    fullscreenOverlay: true,
-                                    ...tomDateLimits,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateToDate(
                                             date,
