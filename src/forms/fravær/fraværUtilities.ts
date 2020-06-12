@@ -70,7 +70,7 @@ export const validateNotHelgedag = (maybeDate: Date | undefined): FieldValidatio
     maybeDate && dateErHelg(maybeDate) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
 
 export const timeText = (timer: string): string =>
-    timer === '1' || timer.includes('.') ? 'time' : 'timer';
+    timer === '0' || timer === '0.5' || timer === '1' ? 'time' : 'timer';
 
 export const dateRangeToFomTom = (dateRange: DateRange): { fom: Date; tom: Date } => ({
     fom: dateRange.from,
