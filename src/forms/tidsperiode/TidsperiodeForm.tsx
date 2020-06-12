@@ -2,11 +2,11 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { isTidsperiode, Tidsperiode } from './types';
+import { mapFomTomToDateRange } from '../utils';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -42,11 +42,6 @@ enum TidsperiodeFormFields {
 
 type FormValues = Partial<Tidsperiode>;
 
-const mapTidsperiodeToDateRange = (tidsperiode: Tidsperiode): DateRange => ({
-    from: tidsperiode.fom,
-    to: tidsperiode.tom,
-});
-
 const Form = getTypedFormComponents<TidsperiodeFormFields, FormValues>();
 
 const TidsperiodeForm = ({
@@ -75,7 +70,7 @@ const TidsperiodeForm = ({
                 initialValues={tidsperiode}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
-                    const dateRanges = alleTidsperioder.map((t) => mapTidsperiodeToDateRange(t));
+                    const dateRanges = alleTidsperioder.map(mapFomTomToDateRange);
 
                     const validateFromDate = (date: Date) => {
                         return dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom);
