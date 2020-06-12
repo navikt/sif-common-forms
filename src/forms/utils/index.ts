@@ -1,7 +1,7 @@
-import { Tidsperiode } from '../tidsperiode';
+import { DateTidsperiode } from '../tidsperiode';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
-export const mapFomTomToDateRange = ({ fom, tom }: Tidsperiode): DateRange => ({
+export const mapFomTomToDateRange = ({ fom, tom }: DateTidsperiode): DateRange => ({
     from: fom,
     to: tom,
 });
