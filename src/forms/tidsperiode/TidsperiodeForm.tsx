@@ -6,6 +6,7 @@ import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRang
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { isTidsperiode, Tidsperiode } from './types';
+import { mapFomTomToDateRange } from '../utils';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -20,6 +21,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     tidsperiode?: Partial<Tidsperiode>;
+    alleTidsperioder?: Tidsperiode[];
     formLabels?: Partial<TidsperiodeFormLabels>;
     onSubmit: (values: Tidsperiode) => void;
     onCancel: () => void;
@@ -46,7 +48,8 @@ const TidsperiodeForm = ({
     maxDate,
     minDate,
     formLabels,
-    tidsperiode: initialValues = { fom: undefined, tom: undefined },
+    tidsperiode = { fom: undefined, tom: undefined },
+    alleTidsperioder = [],
     onSubmit,
     onCancel,
 }: Props) => {
@@ -64,52 +67,56 @@ const TidsperiodeForm = ({
     return (
         <>
             <Form.FormikWrapper
-                initialValues={initialValues}
+                initialValues={tidsperiode}
                 onSubmit={onFormikSubmit}
-                renderForm={(formik) => (
-                    <Form.Form
-                        onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                        <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
-                        <FormBlock>
-                            <Form.DateIntervalPicker
-                                legend={inlineLabels.intervalTitle}
-                                fromDatepickerProps={{
-                                    label: inlineLabels.fromDate,
-                                    name: TidsperiodeFormFields.fom,
-                                    fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: maxDate || formik.values.tom,
-                                    },
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
-                                    onChange: () => {
-                                        setTimeout(() => {
-                                            formik.validateField(TidsperiodeFormFields.tom);
-                                        });
-                                    },
-                                }}
-                                toDatepickerProps={{
-                                    label: inlineLabels.toDate,
-                                    name: TidsperiodeFormFields.tom,
-                                    fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate || formik.values.fom,
-                                        maksDato: maxDate,
-                                    },
-                                    validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
-                                    onChange: () => {
-                                        setTimeout(() => {
-                                            formik.validateField(TidsperiodeFormFields.fom);
-                                        });
-                                    },
-                                }}
-                            />
-                        </FormBlock>
-                    </Form.Form>
-                )}
+                renderForm={(formik) => {
+                    const dateRanges = alleTidsperioder.map(mapFomTomToDateRange);
+
+                    const validateFromDate = (date: Date) => {
+                        return dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom);
+                    };
+
+                    const validateToDate = (date: Date) => {
+                        return dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.tom);
+                    };
+
+                    return (
+                        <Form.Form
+                            onCancel={onCancel}
+                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                            <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
+                            <FormBlock>
+                                <Form.DateRangePicker
+                                    legend={inlineLabels.intervalTitle}
+                                    fullscreenOverlay={true}
+                                    minDate={minDate}
+                                    maxDate={maxDate}
+                                    disabledDateRanges={dateRanges}
+                                    fromInputProps={{
+                                        label: inlineLabels.fromDate,
+                                        name: TidsperiodeFormFields.fom,
+                                        validate: validateFromDate,
+                                        onChange: () => {
+                                            setTimeout(() => {
+                                                formik.validateField(TidsperiodeFormFields.tom);
+                                            });
+                                        },
+                                    }}
+                                    toInputProps={{
+                                        label: inlineLabels.toDate,
+                                        name: TidsperiodeFormFields.tom,
+                                        validate: validateToDate,
+                                        onChange: () => {
+                                            setTimeout(() => {
+                                                formik.validateField(TidsperiodeFormFields.fom);
+                                            });
+                                        },
+                                    }}
+                                />
+                            </FormBlock>
+                        </Form.Form>
+                    );
+                }}
             />
         </>
     );

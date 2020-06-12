@@ -6,6 +6,8 @@ import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRang
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Ferieuttak, isFerieuttak } from './types';
+import { mapFomTomToDateRange } from '../utils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface FerieuttakFormLabels {
     title: string;
@@ -20,6 +22,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     ferieuttak?: Partial<Ferieuttak>;
+    alleFerieuttak?: Ferieuttak[];
     labels?: Partial<FerieuttakFormLabels>;
     onSubmit: (values: Ferieuttak) => void;
     onCancel: () => void;
@@ -47,7 +50,8 @@ const FerieuttakForm = ({
     maxDate,
     minDate,
     labels,
-    ferieuttak: initialValues = { fom: undefined, tom: undefined },
+    ferieuttak = { fom: undefined, tom: undefined },
+    alleFerieuttak = [],
     onSubmit,
     onCancel,
 }: Props) => {
@@ -61,11 +65,17 @@ const FerieuttakForm = ({
     };
 
     const formLabels: FerieuttakFormLabels = { ...defaultLabels, ...labels };
+    const andreFerieuttak: DateRange[] | undefined =
+        ferieuttak === undefined
+            ? alleFerieuttak.map(mapFomTomToDateRange)
+            : alleFerieuttak.filter((f) => f.id !== ferieuttak.id).map(mapFomTomToDateRange);
+
+    console.log(andreFerieuttak);
 
     return (
         <>
             <Form.FormikWrapper
-                initialValues={initialValues}
+                initialValues={ferieuttak}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => (
                     <Form.Form
@@ -73,16 +83,16 @@ const FerieuttakForm = ({
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
-                            <Form.DateIntervalPicker
+                            <Form.DateRangePicker
                                 legend={formLabels.intervalTitle}
-                                fromDatepickerProps={{
+                                fullscreenOverlay={true}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                allowRangesToStartAndStopOnSameDate={true}
+                                disabledDateRanges={andreFerieuttak}
+                                fromInputProps={{
                                     label: formLabels.fromDate,
                                     name: FerieuttakFormFields.fom,
-                                    fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: maxDate || formik.values.tom,
-                                    },
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom),
                                     onChange: () => {
@@ -91,14 +101,9 @@ const FerieuttakForm = ({
                                         });
                                     },
                                 }}
-                                toDatepickerProps={{
+                                toInputProps={{
                                     label: formLabels.toDate,
                                     name: FerieuttakFormFields.tom,
-                                    fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate || formik.values.fom,
-                                        maksDato: maxDate,
-                                    },
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.fom),
                                     onChange: () => {

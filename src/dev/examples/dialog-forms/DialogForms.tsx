@@ -7,10 +7,16 @@ import { RouteConfig } from '../../config/routeConfig';
 import BostedUtlandExample from './BostedUtlandExample';
 import FerieuttakExample from './FerieuttakExample';
 import FosterbarnExample from './FosterbarnExample';
+import TidsperiodeExample from './TidsperiodeExample';
 import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
 import FraværExample from './FraværExample';
 
 const tabRoutes: RouteConfig[] = [
+    {
+        path: 'tidsrom',
+        renderContent: () => <TidsperiodeExample />,
+        title: 'Tidsperiode',
+    },
     {
         path: 'utenlandsopphold',
         renderContent: () => <UtenlandsoppholdIPeriodenExample />,
