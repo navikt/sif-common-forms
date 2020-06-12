@@ -30,9 +30,10 @@ function TidsperiodeListAndDialog<FieldNames>({
                 dialogWidth="narrow"
                 validate={validate}
                 sortFunc={sortItemsByFom}
-                formRenderer={({ onSubmit, onCancel, item }) => (
+                formRenderer={({ onSubmit, onCancel, item, allItems }) => (
                     <TidsperiodeForm
                         tidsperiode={item}
+                        alleTidsperioder={allItems}
                         formLabels={{ title: formTitle }}
                         minDate={minDate}
                         maxDate={maxDate}

@@ -12,14 +12,11 @@ import {
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import { getCountryName, YesOrNo } from '@navikt/sif-common-formik';
+import { getCountryName, YesOrNo, DateRange } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { isUtenlandsoppholdType, Utenlandsopphold, UtenlandsoppholdÅrsak } from './types';
-import { Tidsperiode } from '../tidsperiode';
-import { getMaxDateForDateInDateIntervalPicker } from '@navikt/sif-common-core/lib/utils/dateIntervalPickerUtils';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     minDate: Date;
@@ -52,9 +49,9 @@ type FormValues = Partial<Utenlandsopphold>;
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, FormValues>();
 
-export const mapTidsperiodeToDateRange = (tidsperiode: Tidsperiode): DateRange => ({
-    from: tidsperiode.fom,
-    to: tidsperiode.tom,
+const mapUtenlandsoppholdToDateRange = (opphold: Utenlandsopphold): DateRange => ({
+    from: opphold.fom,
+    to: opphold.tom,
 });
 
 const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onSubmit, onCancel }: Props) => {
@@ -71,9 +68,10 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
         }
     };
 
-    const registrerteTidsperioder: Tidsperiode[] | undefined =
-        opphold === undefined ? alleOpphold : alleOpphold.filter((o) => o.id !== opphold.id);
-
+    const registrerteTidsperioder: DateRange[] | undefined =
+        opphold === undefined
+            ? alleOpphold.map(mapUtenlandsoppholdToDateRange)
+            : alleOpphold.filter((o) => o.id !== opphold.id).map(mapUtenlandsoppholdToDateRange);
     return (
         <Form.FormikWrapper
             initialValues={opphold || defaultFormValues}
@@ -82,30 +80,6 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 const {
                     values: { fom, tom, landkode, erBarnetInnlagt, barnInnlagtPerioder = [], årsak },
                 } = formik;
-
-                const fromDateLimitations = {
-                    minDato: minDate,
-                    maksDato:
-                        getMaxDateForDateInDateIntervalPicker({
-                            fromDate: fom,
-                            maxDate,
-                            toDate: tom,
-                            dateRanges: registrerteTidsperioder.map(mapTidsperiodeToDateRange),
-                        }) || maxDate,
-                    ugyldigeTidsperioder: registrerteTidsperioder,
-                };
-
-                const toDateLimitations = {
-                    minDato: fom || minDate,
-                    maksDato:
-                        getMaxDateForDateInDateIntervalPicker({
-                            fromDate: fom,
-                            maxDate,
-                            toDate: tom,
-                            dateRanges: registrerteTidsperioder.map(mapTidsperiodeToDateRange),
-                        }) || maxDate,
-                    ugyldigeTidsperioder: registrerteTidsperioder,
-                };
 
                 const includeInnlagtPerioderQuestion =
                     fom !== undefined && tom !== undefined && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
@@ -132,33 +106,21 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                             <FormattedMessage id="utenlandsopphold.form.tittel" />
                         </Systemtittel>
                         <FormBlock>
-                            <Form.DateIntervalPicker
+                            <Form.DateRangePicker
                                 legend={intlHelper(intl, 'utenlandsopphold.form.tidsperiode.spm')}
-                                fromDatepickerProps={{
+                                fullscreenOverlay={true}
+                                disabledDateRanges={registrerteTidsperioder}
+                                fromInputProps={{
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
-                                    fullscreenOverlay: true,
-                                    dateLimitations: fromDateLimitations,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateFromDate(
-                                            date,
-                                            fromDateLimitations.minDato,
-                                            fromDateLimitations.maksDato,
-                                            tom
-                                        ),
+                                        dateRangeValidation.validateFromDate(date, minDate, maxDate, tom),
                                 }}
-                                toDatepickerProps={{
+                                toInputProps={{
                                     name: UtenlandsoppholdFormFields.tom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.tilDato'),
-                                    fullscreenOverlay: true,
-                                    dateLimitations: toDateLimitations,
                                     validate: (date: Date) =>
-                                        dateRangeValidation.validateToDate(
-                                            date,
-                                            toDateLimitations.minDato,
-                                            toDateLimitations.maksDato,
-                                            fom
-                                        ),
+                                        dateRangeValidation.validateToDate(date, minDate, maxDate, fom),
                                 }}
                             />
                         </FormBlock>

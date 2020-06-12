@@ -59,10 +59,8 @@ const FrilansoppdragForm = ({ onCancel, oppdrag, onSubmit, minDate, maxDate }: P
                                     fullscreenOverlay: true,
                                     name: FrilansoppdragFormField.fom,
                                     showYearSelector: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: values.tom || maxDate,
-                                    },
+                                    minDate,
+                                    maxDate: values.tom || maxDate,
                                     validate: (date) =>
                                         dateRangeValidation.validateFromDate(date, minDate, maxDate, values.tom),
                                 }}
@@ -72,10 +70,8 @@ const FrilansoppdragForm = ({ onCancel, oppdrag, onSubmit, minDate, maxDate }: P
                                     fullscreenOverlay: true,
                                     disabled: values.erPågående === true,
                                     showYearSelector: true,
-                                    dateLimitations: {
-                                        minDato: values.fom || minDate,
-                                        maksDato: maxDate,
-                                    },
+                                    minDate: values.fom || minDate,
+                                    maxDate,
                                     validate:
                                         values.erPågående !== true
                                             ? (date: Date) =>

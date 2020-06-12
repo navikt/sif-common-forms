@@ -50,12 +50,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                 const { values } = formik;
 
                 const fomDateLimits = {
-                    minDato: minDate,
-                    maksDato: values.tom || maxDate,
+                    minDate,
+                    maxDate: values.tom || maxDate,
                 };
                 const tomDateLimits = {
-                    minDato: values.fom || minDate,
-                    maksDato: maxDate,
+                    minDate: values.fom || minDate,
+                    maxDate: maxDate,
                 };
                 return (
                     <Form.Form
@@ -72,12 +72,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: fomDateLimits,
+                                    ...fomDateLimits,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateFromDate(
                                             date,
-                                            fomDateLimits.minDato,
-                                            fomDateLimits.maksDato,
+                                            fomDateLimits.minDate,
+                                            fomDateLimits.maxDate,
                                             values.tom
                                         ),
                                 }}
@@ -85,12 +85,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, onSubmit, onCancel }: Prop
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
                                     fullscreenOverlay: true,
-                                    dateLimitations: tomDateLimits,
+                                    ...tomDateLimits,
                                     validate: (date: Date) =>
                                         dateRangeValidation.validateToDate(
                                             date,
-                                            tomDateLimits.minDato,
-                                            tomDateLimits.maksDato,
+                                            tomDateLimits.minDate,
+                                            tomDateLimits.maxDate,
                                             values.fom
                                         ),
                                 }}

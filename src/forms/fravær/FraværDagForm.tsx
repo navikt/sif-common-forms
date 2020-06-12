@@ -8,7 +8,7 @@ import { FraværDag, isFraværDag } from './types';
 import FraværTimerSelect from './FraværTimerSelect';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { dateRangeToFomTom, toMaybeNumber, validateNotHelgedag } from './fraværUtilities';
+import { toMaybeNumber, validateNotHelgedag } from './fraværUtilities';
 import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
@@ -70,7 +70,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
     maksArbeidstidPerDag,
     onSubmit,
     onCancel,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFraværDag(formValues)) {
@@ -93,16 +93,14 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                         label: formLabels.date,
                         name: FraværDagFormFields.dato,
                         fullscreenOverlay: true,
-                        dateLimitations: {
-                            minDato: minDate,
-                            maksDato: maxDate,
-                            helgedagerIkkeTillatt: helgedagerIkkeTillatt || false,
-                            ugyldigeTidsperioder: dateRangesToDisable
-                                ? dateRangesToDisable
-                                      .filter(outDenneHvisInkludert(initialValues))
-                                      .map(dateRangeToFomTom)
-                                : undefined,
-                        },
+
+                        minDate,
+                        maxDate,
+                        disableWeekend: helgedagerIkkeTillatt || false,
+                        disabledDateRanges: dateRangesToDisable
+                            ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
+                            : undefined,
+
                         validate: helgedagerIkkeTillatt
                             ? validateAll([validateRequiredField, validateNotHelgedag])
                             : validateRequiredField,
