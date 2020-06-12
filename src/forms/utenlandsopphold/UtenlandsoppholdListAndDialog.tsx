@@ -1,8 +1,6 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels
-} from '@navikt/sif-common-formik';
+import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import UtenlandsoppholdListe from './UtenlandsoppholdList';
@@ -23,9 +21,10 @@ function UtenlandsoppholdListAndDialog<FieldNames>({ name, minDate, maxDate, val
             validate={validate}
             dialogWidth="narrow"
             sortFunc={sortItemsByFom}
-            formRenderer={({ onSubmit, onCancel, item }) => (
+            formRenderer={({ onSubmit, onCancel, item, allItems }) => (
                 <UtenlandsoppholdForm
                     opphold={item}
+                    alleOpphold={allItems}
                     minDate={minDate}
                     maxDate={maxDate}
                     onSubmit={onSubmit}

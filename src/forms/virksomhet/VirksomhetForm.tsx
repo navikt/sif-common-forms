@@ -167,26 +167,19 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
 
                         {(values.registrertINorge === YesOrNo.YES || values.registrertINorge === YesOrNo.NO) && (
                             <Box margin="xl">
-                                <Form.DateIntervalPicker
+                                <Form.DateRangePicker
                                     legend={txt.startdato(navnPåVirksomheten)}
-                                    fromDatepickerProps={{
+                                    showYearSelector={true}
+                                    maxDate={dateToday}
+                                    fromInputProps={{
                                         label: txt.kalender_fom,
                                         name: VirksomhetFormField.fom,
-                                        showYearSelector: true,
-                                        dateLimitations: {
-                                            maksDato: dateToday,
-                                        },
                                         validate: validateRequiredField,
                                     }}
-                                    toDatepickerProps={{
+                                    toInputProps={{
                                         label: txt.kalender_tom,
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
-                                        showYearSelector: true,
-                                        dateLimitations: {
-                                            minDato: values.fom || undefined,
-                                            maksDato: dateToday,
-                                        },
                                     }}
                                 />
                                 <Form.Checkbox
@@ -240,10 +233,8 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                                 name={VirksomhetFormField.oppstartsdato}
                                                 label={txt.har_blitt_yrkesaktiv_dato}
                                                 showYearSelector={true}
-                                                dateLimitations={{
-                                                    minDato: date3YearsAgo,
-                                                    maksDato: dateToday,
-                                                }}
+                                                minDate={date3YearsAgo}
+                                                maxDate={dateToday}
                                                 validate={validateRequiredField}
                                             />
                                         </ResponsivePanel>
@@ -267,10 +258,8 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
                                                 label={txt.varig_endring_dato}
                                                 validate={validateRequiredField}
-                                                dateLimitations={{
-                                                    minDato: date4YearsAgo,
-                                                    maksDato: dateToday,
-                                                }}
+                                                minDate={date4YearsAgo}
+                                                maxDate={dateToday}
                                             />
                                         </Box>
                                         <Box margin="xl">

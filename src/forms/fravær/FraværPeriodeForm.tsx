@@ -6,7 +6,7 @@ import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRang
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { FraværPeriode, isFraværPeriode } from './types';
-import { dateRangeToFomTom, validateNotHelgedag } from './fraværUtilities';
+import { validateNotHelgedag } from './fraværUtilities';
 import { validateAll } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
@@ -61,7 +61,7 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
     labels,
     onSubmit,
     onCancel,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFraværPeriode(formValues)) {
@@ -90,16 +90,12 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     label: formLabels.fromDate,
                                     name: FraværPeriodeFormFields.from,
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: minDate,
-                                        maksDato: formik.values.to || maxDate,
-                                        helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
-                                        ugyldigeTidsperioder: dateRangesToDisable
-                                            ? dateRangesToDisable
-                                                  .filter(outDenneHvisInkludert(initialValues))
-                                                  .map(dateRangeToFomTom)
-                                            : undefined,
-                                    },
+                                    minDate: minDate,
+                                    maxDate: formik.values.to || maxDate,
+                                    disableWeekend: helgedagerIkkeTillat || false,
+                                    disabledDateRanges: dateRangesToDisable
+                                        ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
+                                        : undefined,
                                     validate: validateAll([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
                                         (date: Date) =>
@@ -120,16 +116,13 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     label: formLabels.toDate,
                                     name: FraværPeriodeFormFields.to,
                                     fullscreenOverlay: true,
-                                    dateLimitations: {
-                                        minDato: formik.values.from || minDate,
-                                        maksDato: maxDate,
-                                        helgedagerIkkeTillatt: helgedagerIkkeTillat || false,
-                                        ugyldigeTidsperioder: dateRangesToDisable
-                                            ? dateRangesToDisable
-                                                  .filter(outDenneHvisInkludert(initialValues))
-                                                  .map(dateRangeToFomTom)
-                                            : undefined,
-                                    },
+                                    minDate: formik.values.from || minDate,
+                                    maxDate,
+                                    disableWeekend: helgedagerIkkeTillat || false,
+                                    disabledDateRanges: dateRangesToDisable
+                                        ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
+                                        : undefined,
+
                                     validate: validateAll([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
                                         (date: Date) =>

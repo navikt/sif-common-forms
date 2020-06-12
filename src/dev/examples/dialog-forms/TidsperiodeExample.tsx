@@ -7,25 +7,24 @@ import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fie
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import Panel from 'nav-frontend-paneler';
+import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import { Utenlandsopphold } from '../../../forms/utenlandsopphold/types';
-import UtenlandsoppholdForm from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
-import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/UtenlandsoppholdListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import { Tidsperiode } from '../../../forms/tidsperiode';
+import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeListAndDialog';
+import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
 
 enum FormField {
-    'utenlandsopphold' = 'utenlandsopphold',
+    'tidsperiode' = 'tidsperiode',
 }
 
 interface FormValues {
-    [FormField.utenlandsopphold]: Utenlandsopphold[];
+    [FormField.tidsperiode]: Tidsperiode[];
 }
-const initialValues: FormValues = {
-    utenlandsopphold: [],
-};
+const initialValues: FormValues = { tidsperiode: [] };
 
-const UtenlandsoppholdExample = () => {
-    const [singleFormValues, setSingleFormValues] = useState<Partial<Utenlandsopphold> | undefined>(undefined);
+const TidsperiodeExample = () => {
+    const [singleFormValues, setSingleFormValues] = useState<Partial<Tidsperiode> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
     return (
@@ -43,16 +42,15 @@ const UtenlandsoppholdExample = () => {
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                                <UtenlandsoppholdListAndDialog
+                                <TidsperiodeListAndDialog<FormField>
+                                    name={FormField.tidsperiode}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    name={FormField.utenlandsopphold}
                                     validate={validateRequiredList}
                                     labels={{
-                                        addLabel: 'Legg til utenlandsopphold',
-                                        listTitle: 'Registrerte utenlandsopphold',
-                                        modalTitle: 'Utenlandsopphold',
-                                        emptyListText: 'Ingen utenlandsopphold er lagt til',
+                                        addLabel: 'Legg til periode',
+                                        listTitle: 'Registrerte periode',
+                                        modalTitle: 'Periode',
                                     }}
                                 />
                             </TypedFormikForm>
@@ -65,20 +63,21 @@ const UtenlandsoppholdExample = () => {
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
             </Box>
+
             <DialogFormWrapper>
                 <Panel border={true}>
-                    <UtenlandsoppholdForm
-                        opphold={initialValues.utenlandsopphold[0]}
+                    <TidsperiodeForm
                         minDate={date1YearAgo}
                         maxDate={date1YearFromNow}
+                        tidsperiode={{}}
                         onSubmit={setSingleFormValues}
                         onCancel={() => console.log('cancel me')}
                     />
-                    <SubmitPreview values={singleFormValues} />
                 </Panel>
+                <SubmitPreview values={singleFormValues} />
             </DialogFormWrapper>
         </>
     );
 };
 
-export default UtenlandsoppholdExample;
+export default TidsperiodeExample;
