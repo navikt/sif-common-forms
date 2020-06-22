@@ -3,7 +3,7 @@ import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import TidsperiodeForm from './TidsperiodeForm';
 import TidsperiodeList from './TidsperiodeList';
-import { Tidsperiode } from './types';
+import { DateTidsperiode } from './types';
 
 interface Props<FieldNames> {
     name: FieldNames;
@@ -24,7 +24,7 @@ function TidsperiodeListAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Tidsperiode>
+            <FormikModalFormAndList<FieldNames, DateTidsperiode>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

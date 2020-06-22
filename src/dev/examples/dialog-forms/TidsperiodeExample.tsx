@@ -10,7 +10,7 @@ import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import { Tidsperiode } from '../../../forms/tidsperiode';
+import { DateTidsperiode } from '../../../forms/tidsperiode';
 import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeListAndDialog';
 import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
 
@@ -19,12 +19,12 @@ enum FormField {
 }
 
 interface FormValues {
-    [FormField.tidsperiode]: Tidsperiode[];
+    [FormField.tidsperiode]: DateTidsperiode[];
 }
 const initialValues: FormValues = { tidsperiode: [] };
 
 const TidsperiodeExample = () => {
-    const [singleFormValues, setSingleFormValues] = useState<Partial<Tidsperiode> | undefined>(undefined);
+    const [singleFormValues, setSingleFormValues] = useState<Partial<DateTidsperiode> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
     return (

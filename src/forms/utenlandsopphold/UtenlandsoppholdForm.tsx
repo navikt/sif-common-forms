@@ -106,6 +106,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 legend={intlHelper(intl, 'utenlandsopphold.form.tidsperiode.spm')}
                                 fullscreenOverlay={true}
                                 disabledDateRanges={registrerteTidsperioder}
+                                minDate={minDate}
+                                maxDate={maxDate}
                                 fromInputProps={{
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
