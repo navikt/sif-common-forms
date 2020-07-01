@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@craco/craco": "^5.6.3",
-        "@formatjs/intl-pluralrules": "^1.5.9",
+        "@formatjs/intl-pluralrules": "^2.2.11",
         "@navikt/sif-common-core": "^4.0.10",
         "@navikt/sif-common-formik": "^10.0.2",
         "@testing-library/jest-dom": "^5.10.0",
