@@ -8,6 +8,7 @@ import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-commo
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 
 interface Props {
     fosterbarn?: Partial<Fosterbarn>;
@@ -22,12 +23,6 @@ interface FosterbarnFormText {
     form_fornavn_label: string;
     form_etternavn_label: string;
 }
-
-const defaultText: FosterbarnFormText = {
-    form_etternavn_label: 'Etternavn',
-    form_fornavn_label: 'Fornavn',
-    form_fødselsnummer_label: 'Fødselsnummer',
-};
 
 enum FosterbarnFormField {
     fødselsnummer = 'fødselsnummer',
@@ -53,6 +48,12 @@ const FosterbarnForm = ({
         } else {
             throw new Error('Fosterbarn skjema: Formvalues is not a valid Fosterbarn on submit.');
         }
+    };
+
+    const defaultText: FosterbarnFormText = {
+        form_etternavn_label: intlHelper(intl, 'fosterbarn.form.etternavn_label'),
+        form_fornavn_label: intlHelper(intl, 'fosterbarn.form.fornavn_label'),
+        form_fødselsnummer_label: intlHelper(intl, 'fosterbarn.form.fødselsnummer_label'),
     };
 
     const txt = { ...defaultText, ...text };

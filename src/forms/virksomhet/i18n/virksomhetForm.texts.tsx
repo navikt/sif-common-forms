@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { VirksomhetFormText } from './textKeys';
 
@@ -41,11 +42,13 @@ export const VirksomhetTextNB: VirksomhetFormText = {
     revisor_navn: 'Oppgi navnet til revisor',
     revisor_telefon: 'Oppgi telefonnummeret til revisor',
     revisor_fullmakt: 'Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?',
-    veileder_innhenter_info_html: () => (
-        <div>
-            Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre.
-            <br />
-            Vi tar kontakt med deg hvis vi trenger flere opplysninger.
-        </div>
-    ),
+    veileder_innhenter_info_html: function ABC() {
+        return (
+            <div>
+                Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre.
+                <br />
+                Vi tar kontakt med deg hvis vi trenger flere opplysninger.
+            </div>
+        );
+    },
 };

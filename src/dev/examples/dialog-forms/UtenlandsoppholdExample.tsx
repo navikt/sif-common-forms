@@ -12,6 +12,8 @@ import { Utenlandsopphold } from '../../../forms/utenlandsopphold/types';
 import UtenlandsoppholdForm from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
 import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/UtenlandsoppholdListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 
 enum FormField {
     'utenlandsopphold' = 'utenlandsopphold',
@@ -65,6 +67,7 @@ const UtenlandsoppholdExample = () => {
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
             </Box>
+
             <DialogFormWrapper>
                 <Panel border={true}>
                     <UtenlandsoppholdForm
@@ -77,6 +80,8 @@ const UtenlandsoppholdExample = () => {
                     <SubmitPreview values={singleFormValues} />
                 </Panel>
             </DialogFormWrapper>
+
+            <MessagesPreview messages={utenlandsoppholdMessages} showExplanation={false} />
         </>
     );
 };

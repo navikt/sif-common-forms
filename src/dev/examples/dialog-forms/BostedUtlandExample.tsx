@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
@@ -13,6 +14,7 @@ import BostedUtlandForm from '../../../forms/bosted-utland/BostedUtlandForm';
 import BostedUtlandListAndDialog from '../../../forms/bosted-utland/BostedUtlandListAndDialog';
 import { BostedUtland } from '../../../forms/bosted-utland/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessages';
 
 enum FormField {
     'bosted' = 'bosted',
@@ -65,17 +67,21 @@ const FormikExample = () => {
                 <Undertittel>Kun dialog</Undertittel>
             </Box>
 
-            <DialogFormWrapper>
-                <Panel border={true}>
-                    <BostedUtlandForm
-                        minDate={date1YearAgo}
-                        maxDate={date1YearFromNow}
-                        onSubmit={setSingleFormValues}
-                        onCancel={() => console.log('cancel me')}
-                    />
-                </Panel>
-                <SubmitPreview values={singleFormValues} />
-            </DialogFormWrapper>
+            <Box margin="xxl" padBottom="l">
+                <DialogFormWrapper>
+                    <Panel border={true}>
+                        <BostedUtlandForm
+                            minDate={date1YearAgo}
+                            maxDate={date1YearFromNow}
+                            onSubmit={setSingleFormValues}
+                            onCancel={() => console.log('cancel me')}
+                        />
+                    </Panel>
+                    <SubmitPreview values={singleFormValues} />
+                </DialogFormWrapper>
+            </Box>
+
+            <MessagesPreview messages={bostedUtlandMessages} showExplanation={false} />
         </>
     );
 };

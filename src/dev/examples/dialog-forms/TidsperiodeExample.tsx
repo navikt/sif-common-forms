@@ -13,6 +13,8 @@ import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import { DateTidsperiode } from '../../../forms/tidsperiode';
 import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeListAndDialog';
 import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 
 enum FormField {
     'tidsperiode' = 'tidsperiode',
@@ -76,6 +78,8 @@ const TidsperiodeExample = () => {
                 </Panel>
                 <SubmitPreview values={singleFormValues} />
             </DialogFormWrapper>
+
+            <MessagesPreview messages={tidsperiodeMessages} showExplanation={false} />
         </>
     );
 };

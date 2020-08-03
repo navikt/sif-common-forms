@@ -7,6 +7,7 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { isDateTidsperiode, DateTidsperiode } from './types';
 import { mapFomTomToDateRange } from '../utils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -27,14 +28,6 @@ interface Props {
     onCancel: () => void;
 }
 
-const defaultLabels: TidsperiodeFormLabels = {
-    title: 'Tidsperiode',
-    fromDate: 'Fra og med',
-    toDate: 'Til og med',
-    okButton: 'Ok',
-    cancelButton: 'Avbryt',
-};
-
 enum TidsperiodeFormFields {
     tom = 'tom',
     fom = 'fom',
@@ -54,12 +47,21 @@ const TidsperiodeForm = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
+
     const onFormikSubmit = (formValues: FormValues) => {
         if (isDateTidsperiode(formValues)) {
             onSubmit(formValues);
         } else {
             throw new Error('TidsperiodeForm: Formvalues is not a valid Tidsperiode on submit.');
         }
+    };
+
+    const defaultLabels: TidsperiodeFormLabels = {
+        title: intlHelper(intl, 'tidsperiode.form.title'),
+        fromDate: intlHelper(intl, 'tidsperiode.form.fromDate'),
+        toDate: intlHelper(intl, 'tidsperiode.form.toDate'),
+        okButton: intlHelper(intl, 'tidsperiode.form.okButton'),
+        cancelButton: intlHelper(intl, 'tidsperiode.form.cancelButton'),
     };
 
     const inlineLabels: TidsperiodeFormLabels = { ...defaultLabels, ...formLabels };

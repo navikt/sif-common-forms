@@ -18,6 +18,8 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { fraværDagToFraværDateRange, validateNoCollisions } from '../../../forms/fravær/fraværUtilities';
 import { validateAll } from '../../../forms/fravær/fraværValidationUtils';
 import Panel from 'nav-frontend-paneler';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import fraværMessages from '../../../forms/fravær/fraværMessages';
 
 interface Props {}
 
@@ -69,7 +71,7 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                                         ])}
                                         labels={{
                                             addLabel: 'Legg til periode',
-                                            modalTitle: 'Fravær hele dager'
+                                            modalTitle: 'Fravær hele dager',
                                         }}
                                         dateRangesToDisable={[
                                             ...values.perioder,
@@ -153,6 +155,8 @@ const FraværExample: React.FunctionComponent<Props> = (props) => {
                     <SubmitPreview values={fraværDagSingleFormValues} />
                 </DialogFormWrapper>
             </FormBlock>
+
+            <MessagesPreview messages={fraværMessages} showExplanation={false} />
         </>
     );
 };
