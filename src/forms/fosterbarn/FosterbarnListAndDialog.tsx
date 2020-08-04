@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { FormikModalFormAndList, FormikValidateFunction } from '@navikt/sif-common-formik';
 import FosterbarnForm from './FosterbarnForm';
 import FosterbarnList from './FosterbarnList';
 import { Fosterbarn } from './types';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { useIntl } from 'react-intl';
 
 interface Props<FieldNames> {
     name: FieldNames;
@@ -13,6 +16,14 @@ interface Props<FieldNames> {
 }
 
 function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, includeName }: Props<FieldNames>) {
+    const intl = useIntl();
+
+    const defaultText: FosterbarnListAndDialogText = {
+        liste_legg_til_knapp: intlHelper(intl, 'fosterbarn.list.liste_legg_til_knapp'),
+        liste_tittel: intlHelper(intl, 'fosterbarn.list.liste_tittel'),
+        modal_tittel: intlHelper(intl, 'fosterbarn.modal_tittel'),
+    };
+
     const txt = { ...defaultText, ...texts };
     return (
         <>
@@ -23,7 +34,7 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, incl
                     modalTitle: txt.modal_tittel,
                     emptyListText: txt.liste_tom_liste_tekst,
                     listTitle: txt.liste_tittel,
-                    info
+                    info,
                 }}
                 dialogWidth="narrow"
                 validate={validate}
@@ -49,11 +60,5 @@ export interface FosterbarnListAndDialogText {
     liste_tom_liste_tekst?: string;
     modal_tittel: string;
 }
-
-export const defaultText: FosterbarnListAndDialogText = {
-    liste_legg_til_knapp: 'Legg til fosterbarn',
-    liste_tittel: 'Registrerte fosterbarn',
-    modal_tittel: 'Fosterbarn'
-};
 
 export default FosterbarnListAndDialog;

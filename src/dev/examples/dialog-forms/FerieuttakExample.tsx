@@ -13,6 +13,8 @@ import FerieuttakForm from '../../../forms/ferieuttak/FerieuttakForm';
 import FerieuttakListAndDialog from '../../../forms/ferieuttak/FerieuttakListAndDialog';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 
 enum FormField {
     'ferie' = 'ferie',
@@ -77,6 +79,8 @@ const FormikExample = () => {
                 </Panel>
                 <SubmitPreview values={singleFormValues} />
             </DialogFormWrapper>
+
+            <MessagesPreview messages={ferieuttakMessages} showExplanation={false} />
         </>
     );
 };

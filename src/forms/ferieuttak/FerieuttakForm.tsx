@@ -8,6 +8,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { Ferieuttak, isFerieuttak } from './types';
 import { mapFomTomToDateRange } from '../utils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 
 export interface FerieuttakFormLabels {
     title: string;
@@ -27,15 +28,6 @@ interface Props {
     onSubmit: (values: Ferieuttak) => void;
     onCancel: () => void;
 }
-
-const defaultLabels: FerieuttakFormLabels = {
-    title: 'Registrer uttak av ferie',
-    fromDate: 'Fra og med',
-    toDate: 'Til og med',
-    intervalTitle: 'Velg tidsrom',
-    okButton: 'Ok',
-    cancelButton: 'Avbryt',
-};
 
 enum FerieuttakFormFields {
     tom = 'tom',
@@ -64,13 +56,21 @@ const FerieuttakForm = ({
         }
     };
 
+    const defaultLabels: FerieuttakFormLabels = {
+        title: intlHelper(intl, 'ferieuttak.list.title'),
+        fromDate: intlHelper(intl, 'ferieuttak.list.fromDate'),
+        toDate: intlHelper(intl, 'ferieuttak.list.toDate'),
+        intervalTitle: intlHelper(intl, 'ferieuttak.list.intervalTitle'),
+        okButton: intlHelper(intl, 'ferieuttak.list.okButton'),
+        cancelButton: intlHelper(intl, 'ferieuttak.list.cancelButton'),
+    };
+
     const formLabels: FerieuttakFormLabels = { ...defaultLabels, ...labels };
+
     const andreFerieuttak: DateRange[] | undefined =
         ferieuttak === undefined
             ? alleFerieuttak.map(mapFomTomToDateRange)
             : alleFerieuttak.filter((f) => f.id !== ferieuttak.id).map(mapFomTomToDateRange);
-
-    console.log(andreFerieuttak);
 
     return (
         <>

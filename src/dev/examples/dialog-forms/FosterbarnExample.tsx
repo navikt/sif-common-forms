@@ -12,6 +12,8 @@ import { Fosterbarn } from '../../../forms/fosterbarn';
 import FosterbarnForm from '../../../forms/fosterbarn/FosterbarnForm';
 import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -35,7 +37,7 @@ const FosterbarnExample = () => {
                 <TypedFormikWrapper<FormValues>
                     initialValues={initialValues}
                     onSubmit={setListFormValues}
-                    renderForm={(formik) => {
+                    renderForm={() => {
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
@@ -66,6 +68,8 @@ const FosterbarnExample = () => {
                 </Panel>
                 <SubmitPreview values={singleFormValues} />
             </DialogFormWrapper>
+
+            <MessagesPreview messages={fosterbarnMessages} showExplanation={false} />
         </>
     );
 };

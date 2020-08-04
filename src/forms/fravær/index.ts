@@ -6,4 +6,5 @@ export * from './FraværDagerListAndDialog';
 export * from './FraværPerioderList';
 export * from './FraværDagerList';
 export * from './fraværUtilities';
+export * from './fraværMessages';
 export * from './types';

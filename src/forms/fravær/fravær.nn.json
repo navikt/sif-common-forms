@@ -1,6 +1,0 @@
-{
-    "fravær.form.validation.required": "Feltet er påkrevd",
-    "fravær.form.validation.dateOutsideRange": "Første gyldige dato er {fom}, og siste gyldige dato er {tom}",
-    "fravær.form.validation.fromDateAfterToDate": "Fra-dato må være lik eller før til-dato",
-    "fravær.form.validation.toDateBeforeFromDate": "Til-dato må være lik eller etter fra-dato"
-}
