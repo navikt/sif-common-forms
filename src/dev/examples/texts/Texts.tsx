@@ -8,6 +8,7 @@ import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import fraværMessages from '../../../forms/fravær/fraværMessages';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
+import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 
 const Texts = () => {
     const formMessages: { title: string; messages: MessageFileFormat }[] = [];
@@ -17,6 +18,7 @@ const Texts = () => {
     formMessages.push({ title: 'Fravær', messages: fraværMessages });
     formMessages.push({ title: 'Tidsperiode', messages: tidsperiodeMessages });
     formMessages.push({ title: 'Utenlandsopphold', messages: utenlandsoppholdMessages });
+    formMessages.push({ title: 'Næringsvirksomhet (selvstendig næringsdrivende)', messages: virksomhetMessages });
     return (
         <div>
             {formMessages.map(({ title, messages }) => {

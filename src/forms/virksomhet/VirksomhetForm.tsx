@@ -2,11 +2,12 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
-import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
     validateOrgNumber,
     validatePhoneNumber,
@@ -20,7 +21,6 @@ import { FormikYesOrNoQuestion, getTypedFormComponents, YesOrNo } from '@navikt/
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { VirksomhetTextNB } from './i18n/virksomhetForm.texts';
 import InfoTilFisker from './parts/InfoTilFisker';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetHideFields } from './types';
 import { harFiskerNæringstype } from './virksomhetUtils';
@@ -63,7 +63,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
     };
 
     const intl = useIntl();
-    const txt = VirksomhetTextNB;
+    const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
 
     return (
@@ -79,27 +79,27 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Box padBottom="l">
-                            <Systemtittel tag="h1">{txt.form_title}</Systemtittel>
+                            <Systemtittel tag="h1">{getText('form_title')}</Systemtittel>
                         </Box>
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
-                            legend={txt.hvilken_type_virksomhet}
+                            legend={getText('hvilken_type_virksomhet')}
                             checkboxes={[
                                 {
                                     value: Næringstype.FISKER,
-                                    label: txt.næringstype_fisker,
+                                    label: getText('næringstype_fisker'),
                                 },
                                 {
                                     value: Næringstype.JORDBRUK,
-                                    label: txt.næringstype_jordbruker,
+                                    label: getText('næringstype_jordbruker'),
                                 },
                                 {
                                     value: Næringstype.DAGMAMMA,
-                                    label: txt.næringstype_dagmamma,
+                                    label: getText('næringstype_dagmamma'),
                                 },
                                 {
                                     value: Næringstype.ANNEN,
-                                    label: txt.næringstype_annet,
+                                    label: getText('næringstype_annet'),
                                 },
                             ]}
                             validate={validateRequiredList}
@@ -109,7 +109,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
                                     name={VirksomhetFormField.fiskerErPåBladB}
-                                    legend={txt.fisker_blad_b}
+                                    legend={getText('fisker_blad_b')}
                                     validate={validateYesOrNoIsAnswered}
                                 />
                             </Box>
@@ -118,7 +118,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                         <Box margin="xl">
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
-                                label={txt.hva_heter_virksomheten}
+                                label={getText('hva_heter_virksomheten')}
                                 validate={validateRequiredField}
                                 maxLength={50}
                             />
@@ -128,14 +128,14 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             values.navnPåVirksomheten !== undefined &&
                             hasValue(navnPåVirksomheten) && (
                                 <Box margin="xl">
-                                    <InfoTilFisker navnPåVirksomhet={values.navnPåVirksomheten} />
+                                    <InfoTilFisker navnPåVirksomheten={values.navnPåVirksomheten} />
                                 </Box>
                             )}
 
                         <Box margin="xl">
                             <Form.YesOrNoQuestion
                                 name={VirksomhetFormField.registrertINorge}
-                                legend={txt.registert_i_norge(navnPåVirksomheten)}
+                                legend={getText('registert_i_norge', { navnPåVirksomheten })}
                                 validate={validateYesOrNoIsAnswered}
                             />
                         </Box>
@@ -144,7 +144,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             <Box margin="xl">
                                 <Form.CountrySelect
                                     name={VirksomhetFormField.registrertILand}
-                                    label={txt.registert_i_hvilket_land(navnPåVirksomheten)}
+                                    label={getText('registert_i_hvilket_land', { navnPåVirksomheten })}
                                     validate={validateRequiredField}
                                     useAlpha3Code={true}
                                 />
@@ -155,7 +155,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             <Box margin="xl">
                                 <Form.Input
                                     name={VirksomhetFormField.organisasjonsnummer}
-                                    label={txt.organisasjonsnummer}
+                                    label={getText('organisasjonsnummer')}
                                     style={{ maxWidth: '10rem' }}
                                     maxLength={9}
                                     validate={(value) =>
@@ -168,22 +168,22 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                         {(values.registrertINorge === YesOrNo.YES || values.registrertINorge === YesOrNo.NO) && (
                             <Box margin="xl">
                                 <Form.DateRangePicker
-                                    legend={txt.startdato(navnPåVirksomheten)}
+                                    legend={getText('startdato', { navnPåVirksomheten })}
                                     showYearSelector={true}
                                     maxDate={dateToday}
                                     fromInputProps={{
-                                        label: txt.kalender_fom,
+                                        label: getText('kalender_fom'),
                                         name: VirksomhetFormField.fom,
                                         validate: validateRequiredField,
                                     }}
                                     toInputProps={{
-                                        label: txt.kalender_tom,
+                                        label: getText('kalender_tom'),
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
                                     }}
                                 />
                                 <Form.Checkbox
-                                    label={txt.kalender_pågående}
+                                    label={getText('kalender_pågående')}
                                     name={VirksomhetFormField.erPågående}
                                     afterOnChange={(checked) => {
                                         if (checked) {
@@ -199,15 +199,15 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 <Box margin="xl">
                                     <Form.Input
                                         name={VirksomhetFormField.næringsinntekt}
-                                        label={txt.næringsinntekt}
+                                        label={getText('næringsinntekt')}
                                         type="number"
                                         maxLength={10}
                                         max={MAKS_INNTEKT}
                                         style={{ maxWidth: '10rem' }}
                                         validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
                                         description={
-                                            <ExpandableInfo title={txt.næringsinntekt_info_title}>
-                                                {txt.næringsinntekt_info}
+                                            <ExpandableInfo title={getText('næringsinntekt_info_title')}>
+                                                {getText('næringsinntekt_info')}
                                             </ExpandableInfo>
                                         }
                                     />
@@ -217,11 +217,11 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         name={
                                             VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                                         }
-                                        legend={txt.har_blitt_yrkesaktiv}
+                                        legend={getText('har_blitt_yrkesaktiv')}
                                         validate={validateYesOrNoIsAnswered}
                                         description={
-                                            <ExpandableInfo title={txt.har_blitt_yrkesaktiv_info_title}>
-                                                {txt.har_blitt_yrkesaktiv_info}
+                                            <ExpandableInfo title={getText('har_blitt_yrkesaktiv_info_title')}>
+                                                {getText('har_blitt_yrkesaktiv_info')}
                                             </ExpandableInfo>
                                         }
                                     />
@@ -231,7 +231,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         <ResponsivePanel>
                                             <Form.DatePicker
                                                 name={VirksomhetFormField.oppstartsdato}
-                                                label={txt.har_blitt_yrkesaktiv_dato}
+                                                label={getText('har_blitt_yrkesaktiv_dato')}
                                                 showYearSelector={true}
                                                 minDate={date3YearsAgo}
                                                 maxDate={dateToday}
@@ -247,7 +247,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
                                         name={VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
-                                        legend={txt.varig_endring_spm}
+                                        legend={getText('varig_endring_spm')}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -256,7 +256,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         <Box margin="xl">
                                             <Form.DatePicker
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
-                                                label={txt.varig_endring_dato}
+                                                label={getText('varig_endring_dato')}
                                                 validate={validateRequiredField}
                                                 minDate={date4YearsAgo}
                                                 maxDate={dateToday}
@@ -267,7 +267,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                                 name={
                                                     VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
                                                 }
-                                                label={txt.varig_endring_inntekt}
+                                                label={getText('varig_endring_inntekt')}
                                                 type="number"
                                                 maxLength={10}
                                                 max={MAKS_INNTEKT}
@@ -278,7 +278,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         <Box margin="xl">
                                             <Form.Textarea
                                                 name={VirksomhetFormField.varigEndringINæringsinntekt_forklaring}
-                                                label={txt.varig_endring_tekst}
+                                                label={getText('varig_endring_tekst')}
                                                 validate={validateRequiredField}
                                                 maxLength={1000}
                                             />
@@ -293,7 +293,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
                                         name={VirksomhetFormField.harRegnskapsfører}
-                                        legend={txt.regnskapsfører_spm}
+                                        legend={getText('regnskapsfører_spm')}
                                         validate={validateYesOrNoIsAnswered}
                                     />
                                 </Box>
@@ -303,14 +303,14 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         <ResponsivePanel>
                                             <Form.Input
                                                 name={VirksomhetFormField.regnskapsfører_navn}
-                                                label={txt.regnskapsfører_navn}
+                                                label={getText('regnskapsfører_navn')}
                                                 validate={validateRequiredField}
                                                 maxLength={50}
                                             />
                                             <Box margin="xl">
                                                 <Form.Input
                                                     name={VirksomhetFormField.regnskapsfører_telefon}
-                                                    label={txt.regnskapsfører_telefon}
+                                                    label={getText('regnskapsfører_telefon')}
                                                     validate={validatePhoneNumber}
                                                     maxLength={15}
                                                 />
@@ -324,7 +324,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                         <Box margin="xl">
                                             <Form.YesOrNoQuestion
                                                 name={VirksomhetFormField.harRevisor}
-                                                legend={txt.revisor_spm}
+                                                legend={getText('revisor_spm')}
                                                 validate={validateYesOrNoIsAnswered}
                                             />
                                         </Box>
@@ -334,14 +334,14 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                                 <ResponsivePanel>
                                                     <Form.Input
                                                         name={VirksomhetFormField.revisor_navn}
-                                                        label={txt.revisor_navn}
+                                                        label={getText('revisor_navn')}
                                                         validate={validateRequiredField}
                                                         maxLength={50}
                                                     />
                                                     <Box margin="xl">
                                                         <Form.Input
                                                             name={VirksomhetFormField.revisor_telefon}
-                                                            label={txt.revisor_telefon}
+                                                            label={getText('revisor_telefon')}
                                                             validate={validatePhoneNumber}
                                                             maxLength={15}
                                                         />
@@ -349,7 +349,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                                     <Box margin="xl">
                                                         <Form.YesOrNoQuestion
                                                             name={VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor}
-                                                            legend={txt.revisor_fullmakt}
+                                                            legend={getText('revisor_fullmakt')}
                                                             validate={validateYesOrNoIsAnswered}
                                                         />
                                                     </Box>
@@ -364,11 +364,9 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             (values.harRevisor && values.harRevisor !== YesOrNo.UNANSWERED)) && (
                             <Box margin="xl">
                                 <CounsellorPanel>
-                                    {txt.veileder_innhenter_info_html()}
-
-                                    {/* /** Nynorsk:
-                                     Vi hentar inn opplysningar om verksemda og inntekta di frå offentlege register. Vi tek kontakt med deg viss vi treng fleire opplysningar.
-                                      */}
+                                    {getText('veileder_innhenter_info.1')}
+                                    <br />
+                                    {getText('veileder_innhenter_info.2')}
                                 </CounsellorPanel>
                             </Box>
                         )}
