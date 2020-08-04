@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "craco start",
         "test": "jest --maxWorkers=2 --config ./jest/jest.config.js",
+        "testw": "jest --maxWorkers=2 --config ./jest/jest.config.js --watch",
         "eject": "react-scripts eject",
         "build-lib": "npm-run-all clean-lib compile-lib-script copy-files-to-lib",
         "clean-lib": "rimraf ./lib",
@@ -125,7 +126,7 @@
         "react-collapse": "^5.0.1",
         "react-day-picker": "^7.4.8",
         "react-dom": "^16.12.0",
-        "react-intl": "^4.7.6",
+        "react-intl": "^5.4.5",
         "react-modal": "^3.11.1",
         "react-responsive": "^8.1.0",
         "react-router-dom": "^5.2.0",
