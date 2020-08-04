@@ -3,6 +3,7 @@ import React from 'react';
 import DialogForms from '../examples/dialog-forms/DialogForms';
 import VirksomhetExample from '../examples/virksomhet-example/VirksomhetExample';
 import Intro from '../Intro';
+import Texts from '../examples/texts/Texts';
 
 export interface RouteConfig {
     path: string;
@@ -25,6 +26,11 @@ export const routes: RouteConfig[] = [
         path: 'næring',
         title: 'Næringsvirksomhet',
         renderContent: () => <VirksomhetExample />,
+    },
+    {
+        path: 'texts',
+        title: 'Tekster',
+        renderContent: () => <Texts />,
     },
 ];
 
