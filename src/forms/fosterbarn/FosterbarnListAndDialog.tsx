@@ -19,9 +19,9 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, incl
     const intl = useIntl();
 
     const defaultText: FosterbarnListAndDialogText = {
-        liste_legg_til_knapp: intlHelper(intl, 'fosterbarn.list.liste_legg_til_knapp'),
-        liste_tittel: intlHelper(intl, 'fosterbarn.list.liste_tittel'),
-        modal_tittel: intlHelper(intl, 'fosterbarn.modal_tittel'),
+        liste_legg_til_knapp: intlHelper(intl, 'fosterbarn.list.legg_til_knapp'),
+        liste_tittel: intlHelper(intl, 'fosterbarn.list.tittel'),
+        modal_tittel: intlHelper(intl, 'fosterbarn.modal.tittel'),
     };
 
     const txt = { ...defaultText, ...texts };

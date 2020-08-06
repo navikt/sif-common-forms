@@ -26,7 +26,7 @@ function FraværDagerListAndDialog<FieldNames>({
     dateRangesToDisable,
     helgedagerIkkeTillatt,
     fraværDagFormLabels,
-    maksArbeidstidPerDag
+    maksArbeidstidPerDag,
 }: Props<FieldNames>) {
     return (
         <>
