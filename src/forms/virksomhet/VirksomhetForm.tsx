@@ -48,8 +48,6 @@ const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
     return undefined;
 };
 
-const initialValues: Partial<FormValues> = { næringstyper: [] };
-
 const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Props) => {
     const onFormikSubmit = (values: Partial<Virksomhet>) => {
         if (isVirksomhet(values)) {
@@ -68,7 +66,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
 
     return (
         <Form.FormikWrapper
-            initialValues={virksomhet || initialValues}
+            initialValues={virksomhet || { næringstyper: [] }}
             onSubmit={onFormikSubmit}
             renderForm={(formik: FormikProps<FormValues>) => {
                 const { values, setFieldValue } = formik;
