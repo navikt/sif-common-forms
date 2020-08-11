@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo, getCountryName } from '@navikt/sif-common-formik/lib';
 import { Virksomhet, VirksomhetApiData } from './types';
@@ -66,18 +67,18 @@ export const mapVirksomhetToVirksomhetApiData = (
         }
     }
 
-    if (harRegnskapsfører) {
+    if (harRegnskapsfører && virksomhet.regnskapsfører_navn && virksomhet.regnskapsfører_telefon) {
         data.regnskapsfører = {
-            navn: virksomhet.regnskapsfører_navn!,
-            telefon: virksomhet.regnskapsfører_telefon!,
+            navn: virksomhet.regnskapsfører_navn,
+            telefon: virksomhet.regnskapsfører_telefon,
         };
     }
 
     if (!harRegnskapsfører) {
-        if (virksomhet.harRevisor === YesOrNo.YES) {
+        if (virksomhet.harRevisor === YesOrNo.YES && virksomhet.revisor_navn && virksomhet.revisor_telefon) {
             data.revisor = {
-                navn: virksomhet.revisor_navn!,
-                telefon: virksomhet.revisor_telefon!,
+                navn: virksomhet.revisor_navn,
+                telefon: virksomhet.revisor_telefon,
                 kanInnhenteOpplysninger: virksomhet.kanInnhenteOpplsyningerFraRevisor === YesOrNo.YES,
             };
         }
