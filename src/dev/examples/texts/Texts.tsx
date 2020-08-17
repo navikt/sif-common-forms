@@ -2,6 +2,7 @@ import React from 'react';
 import { MessageFileFormat } from '@navikt/sif-common-core/lib/dev-utils/intl/devIntlUtils';
 import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import MessagePreviewExplanation from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagePreviewExplanation';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
@@ -9,6 +10,7 @@ import fraværMessages from '../../../forms/fravær/fraværMessages';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 const Texts = () => {
     const formMessages: { title: string; messages: MessageFileFormat }[] = [];
@@ -21,6 +23,9 @@ const Texts = () => {
     formMessages.push({ title: 'Næringsvirksomhet (selvstendig næringsdrivende)', messages: virksomhetMessages });
     return (
         <div>
+            <Box>
+                <MessagePreviewExplanation />
+            </Box>
             {formMessages.map(({ title, messages }) => {
                 return (
                     <div key={title}>
