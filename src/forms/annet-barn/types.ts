@@ -3,6 +3,7 @@ import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 export interface AnnetBarn {
     id?: string;
     fnr: string;
+    fødselsdato: Date;
     navn: string;
 }
 

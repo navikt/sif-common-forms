@@ -11,6 +11,7 @@ import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-commo
 export interface AnnetBarnFormLabels {
     title: string;
     fnr: string;
+    fødselsdato: string;
     navn: string;
     okButton: string;
     cancelButton: string;
@@ -25,6 +26,7 @@ interface Props {
 
 enum AnnetBarnFormFields {
     fnr = 'fnr',
+    fødselsdato = 'fødselsdato',
     navn = 'navn',
 }
 
@@ -32,22 +34,28 @@ type FormValues = Partial<AnnetBarn>;
 
 const Form = getTypedFormComponents<AnnetBarnFormFields, FormValues>();
 
-const AnnetBarnForm = ({ annetBarn = { fnr: '', navn: '' }, labels, onSubmit, onCancel }: Props) => {
+const AnnetBarnForm = ({
+    annetBarn = { fnr: '', navn: '', fødselsdato: undefined },
+    labels,
+    onSubmit,
+    onCancel,
+}: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isAnnetBarn(formValues)) {
             onSubmit(formValues);
         } else {
-            throw new Error('AnnetbarnForm: Formvalues is not a valid Annetbarn on submit.');
+            throw new Error('AnnetBarnForm: Formvalues is not a valid AnnetBarn on submit.');
         }
     };
 
     const defaultLabels: AnnetBarnFormLabels = {
-        title: intlHelper(intl, 'annetbarn.form.title'),
-        fnr: intlHelper(intl, 'annetbarn.form.fnr'),
-        navn: intlHelper(intl, 'annetbarn.form.navn'),
-        okButton: intlHelper(intl, 'annetbarn.form.okButton'),
-        cancelButton: intlHelper(intl, 'annetbarn.form.cancelButton'),
+        title: intlHelper(intl, 'annetBarn.form.title'),
+        fnr: intlHelper(intl, 'annetBarn.form.fnr'),
+        fødselsdato: intlHelper(intl, 'annetBarn.form.fødselsdato'),
+        navn: intlHelper(intl, 'annetBarn.form.navn'),
+        okButton: intlHelper(intl, 'annetBarn.form.okButton'),
+        cancelButton: intlHelper(intl, 'annetBarn.form.cancelButton'),
     };
 
     const formLabels: AnnetBarnFormLabels = { ...defaultLabels, ...labels };
@@ -69,6 +77,13 @@ const AnnetBarnForm = ({ annetBarn = { fnr: '', navn: '' }, labels, onSubmit, on
                                 validate={validateFødselsnummer}
                                 inputMode="numeric"
                                 maxLength={11}
+                            />
+                        </FormBlock>
+                        <FormBlock>
+                            <Form.DatePicker
+                                name={AnnetBarnFormFields.fødselsdato}
+                                label={formLabels.fødselsdato}
+                                validate={validateRequiredField}
                             />
                         </FormBlock>
                         <FormBlock>
