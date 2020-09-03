@@ -3,9 +3,7 @@ import '@formatjs/intl-pluralrules/dist/locale-data/nb';
 import '@formatjs/intl-pluralrules/dist/locale-data/nn';
 import '@formatjs/intl-pluralrules/polyfill';
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
-import {
-    getLocaleFromSessionStorage, setLocaleInSessionStorage
-} from '@navikt/sif-common-core/lib/utils/localeUtils';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/sif-common-core/lib/utils/localeUtils';
 import 'nav-frontend-skjema-style';
 import { Normaltekst } from 'nav-frontend-typografi';
 import AppIntlProvider from './dev/components/app-intl-provider/AppIntlProvider';
