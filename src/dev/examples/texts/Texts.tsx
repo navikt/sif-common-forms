@@ -11,6 +11,7 @@ import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages'
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import annetBarnMessages from '../../../forms/annetbarn/annetBarnMessages';
 
 const Texts = () => {
     const formMessages: { title: string; messages: MessageFileFormat }[] = [];
@@ -21,6 +22,7 @@ const Texts = () => {
     formMessages.push({ title: 'Tidsperiode', messages: tidsperiodeMessages });
     formMessages.push({ title: 'Utenlandsopphold', messages: utenlandsoppholdMessages });
     formMessages.push({ title: 'Næringsvirksomhet (selvstendig næringsdrivende)', messages: virksomhetMessages });
+    formMessages.push({ title: 'Annet barn', messages: annetBarnMessages });
     return (
         <div>
             <Box>

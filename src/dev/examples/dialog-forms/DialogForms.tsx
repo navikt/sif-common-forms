@@ -10,6 +10,7 @@ import FosterbarnExample from './FosterbarnExample';
 import TidsperiodeExample from './TidsperiodeExample';
 import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
 import FraværExample from './FraværExample';
+import AnnetBarnExample from './AnnetBarnExample';
 
 const tabRoutes: RouteConfig[] = [
     {
@@ -41,6 +42,11 @@ const tabRoutes: RouteConfig[] = [
         path: 'fravær',
         renderContent: () => <FraværExample />,
         title: 'Fravær',
+    },
+    {
+        path: 'annetbarn',
+        renderContent: () => <AnnetBarnExample />,
+        title: 'Annet Barn',
     },
 ];
 
