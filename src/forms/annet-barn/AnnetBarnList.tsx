@@ -31,23 +31,10 @@ const AnnetBarnList = ({ annetBarn = [], onDelete, onEdit }: Props) => {
             </div>
         );
     };
-    /* const getAnnetBarnTitleString = (annetBarn: AnnetBarn) =>
-        `${intlHelper(intl, 'annetbarn.list.født')} ${prettifyDate(annetBarn.fødselsdato)} ${annetBarn.navn}`;
-
-    /*const renderAnnetBarnLabel = (annetBarn: AnnetBarn): React.ReactNode => {
-        const title = getAnnetBarnTitleString(annetBarn);
-        return (
-            <>
-                {onEdit && <ActionLink onClick={() => onEdit(annetBarn)}>{title}</ActionLink>}
-                {!onEdit && <span>{title}</span>}
-            </>
-        );
-    };*/
 
     return (
         <ItemList<AnnetBarn>
             getItemId={(annetBarn) => annetBarn.id}
-            // getItemTitle={(annetBarn) => getAnnetBarnTitleString(annetBarn)}
             getItemTitle={(annetBarn) => annetBarn.navn}
             onDelete={onDelete}
             onEdit={onEdit}
