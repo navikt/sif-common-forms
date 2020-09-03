@@ -11,7 +11,7 @@ import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages'
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import annetBarnMessages from '../../../forms/annetbarn/annetBarnMessages';
+import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 
 const Texts = () => {
     const formMessages: { title: string; messages: MessageFileFormat }[] = [];

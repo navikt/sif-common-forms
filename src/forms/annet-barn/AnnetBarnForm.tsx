@@ -32,7 +32,7 @@ type FormValues = Partial<AnnetBarn>;
 
 const Form = getTypedFormComponents<AnnetBarnFormFields, FormValues>();
 
-const AnnetBarnForm = ({ annetBarn: annetBarn = { fnr: '', navn: '' }, labels, onSubmit, onCancel }: Props) => {
+const AnnetBarnForm = ({ annetBarn = { fnr: '', navn: '' }, labels, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isAnnetBarn(formValues)) {

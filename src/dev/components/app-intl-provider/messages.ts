@@ -5,7 +5,7 @@ import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandso
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
-import annetBarnMessages from '../../../forms/annetbarn/annetBarnMessages';
+import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 
 const commonNb = require('@navikt/sif-common-core/lib/i18n/common.nb.json');
 const commonNn = require('@navikt/sif-common-core/lib/i18n/common.nn.json');

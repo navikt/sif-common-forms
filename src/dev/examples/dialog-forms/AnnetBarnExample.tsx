@@ -8,12 +8,12 @@ import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-m
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import AnnetBarnForm from '../../../forms/annetbarn/AnnetBarnForm';
-import { AnnetBarn } from '../../../forms/annetbarn/types';
+import AnnetBarnForm from '../../../forms/annet-barn/AnnetBarnForm';
+import { AnnetBarn } from '../../../forms/annet-barn/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import annetBarnMessages from '../../../forms/annetbarn/annetBarnMessages';
-import AnnetBarnListAndDialog from '../../../forms/annetbarn/AnnetBarnListAndDialog';
+import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
+import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -37,7 +37,7 @@ const AnnetBarnExample = () => {
                 <TypedFormikWrapper<FormValues>
                     initialValues={initialValues}
                     onSubmit={setListFormValues}
-                    renderForm={(formik) => {
+                    renderForm={() => {
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
