@@ -14,6 +14,7 @@ import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
+import { dateToday, date4YearsAgo } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -52,6 +53,8 @@ const AnnetBarnExample = () => {
                                         modalTitle: 'Legg til barn',
                                         emptyListText: 'Ingen barn er lagt til',
                                     }}
+                                    minDate={date4YearsAgo}
+                                    maxDate={dateToday}
                                 />
                             </TypedFormikForm>
                         );
@@ -69,6 +72,8 @@ const AnnetBarnExample = () => {
                         annetBarn={{}}
                         onSubmit={setSingleFormValues}
                         onCancel={() => console.log('cancel me')}
+                        minDate={date4YearsAgo}
+                        maxDate={dateToday}
                     />
                 </Panel>
                 <SubmitPreview values={singleFormValues} />

@@ -6,7 +6,11 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    validateFødselsnummer,
+    validateRequiredField,
+    validateDateInRange,
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -20,6 +24,8 @@ export interface AnnetBarnFormLabels {
 interface Props {
     annetBarn?: Partial<AnnetBarn>;
     labels?: Partial<AnnetBarnFormLabels>;
+    minDate: Date;
+    maxDate: Date;
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
 }
@@ -37,6 +43,8 @@ const Form = getTypedFormComponents<AnnetBarnFormFields, FormValues>();
 const AnnetBarnForm = ({
     annetBarn = { fnr: '', navn: '', fødselsdato: undefined },
     labels,
+    minDate,
+    maxDate,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -83,7 +91,10 @@ const AnnetBarnForm = ({
                             <Form.DatePicker
                                 name={AnnetBarnFormFields.fødselsdato}
                                 label={formLabels.fødselsdato}
-                                validate={validateRequiredField}
+                                validate={validateDateInRange({ from: minDate, to: maxDate })}
+                                maxDate={maxDate}
+                                minDate={minDate}
+                                showYearSelector={true}
                             />
                         </FormBlock>
                         <FormBlock>
