@@ -52,7 +52,7 @@
         "@navikt/sif-common-core": "^5.0.37",
         "@navikt/sif-common-formik": "^10.0.3",
         "@testing-library/jest-dom": "^5.11.2",
-        "@testing-library/react": "^9.4.0",
+        "@testing-library/react": "^11.0.2",
         "@testing-library/user-event": "^8.1.0",
         "@types/jest": "^25.2.3",
         "@types/node": "^13.13.15",
