@@ -63,6 +63,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
     const intl = useIntl();
     const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
+    const hideRevisor = hideFormFields?.harRevisor === true;
 
     return (
         <Form.FormikWrapper
@@ -317,7 +318,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                     </FormBlock>
                                 )}
 
-                                {values.harRegnskapsfører === YesOrNo.NO && (
+                                {values.harRegnskapsfører === YesOrNo.NO && hideRevisor === false && (
                                     <>
                                         <Box margin="xl">
                                             <Form.YesOrNoQuestion
