@@ -37,7 +37,8 @@ export enum VirksomhetFormField {
 }
 
 export interface VirksomhetHideFields {
-    [VirksomhetFormField.fiskerErPåBladB]: boolean;
+    [VirksomhetFormField.fiskerErPåBladB]?: boolean;
+    [VirksomhetFormField.harRevisor]?: boolean;
 }
 
 export interface Virksomhet {
