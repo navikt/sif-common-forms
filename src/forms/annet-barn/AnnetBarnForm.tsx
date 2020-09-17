@@ -11,14 +11,18 @@ import {
     validateRequiredField,
     validateDateInRange,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export interface AnnetBarnFormLabels {
     title: string;
     fnr: string;
+    placeholderFnr: string;
     fødselsdato: string;
     navn: string;
+    placeholderNavn: string;
     okButton: string;
     cancelButton: string;
+    advarsel: string;
 }
 
 interface Props {
@@ -60,10 +64,13 @@ const AnnetBarnForm = ({
     const defaultLabels: AnnetBarnFormLabels = {
         title: intlHelper(intl, 'annetBarn.form.title'),
         fnr: intlHelper(intl, 'annetBarn.form.fnr'),
+        placeholderFnr: intlHelper(intl, 'annetBarn.form.placeholder.fnr'),
         fødselsdato: intlHelper(intl, 'annetBarn.form.fødselsdato'),
         navn: intlHelper(intl, 'annetBarn.form.navn'),
+        placeholderNavn: intlHelper(intl, 'annetBarn.form.placeholder.navn'),
         okButton: intlHelper(intl, 'annetBarn.form.okButton'),
         cancelButton: intlHelper(intl, 'annetBarn.form.cancelButton'),
+        advarsel: intlHelper(intl, 'annetBarn.form.advarsel'),
     };
 
     const formLabels: AnnetBarnFormLabels = { ...defaultLabels, ...labels };
@@ -80,11 +87,10 @@ const AnnetBarnForm = ({
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.Input
-                                name={AnnetBarnFormFields.fnr}
-                                label={formLabels.fnr}
-                                validate={validateFødselsnummer}
-                                inputMode="numeric"
-                                maxLength={11}
+                                name={AnnetBarnFormFields.navn}
+                                label={formLabels.navn}
+                                validate={validateRequiredField}
+                                placeholder={formLabels.placeholderNavn}
                             />
                         </FormBlock>
                         <FormBlock>
@@ -99,10 +105,16 @@ const AnnetBarnForm = ({
                         </FormBlock>
                         <FormBlock>
                             <Form.Input
-                                name={AnnetBarnFormFields.navn}
-                                label={formLabels.navn}
-                                validate={validateRequiredField}
+                                name={AnnetBarnFormFields.fnr}
+                                label={formLabels.fnr}
+                                validate={validateFødselsnummer}
+                                inputMode="numeric"
+                                maxLength={11}
+                                placeholder={formLabels.placeholderFnr}
                             />
+                        </FormBlock>
+                        <FormBlock>
+                            <AlertStripe type={'advarsel'}>{formLabels.advarsel}</AlertStripe>
                         </FormBlock>
                     </Form.Form>
                 )}
