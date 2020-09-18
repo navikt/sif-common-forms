@@ -10,9 +10,21 @@ interface Props<FieldNames> {
     labels: ModalFormAndListLabels;
     minDate: Date;
     maxDate: Date;
+    advarsel?: string;
+    placeholderFnr?: string;
+    placeholderNavn?: string;
 }
 
-function AnnetBarnListAndDialog<FieldNames>({ name, validate, labels, minDate, maxDate }: Props<FieldNames>) {
+function AnnetBarnListAndDialog<FieldNames>({
+    name,
+    validate,
+    labels,
+    minDate,
+    maxDate,
+    advarsel,
+    placeholderFnr,
+    placeholderNavn,
+}: Props<FieldNames>) {
     return (
         <>
             <FormikModalFormAndList<FieldNames, AnnetBarn>
@@ -27,6 +39,11 @@ function AnnetBarnListAndDialog<FieldNames>({ name, validate, labels, minDate, m
                         onCancel={onCancel}
                         minDate={minDate}
                         maxDate={maxDate}
+                        labels={{
+                            advarsel: advarsel,
+                            placeholderFnr: placeholderFnr,
+                            placeholderNavn: placeholderNavn,
+                        }}
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (

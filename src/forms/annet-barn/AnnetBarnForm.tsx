@@ -16,13 +16,13 @@ import AlertStripe from 'nav-frontend-alertstriper';
 export interface AnnetBarnFormLabels {
     title: string;
     fnr: string;
-    placeholderFnr: string;
+    placeholderFnr?: string;
     fødselsdato: string;
     navn: string;
-    placeholderNavn: string;
+    placeholderNavn?: string;
     okButton: string;
     cancelButton: string;
-    advarsel: string;
+    advarsel?: string;
 }
 
 interface Props {
@@ -64,13 +64,10 @@ const AnnetBarnForm = ({
     const defaultLabels: AnnetBarnFormLabels = {
         title: intlHelper(intl, 'annetBarn.form.title'),
         fnr: intlHelper(intl, 'annetBarn.form.fnr'),
-        placeholderFnr: intlHelper(intl, 'annetBarn.form.placeholder.fnr'),
         fødselsdato: intlHelper(intl, 'annetBarn.form.fødselsdato'),
         navn: intlHelper(intl, 'annetBarn.form.navn'),
-        placeholderNavn: intlHelper(intl, 'annetBarn.form.placeholder.navn'),
         okButton: intlHelper(intl, 'annetBarn.form.okButton'),
         cancelButton: intlHelper(intl, 'annetBarn.form.cancelButton'),
-        advarsel: intlHelper(intl, 'annetBarn.form.advarsel'),
     };
 
     const formLabels: AnnetBarnFormLabels = { ...defaultLabels, ...labels };
@@ -113,9 +110,11 @@ const AnnetBarnForm = ({
                                 placeholder={formLabels.placeholderFnr}
                             />
                         </FormBlock>
-                        <FormBlock>
-                            <AlertStripe type={'advarsel'}>{formLabels.advarsel}</AlertStripe>
-                        </FormBlock>
+                        {formLabels.advarsel && (
+                            <FormBlock>
+                                <AlertStripe type={'advarsel'}>{formLabels.advarsel}</AlertStripe>
+                            </FormBlock>
+                        )}
                     </Form.Form>
                 )}
             />
