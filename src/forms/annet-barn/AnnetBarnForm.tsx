@@ -11,7 +11,7 @@ import {
     validateRequiredField,
     validateDateInRange,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import AlertStripe from 'nav-frontend-alertstriper';
+import { validateAll } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -22,7 +22,7 @@ export interface AnnetBarnFormLabels {
     placeholderNavn?: string;
     okButton: string;
     cancelButton: string;
-    advarsel?: string;
+    aldersGrenseText?: string;
 }
 
 interface Props {
@@ -77,7 +77,7 @@ const AnnetBarnForm = ({
             <Form.FormikWrapper
                 initialValues={annetBarn}
                 onSubmit={onFormikSubmit}
-                renderForm={() => (
+                renderForm={(formik) => (
                     <Form.Form
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
@@ -93,28 +93,35 @@ const AnnetBarnForm = ({
                         <FormBlock>
                             <Form.DatePicker
                                 name={AnnetBarnFormFields.fødselsdato}
-                                label={formLabels.fødselsdato}
-                                validate={validateDateInRange({ from: minDate, to: maxDate })}
+                                label={
+                                    formLabels.aldersGrenseText
+                                        ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
+                                        : `${formLabels.fødselsdato}`
+                                }
+                                validate={validateAll([
+                                    validateRequiredField,
+                                    validateDateInRange({ from: minDate, to: maxDate }),
+                                ])}
                                 maxDate={maxDate}
                                 minDate={minDate}
                                 showYearSelector={true}
+                                onChange={() => {
+                                    setTimeout(() => {
+                                        formik.validateField(AnnetBarnFormFields.fødselsdato);
+                                    });
+                                }}
                             />
                         </FormBlock>
                         <FormBlock>
                             <Form.Input
                                 name={AnnetBarnFormFields.fnr}
                                 label={formLabels.fnr}
-                                validate={validateFødselsnummer}
+                                validate={validateAll([validateRequiredField, validateFødselsnummer])}
                                 inputMode="numeric"
                                 maxLength={11}
                                 placeholder={formLabels.placeholderFnr}
                             />
                         </FormBlock>
-                        {formLabels.advarsel && (
-                            <FormBlock>
-                                <AlertStripe type={'advarsel'}>{formLabels.advarsel}</AlertStripe>
-                            </FormBlock>
-                        )}
                     </Form.Form>
                 )}
             />
