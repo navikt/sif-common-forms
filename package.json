@@ -75,7 +75,7 @@
         "eslint-plugin-react": "^7.20.6",
         "formik": "^2.1.5",
         "gh-pages": "^2.2.0",
-        "history": "^4.10.1",
+        "history": "^5.0.0",
         "intl": "^1.2.5",
         "jest": "^25.5.4",
         "jest-css-modules": "^2.1.0",
