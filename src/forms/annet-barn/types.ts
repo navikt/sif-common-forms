@@ -8,6 +8,6 @@ export interface AnnetBarn {
 }
 
 export const isAnnetBarn = (annetBarn: Partial<AnnetBarn>): annetBarn is AnnetBarn => {
-    const { fnr, navn } = annetBarn;
-    return hasValue(fnr) && hasValue(navn);
+    const { fnr, navn, fødselsdato } = annetBarn;
+    return hasValue(fnr) && hasValue(navn) && hasValue(fødselsdato);
 };

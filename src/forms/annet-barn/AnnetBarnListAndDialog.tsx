@@ -10,7 +10,7 @@ interface Props<FieldNames> {
     labels: ModalFormAndListLabels;
     minDate: Date;
     maxDate: Date;
-    advarsel?: string;
+    aldersGrenseText?: string;
     placeholderFnr?: string;
     placeholderNavn?: string;
 }
@@ -21,7 +21,7 @@ function AnnetBarnListAndDialog<FieldNames>({
     labels,
     minDate,
     maxDate,
-    advarsel,
+    aldersGrenseText,
     placeholderFnr,
     placeholderNavn,
 }: Props<FieldNames>) {
@@ -40,7 +40,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                         minDate={minDate}
                         maxDate={maxDate}
                         labels={{
-                            advarsel: advarsel,
+                            aldersGrenseText: aldersGrenseText,
                             placeholderFnr: placeholderFnr,
                             placeholderNavn: placeholderNavn,
                         }}
