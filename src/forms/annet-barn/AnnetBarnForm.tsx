@@ -77,7 +77,7 @@ const AnnetBarnForm = ({
             <Form.FormikWrapper
                 initialValues={annetBarn}
                 onSubmit={onFormikSubmit}
-                renderForm={(formik) => (
+                renderForm={() => (
                     <Form.Form
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
@@ -105,11 +105,6 @@ const AnnetBarnForm = ({
                                 maxDate={maxDate}
                                 minDate={minDate}
                                 showYearSelector={true}
-                                onChange={() => {
-                                    setTimeout(() => {
-                                        formik.validateField(AnnetBarnFormFields.fødselsdato);
-                                    });
-                                }}
                             />
                         </FormBlock>
                         <FormBlock>
