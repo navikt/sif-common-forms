@@ -6,7 +6,7 @@ interface Props {
     values?: {};
 }
 
-function SubmitPreview<FormValues>({ values }: Props) {
+function SubmitPreview({ values }: Props) {
     return (
         <Box margin="xl">
             <div style={{ borderTop: '1px dashed #59514B', paddingTop: '1rem', margin: '0 -1rem' }}>

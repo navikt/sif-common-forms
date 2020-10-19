@@ -10,18 +10,18 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 
+interface FosterbarnFormText {
+    form_fødselsnummer_label: string;
+    form_fornavn_label: string;
+    form_etternavn_label: string;
+}
+
 interface Props {
     fosterbarn?: Partial<Fosterbarn>;
     onSubmit: (values: Fosterbarn) => void;
     onCancel: () => void;
     includeName?: boolean;
     text?: FosterbarnFormText;
-}
-
-interface FosterbarnFormText {
-    form_fødselsnummer_label: string;
-    form_fornavn_label: string;
-    form_etternavn_label: string;
 }
 
 enum FosterbarnFormField {
