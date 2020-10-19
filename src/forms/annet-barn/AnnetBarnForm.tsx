@@ -1,17 +1,17 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { AnnetBarn, isAnnetBarn } from './types';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
+    validateAll,
+    validateDateInRange,
     validateFødselsnummer,
     validateRequiredField,
-    validateDateInRange,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { validateAll } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { Systemtittel } from 'nav-frontend-typografi';
+import { AnnetBarn, isAnnetBarn } from './types';
 
 export interface AnnetBarnFormLabels {
     title: string;
