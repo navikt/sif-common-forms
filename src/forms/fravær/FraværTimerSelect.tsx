@@ -3,7 +3,7 @@ import { FraværDagForm, FraværDagFormFields } from './FraværDagForm';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { timeText } from './fraværUtilities';
 
-interface Props<> {
+interface Props {
     name: FraværDagFormFields;
     validate: FormikValidateFunction;
     label?: string;
