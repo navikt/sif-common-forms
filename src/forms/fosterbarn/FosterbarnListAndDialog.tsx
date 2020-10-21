@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { FormikModalFormAndList, FormikValidateFunction } from '@navikt/sif-common-formik';
 import FosterbarnForm from './FosterbarnForm';
@@ -6,6 +5,13 @@ import FosterbarnList from './FosterbarnList';
 import { Fosterbarn } from './types';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { useIntl } from 'react-intl';
+
+export interface FosterbarnListAndDialogText {
+    liste_legg_til_knapp: string;
+    liste_tittel?: string;
+    liste_tom_liste_tekst?: string;
+    modal_tittel: string;
+}
 
 interface Props<FieldNames> {
     name: FieldNames;
@@ -52,13 +58,6 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, incl
             />
         </>
     );
-}
-
-export interface FosterbarnListAndDialogText {
-    liste_legg_til_knapp: string;
-    liste_tittel?: string;
-    liste_tom_liste_tekst?: string;
-    modal_tittel: string;
 }
 
 export default FosterbarnListAndDialog;

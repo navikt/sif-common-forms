@@ -5,7 +5,7 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { FormikDatepickerValue, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { BostedUtland, BostedUtlandFormValues } from './types';
 import { mapFomTomToDateRange } from '../utils';

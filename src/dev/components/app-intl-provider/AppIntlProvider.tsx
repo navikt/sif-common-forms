@@ -9,9 +9,6 @@ import { appMessages } from './messages';
 
 export interface IntlProviderProps {
     locale: Locale;
-}
-export interface IntlProviderProps {
-    locale: Locale;
     onError?: (error: any) => void;
 }
 

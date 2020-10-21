@@ -29,14 +29,14 @@ describe('annetBarn', () => {
         const barnJson = jsonSort(mapAnnetBarnToFormValues(annetBarn));
         expect(barnJson).toEqual(formJson);
     });
-    it('maps formValues to annetBarn correctly - with id of annet barn', () => {
+    it('maps formValues to annetBarn correctly - with id', () => {
         const barnJson = jsonSort(annetBarn);
         const formJson = jsonSort(mapFormValuesToPartialAnnetBarn(formValues, id));
         expect(barnJson).toEqual(formJson);
     });
-    it('maps formValues to annetBarn correctly - without id of annet barn', () => {
+    it('maps formValues to annetBarn correctly - without id', () => {
         const barnJson = jsonSort({ ...annetBarn, id: undefined });
-        const formJson = jsonSort(mapFormValuesToPartialAnnetBarn(formValues));
+        const formJson = jsonSort(mapFormValuesToPartialAnnetBarn(formValues, undefined));
         expect(barnJson).toEqual(formJson);
     });
     it('isAnnetBarn verifies type AnnetBarn correctly', () => {

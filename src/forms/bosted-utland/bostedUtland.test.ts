@@ -22,21 +22,21 @@ const formValues: BostedUtlandFormValues = {
 
 const { mapBostedUtlandToFormValues, mapFormValuesToBostedUtland, isValidBostedUtland } = utils;
 
-describe('annetBarn', () => {
+describe('bostedUtland', () => {
     it('maps bostedUtland to formValues correctly', () => {
         const formJson = jsonSort(formValues);
-        const barnJson = jsonSort(mapBostedUtlandToFormValues(bostedUtland));
-        expect(barnJson).toEqual(formJson);
+        const mapJson = jsonSort(mapBostedUtlandToFormValues(bostedUtland));
+        expect(mapJson).toEqual(formJson);
     });
-    it('maps formValues to bostedUtland correctly - with id of annet barn', () => {
-        const barnJson = jsonSort(bostedUtland);
+    it('maps formValues to bostedUtland correctly - with id', () => {
+        const bostedJson = jsonSort(bostedUtland);
         const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
-        expect(barnJson).toEqual(formJson);
+        expect(bostedJson).toEqual(formJson);
     });
-    it('maps formValues to bostedUtland correctly - without id of bosted', () => {
-        const barnJson = jsonSort({ ...bostedUtland, id: undefined });
+    it('maps formValues to bostedUtland correctly - without id', () => {
+        const bostedJson = jsonSort({ ...bostedUtland, id: undefined });
         const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
-        expect(barnJson).toEqual(formJson);
+        expect(bostedJson).toEqual(formJson);
     });
     it('isValidBostedUtland verifies type bostedUtland correctly', () => {
         expect(isValidBostedUtland({})).toBeFalsy();
