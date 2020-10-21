@@ -10,6 +10,9 @@ import AppIntlProvider from './dev/components/app-intl-provider/AppIntlProvider'
 import DevPage from './dev/DevPage';
 import '@navikt/sif-common-core/lib/styles/globalStyles.less';
 
+import 'moment/locale/nb';
+import 'moment/locale/nn';
+
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 const App: React.FC = () => {
