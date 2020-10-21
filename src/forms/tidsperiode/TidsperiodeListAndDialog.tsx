@@ -9,8 +9,8 @@ interface Props<FieldNames> {
     name: FieldNames;
     validate?: FormikValidateFunction;
     formTitle?: string;
-    minDate: Date;
-    maxDate: Date;
+    minDate?: Date;
+    maxDate?: Date;
     labels: ModalFormAndListLabels;
 }
 

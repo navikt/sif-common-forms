@@ -79,11 +79,10 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                     values: { fom, tom, landkode, erBarnetInnlagt, barnInnlagtPerioder = [], årsak },
                 } = formik;
 
+                const hasDateStringValues = hasValue(fom?.dateString) && hasValue(tom?.dateString);
+
                 const includeInnlagtPerioderQuestion =
-                    fom?.date !== undefined &&
-                    tom?.date !== undefined &&
-                    landkode !== undefined &&
-                    erBarnetInnlagt === YesOrNo.YES;
+                    hasDateStringValues && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
 
                 const includeInnlagtQuestion: boolean =
                     landkode !== undefined && hasValue(landkode) && !countryIsMemberOfEøsOrEfta(landkode);
@@ -91,10 +90,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
 
                 const areAllQuestionsAnswered: boolean =
-                    fom?.date !== undefined &&
-                    tom?.date !== undefined &&
-                    landkode !== undefined &&
-                    includeInnlagtQuestion === false
+                    hasDateStringValues && landkode !== undefined && includeInnlagtQuestion === false
                         ? true
                         : erBarnetInnlagt !== YesOrNo.UNANSWERED &&
                           (erBarnetInnlagt === YesOrNo.YES
@@ -140,7 +136,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 }}
                             />
                         </FormBlock>
-                        {fom?.date !== undefined && tom?.date !== undefined && (
+                        {hasDateStringValues && (
                             <FormBlock>
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}
@@ -150,7 +146,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                             </FormBlock>
                         )}
 
-                        {includeInnlagtQuestion && landkode && fom?.date && tom?.date && (
+                        {includeInnlagtQuestion && landkode && hasDateStringValues && (
                             <>
                                 <FormBlock>
                                     <Form.YesOrNoQuestion
@@ -165,8 +161,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     <FormBlock margin="l">
                                         <TidsperiodeListAndDialog
                                             name={UtenlandsoppholdFormFields.barnInnlagtPerioder}
-                                            minDate={fom.date}
-                                            maxDate={tom.date}
+                                            minDate={fom?.date}
+                                            maxDate={tom?.date}
                                             validate={validateRequiredList}
                                             formTitle={intlHelper(
                                                 intl,

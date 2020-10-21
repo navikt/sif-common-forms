@@ -21,8 +21,8 @@ export interface TidsperiodeFormLabels {
 }
 
 interface Props {
-    minDate: Date;
-    maxDate: Date;
+    minDate?: Date;
+    maxDate?: Date;
     tidsperiode?: Partial<DateTidsperiode>;
     alleTidsperioder?: DateTidsperiode[];
     formLabels?: Partial<TidsperiodeFormLabels>;
