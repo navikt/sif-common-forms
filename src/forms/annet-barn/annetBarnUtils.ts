@@ -7,7 +7,10 @@ const isAnnetBarn = (annetBarn: Partial<AnnetBarn>): annetBarn is AnnetBarn => {
     return hasValue(fnr) && hasValue(navn) && hasValue(fødselsdato);
 };
 
-const mapFormValuesToPartialAnnetBarn = (formValues: AnnetBarnFormValues, id?: string): Partial<AnnetBarn> => {
+const mapFormValuesToPartialAnnetBarn = (
+    formValues: AnnetBarnFormValues,
+    id: string | undefined
+): Partial<AnnetBarn> => {
     return {
         ...formValues,
         id,

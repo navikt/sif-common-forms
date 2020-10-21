@@ -52,10 +52,11 @@ const AnnetBarnForm = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
+
     const onFormikSubmit = (formValues: AnnetBarnFormValues) => {
-        const ab = annetBarnUtils.mapFormValuesToPartialAnnetBarn(formValues, annetBarn.id);
-        if (annetBarnUtils.isAnnetBarn(ab)) {
-            onSubmit(ab);
+        const annetBarnToSubmit = annetBarnUtils.mapFormValuesToPartialAnnetBarn(formValues, annetBarn.id);
+        if (annetBarnUtils.isAnnetBarn(annetBarnToSubmit)) {
+            onSubmit(annetBarnToSubmit);
         } else {
             throw new Error('AnnetBarnForm: Formvalues is not a valid AnnetBarn on submit.');
         }

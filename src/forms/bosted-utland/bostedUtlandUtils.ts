@@ -6,8 +6,12 @@ const isValidBostedUtland = (bosted: Partial<BostedUtland>): bosted is BostedUtl
     return fom !== undefined && landkode !== undefined && tom !== undefined;
 };
 
-const mapFormValuesToBostedUtland = (formValues: BostedUtlandFormValues): Partial<BostedUtland> => {
+const mapFormValuesToBostedUtland = (
+    formValues: BostedUtlandFormValues,
+    id: string | undefined
+): Partial<BostedUtland> => {
     return {
+        id,
         fom: formValues.fom?.date,
         tom: formValues.tom?.date,
         landkode: formValues.landkode,

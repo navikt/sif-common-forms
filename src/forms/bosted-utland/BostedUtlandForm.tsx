@@ -40,9 +40,9 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: BostedUtlandFormValues) => {
-        const formBosted = bostedUtlandUtils.mapFormValuesToBostedUtland(formValues);
-        if (bostedUtlandUtils.isValidBostedUtland(formBosted)) {
-            onSubmit({ ...formBosted, id: bosted?.id });
+        const bostedToSubmit = bostedUtlandUtils.mapFormValuesToBostedUtland(formValues, bosted?.id);
+        if (bostedUtlandUtils.isValidBostedUtland(bostedToSubmit)) {
+            onSubmit(bostedToSubmit);
         } else {
             throw new Error('BostedUtlandForm: Formvalues is not a valid BostedUtland on submit.');
         }
