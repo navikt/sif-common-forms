@@ -22,8 +22,15 @@ import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
 import InfoTilFisker from './parts/InfoTilFisker';
-import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetHideFields } from './types';
-import { harFiskerNæringstype } from './virksomhetUtils';
+import {
+    isVirksomhet,
+    Næringstype,
+    Virksomhet,
+    VirksomhetFormField,
+    VirksomhetFormValues,
+    VirksomhetHideFields,
+} from './types';
+import { harFiskerNæringstype, mapFormValuesToVirksomhet, mapVirksomhetToFormValues } from './virksomhetUtils';
 
 interface Props {
     virksomhet?: Virksomhet;
@@ -33,15 +40,14 @@ interface Props {
 }
 
 const MAKS_INNTEKT = 999999999;
-type FormValues = Partial<Virksomhet>;
 
-const Form = getTypedFormComponents<VirksomhetFormField, FormValues>();
+const Form = getTypedFormComponents<VirksomhetFormField, VirksomhetFormValues>();
 
-const visNæringsinntekt = (values: Virksomhet): boolean => {
-    return values.fom && moment(values.fom).isAfter(date4YearsAgo);
+const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
+    return values.fom?.date !== undefined && moment(values.fom.date).isAfter(date4YearsAgo);
 };
 
-const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
+const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
     if (visNæringsinntekt(values)) {
         return values.næringsinntekt;
     }
@@ -49,10 +55,11 @@ const ensureValidNæringsinntekt = (values: Virksomhet): number | undefined => {
 };
 
 const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Props) => {
-    const onFormikSubmit = (values: Partial<Virksomhet>) => {
-        if (isVirksomhet(values)) {
+    const onFormikSubmit = (values: VirksomhetFormValues) => {
+        const virksomhetToSubmit = mapFormValuesToVirksomhet(values, virksomhet?.id);
+        if (isVirksomhet(virksomhetToSubmit)) {
             onSubmit({
-                ...values,
+                ...virksomhetToSubmit,
                 næringsinntekt: ensureValidNæringsinntekt(values),
             });
         } else {
@@ -67,9 +74,9 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
 
     return (
         <Form.FormikWrapper
-            initialValues={virksomhet || { næringstyper: [] }}
+            initialValues={virksomhet ? mapVirksomhetToFormValues(virksomhet) : { næringstyper: [] }}
             onSubmit={onFormikSubmit}
-            renderForm={(formik: FormikProps<FormValues>) => {
+            renderForm={(formik: FormikProps<VirksomhetFormValues>) => {
                 const { values, setFieldValue } = formik;
                 const { navnPåVirksomheten = 'virksomheten' } = values;
                 return (
@@ -193,7 +200,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             </Box>
                         )}
 
-                        {values.fom && moment(values.fom).isAfter(date4YearsAgo) && (
+                        {values.fom?.date && moment(values.fom.date).isAfter(date4YearsAgo) && (
                             <>
                                 <Box margin="xl">
                                     <Form.Input
@@ -241,7 +248,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 )}
                             </>
                         )}
-                        {values.fom && moment(values.fom).isAfter(date4YearsAgo) === false && (
+                        {values.fom?.date && moment(values.fom.date).isAfter(date4YearsAgo) === false && (
                             <>
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion

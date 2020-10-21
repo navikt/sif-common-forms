@@ -38,7 +38,7 @@ const FormikExample = () => {
                 <TypedFormikWrapper<FormValues>
                     initialValues={initialValues}
                     onSubmit={setListFormValues}
-                    renderForm={(formik) => {
+                    renderForm={() => {
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}

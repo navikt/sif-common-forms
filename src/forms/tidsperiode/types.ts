@@ -1,9 +1,12 @@
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
+
 export interface DateTidsperiode {
     id?: string;
     fom: Date;
     tom: Date;
 }
 
-export const isDateTidsperiode = (tidsperiode: Partial<DateTidsperiode>): tidsperiode is DateTidsperiode => {
-    return tidsperiode.fom !== undefined && tidsperiode.tom !== undefined;
+export type DateTidsperiodeFormValues = {
+    fom?: FormikDatepickerValue;
+    tom?: FormikDatepickerValue;
 };

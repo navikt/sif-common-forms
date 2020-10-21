@@ -1,5 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
-import { DateTidsperiode } from '../tidsperiode';
+import { FormikDatepickerValue, YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export enum UtenlandsoppholdÅrsak {
     'INNLAGT_DEKKET_NORGE' = 'BARNET_INNLAGT_I_HELSEINSTITUSJON_FOR_NORSK_OFFENTLIG_REGNING',
@@ -7,22 +6,28 @@ export enum UtenlandsoppholdÅrsak {
     'ANNET' = 'ANNET',
 }
 
+export interface UtenlandsoppholdInnlagtPeriode {
+    fom: Date;
+    tom: Date;
+}
+export interface UtenlandsoppholdFormInnlagtPeriode {
+    fom?: FormikDatepickerValue;
+    tom?: FormikDatepickerValue;
+}
 export interface Utenlandsopphold {
     id?: string;
     fom: Date;
     tom: Date;
     landkode: string;
     erBarnetInnlagt?: YesOrNo;
-    barnInnlagtPerioder?: DateTidsperiode[];
+    barnInnlagtPerioder?: UtenlandsoppholdInnlagtPeriode[];
     årsak?: UtenlandsoppholdÅrsak;
 }
 
-export const isUtenlandsoppholdType = (
-    utenlandsopphold: Partial<Utenlandsopphold>
-): utenlandsopphold is Utenlandsopphold => {
-    return (
-        utenlandsopphold.fom !== undefined &&
-        utenlandsopphold.tom !== undefined &&
-        utenlandsopphold.landkode !== undefined
-    );
-};
+export type UtenlandsoppholdFormValues = Partial<
+    Omit<Utenlandsopphold, 'id' | 'fom' | 'tom' | 'barnInnlagtPerioder'> & {
+        fom?: FormikDatepickerValue;
+        tom?: FormikDatepickerValue;
+        barnInnlagtPerioder?: UtenlandsoppholdFormInnlagtPeriode[];
+    }
+>;

@@ -24,13 +24,15 @@ export enum FraværFieldValidationErrors {
     'er_helg' = 'fravær.form.validation.er_helg',
 }
 
-export type FieldValidationArray = (validations: FormikValidateFunction[]) => (value: any) => FieldValidationResult;
+export type FieldValidationArray<ValueType> = (
+    validations: FormikValidateFunction<ValueType>[]
+) => (value: ValueType) => FieldValidationResult;
 
-export const validateAll: FieldValidationArray = (validations: FormikValidateFunction[]): FormikValidateFunction => (
-    value: any
+export const validateAll = <ValueType>(validations: FormikValidateFunction<ValueType>[]): FormikValidateFunction => (
+    value: ValueType
 ): FieldValidationResult =>
     validations
-        .map((validate: FormikValidateFunction) => validate(value))
+        .map((validate: FormikValidateFunction<ValueType>) => validate(value))
         .reduce((prev: FieldValidationResult, curr: FieldValidationResult) => prev || curr, undefined);
 
 export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): FormikValidateFunction => (

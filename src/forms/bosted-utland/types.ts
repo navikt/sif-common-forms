@@ -1,3 +1,5 @@
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
+
 export interface BostedUtland {
     id?: string;
     fom: Date;
@@ -5,7 +7,9 @@ export interface BostedUtland {
     landkode: string;
 }
 
-export const isValidBostedUtland = (bosted: Partial<BostedUtland>): bosted is BostedUtland => {
-    const { fom, landkode, tom } = bosted;
-    return fom !== undefined && landkode !== undefined && tom !== undefined;
-};
+export type BostedUtlandFormValues = Partial<
+    Omit<BostedUtland, 'id' | 'fom' | 'tom'> & {
+        fom: FormikDatepickerValue;
+        tom: FormikDatepickerValue;
+    }
+>;

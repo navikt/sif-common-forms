@@ -21,8 +21,6 @@ import Panel from 'nav-frontend-paneler';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import fraværMessages from '../../../forms/fravær/fraværMessages';
 
-interface Props {}
-
 enum FormField {
     perioder = 'perioder',
     dager = 'dager',
@@ -35,7 +33,7 @@ interface FormValues {
 
 const initialValues: FormValues = { [FormField.perioder]: [], [FormField.dager]: [] };
 
-const FraværExample: React.FunctionComponent<Props> = (props) => {
+const FraværExample: React.FunctionComponent = () => {
     const [fraværPeriodeSingleFormValues, setFraværPeriodeSingleFormValues] = useState<
         Partial<FraværPeriode> | undefined
     >(undefined);

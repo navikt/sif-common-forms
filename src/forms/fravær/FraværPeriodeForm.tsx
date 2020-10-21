@@ -5,10 +5,16 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { FraværPeriode, isFraværPeriode } from './types';
-import { validateNotHelgedag } from './fraværUtilities';
+import { FraværPeriode, FraværPeriodeFormValues } from './types';
+import {
+    isFraværPeriode,
+    mapFormValuesToFraværPeriode,
+    mapFraværPeriodeToFormValues,
+    validateNotHelgedag,
+} from './fraværUtilities';
 import { validateAll } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export interface FraværPeriodeFormLabels {
     title: string;
@@ -44,9 +50,7 @@ enum FraværPeriodeFormFields {
     to = 'to',
 }
 
-type FormValues = Partial<FraværPeriode>;
-
-const Form = getTypedFormComponents<FraværPeriodeFormFields, FormValues>();
+const Form = getTypedFormComponents<FraværPeriodeFormFields, FraværPeriodeFormValues>();
 
 const outDenneHvisInkludert = (denneFraværsPerioden: Partial<FraværPeriode>): ((dateRange: DateRange) => boolean) => (
     fraværPeriode: FraværPeriode
@@ -63,9 +67,10 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
-    const onFormikSubmit = (formValues: FormValues) => {
-        if (isFraværPeriode(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: FraværPeriodeFormValues) => {
+        const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(formValues, initialValues.id);
+        if (isFraværPeriode(fraværPeriodeToSubmit)) {
+            onSubmit(fraværPeriodeToSubmit);
         } else {
             throw new Error('FraværPeriodeForm: Formvalues is not a valid FraværPeriode on submit.');
         }
@@ -76,7 +81,7 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
     return (
         <>
             <Form.FormikWrapper
-                initialValues={initialValues}
+                initialValues={mapFraværPeriodeToFormValues(initialValues)}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => (
                     <Form.Form
@@ -91,19 +96,19 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     name: FraværPeriodeFormFields.from,
                                     fullscreenOverlay: true,
                                     minDate: minDate,
-                                    maxDate: formik.values.to || maxDate,
+                                    maxDate: formik.values.to?.date || maxDate,
                                     disableWeekend: helgedagerIkkeTillat || false,
                                     disabledDateRanges: dateRangesToDisable
                                         ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
                                         : undefined,
                                     validate: validateAll([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                        (date: Date) =>
+                                        (date: FormikDatepickerValue) =>
                                             dateRangeValidation.validateFromDate(
-                                                date,
+                                                date.date,
                                                 minDate,
                                                 maxDate,
-                                                formik.values.to
+                                                formik.values.to?.date
                                             ),
                                     ]),
                                     onChange: () => {
@@ -116,21 +121,21 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     label: formLabels.toDate,
                                     name: FraværPeriodeFormFields.to,
                                     fullscreenOverlay: true,
-                                    minDate: formik.values.from || minDate,
+                                    minDate: formik.values.from?.date || minDate,
                                     maxDate,
                                     disableWeekend: helgedagerIkkeTillat || false,
                                     disabledDateRanges: dateRangesToDisable
                                         ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
                                         : undefined,
 
-                                    validate: validateAll([
+                                    validate: validateAll<FormikDatepickerValue>([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                        (date: Date) =>
+                                        (date: FormikDatepickerValue) =>
                                             dateRangeValidation.validateToDate(
-                                                date,
+                                                date.date,
                                                 minDate,
                                                 maxDate,
-                                                formik.values.from
+                                                formik.values.from?.date
                                             ),
                                     ]),
                                     onChange: () => {

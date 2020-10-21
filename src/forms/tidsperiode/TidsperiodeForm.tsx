@@ -5,9 +5,11 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { isDateTidsperiode, DateTidsperiode } from './types';
+import { DateTidsperiodeFormValues, DateTidsperiode } from './types';
 import { mapFomTomToDateRange } from '../utils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import tidsperiodeUtils from './tidsperiodeUtils';
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -33,24 +35,23 @@ enum TidsperiodeFormFields {
     fom = 'fom',
 }
 
-type FormValues = Partial<DateTidsperiode>;
-
-const Form = getTypedFormComponents<TidsperiodeFormFields, FormValues>();
+const Form = getTypedFormComponents<TidsperiodeFormFields, DateTidsperiodeFormValues>();
 
 const TidsperiodeForm = ({
     maxDate,
     minDate,
     formLabels,
-    tidsperiode = { fom: undefined, tom: undefined },
+    tidsperiode,
     alleTidsperioder = [],
     onSubmit,
     onCancel,
 }: Props) => {
     const intl = useIntl();
 
-    const onFormikSubmit = (formValues: FormValues) => {
-        if (isDateTidsperiode(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: DateTidsperiodeFormValues) => {
+        const dateTidsperiodeToSubmit = tidsperiodeUtils.mapFormValuesToDateTidsperiode(formValues, tidsperiode?.id);
+        if (tidsperiodeUtils.isValidDateTidsperiode(dateTidsperiodeToSubmit)) {
+            onSubmit(dateTidsperiodeToSubmit);
         } else {
             throw new Error('TidsperiodeForm: Formvalues is not a valid Tidsperiode on submit.');
         }
@@ -69,15 +70,25 @@ const TidsperiodeForm = ({
     return (
         <>
             <Form.FormikWrapper
-                initialValues={tidsperiode}
+                initialValues={tidsperiodeUtils.mapDateTidsperiodeToFormValues(tidsperiode || {})}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
-                    const validateFromDate = (date: Date) => {
-                        return dateRangeValidation.validateFromDate(date, minDate, maxDate, formik.values.tom);
+                    const validateFromDate = (dateValue?: FormikDatepickerValue) => {
+                        return dateRangeValidation.validateFromDate(
+                            dateValue?.date,
+                            minDate,
+                            maxDate,
+                            formik.values.tom?.date
+                        );
                     };
 
-                    const validateToDate = (date: Date) => {
-                        return dateRangeValidation.validateToDate(date, minDate, maxDate, formik.values.tom);
+                    const validateToDate = (dateValue?: FormikDatepickerValue) => {
+                        return dateRangeValidation.validateToDate(
+                            dateValue?.date,
+                            minDate,
+                            maxDate,
+                            formik.values.tom?.date
+                        );
                     };
 
                     const disabledDateRanges =
