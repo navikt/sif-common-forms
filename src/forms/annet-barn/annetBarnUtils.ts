@@ -1,5 +1,6 @@
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { guid } from 'nav-frontend-js-utils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 
 const isAnnetBarn = (annetBarn: Partial<AnnetBarn>): annetBarn is AnnetBarn => {
@@ -13,7 +14,7 @@ const mapFormValuesToPartialAnnetBarn = (
 ): Partial<AnnetBarn> => {
     return {
         ...formValues,
-        id,
+        id: id || guid(),
         fødselsdato: formValues.fødselsdato?.date,
     };
 };

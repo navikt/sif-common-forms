@@ -1,4 +1,5 @@
 import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { guid } from 'nav-frontend-js-utils';
 import {
     Utenlandsopphold,
     UtenlandsoppholdFormValues,
@@ -35,7 +36,7 @@ const mapFormValuesToUtenlandsopphold = (
     const barnInnlagtPerioder = getBarnInnlagtIPerioderFromFormValues(formValues.barnInnlagtPerioder);
     return {
         ...formValues,
-        id,
+        id: id || guid(),
         fom: formValues.fom?.date,
         tom: formValues.tom?.date,
         barnInnlagtPerioder,

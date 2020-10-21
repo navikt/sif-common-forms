@@ -1,4 +1,5 @@
 import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { guid } from 'nav-frontend-js-utils';
 import { BostedUtland, BostedUtlandFormValues } from './types';
 
 const isValidBostedUtland = (bosted: Partial<BostedUtland>): bosted is BostedUtland => {
@@ -11,7 +12,7 @@ const mapFormValuesToBostedUtland = (
     id: string | undefined
 ): Partial<BostedUtland> => {
     return {
-        id,
+        id: id || guid(),
         fom: formValues.fom?.date,
         tom: formValues.tom?.date,
         landkode: formValues.landkode,

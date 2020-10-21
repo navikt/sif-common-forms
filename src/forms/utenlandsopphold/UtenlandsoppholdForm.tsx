@@ -80,7 +80,10 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 } = formik;
 
                 const includeInnlagtPerioderQuestion =
-                    fom !== undefined && tom !== undefined && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
+                    fom?.date !== undefined &&
+                    tom?.date !== undefined &&
+                    landkode !== undefined &&
+                    erBarnetInnlagt === YesOrNo.YES;
 
                 const includeInnlagtQuestion: boolean =
                     landkode !== undefined && hasValue(landkode) && !countryIsMemberOfEøsOrEfta(landkode);
@@ -88,7 +91,10 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
 
                 const areAllQuestionsAnswered: boolean =
-                    fom !== undefined && tom !== undefined && landkode !== undefined && includeInnlagtQuestion === false
+                    fom?.date !== undefined &&
+                    tom?.date !== undefined &&
+                    landkode !== undefined &&
+                    includeInnlagtQuestion === false
                         ? true
                         : erBarnetInnlagt !== YesOrNo.UNANSWERED &&
                           (erBarnetInnlagt === YesOrNo.YES
@@ -134,7 +140,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 }}
                             />
                         </FormBlock>
-                        {fom !== undefined && tom !== undefined && (
+                        {fom?.date !== undefined && tom?.date !== undefined && (
                             <FormBlock>
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}

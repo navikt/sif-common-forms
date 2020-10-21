@@ -2,15 +2,22 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
-import { FraværDag, isFraværDag } from './types';
-import FraværTimerSelect from './FraværTimerSelect';
-import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
-import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { toMaybeNumber, validateNotHelgedag } from './fraværUtilities';
-import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
+import { Systemtittel } from 'nav-frontend-typografi';
+import FraværTimerSelect from './FraværTimerSelect';
+import {
+    isFraværDag,
+    mapFormValuesToFraværDag,
+    mapFraværDagToFormValues,
+    toMaybeNumber,
+    validateNotHelgedag,
+} from './fraværUtilities';
+import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
+import { FraværDag, FraværDagFormValues } from './types';
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export interface FraværDagFormLabels {
     title: string;
@@ -48,13 +55,11 @@ export enum FraværDagFormFields {
     timerFravær = 'timerFravær',
 }
 
-type FormValues = Partial<FraværDag>;
-
 export const outDenneHvisInkludert = (initialValues: Partial<FraværDag>): ((dateRange: DateRange) => boolean) => (
     dateRange: DateRange
 ) => !(dateRange.from === initialValues.dato && dateRange.to === initialValues.dato);
 
-export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FormValues>();
+export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FraværDagFormValues>();
 
 const FraværDagFormView: React.FunctionComponent<Props> = ({
     fraværDag: initialValues = {
@@ -72,9 +77,10 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
-    const onFormikSubmit = (formValues: FormValues) => {
-        if (isFraværDag(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: FraværDagFormValues) => {
+        const fraværDagToSubmit = mapFormValuesToFraværDag(formValues, initialValues.id);
+        if (isFraværDag(fraværDagToSubmit)) {
+            onSubmit(fraværDagToSubmit);
         } else {
             throw new Error('FraværDagFOrm: Formvalues is not a valid FraværDag on submit.');
         }
@@ -85,7 +91,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
     return (
         <>
             <FraværDagForm.FormikWrapper
-                initialValues={initialValues}
+                initialValues={mapFraværDagToFormValues(initialValues)}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
                     const { values } = formik;
@@ -102,7 +108,7 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                             : undefined,
 
                         validate: helgedagerIkkeTillatt
-                            ? validateAll([validateRequiredField, validateNotHelgedag])
+                            ? validateAll<FormikDatepickerValue>([validateRequiredField, validateNotHelgedag])
                             : validateRequiredField,
                         onChange: () => {
                             setTimeout(() => {

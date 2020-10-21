@@ -44,13 +44,13 @@
     "dependencies": {},
     "peerDependencies": {
         "@navikt/sif-common-core": "^6.0.3",
-        "@navikt/sif-common-formik": "^11.0.9"
+        "@navikt/sif-common-formik": "^11.0.14"
     },
     "devDependencies": {
         "@craco/craco": "^5.7.0",
         "@formatjs/intl-pluralrules": "^3.4.10",
         "@navikt/sif-common-core": "^6.0.3",
-        "@navikt/sif-common-formik": "^11.0.13",
+        "@navikt/sif-common-formik": "^11.0.14",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.9",

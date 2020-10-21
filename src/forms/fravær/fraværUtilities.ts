@@ -1,11 +1,22 @@
-import { FraværDag, FraværPeriode } from './types';
-import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
-import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
-import moment from 'moment';
-import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { FraværFieldValidationErrors } from './fraværValidationUtils';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { FieldValidationResult, FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
+import { createFormikDatepickerValue, FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { isString } from 'formik';
+import moment from 'moment';
+import { FraværFieldValidationErrors } from './fraværValidationUtils';
+import { FraværDag, FraværDagFormValues, FraværPeriode, FraværPeriodeFormValues } from './types';
+import { guid } from 'nav-frontend-js-utils';
+
+export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {
+    return (
+        fraværDag.dato !== undefined && fraværDag.timerArbeidsdag !== undefined && fraværDag.timerFravær !== undefined
+    );
+};
+
+export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): fraværPeriode is FraværPeriode => {
+    return fraværPeriode.from !== undefined && fraværPeriode.to !== undefined;
+};
 
 export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
     from: fraværDag.dato,
@@ -66,8 +77,10 @@ export const getWeekdayName = (date: Date): Weekday | undefined => {
 export const dateErHelg = (date: Date) =>
     getWeekdayName(date) === Weekday.saturday || getWeekdayName(date) === Weekday.sunday;
 
-export const validateNotHelgedag = (maybeDate: Date | undefined): FieldValidationResult =>
-    maybeDate && dateErHelg(maybeDate) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
+export const validateNotHelgedag = (maybeDate: FormikDatepickerValue | undefined): FieldValidationResult =>
+    maybeDate?.date && dateErHelg(maybeDate.date)
+        ? createFieldValidationError(FraværFieldValidationErrors.er_helg)
+        : undefined;
 
 export const timeText = (timer: string): string =>
     timer === '0' || timer === '0.5' || timer === '1' ? 'time' : 'timer';
@@ -81,4 +94,42 @@ export const toMaybeNumber = (timerArbeidsdag: string | undefined): number | und
         return parseFloat(timerArbeidsdag);
     }
     return undefined;
+};
+
+export const mapFormValuesToFraværDag = (
+    formValues: FraværDagFormValues,
+    id: string | undefined
+): Partial<FraværDag> => {
+    return {
+        ...formValues,
+        id: id || guid(),
+        dato: formValues.dato?.date,
+    };
+};
+
+export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): FraværDagFormValues => {
+    return {
+        ...fraværDag,
+        dato: createFormikDatepickerValue(fraværDag.dato),
+    };
+};
+
+export const mapFormValuesToFraværPeriode = (
+    formValues: FraværPeriodeFormValues,
+    id: string | undefined
+): Partial<FraværPeriode> => {
+    return {
+        ...formValues,
+        id: id || guid(),
+        from: formValues.from?.date,
+        to: formValues.to?.date,
+    };
+};
+
+export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPeriode>): FraværPeriodeFormValues => {
+    return {
+        ...fraværPeriode,
+        from: createFormikDatepickerValue(fraværPeriode.from),
+        to: createFormikDatepickerValue(fraværPeriode.to),
+    };
 };

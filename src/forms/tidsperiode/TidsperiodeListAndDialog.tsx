@@ -34,16 +34,18 @@ function TidsperiodeListAndDialog<FieldNames>({
                     <TidsperiodeForm
                         tidsperiode={item}
                         alleTidsperioder={allItems}
-                        formLabels={{ title: formTitle }}
+                        formLabels={formTitle ? { title: formTitle } : undefined}
                         minDate={minDate}
                         maxDate={maxDate}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                     />
                 )}
-                listRenderer={({ items, onEdit, onDelete }) => (
-                    <TidsperiodeList tidsperiode={items} onEdit={onEdit} onDelete={onDelete} />
-                )}
+                listRenderer={({ items, onEdit, onDelete }) => {
+                    console.log(items);
+
+                    return <TidsperiodeList tidsperiode={items} onEdit={onEdit} onDelete={onDelete} />;
+                }}
             />
         </>
     );

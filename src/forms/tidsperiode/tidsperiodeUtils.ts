@@ -1,4 +1,5 @@
 import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { guid } from 'nav-frontend-js-utils';
 import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
 
 const isValidDateTidsperiode = (tidsperiode: Partial<DateTidsperiode>): tidsperiode is DateTidsperiode => {
@@ -10,7 +11,7 @@ const mapFormValuesToDateTidsperiode = (
     id: string | undefined
 ): Partial<DateTidsperiode> => {
     return {
-        id,
+        id: id || guid(),
         fom: formValues.fom?.date,
         tom: formValues.tom?.date,
     };

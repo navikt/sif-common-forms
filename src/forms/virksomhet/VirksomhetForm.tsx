@@ -56,7 +56,7 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
 
 const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Props) => {
     const onFormikSubmit = (values: VirksomhetFormValues) => {
-        const virksomhetToSubmit = mapFormValuesToVirksomhet(values);
+        const virksomhetToSubmit = mapFormValuesToVirksomhet(values, virksomhet?.id);
         if (isVirksomhet(virksomhetToSubmit)) {
             onSubmit({
                 ...virksomhetToSubmit,

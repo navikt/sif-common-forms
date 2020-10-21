@@ -9,6 +9,7 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { guid } from 'nav-frontend-js-utils';
 
 interface FosterbarnFormText {
     form_fødselsnummer_label: string;
@@ -44,7 +45,7 @@ const FosterbarnForm = ({
     const intl = useIntl();
     const onFormikSubmit = (formValues: FormValues) => {
         if (isFosterbarn(formValues, includeName)) {
-            onSubmit(formValues);
+            onSubmit({ ...formValues, id: initialValues.id || guid() });
         } else {
             throw new Error('Fosterbarn skjema: Formvalues is not a valid Fosterbarn on submit.');
         }
