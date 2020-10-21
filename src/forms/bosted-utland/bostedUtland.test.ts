@@ -30,12 +30,12 @@ describe('annetBarn', () => {
     });
     it('maps formValues to bostedUtland correctly - with id of annet barn', () => {
         const barnJson = jsonSort(bostedUtland);
-        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues));
+        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
         expect(barnJson).toEqual(formJson);
     });
     it('maps formValues to bostedUtland correctly - without id of bosted', () => {
         const barnJson = jsonSort({ ...bostedUtland, id: undefined });
-        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues));
+        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
         expect(barnJson).toEqual(formJson);
     });
     it('isValidBostedUtland verifies type bostedUtland correctly', () => {

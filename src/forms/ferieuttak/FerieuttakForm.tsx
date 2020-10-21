@@ -8,7 +8,7 @@ import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRang
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
-import ferieuttakUtils from './ferieuttakUtil';
+import ferieuttakUtils from './ferieuttakUtils';
 import { Ferieuttak, FerieuttakFormValues } from './types';
 
 export interface FerieuttakFormLabels {

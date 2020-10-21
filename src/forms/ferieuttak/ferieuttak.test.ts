@@ -1,0 +1,44 @@
+import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
+import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import utils from './ferieuttakUtils';
+import { Ferieuttak, FerieuttakFormValues } from './types';
+
+const id = '123';
+const fom = new Date(2000, 10, 10);
+const tom = new Date(2000, 10, 11);
+
+const ferieuttak: Ferieuttak = {
+    fom,
+    tom,
+};
+
+const formValues: FerieuttakFormValues = {
+    fom: createFormikDatepickerValue(fom),
+    tom: createFormikDatepickerValue(tom),
+};
+
+const { mapFerieuttakToFormValues, mapFormValuesToFerieuttak, isValidFerieuttak } = utils;
+
+describe('annetBarn', () => {
+    it('maps bostedUtland to formValues correctly', () => {
+        const formJson = jsonSort(formValues);
+        const barnJson = jsonSort(mapFerieuttakToFormValues(ferieuttak));
+        expect(barnJson).toEqual(formJson);
+    });
+    it('maps formValues to bostedUtland correctly - with id of annet barn', () => {
+        const barnJson = jsonSort(ferieuttak);
+        const formJson = jsonSort(mapFormValuesToFerieuttak(formValues, undefined));
+        expect(barnJson).toEqual(formJson);
+    });
+    it('maps formValues to bostedUtland correctly - without id of bosted', () => {
+        const barnJson = jsonSort({ ...ferieuttak, id: undefined });
+        const formJson = jsonSort(mapFormValuesToFerieuttak(formValues, undefined));
+        expect(barnJson).toEqual(formJson);
+    });
+    it('isValidBostedUtland verifies type bostedUtland correctly', () => {
+        expect(isValidFerieuttak({})).toBeFalsy();
+        expect(isValidFerieuttak({ ...ferieuttak, fom: undefined })).toBeFalsy();
+        expect(isValidFerieuttak({ ...ferieuttak, tom: undefined })).toBeFalsy();
+        expect(isValidFerieuttak({ fom, tom })).toBeTruthy();
+    });
+});
