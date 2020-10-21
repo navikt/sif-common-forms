@@ -1,5 +1,6 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
+import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -67,9 +68,17 @@ export interface Virksomhet {
     [VirksomhetFormField.revisor_telefon]?: string;
     [VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor]?: YesOrNo;
 }
+export type VirksomhetFormValues = Partial<
+    Omit<Virksomhet, 'fom' | 'tom' | 'oppstartsdato' | 'varigEndringINæringsinntekt_dato'> & {
+        [VirksomhetFormField.fom]: FormikDatepickerValue;
+        [VirksomhetFormField.tom]?: FormikDatepickerValue;
+        [VirksomhetFormField.oppstartsdato]?: FormikDatepickerValue;
+        [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: FormikDatepickerValue;
+    }
+>;
 
 export const isVirksomhet = (virksomhet: Partial<Virksomhet>): virksomhet is Virksomhet => {
-    return true;
+    return virksomhet !== undefined;
 };
 
 export interface VirksomhetApiData {

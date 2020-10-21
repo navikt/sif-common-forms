@@ -28,6 +28,7 @@ export const mapVirksomhetToVirksomhetApiData = (
                         }
                       : undefined,
               }),
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
         tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
         næringsinntekt: virksomhet.næringsinntekt,

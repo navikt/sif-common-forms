@@ -1,8 +1,6 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import {
-    FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels
-} from '@navikt/sif-common-formik';
+import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import { Virksomhet, VirksomhetHideFields } from './types';
 import VirksomhetForm from './VirksomhetForm';
 import VirksomhetListe from './VirksomhetList';
@@ -20,7 +18,7 @@ function VirksomhetListAndDialog<FieldNames>({
     validate,
     labels,
     hideFormFields,
-    onAfterChange
+    onAfterChange,
 }: Props<FieldNames>) {
     return (
         <FormikModalFormAndList<FieldNames, Virksomhet>
