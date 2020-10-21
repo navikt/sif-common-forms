@@ -1,4 +1,4 @@
-import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
+import { FormikDatepickerValue } from '@navikt/sif-common-formik/lib';
 
 export interface AnnetBarn {
     id?: string;
@@ -7,7 +7,8 @@ export interface AnnetBarn {
     navn: string;
 }
 
-export const isAnnetBarn = (annetBarn: Partial<AnnetBarn>): annetBarn is AnnetBarn => {
-    const { fnr, navn, fødselsdato } = annetBarn;
-    return hasValue(fnr) && hasValue(navn) && hasValue(fødselsdato);
-};
+export type AnnetBarnFormValues = Partial<
+    Omit<AnnetBarn, 'fødselsdato' | 'id'> & {
+        fødselsdato: FormikDatepickerValue;
+    }
+>;

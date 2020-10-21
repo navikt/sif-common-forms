@@ -11,7 +11,8 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { AnnetBarn, isAnnetBarn } from './types';
+import annetBarnUtils from './annetBarnUtils';
+import { AnnetBarn, AnnetBarnFormValues } from './types';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -40,12 +41,10 @@ enum AnnetBarnFormFields {
     navn = 'navn',
 }
 
-type FormValues = Partial<AnnetBarn>;
-
-const Form = getTypedFormComponents<AnnetBarnFormFields, FormValues>();
+const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues>();
 
 const AnnetBarnForm = ({
-    annetBarn = { fnr: '', navn: '', fødselsdato: undefined },
+    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
     labels,
     minDate,
     maxDate,
@@ -53,9 +52,10 @@ const AnnetBarnForm = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
-    const onFormikSubmit = (formValues: FormValues) => {
-        if (isAnnetBarn(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: AnnetBarnFormValues) => {
+        const ab = annetBarnUtils.mapFormValuesToPartialAnnetBarn(formValues, annetBarn.id);
+        if (annetBarnUtils.isAnnetBarn(ab)) {
+            onSubmit(ab);
         } else {
             throw new Error('AnnetBarnForm: Formvalues is not a valid AnnetBarn on submit.');
         }
@@ -75,7 +75,7 @@ const AnnetBarnForm = ({
     return (
         <>
             <Form.FormikWrapper
-                initialValues={annetBarn}
+                initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
                     <Form.Form

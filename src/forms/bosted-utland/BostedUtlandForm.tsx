@@ -5,10 +5,11 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { FormikDatepickerValue, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { BostedUtland, isValidBostedUtland } from './types';
+import { BostedUtland, BostedUtlandFormValues } from './types';
 import { mapFomTomToDateRange } from '../utils';
+import bostedUtlandUtils from './bostedUtlandUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -29,16 +30,19 @@ enum BostedUtlandFormFields {
     landkode = 'landkode',
 }
 
-type FormValues = Partial<BostedUtland>;
-
-const Form = getTypedFormComponents<BostedUtlandFormFields, FormValues>();
+interface DateLimits {
+    minDate: Date;
+    maxDate: Date;
+}
+const Form = getTypedFormComponents<BostedUtlandFormFields, BostedUtlandFormValues>();
 
 const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
-    const onFormikSubmit = (formValues: Partial<BostedUtland>) => {
-        if (isValidBostedUtland(formValues)) {
-            onSubmit(formValues);
+    const onFormikSubmit = (formValues: BostedUtlandFormValues) => {
+        const formBosted = bostedUtlandUtils.mapFormValuesToBostedUtland(formValues);
+        if (bostedUtlandUtils.isValidBostedUtland(formBosted)) {
+            onSubmit({ ...formBosted, id: bosted?.id });
         } else {
             throw new Error('BostedUtlandForm: Formvalues is not a valid BostedUtland on submit.');
         }
@@ -46,17 +50,16 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
 
     return (
         <Form.FormikWrapper
-            initialValues={bosted || {}}
+            initialValues={bostedUtlandUtils.mapBostedUtlandToFormValues(bosted || {})}
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
                 const { values } = formik;
-
-                const fomDateLimits = {
+                const fomDateLimits: DateLimits = {
                     minDate,
-                    maxDate: values.tom || maxDate,
+                    maxDate: values.tom?.date || maxDate,
                 };
-                const tomDateLimits = {
-                    minDate: values.fom || minDate,
+                const tomDateLimits: DateLimits = {
+                    minDate: values.fom?.date || minDate,
                     maxDate: maxDate,
                 };
 
@@ -84,23 +87,23 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                 fromInputProps={{
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
-                                    validate: (date: Date) =>
+                                    validate: (dateValue) =>
                                         dateRangeValidation.validateFromDate(
-                                            date,
+                                            dateValue?.date,
                                             fomDateLimits.minDate,
                                             fomDateLimits.maxDate,
-                                            values.tom
+                                            values.tom?.date
                                         ),
                                 }}
                                 toInputProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
-                                    validate: (date: Date) =>
+                                    validate: (dateValue) =>
                                         dateRangeValidation.validateToDate(
-                                            date,
+                                            dateValue?.date,
                                             tomDateLimits.minDate,
                                             tomDateLimits.maxDate,
-                                            values.fom
+                                            values.fom?.date
                                         ),
                                 }}
                             />
