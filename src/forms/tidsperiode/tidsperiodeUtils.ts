@@ -1,4 +1,4 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
 
@@ -12,15 +12,15 @@ const mapFormValuesToDateTidsperiode = (
 ): Partial<DateTidsperiode> => {
     return {
         id: id || guid(),
-        fom: formValues.fom?.date,
-        tom: formValues.tom?.date,
+        fom: ISOStringToDate(formValues.fom),
+        tom: ISOStringToDate(formValues.tom),
     };
 };
 
 const mapDateTidsperiodeToFormValues = ({ fom, tom }: Partial<DateTidsperiode>): DateTidsperiodeFormValues => {
     return {
-        fom: createFormikDatepickerValue(fom),
-        tom: createFormikDatepickerValue(tom),
+        fom: dateToISOString(fom),
+        tom: dateToISOString(tom),
     };
 };
 

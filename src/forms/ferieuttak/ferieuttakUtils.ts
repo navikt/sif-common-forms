@@ -1,4 +1,4 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik';
 import { guid } from 'nav-frontend-js-utils';
 import { Ferieuttak, FerieuttakFormValues } from './types';
 
@@ -9,15 +9,15 @@ export const isValidFerieuttak = (ferieuttak: Partial<Ferieuttak>): ferieuttak i
 const mapFormValuesToFerieuttak = (formValues: FerieuttakFormValues, id: string | undefined): Partial<Ferieuttak> => {
     return {
         id: id || guid(),
-        fom: formValues.fom?.date,
-        tom: formValues.tom?.date,
+        fom: ISOStringToDate(formValues.fom),
+        tom: ISOStringToDate(formValues.tom),
     };
 };
 
 const mapFerieuttakToFormValues = ({ fom, tom }: Partial<Ferieuttak>): FerieuttakFormValues => {
     return {
-        fom: createFormikDatepickerValue(fom),
-        tom: createFormikDatepickerValue(tom),
+        fom: dateToISOString(fom),
+        tom: dateToISOString(tom),
     };
 };
 

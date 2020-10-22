@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import { Næringstype, Virksomhet, VirksomhetFormValues } from './types';
 
@@ -13,19 +13,19 @@ export const mapFormValuesToVirksomhet = (
     return {
         ...formValues,
         id: id || guid(),
-        fom: formValues.fom?.date,
-        tom: formValues.tom?.date,
-        oppstartsdato: formValues.oppstartsdato?.date,
-        varigEndringINæringsinntekt_dato: formValues.varigEndringINæringsinntekt_dato?.date,
+        fom: ISOStringToDate(formValues.fom),
+        tom: ISOStringToDate(formValues.tom),
+        oppstartsdato: ISOStringToDate(formValues.oppstartsdato),
+        varigEndringINæringsinntekt_dato: ISOStringToDate(formValues.varigEndringINæringsinntekt_dato),
     };
 };
 
 export const mapVirksomhetToFormValues = (virksomhet: Virksomhet): VirksomhetFormValues => {
     return {
         ...virksomhet,
-        fom: createFormikDatepickerValue(virksomhet.fom),
-        tom: createFormikDatepickerValue(virksomhet.tom),
-        oppstartsdato: createFormikDatepickerValue(virksomhet.oppstartsdato),
-        varigEndringINæringsinntekt_dato: createFormikDatepickerValue(virksomhet.varigEndringINæringsinntekt_dato),
+        fom: dateToISOString(virksomhet.fom),
+        tom: dateToISOString(virksomhet.tom),
+        oppstartsdato: dateToISOString(virksomhet.oppstartsdato),
+        varigEndringINæringsinntekt_dato: dateToISOString(virksomhet.varigEndringINæringsinntekt_dato),
     };
 };

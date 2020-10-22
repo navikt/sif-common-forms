@@ -2,14 +2,13 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { Systemtittel } from 'nav-frontend-typografi';
-import { DateTidsperiodeFormValues, DateTidsperiode } from './types';
-import { mapFomTomToDateRange } from '../utils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { Systemtittel } from 'nav-frontend-typografi';
+import { mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
+import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -73,21 +72,21 @@ const TidsperiodeForm = ({
                 initialValues={tidsperiodeUtils.mapDateTidsperiodeToFormValues(tidsperiode || {})}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
-                    const validateFromDate = (dateValue?: FormikDatepickerValue) => {
+                    const validateFromDate = (dateString?: string) => {
                         return dateRangeValidation.validateFromDate(
-                            dateValue?.date,
+                            ISOStringToDate(dateString),
                             minDate,
                             maxDate,
-                            formik.values.tom?.date
+                            ISOStringToDate(formik.values.tom)
                         );
                     };
 
-                    const validateToDate = (dateValue?: FormikDatepickerValue) => {
+                    const validateToDate = (dateString?: string) => {
                         return dateRangeValidation.validateToDate(
-                            dateValue?.date,
+                            ISOStringToDate(dateString),
                             minDate,
                             maxDate,
-                            formik.values.tom?.date
+                            ISOStringToDate(formik.values.tom)
                         );
                     };
 

@@ -1,5 +1,3 @@
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
-
 export interface DateTidsperiode {
     id?: string;
     fom: Date;
@@ -7,6 +5,6 @@ export interface DateTidsperiode {
 }
 
 export type DateTidsperiodeFormValues = {
-    fom?: FormikDatepickerValue;
-    tom?: FormikDatepickerValue;
+    fom?: string;
+    tom?: string;
 };

@@ -1,5 +1,3 @@
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
-
 export interface Ferieuttak {
     id?: string;
     fom: Date;
@@ -7,6 +5,6 @@ export interface Ferieuttak {
 }
 
 export type FerieuttakFormValues = {
-    fom?: FormikDatepickerValue;
-    tom?: FormikDatepickerValue;
+    fom?: string;
+    tom?: string;
 };

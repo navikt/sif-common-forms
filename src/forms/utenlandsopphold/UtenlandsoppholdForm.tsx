@@ -12,7 +12,7 @@ import {
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import { DateRange, getCountryName, YesOrNo } from '@navikt/sif-common-formik';
+import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
@@ -79,7 +79,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                     values: { fom, tom, landkode, erBarnetInnlagt, barnInnlagtPerioder = [], årsak },
                 } = formik;
 
-                const hasDateStringValues = hasValue(fom?.dateString) && hasValue(tom?.dateString);
+                const hasDateStringValues = hasValue(fom) && hasValue(tom);
 
                 const includeInnlagtPerioderQuestion =
                     hasDateStringValues && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
@@ -115,23 +115,23 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 fromInputProps={{
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
-                                    validate: (dateValue) =>
+                                    validate: (dateString) =>
                                         dateRangeValidation.validateFromDate(
-                                            dateValue?.date,
+                                            ISOStringToDate(dateString),
                                             minDate,
                                             maxDate,
-                                            tom?.date
+                                            ISOStringToDate(tom)
                                         ),
                                 }}
                                 toInputProps={{
                                     name: UtenlandsoppholdFormFields.tom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.tilDato'),
-                                    validate: (dateValue) =>
+                                    validate: (dateString) =>
                                         dateRangeValidation.validateToDate(
-                                            dateValue?.date,
+                                            ISOStringToDate(dateString),
                                             minDate,
                                             maxDate,
-                                            fom?.date
+                                            ISOStringToDate(fom)
                                         ),
                                 }}
                             />
@@ -161,8 +161,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     <FormBlock margin="l">
                                         <TidsperiodeListAndDialog
                                             name={UtenlandsoppholdFormFields.barnInnlagtPerioder}
-                                            minDate={fom?.date}
-                                            maxDate={tom?.date}
+                                            minDate={ISOStringToDate(fom)}
+                                            maxDate={ISOStringToDate(tom)}
                                             validate={validateRequiredList}
                                             formTitle={intlHelper(
                                                 intl,

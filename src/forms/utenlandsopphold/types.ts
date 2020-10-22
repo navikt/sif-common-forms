@@ -1,4 +1,4 @@
-import { FormikDatepickerValue, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 
 export enum UtenlandsoppholdÅrsak {
     'INNLAGT_DEKKET_NORGE' = 'BARNET_INNLAGT_I_HELSEINSTITUSJON_FOR_NORSK_OFFENTLIG_REGNING',
@@ -11,8 +11,8 @@ export interface UtenlandsoppholdInnlagtPeriode {
     tom: Date;
 }
 export interface UtenlandsoppholdFormInnlagtPeriode {
-    fom?: FormikDatepickerValue;
-    tom?: FormikDatepickerValue;
+    fom?: string;
+    tom?: string;
 }
 export interface Utenlandsopphold {
     id?: string;
@@ -26,8 +26,8 @@ export interface Utenlandsopphold {
 
 export type UtenlandsoppholdFormValues = Partial<
     Omit<Utenlandsopphold, 'id' | 'fom' | 'tom' | 'barnInnlagtPerioder'> & {
-        fom?: FormikDatepickerValue;
-        tom?: FormikDatepickerValue;
+        fom?: string;
+        tom?: string;
         barnInnlagtPerioder?: UtenlandsoppholdFormInnlagtPeriode[];
     }
 >;

@@ -1,7 +1,7 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
 import { BostedUtland, BostedUtlandFormValues } from './types';
 import utils from './bostedUtlandUtils';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 
 const id = '123';
 const fom = new Date(2000, 10, 10);
@@ -15,8 +15,8 @@ const bostedUtland: BostedUtland = {
 };
 
 const formValues: BostedUtlandFormValues = {
-    fom: createFormikDatepickerValue(fom),
-    tom: createFormikDatepickerValue(tom),
+    fom: dateToISOString(fom),
+    tom: dateToISOString(tom),
     landkode,
 };
 
