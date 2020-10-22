@@ -1,4 +1,4 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import { BostedUtland, BostedUtlandFormValues } from './types';
 
@@ -13,16 +13,16 @@ const mapFormValuesToBostedUtland = (
 ): Partial<BostedUtland> => {
     return {
         id: id || guid(),
-        fom: formValues.fom?.date,
-        tom: formValues.tom?.date,
+        fom: ISOStringToDate(formValues.fom),
+        tom: ISOStringToDate(formValues.tom),
         landkode: formValues.landkode,
     };
 };
 
 const mapBostedUtlandToFormValues = ({ fom, tom, landkode }: Partial<BostedUtland>): BostedUtlandFormValues => {
     return {
-        fom: createFormikDatepickerValue(fom),
-        tom: createFormikDatepickerValue(tom),
+        fom: dateToISOString(fom),
+        tom: dateToISOString(tom),
         landkode,
     };
 };

@@ -1,4 +1,4 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import {
     Utenlandsopphold,
@@ -20,9 +20,11 @@ const getBarnInnlagtIPerioderFromFormValues = (
 ): UtenlandsoppholdInnlagtPeriode[] | undefined => {
     const barnInnlagtPerioder: UtenlandsoppholdInnlagtPeriode[] = [];
     if (perioder) {
-        perioder.forEach(({ fom, tom }) => {
-            if (fom?.date && tom?.date) {
-                barnInnlagtPerioder.push({ fom: fom.date, tom: tom.date });
+        perioder.forEach((periode) => {
+            const fom = ISOStringToDate(periode.fom);
+            const tom = ISOStringToDate(periode.tom);
+            if (fom && tom) {
+                barnInnlagtPerioder.push({ fom, tom });
             }
         });
     }
@@ -37,8 +39,8 @@ const mapFormValuesToUtenlandsopphold = (
     return {
         ...formValues,
         id: id || guid(),
-        fom: formValues.fom?.date,
-        tom: formValues.tom?.date,
+        fom: ISOStringToDate(formValues.fom),
+        tom: ISOStringToDate(formValues.tom),
         barnInnlagtPerioder,
     };
 };
@@ -51,14 +53,14 @@ const mapUtenlandsoppholdToFormValues = ({
     landkode,
     årsak,
 }: Partial<Utenlandsopphold>): UtenlandsoppholdFormValues => ({
-    fom: createFormikDatepickerValue(fom),
-    tom: createFormikDatepickerValue(tom),
+    fom: dateToISOString(fom),
+    tom: dateToISOString(tom),
     erBarnetInnlagt,
     landkode,
     årsak,
     barnInnlagtPerioder: barnInnlagtPerioder?.map((p) => ({
-        fom: createFormikDatepickerValue(p.fom),
-        tom: createFormikDatepickerValue(p.tom),
+        fom: dateToISOString(p.fom),
+        tom: dateToISOString(p.tom),
     })),
 });
 

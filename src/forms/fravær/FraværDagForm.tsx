@@ -17,7 +17,6 @@ import {
 } from './fraværUtilities';
 import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
 import { FraværDag, FraværDagFormValues } from './types';
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export interface FraværDagFormLabels {
     title: string;
@@ -106,9 +105,8 @@ const FraværDagFormView: React.FunctionComponent<Props> = ({
                         disabledDateRanges: dateRangesToDisable
                             ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
                             : undefined,
-
                         validate: helgedagerIkkeTillatt
-                            ? validateAll<FormikDatepickerValue>([validateRequiredField, validateNotHelgedag])
+                            ? validateAll<string>([validateRequiredField, validateNotHelgedag])
                             : validateRequiredField,
                         onChange: () => {
                             setTimeout(() => {

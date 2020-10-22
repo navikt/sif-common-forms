@@ -1,13 +1,12 @@
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export interface FraværPeriode extends DateRange {
     id?: string;
 }
 
 export type FraværPeriodeFormValues = Partial<{
-    from: FormikDatepickerValue;
-    to: FormikDatepickerValue;
+    from: string;
+    to: string;
 }>;
 
 export interface FraværDag {
@@ -19,6 +18,6 @@ export interface FraværDag {
 
 export type FraværDagFormValues = Partial<
     Omit<FraværDag, 'dato'> & {
-        dato: FormikDatepickerValue;
+        dato: string;
     }
 >;

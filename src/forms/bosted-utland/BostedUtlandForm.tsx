@@ -5,11 +5,11 @@ import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/comm
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import { validateRequiredSelect } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { BostedUtland, BostedUtlandFormValues } from './types';
 import { mapFomTomToDateRange } from '../utils';
 import bostedUtlandUtils from './bostedUtlandUtils';
+import { BostedUtland, BostedUtlandFormValues } from './types';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -56,10 +56,10 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                 const { values } = formik;
                 const fomDateLimits: DateLimits = {
                     minDate,
-                    maxDate: values.tom?.date || maxDate,
+                    maxDate: ISOStringToDate(values.tom) || maxDate,
                 };
                 const tomDateLimits: DateLimits = {
-                    minDate: values.fom?.date || minDate,
+                    minDate: ISOStringToDate(values.fom) || minDate,
                     maxDate: maxDate,
                 };
 
@@ -87,23 +87,23 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                 fromInputProps={{
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
-                                    validate: (dateValue) =>
+                                    validate: (dateString) =>
                                         dateRangeValidation.validateFromDate(
-                                            dateValue?.date,
+                                            ISOStringToDate(dateString),
                                             fomDateLimits.minDate,
                                             fomDateLimits.maxDate,
-                                            values.tom?.date
+                                            ISOStringToDate(values.tom)
                                         ),
                                 }}
                                 toInputProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
-                                    validate: (dateValue) =>
+                                    validate: (dateString) =>
                                         dateRangeValidation.validateToDate(
-                                            dateValue?.date,
+                                            ISOStringToDate(dateString),
                                             tomDateLimits.minDate,
                                             tomDateLimits.maxDate,
-                                            values.fom?.date
+                                            ISOStringToDate(values.fom)
                                         ),
                                 }}
                             />

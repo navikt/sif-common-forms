@@ -1,5 +1,5 @@
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import utils from './ferieuttakUtils';
 import { Ferieuttak, FerieuttakFormValues } from './types';
 
@@ -12,8 +12,8 @@ const ferieuttak: Ferieuttak = {
 };
 
 const formValues: FerieuttakFormValues = {
-    fom: createFormikDatepickerValue(fom),
-    tom: createFormikDatepickerValue(tom),
+    fom: dateToISOString(fom),
+    tom: dateToISOString(tom),
 };
 
 const { mapFerieuttakToFormValues, mapFormValuesToFerieuttak, isValidFerieuttak } = utils;

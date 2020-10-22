@@ -1,7 +1,7 @@
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { FieldValidationResult, FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
-import { createFormikDatepickerValue, FormikValidateFunction } from '@navikt/sif-common-formik/lib';
+import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
+import { dateToISOString, FormikValidateFunction, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { isString } from 'formik';
 import moment from 'moment';
 import { FraværFieldValidationErrors } from './fraværValidationUtils';
@@ -77,10 +77,10 @@ export const getWeekdayName = (date: Date): Weekday | undefined => {
 export const dateErHelg = (date: Date) =>
     getWeekdayName(date) === Weekday.saturday || getWeekdayName(date) === Weekday.sunday;
 
-export const validateNotHelgedag = (maybeDate: FormikDatepickerValue | undefined): FieldValidationResult =>
-    maybeDate?.date && dateErHelg(maybeDate.date)
-        ? createFieldValidationError(FraværFieldValidationErrors.er_helg)
-        : undefined;
+export const validateNotHelgedag = (maybeDate: string | undefined): FieldValidationResult => {
+    const date = ISOStringToDate(maybeDate);
+    return date && dateErHelg(date) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
+};
 
 export const timeText = (timer: string): string =>
     timer === '0' || timer === '0.5' || timer === '1' ? 'time' : 'timer';
@@ -103,14 +103,14 @@ export const mapFormValuesToFraværDag = (
     return {
         ...formValues,
         id: id || guid(),
-        dato: formValues.dato?.date,
+        dato: ISOStringToDate(formValues.dato),
     };
 };
 
 export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): FraværDagFormValues => {
     return {
         ...fraværDag,
-        dato: createFormikDatepickerValue(fraværDag.dato),
+        dato: fraværDag.dato ? dateToISOString(fraværDag.dato) : '',
     };
 };
 
@@ -121,15 +121,15 @@ export const mapFormValuesToFraværPeriode = (
     return {
         ...formValues,
         id: id || guid(),
-        from: formValues.from?.date,
-        to: formValues.to?.date,
+        from: ISOStringToDate(formValues.from),
+        to: ISOStringToDate(formValues.to),
     };
 };
 
 export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPeriode>): FraværPeriodeFormValues => {
     return {
         ...fraværPeriode,
-        from: createFormikDatepickerValue(fraværPeriode.from),
-        to: createFormikDatepickerValue(fraværPeriode.to),
+        from: fraværPeriode.from ? dateToISOString(fraværPeriode.from) : '',
+        to: fraværPeriode.to ? dateToISOString(fraværPeriode.to) : '',
     };
 };

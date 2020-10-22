@@ -2,10 +2,10 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { FraværPeriode, FraværPeriodeFormValues } from './types';
 import {
     isFraværPeriode,
     mapFormValuesToFraværPeriode,
@@ -13,8 +13,7 @@ import {
     validateNotHelgedag,
 } from './fraværUtilities';
 import { validateAll } from './fraværValidationUtils';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
+import { FraværPeriode, FraværPeriodeFormValues } from './types';
 
 export interface FraværPeriodeFormLabels {
     title: string;
@@ -96,19 +95,19 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     name: FraværPeriodeFormFields.from,
                                     fullscreenOverlay: true,
                                     minDate: minDate,
-                                    maxDate: formik.values.to?.date || maxDate,
+                                    maxDate: ISOStringToDate(formik.values.to) || maxDate,
                                     disableWeekend: helgedagerIkkeTillat || false,
                                     disabledDateRanges: dateRangesToDisable
                                         ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
                                         : undefined,
-                                    validate: validateAll([
+                                    validate: validateAll<string>([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                        (date: FormikDatepickerValue) =>
+                                        (dateString) =>
                                             dateRangeValidation.validateFromDate(
-                                                date.date,
+                                                ISOStringToDate(dateString),
                                                 minDate,
                                                 maxDate,
-                                                formik.values.to?.date
+                                                ISOStringToDate(formik.values.to)
                                             ),
                                     ]),
                                     onChange: () => {
@@ -121,21 +120,21 @@ const FraværPeriodeForm: React.FunctionComponent<Props> = ({
                                     label: formLabels.toDate,
                                     name: FraværPeriodeFormFields.to,
                                     fullscreenOverlay: true,
-                                    minDate: formik.values.from?.date || minDate,
+                                    minDate: ISOStringToDate(formik.values.from) || minDate,
                                     maxDate,
                                     disableWeekend: helgedagerIkkeTillat || false,
                                     disabledDateRanges: dateRangesToDisable
                                         ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
                                         : undefined,
 
-                                    validate: validateAll<FormikDatepickerValue>([
+                                    validate: validateAll<string>([
                                         ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                        (date: FormikDatepickerValue) =>
+                                        (dateString) =>
                                             dateRangeValidation.validateToDate(
-                                                date.date,
+                                                ISOStringToDate(dateString),
                                                 minDate,
                                                 maxDate,
-                                                formik.values.from?.date
+                                                ISOStringToDate(formik.values.from)
                                             ),
                                     ]),
                                     onChange: () => {

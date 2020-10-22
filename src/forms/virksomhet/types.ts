@@ -1,6 +1,5 @@
 import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { FormikDatepickerValue } from '@navikt/sif-common-core/lib/validation/types';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -70,10 +69,10 @@ export interface Virksomhet {
 }
 export type VirksomhetFormValues = Partial<
     Omit<Virksomhet, 'fom' | 'tom' | 'oppstartsdato' | 'varigEndringINæringsinntekt_dato'> & {
-        [VirksomhetFormField.fom]: FormikDatepickerValue;
-        [VirksomhetFormField.tom]?: FormikDatepickerValue;
-        [VirksomhetFormField.oppstartsdato]?: FormikDatepickerValue;
-        [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: FormikDatepickerValue;
+        [VirksomhetFormField.fom]: string;
+        [VirksomhetFormField.tom]?: string;
+        [VirksomhetFormField.oppstartsdato]?: string;
+        [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: string;
     }
 >;
 

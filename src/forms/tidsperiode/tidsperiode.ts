@@ -1,5 +1,5 @@
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import utils from './tidsperiodeUtils';
 import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
 
@@ -8,13 +8,14 @@ const fom = new Date(2000, 10, 10);
 const tom = new Date(2000, 10, 11);
 
 const tidsperiode: DateTidsperiode = {
+    id,
     fom,
     tom,
 };
 
 const formValues: DateTidsperiodeFormValues = {
-    fom: createFormikDatepickerValue(fom),
-    tom: createFormikDatepickerValue(tom),
+    fom: dateToISOString(fom),
+    tom: dateToISOString(tom),
 };
 
 const { mapDateTidsperiodeToFormValues, mapFormValuesToDateTidsperiode, isValidDateTidsperiode } = utils;

@@ -1,5 +1,5 @@
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { Utenlandsopphold, UtenlandsoppholdFormValues } from './types';
 import utils from './utenlandsoppholdUtils';
 
@@ -14,8 +14,8 @@ const utenlandsopphold: Utenlandsopphold = {
 };
 
 const formValues: UtenlandsoppholdFormValues = {
-    fom: createFormikDatepickerValue(fom),
-    tom: createFormikDatepickerValue(tom),
+    fom: dateToISOString(fom),
+    tom: dateToISOString(tom),
     landkode,
 };
 

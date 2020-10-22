@@ -17,7 +17,7 @@ import {
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import { FormikYesOrNoQuestion, getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -44,7 +44,8 @@ const MAKS_INNTEKT = 999999999;
 const Form = getTypedFormComponents<VirksomhetFormField, VirksomhetFormValues>();
 
 const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
-    return values.fom?.date !== undefined && moment(values.fom.date).isAfter(date4YearsAgo);
+    const fomDate = ISOStringToDate(values.fom);
+    return fomDate !== undefined && moment(fomDate).isAfter(date4YearsAgo);
 };
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
@@ -79,6 +80,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
             renderForm={(formik: FormikProps<VirksomhetFormValues>) => {
                 const { values, setFieldValue } = formik;
                 const { navnPåVirksomheten = 'virksomheten' } = values;
+                const fomDate = ISOStringToDate(values.fom);
                 return (
                     <Form.Form
                         includeValidationSummary={true}
@@ -200,7 +202,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             </Box>
                         )}
 
-                        {values.fom?.date && moment(values.fom.date).isAfter(date4YearsAgo) && (
+                        {fomDate && moment(fomDate).isAfter(date4YearsAgo) && (
                             <>
                                 <Box margin="xl">
                                     <Form.Input
@@ -248,7 +250,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 )}
                             </>
                         )}
-                        {values.fom?.date && moment(values.fom.date).isAfter(date4YearsAgo) === false && (
+                        {fomDate && moment(fomDate).isAfter(date4YearsAgo) === false && (
                             <>
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion

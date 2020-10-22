@@ -1,7 +1,7 @@
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 import annetBarnUtils from './annetBarnUtils';
+import { dateToISOFormattedDateString } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 const id = '123';
 const fnr = '234';
@@ -17,7 +17,7 @@ const annetBarn: AnnetBarn = {
 
 const formValues: AnnetBarnFormValues = {
     fnr,
-    fødselsdato: createFormikDatepickerValue(fødselsdato),
+    fødselsdato: dateToISOFormattedDateString(fødselsdato),
     navn,
 };
 

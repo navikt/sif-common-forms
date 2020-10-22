@@ -1,5 +1,5 @@
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
-import { createFormikDatepickerValue } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 
@@ -15,7 +15,7 @@ const mapFormValuesToPartialAnnetBarn = (
     return {
         ...formValues,
         id: id || guid(),
-        fødselsdato: formValues.fødselsdato?.date,
+        fødselsdato: formValues.fødselsdato ? ISOStringToDate(formValues.fødselsdato) : undefined,
     };
 };
 
@@ -23,7 +23,7 @@ const mapAnnetBarnToFormValues = (annetBarn: Partial<AnnetBarn>): AnnetBarnFormV
     return {
         fnr: annetBarn.fnr,
         navn: annetBarn.navn,
-        fødselsdato: createFormikDatepickerValue(annetBarn.fødselsdato),
+        fødselsdato: annetBarn.fødselsdato ? dateToISOString(annetBarn.fødselsdato) : '',
     };
 };
 
