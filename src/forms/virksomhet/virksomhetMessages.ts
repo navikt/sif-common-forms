@@ -75,7 +75,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.har_blitt_yrkesaktiv_dato': 'Gi opp datoen for når du begynte i arbeidslivet',
         'sifForms.virksomhet.varig_endring_spm':
             'Har du hatt ei varig endring i arbeidsforholdet ditt, verksemda di eller arbeidssituasjonen din dei siste fire åra?',
-        'sifForms.virksomhet.varig_endring_dato': 'Gi opp datoen for endringa.',
+        'sifForms.virksomhet.varig_endring_dato': 'Gi opp datoen for endringa',
         'sifForms.virksomhet.varig_endring_inntekt':
             'Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.',
         'sifForms.virksomhet.varig_endring_tekst':

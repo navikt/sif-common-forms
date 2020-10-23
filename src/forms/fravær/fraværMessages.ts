@@ -16,7 +16,7 @@ const fraværMessages = {
         'fravær.form.validation.fromDateAfterToDate': 'Frå-datoen må vere lik eller før til-datoen',
         'fravær.form.validation.toDateBeforeFromDate': 'Til-datoen må vere lik eller etter frå-datoen',
         'fravær.form.validation.timer_mer_enn_arbeidstimer':
-            'Talet på timar med fråvær kan ikkje vere meir enn talet på timar du skulle ha jobba denne dagen.',
+            'Talet på timar med fråvær kan ikkje vere meir enn talet på timar du skulle ha jobba denne dagen',
         'fieldvalidation.dager_med_fravær_overlapper_perioder':
             'En eller flere perioder overlapper med registrerte dager med delvis fravær',
         'fravær.form.validation.er_helg': 'Laurdag og søndag er ikkje gyldig.',
