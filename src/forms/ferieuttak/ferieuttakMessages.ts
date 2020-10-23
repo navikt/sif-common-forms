@@ -20,8 +20,8 @@ const ferieuttakMessages = {
         'ferieuttak.list.cancelButton': 'Avbryt',
         'ferieuttak.form.validation.required': 'Feltet er påkrevd',
         'ferieuttak.form.validation.dateOutsideRange': 'Første gyldige dato er {fom}, og siste gyldige dato er {tom}',
-        'ferieuttak.form.validation.fromDateAfterToDate': 'Frå-dato må være lik eller før til-dato',
-        'ferieuttak.form.validation.toDateBeforeFromDate': 'Til-dato må være lik eller etter frå-dato',
+        'ferieuttak.form.validation.fromDateAfterToDate': 'Frå-dato må vere lik eller før til-dato',
+        'ferieuttak.form.validation.toDateBeforeFromDate': 'Til-dato må vere lik eller etter frå-dato',
     },
 };
 
