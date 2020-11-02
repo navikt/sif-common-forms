@@ -38,10 +38,6 @@ const mapUtenlandsoppholdToFormValues = ({
     landkode,
     årsak,
     barnInnlagtPerioder,
-    // : barnInnlagtPerioder?.map((p) => ({
-    //     fom: dateToISOString(p.fom),
-    //     tom: dateToISOString(p.tom),
-    // })),
 });
 
 const utenlandsoppholdUtils = {
