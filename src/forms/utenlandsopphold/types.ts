@@ -10,10 +10,7 @@ export interface UtenlandsoppholdInnlagtPeriode {
     fom: Date;
     tom: Date;
 }
-export interface UtenlandsoppholdFormInnlagtPeriode {
-    fom?: string;
-    tom?: string;
-}
+
 export interface Utenlandsopphold {
     id?: string;
     fom: Date;
@@ -28,6 +25,6 @@ export type UtenlandsoppholdFormValues = Partial<
     Omit<Utenlandsopphold, 'id' | 'fom' | 'tom' | 'barnInnlagtPerioder'> & {
         fom?: string;
         tom?: string;
-        barnInnlagtPerioder?: UtenlandsoppholdFormInnlagtPeriode[];
+        barnInnlagtPerioder?: UtenlandsoppholdInnlagtPeriode[];
     }
 >;
