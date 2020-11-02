@@ -1,11 +1,6 @@
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
-import {
-    Utenlandsopphold,
-    UtenlandsoppholdFormValues,
-    UtenlandsoppholdInnlagtPeriode,
-    UtenlandsoppholdFormInnlagtPeriode,
-} from './types';
+import { Utenlandsopphold, UtenlandsoppholdFormValues } from './types';
 
 const isValidUtenlandsopphold = (utenlandsopphold: Partial<Utenlandsopphold>): utenlandsopphold is Utenlandsopphold => {
     return (
@@ -15,27 +10,11 @@ const isValidUtenlandsopphold = (utenlandsopphold: Partial<Utenlandsopphold>): u
     );
 };
 
-const getBarnInnlagtIPerioderFromFormValues = (
-    perioder?: UtenlandsoppholdFormInnlagtPeriode[]
-): UtenlandsoppholdInnlagtPeriode[] | undefined => {
-    const barnInnlagtPerioder: UtenlandsoppholdInnlagtPeriode[] = [];
-    if (perioder) {
-        perioder.forEach((periode) => {
-            const fom = ISOStringToDate(periode.fom);
-            const tom = ISOStringToDate(periode.tom);
-            if (fom && tom) {
-                barnInnlagtPerioder.push({ fom, tom });
-            }
-        });
-    }
-    return barnInnlagtPerioder.length > 0 ? barnInnlagtPerioder : undefined;
-};
-
 const mapFormValuesToUtenlandsopphold = (
     formValues: UtenlandsoppholdFormValues,
     id: string | undefined
 ): Partial<Utenlandsopphold> => {
-    const barnInnlagtPerioder = getBarnInnlagtIPerioderFromFormValues(formValues.barnInnlagtPerioder);
+    const { barnInnlagtPerioder } = formValues;
     return {
         ...formValues,
         id: id || guid(),
@@ -58,10 +37,7 @@ const mapUtenlandsoppholdToFormValues = ({
     erBarnetInnlagt,
     landkode,
     årsak,
-    barnInnlagtPerioder: barnInnlagtPerioder?.map((p) => ({
-        fom: dateToISOString(p.fom),
-        tom: dateToISOString(p.tom),
-    })),
+    barnInnlagtPerioder,
 });
 
 const utenlandsoppholdUtils = {
