@@ -118,7 +118,7 @@
         "nav-frontend-veileder": "^2.0.29",
         "nav-frontend-veileder-style": "^2.0.21",
         "nav-frontend-veilederpanel": "^0.1.37",
-        "nav-frontend-veilederpanel-style": "0.0.33",
+        "nav-frontend-veilederpanel-style": "0.0.36",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.1.2",
         "react": "^16.14.0",
