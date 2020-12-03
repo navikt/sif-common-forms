@@ -3,10 +3,15 @@ import { createFieldValidationError } from '@navikt/sif-common-core/lib/validati
 import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
 import { dateToISOString, FormikValidateFunction, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { isString } from 'formik';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { guid } from 'nav-frontend-js-utils';
 import { FraværFieldValidationErrors } from './fraværValidationUtils';
 import { FraværDag, FraværDagFormValues, FraværPeriode, FraværPeriodeFormValues } from './types';
-import { guid } from 'nav-frontend-js-utils';
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {
     return (
@@ -26,7 +31,7 @@ export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange 
 export const datesCollideWithDateRanges = (dates: Date[], ranges: DateRange[]): boolean => {
     if (ranges.length > 0 && dates.length > 0) {
         return dates.some((d) => {
-            return ranges.some((range) => moment(d).isSameOrAfter(range.from) && moment(d).isSameOrBefore(range.to));
+            return ranges.some((range) => dayjs(d).isSameOrAfter(range.from) && dayjs(d).isSameOrBefore(range.to));
         });
     }
     return false;

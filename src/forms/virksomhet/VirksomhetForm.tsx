@@ -18,8 +18,8 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
 import { FormikProps } from 'formik';
-import moment from 'moment';
 import { Systemtittel } from 'nav-frontend-typografi';
 import InfoTilFisker from './parts/InfoTilFisker';
 import {
@@ -45,7 +45,7 @@ const Form = getTypedFormComponents<VirksomhetFormField, VirksomhetFormValues>()
 
 const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
     const fomDate = ISOStringToDate(values.fom);
-    return fomDate !== undefined && moment(fomDate).isAfter(date4YearsAgo);
+    return fomDate !== undefined && dayjs(fomDate).isAfter(date4YearsAgo);
 };
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
@@ -202,7 +202,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             </Box>
                         )}
 
-                        {fomDate && moment(fomDate).isAfter(date4YearsAgo) && (
+                        {fomDate && dayjs(fomDate).isAfter(date4YearsAgo) && (
                             <>
                                 <Box margin="xl">
                                     <Form.Input
@@ -250,7 +250,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 )}
                             </>
                         )}
-                        {fomDate && moment(fomDate).isAfter(date4YearsAgo) === false && (
+                        {fomDate && dayjs(fomDate).isAfter(date4YearsAgo) === false && (
                             <>
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
