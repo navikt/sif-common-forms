@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { guid } from 'nav-frontend-js-utils';
 import { Næringstype, Virksomhet, VirksomhetFormValues } from './types';

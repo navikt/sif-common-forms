@@ -60,7 +60,7 @@ export const outDenneHvisInkludert = (initialValues: Partial<FraværDag>): ((dat
 
 export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FraværDagFormValues>();
 
-const FraværDagFormView: React.FunctionComponent<Props> = ({
+const FraværDagFormView = ({
     fraværDag: initialValues = {
         dato: undefined,
         timerArbeidsdag: undefined,

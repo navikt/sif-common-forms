@@ -3,7 +3,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Panel from 'nav-frontend-paneler';
 
 interface Props {
-    values?: {};
+    values?: any;
 }
 
 function SubmitPreview({ values }: Props) {

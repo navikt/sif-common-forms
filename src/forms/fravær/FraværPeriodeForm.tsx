@@ -55,7 +55,7 @@ const outDenneHvisInkludert = (denneFraværsPerioden: Partial<FraværPeriode>): 
     fraværPeriode: FraværPeriode
 ) => !(fraværPeriode?.from === denneFraværsPerioden.from && fraværPeriode?.to === denneFraværsPerioden.to);
 
-const FraværPeriodeForm: React.FunctionComponent<Props> = ({
+const FraværPeriodeForm = ({
     fraværPeriode: initialValues = { from: undefined, to: undefined },
     maxDate,
     minDate,

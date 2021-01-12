@@ -12,7 +12,7 @@ import '@navikt/sif-common-core/lib/styles/globalStyles.less';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
-const App: React.FC = () => {
+const App = () => {
     const [locale, setLocale] = React.useState(localeFromSessionStorage || 'nb');
     return (
         <Normaltekst tag="div">

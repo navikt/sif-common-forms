@@ -11,7 +11,7 @@ interface Props {
     useTrashcan?: boolean;
 }
 
-const FraværPerioderList: React.FunctionComponent<Props> = ({ fraværPerioder = [], onDelete, onEdit, useTrashcan }) => {
+const FraværPerioderList = ({ fraværPerioder = [], onDelete, onEdit, useTrashcan }: Props) => {
     const getDateTitleString = (fraværPeriode: FraværPeriode) =>
         `${prettifyDateExtended(fraværPeriode.from)} - ${prettifyDateExtended(fraværPeriode.to)}`;
 

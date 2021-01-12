@@ -26,7 +26,7 @@ const getOptionsList: (maksTid: number) => JSX.Element[] = (maksTid: number) => 
     return go([], 0.5);
 };
 
-const FraværTimerSelect: React.FunctionComponent<Props> = ({ name, validate, label, maksTid }) => {
+const FraværTimerSelect = ({ name, validate, label, maksTid }: Props) => {
     return (
         <FraværDagForm.Select bredde="s" label={label || 'Antall timer'} name={name} validate={validate}>
             <option />

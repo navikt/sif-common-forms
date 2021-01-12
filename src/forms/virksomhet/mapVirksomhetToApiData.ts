@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo, getCountryName } from '@navikt/sif-common-formik/lib';
 import { Virksomhet, VirksomhetApiData } from './types';
