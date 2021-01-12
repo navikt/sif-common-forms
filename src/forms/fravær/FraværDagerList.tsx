@@ -11,7 +11,7 @@ interface Props {
     onDelete?: (fraværDag: FraværDag) => void;
 }
 
-const FraværDagerList: React.FC<Props> = ({ fraværDager = [], onDelete, onEdit }) => {
+const FraværDagerList = ({ fraværDager = [], onDelete, onEdit }: Props) => {
     const getFraværDagListItemTitle = (fraværDag: FraværDag) =>
         `${prettifyDateExtended(fraværDag.dato)}: 
         Skulle jobbet ${fraværDag.timerArbeidsdag} ${timeText(fraværDag.timerArbeidsdag)}. 
