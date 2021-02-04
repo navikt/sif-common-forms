@@ -17,11 +17,10 @@ interface Props<FieldNames> {
     name: FieldNames;
     validate?: FormikValidateFunction;
     texts?: FosterbarnListAndDialogText;
-    info?: string;
     includeName?: boolean;
 }
 
-function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, includeName }: Props<FieldNames>) {
+function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, includeName }: Props<FieldNames>) {
     const intl = useIntl();
 
     const defaultText: FosterbarnListAndDialogText = {
@@ -40,7 +39,6 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, info, incl
                     modalTitle: txt.modal_tittel,
                     emptyListText: txt.liste_tom_liste_tekst,
                     listTitle: txt.liste_tittel,
-                    info,
                 }}
                 dialogWidth="narrow"
                 validate={validate}
