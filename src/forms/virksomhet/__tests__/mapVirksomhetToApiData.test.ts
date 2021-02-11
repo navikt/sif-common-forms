@@ -49,13 +49,11 @@ const virksomhetApiData: VirksomhetApiData = {
 
 describe('erVirksomhetRegnetSomNyoppstartet', () => {
     it('True when less than four years ago', () => {
-        const startOfYear = dayjs().startOf('year');
-        const validDate = startOfYear.subtract(3, 'years').toDate();
+        const validDate = dayjs().subtract(4, 'years').add(1, 'day').toDate();
         expect(erVirksomhetRegnetSomNyoppstartet(validDate)).toBeTruthy();
     });
     it('False when more than four yearsago', () => {
-        const startOfYear = dayjs().startOf('year');
-        const invalidDate = startOfYear.subtract(3, 'years').subtract(1, 'day').toDate();
+        const invalidDate = dayjs().subtract(4, 'years').toDate();
         expect(erVirksomhetRegnetSomNyoppstartet(invalidDate)).toBeFalsy();
     });
 });
