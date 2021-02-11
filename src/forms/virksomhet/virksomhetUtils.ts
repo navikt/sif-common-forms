@@ -8,8 +8,7 @@ export const harFiskerNæringstype = (næringstyper: Næringstype[]): boolean =>
     næringstyper.find((n) => n === Næringstype.FISKER) !== undefined;
 
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date) => {
-    const oppstartsday = dayjs(oppstartsdato).startOf('day');
-    return oppstartsday.isAfter(date4YearsAgo);
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo);
 };
 
 export const mapFormValuesToVirksomhet = (
