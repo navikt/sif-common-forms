@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { YesOrNo } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
+
 import { mapVirksomhetToVirksomhetApiData } from '../mapVirksomhetToApiData';
 import { Næringstype, Virksomhet, VirksomhetApiData } from '../types';
+import { erVirksomhetRegnetSomNyoppstartet } from '../virksomhetUtils';
 
 const fom = new Date();
 const tom = new Date();
@@ -40,7 +44,21 @@ const virksomhetApiData: VirksomhetApiData = {
         telefon: '234',
     },
     organisasjonsnummer: '123123123',
+    erNyoppstartet: true,
 };
+
+describe('erVirksomhetRegnetSomNyoppstartet', () => {
+    it('True when less than four years ago', () => {
+        const startOfYear = dayjs().startOf('year');
+        const validDate = startOfYear.subtract(3, 'years').toDate();
+        expect(erVirksomhetRegnetSomNyoppstartet(validDate)).toBeTruthy();
+    });
+    it('False when more than four yearsago', () => {
+        const startOfYear = dayjs().startOf('year');
+        const invalidDate = startOfYear.subtract(3, 'years').subtract(1, 'day').toDate();
+        expect(erVirksomhetRegnetSomNyoppstartet(invalidDate)).toBeFalsy();
+    });
+});
 
 describe('mapVirksomhetToApiData', () => {
     it('should verify standard required fields to be mapped', () => {

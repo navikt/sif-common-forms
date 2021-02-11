@@ -18,7 +18,6 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
-import dayjs from 'dayjs';
 import { FormikProps } from 'formik';
 import { Systemtittel } from 'nav-frontend-typografi';
 import InfoTilFisker from './parts/InfoTilFisker';
@@ -30,7 +29,12 @@ import {
     VirksomhetFormValues,
     VirksomhetHideFields,
 } from './types';
-import { harFiskerNæringstype, mapFormValuesToVirksomhet, mapVirksomhetToFormValues } from './virksomhetUtils';
+import {
+    erVirksomhetRegnetSomNyoppstartet,
+    harFiskerNæringstype,
+    mapFormValuesToVirksomhet,
+    mapVirksomhetToFormValues,
+} from './virksomhetUtils';
 
 interface Props {
     virksomhet?: Virksomhet;
@@ -45,7 +49,7 @@ const Form = getTypedFormComponents<VirksomhetFormField, VirksomhetFormValues>()
 
 const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
     const fomDate = ISOStringToDate(values.fom);
-    return fomDate !== undefined && dayjs(fomDate).isAfter(date4YearsAgo);
+    return fomDate !== undefined && erVirksomhetRegnetSomNyoppstartet(fomDate);
 };
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
@@ -202,7 +206,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                             </Box>
                         )}
 
-                        {fomDate && dayjs(fomDate).isAfter(date4YearsAgo) && (
+                        {fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) && (
                             <>
                                 <Box margin="xl">
                                     <Form.Input
@@ -250,7 +254,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                 )}
                             </>
                         )}
-                        {fomDate && dayjs(fomDate).isAfter(date4YearsAgo) === false && (
+                        {fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) === false && (
                             <>
                                 <Box margin="xl">
                                     <Form.YesOrNoQuestion
