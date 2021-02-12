@@ -1,7 +1,7 @@
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo, getCountryName } from '@navikt/sif-common-formik/lib';
 import { Virksomhet, VirksomhetApiData } from './types';
-import { harFiskerNæringstype } from './virksomhetUtils';
+import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virksomhetUtils';
 
 export const mapVirksomhetToVirksomhetApiData = (
     locale: string,
@@ -31,6 +31,7 @@ export const mapVirksomhetToVirksomhetApiData = (
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
         tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
         næringsinntekt: virksomhet.næringsinntekt,
+        erNyoppstartet: erVirksomhetRegnetSomNyoppstartet(virksomhet.fom),
     };
 
     if (virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {

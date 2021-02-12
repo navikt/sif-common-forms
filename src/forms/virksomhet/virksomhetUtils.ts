@@ -1,9 +1,15 @@
+import { date4YearsAgo } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
 import { guid } from 'nav-frontend-js-utils';
 import { Næringstype, Virksomhet, VirksomhetFormValues } from './types';
 
 export const harFiskerNæringstype = (næringstyper: Næringstype[]): boolean =>
     næringstyper.find((n) => n === Næringstype.FISKER) !== undefined;
+
+export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date) => {
+    return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo);
+};
 
 export const mapFormValuesToVirksomhet = (
     formValues: VirksomhetFormValues,

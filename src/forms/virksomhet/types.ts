@@ -85,6 +85,7 @@ export interface VirksomhetApiData {
     fiskerErPåBladB?: boolean;
     fraOgMed: ApiStringDate;
     tilOgMed?: ApiStringDate | null;
+    erNyoppstartet: boolean;
     næringsinntekt?: number;
     navnPåVirksomheten: string;
     organisasjonsnummer?: string;
