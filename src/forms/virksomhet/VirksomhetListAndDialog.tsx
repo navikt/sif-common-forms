@@ -10,6 +10,7 @@ interface Props<FieldNames> {
     validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
     hideFormFields?: VirksomhetHideFields;
+    skipOrgNumValidation?: boolean;
     onAfterChange?: (virksomheter: Virksomhet[]) => void;
 }
 
@@ -18,6 +19,7 @@ function VirksomhetListAndDialog<FieldNames>({
     validate,
     labels,
     hideFormFields,
+    skipOrgNumValidation,
     onAfterChange,
 }: Props<FieldNames>) {
     return (
@@ -32,6 +34,7 @@ function VirksomhetListAndDialog<FieldNames>({
                     virksomhet={item}
                     onSubmit={onSubmit}
                     onCancel={onCancel}
+                    skipOrgNumValidation={skipOrgNumValidation}
                     hideFormFields={hideFormFields}
                 />
             )}
