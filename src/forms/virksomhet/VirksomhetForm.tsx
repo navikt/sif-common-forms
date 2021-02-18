@@ -39,6 +39,7 @@ import {
 interface Props {
     virksomhet?: Virksomhet;
     hideFormFields?: VirksomhetHideFields;
+    skipOrgNumValidation?: boolean;
     onSubmit: (oppdrag: Virksomhet) => void;
     onCancel: () => void;
 }
@@ -59,7 +60,7 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
     return undefined;
 };
 
-const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Props) => {
+const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOrgNumValidation }: Props) => {
     const onFormikSubmit = (values: VirksomhetFormValues) => {
         const virksomhetToSubmit = mapFormValuesToVirksomhet(values, virksomhet?.id);
         if (isVirksomhet(virksomhetToSubmit)) {
@@ -170,8 +171,11 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields }: Prop
                                     label={getText('organisasjonsnummer')}
                                     style={{ maxWidth: '10rem' }}
                                     maxLength={9}
-                                    validate={(value) =>
-                                        validateOrgNumber(value, values.registrertINorge === YesOrNo.YES)
+                                    validate={
+                                        skipOrgNumValidation
+                                            ? undefined
+                                            : (value) =>
+                                                  validateOrgNumber(value, values.registrertINorge === YesOrNo.YES)
                                     }
                                 />
                             </Box>
