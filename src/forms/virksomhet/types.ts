@@ -32,10 +32,6 @@ export enum VirksomhetFormField {
     'regnskapsfører_telefon' = 'regnskapsfører_telefon',
 }
 
-export interface VirksomhetHideFields {
-    [VirksomhetFormField.fiskerErPåBladB]?: boolean;
-}
-
 export interface Virksomhet {
     id?: string;
     [VirksomhetFormField.næringstyper]: Næringstype[];

@@ -1,25 +1,23 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import { Virksomhet, VirksomhetHideFields } from './types';
+import { Virksomhet } from './types';
 import VirksomhetForm from './VirksomhetForm';
 import VirksomhetListe from './VirksomhetList';
 
 interface Props<FieldNames> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
-    hideFormFields?: VirksomhetHideFields;
     skipOrgNumValidation?: boolean;
+    validate?: FormikValidateFunction;
     onAfterChange?: (virksomheter: Virksomhet[]) => void;
 }
 
 function VirksomhetListAndDialog<FieldNames>({
     name,
-    validate,
     labels,
-    hideFormFields,
     skipOrgNumValidation,
+    validate,
     onAfterChange,
 }: Props<FieldNames>) {
     return (
@@ -36,7 +34,6 @@ function VirksomhetListAndDialog<FieldNames>({
                     onSubmit={onSubmit}
                     onCancel={onCancel}
                     skipOrgNumValidation={skipOrgNumValidation}
-                    hideFormFields={hideFormFields}
                 />
             )}
             listRenderer={({ items, onEdit, onDelete }) => (

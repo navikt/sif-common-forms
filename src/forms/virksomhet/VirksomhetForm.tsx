@@ -16,19 +16,11 @@ import {
     validateRequiredNumber,
     validateYesOrNoIsAnswered,
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import { Systemtittel } from 'nav-frontend-typografi';
 import InfoTilFisker from './parts/InfoTilFisker';
-import {
-    isVirksomhet,
-    Næringstype,
-    Virksomhet,
-    VirksomhetFormField,
-    VirksomhetFormValues,
-    VirksomhetHideFields,
-} from './types';
+import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
 import {
     erVirksomhetRegnetSomNyoppstartet,
     harFiskerNæringstype,
@@ -38,7 +30,6 @@ import {
 
 interface Props {
     virksomhet?: Virksomhet;
-    hideFormFields?: VirksomhetHideFields;
     skipOrgNumValidation?: boolean;
     onSubmit: (oppdrag: Virksomhet) => void;
     onCancel: () => void;
@@ -60,7 +51,7 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
     return undefined;
 };
 
-const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOrgNumValidation }: Props) => {
+const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }: Props) => {
     const onFormikSubmit = (values: VirksomhetFormValues) => {
         const virksomhetToSubmit = mapFormValuesToVirksomhet(values, virksomhet?.id);
         if (isVirksomhet(virksomhetToSubmit)) {
@@ -75,7 +66,6 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
 
     const intl = useIntl();
     const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
-    const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
 
     const næringstypeOptions = [
         {
@@ -102,7 +92,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
             onSubmit={onFormikSubmit}
             renderForm={(formik: FormikProps<VirksomhetFormValues>) => {
                 const { values, setFieldValue } = formik;
-                const { navnPåVirksomheten = 'virksomheten' } = values;
+                const { navnPåVirksomheten = 'virksomheten', næringstyper = [] } = values;
                 const fomDate = ISOStringToDate(values.fom);
                 return (
                     <Form.Form
@@ -112,6 +102,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                         <Box padBottom="l">
                             <Systemtittel tag="h1">{getText('form_title')}</Systemtittel>
                         </Box>
+
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
                             legend={getText('hvilken_type_virksomhet')}
@@ -119,7 +110,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                             validate={validateRequiredList}
                         />
 
-                        {harFiskerNæringstype(values.næringstyper || []) && hideFiskerPåBladB !== true && (
+                        {harFiskerNæringstype(næringstyper) && (
                             <Box margin="xl">
                                 <FormikYesOrNoQuestion<VirksomhetFormField>
                                     name={VirksomhetFormField.fiskerErPåBladB}
@@ -138,13 +129,11 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                             />
                         </Box>
 
-                        {harFiskerNæringstype(values.næringstyper || []) &&
-                            values.navnPåVirksomheten !== undefined &&
-                            hasValue(navnPåVirksomheten) && (
-                                <Box margin="xl">
-                                    <InfoTilFisker navnPåVirksomheten={values.navnPåVirksomheten} />
-                                </Box>
-                            )}
+                        {harFiskerNæringstype(næringstyper) && values.navnPåVirksomheten && (
+                            <Box margin="xl">
+                                <InfoTilFisker navnPåVirksomheten={values.navnPåVirksomheten} />
+                            </Box>
+                        )}
 
                         <Box margin="xl">
                             <Form.YesOrNoQuestion

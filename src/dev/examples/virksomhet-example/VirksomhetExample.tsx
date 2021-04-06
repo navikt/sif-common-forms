@@ -65,7 +65,6 @@ const VirksomhetExample = () => {
                                 <VirksomhetListAndDialog<FormField>
                                     name={FormField.virksomheter}
                                     validate={validateRequiredList}
-                                    hideFormFields={{ fiskerErPåBladB: hideFisker }}
                                     labels={{
                                         addLabel: 'Legg til',
                                         listTitle: 'Virksomhet',
@@ -85,7 +84,6 @@ const VirksomhetExample = () => {
             <DialogFormWrapper width="wide">
                 <Panel border={true}>
                     <VirksomhetForm
-                        hideFormFields={{ fiskerErPåBladB: hideFisker }}
                         onCancel={() => setSingleFormValues({})}
                         onSubmit={(values) => setSingleFormValues(values)}
                     />
