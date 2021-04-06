@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
@@ -19,7 +19,6 @@ import {
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
 import { Systemtittel } from 'nav-frontend-typografi';
-import InfoTilFisker from './parts/InfoTilFisker';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
 import {
     erVirksomhetRegnetSomNyoppstartet,
@@ -52,6 +51,9 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
 };
 
 const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }: Props) => {
+    const intl = useIntl();
+    const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
+
     const onFormikSubmit = (values: VirksomhetFormValues) => {
         const virksomhetToSubmit = mapFormValuesToVirksomhet(values, virksomhet?.id);
         if (isVirksomhet(virksomhetToSubmit)) {
@@ -63,28 +65,6 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
             throw new Error('VirksomhetForm: Formvalues is not a valid Virksomhet on submit.');
         }
     };
-
-    const intl = useIntl();
-    const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
-
-    const næringstypeOptions = [
-        {
-            value: Næringstype.FISKER,
-            label: getText('næringstype_fisker'),
-        },
-        {
-            value: Næringstype.JORDBRUK,
-            label: getText('næringstype_jordbruker'),
-        },
-        {
-            value: Næringstype.DAGMAMMA,
-            label: getText('næringstype_dagmamma'),
-        },
-        {
-            value: Næringstype.ANNEN,
-            label: getText('næringstype_annet'),
-        },
-    ];
 
     return (
         <Form.FormikWrapper
@@ -106,7 +86,24 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
                             legend={getText('hvilken_type_virksomhet')}
-                            checkboxes={næringstypeOptions}
+                            checkboxes={[
+                                {
+                                    value: Næringstype.FISKER,
+                                    label: getText('næringstype_fisker'),
+                                },
+                                {
+                                    value: Næringstype.JORDBRUK,
+                                    label: getText('næringstype_jordbruker'),
+                                },
+                                {
+                                    value: Næringstype.DAGMAMMA,
+                                    label: getText('næringstype_dagmamma'),
+                                },
+                                {
+                                    value: Næringstype.ANNEN,
+                                    label: getText('næringstype_annet'),
+                                },
+                            ]}
                             validate={validateRequiredList}
                         />
 
@@ -119,7 +116,6 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
                                 />
                             </Box>
                         )}
-
                         <Box margin="xl">
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
@@ -129,17 +125,22 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
                             />
                         </Box>
 
-                        {harFiskerNæringstype(næringstyper) && values.navnPåVirksomheten && (
-                            <Box margin="xl">
-                                <InfoTilFisker navnPåVirksomheten={values.navnPåVirksomheten} />
-                            </Box>
-                        )}
-
                         <Box margin="xl">
                             <Form.YesOrNoQuestion
                                 name={VirksomhetFormField.registrertINorge}
                                 legend={getText('registert_i_norge', { navnPåVirksomheten })}
                                 validate={validateYesOrNoIsAnswered}
+                                description={
+                                    harFiskerNæringstype(næringstyper) ? (
+                                        <ExpandableInfo
+                                            title={intlHelper(intl, 'sifForms.virksomhet.veileder_fisker.tittel')}>
+                                            <FormattedMessage
+                                                id="sifForms.virksomhet.veileder_fisker"
+                                                values={{ navnPåVirksomheten }}
+                                            />
+                                        </ExpandableInfo>
+                                    ) : undefined
+                                }
                             />
                         </Box>
 
