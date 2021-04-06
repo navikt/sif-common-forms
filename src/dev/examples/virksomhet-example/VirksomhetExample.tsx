@@ -64,6 +64,7 @@ const VirksomhetExample = () => {
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                                 <VirksomhetListAndDialog<FormField>
                                     name={FormField.virksomheter}
+                                    gjelderFlereVirksomheter={true}
                                     validate={validateRequiredList}
                                     labels={{
                                         addLabel: 'Legg til',
@@ -84,6 +85,7 @@ const VirksomhetExample = () => {
             <DialogFormWrapper width="wide">
                 <Panel border={true}>
                     <VirksomhetForm
+                        gjelderFlereVirksomheter={true}
                         onCancel={() => setSingleFormValues({})}
                         onSubmit={(values) => setSingleFormValues(values)}
                     />

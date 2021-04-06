@@ -18,7 +18,7 @@ import {
 } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { FormikProps } from 'formik';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
 import {
     erVirksomhetRegnetSomNyoppstartet,
@@ -30,6 +30,7 @@ import {
 interface Props {
     virksomhet?: Virksomhet;
     skipOrgNumValidation?: boolean;
+    gjelderFlereVirksomheter?: boolean;
     onSubmit: (oppdrag: Virksomhet) => void;
     onCancel: () => void;
 }
@@ -50,7 +51,7 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
     return undefined;
 };
 
-const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }: Props) => {
+const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCancel, skipOrgNumValidation }: Props) => {
     const intl = useIntl();
     const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
 
@@ -116,6 +117,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
                                 />
                             </Box>
                         )}
+
                         <Box margin="xl">
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
@@ -202,140 +204,153 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, skipOrgNumValidation }
                             </Box>
                         )}
 
-                        {fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) && (
+                        {fomDate && (
                             <>
-                                <Box margin="xl">
-                                    <Form.Input
-                                        name={VirksomhetFormField.næringsinntekt}
-                                        label={getText('næringsinntekt')}
-                                        type="number"
-                                        maxLength={10}
-                                        max={MAKS_INNTEKT}
-                                        style={{ maxWidth: '10rem' }}
-                                        validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
-                                        description={
-                                            <ExpandableInfo title={getText('næringsinntekt_info_title')}>
-                                                {getText('næringsinntekt_info')}
-                                            </ExpandableInfo>
-                                        }
-                                    />
-                                </Box>
-                                <Box margin="xl">
-                                    <Form.YesOrNoQuestion
-                                        name={
-                                            VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
-                                        }
-                                        legend={getText('har_blitt_yrkesaktiv')}
-                                        validate={validateYesOrNoIsAnswered}
-                                        description={
-                                            <ExpandableInfo title={getText('har_blitt_yrkesaktiv_info_title')}>
-                                                {getText('har_blitt_yrkesaktiv_info')}
-                                            </ExpandableInfo>
-                                        }
-                                    />
-                                </Box>
-                                {values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES && (
-                                    <FormBlock margin="m">
-                                        <ResponsivePanel>
-                                            <Form.DatePicker
-                                                name={VirksomhetFormField.oppstartsdato}
-                                                label={getText('har_blitt_yrkesaktiv_dato')}
-                                                showYearSelector={true}
-                                                minDate={date3YearsAgo}
-                                                maxDate={dateToday}
-                                                validate={validateRequiredField}
-                                            />
-                                        </ResponsivePanel>
-                                    </FormBlock>
+                                {gjelderFlereVirksomheter && (
+                                    <Box margin="xxl">
+                                        <Undertittel>Felles for alle dine virksomheter</Undertittel>
+                                    </Box>
                                 )}
-                            </>
-                        )}
-                        {fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) === false && (
-                            <>
-                                <Box margin="xl">
-                                    <Form.YesOrNoQuestion
-                                        name={VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår}
-                                        legend={getText('varig_endring_spm')}
-                                        validate={validateYesOrNoIsAnswered}
-                                    />
-                                </Box>
-                                {values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES && (
+
+                                {/* Nyoppstartet  */}
+                                {erVirksomhetRegnetSomNyoppstartet(fomDate) && (
                                     <>
-                                        <Box margin="xl">
-                                            <Form.DatePicker
-                                                name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
-                                                label={getText('varig_endring_dato')}
-                                                validate={validateRequiredField}
-                                                minDate={date4YearsAgo}
-                                                maxDate={dateToday}
-                                            />
-                                        </Box>
-                                        <Box margin="xl">
-                                            <Form.Input
-                                                name={
-                                                    VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
-                                                }
-                                                label={getText('varig_endring_inntekt')}
-                                                type="number"
+                                        <Box margin="l">
+                                            <Form.NumberInput
+                                                name={VirksomhetFormField.næringsinntekt}
+                                                label={getText('næringsinntekt')}
                                                 maxLength={10}
-                                                max={MAKS_INNTEKT}
                                                 style={{ maxWidth: '10rem' }}
                                                 validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
+                                                description={
+                                                    <ExpandableInfo title={getText('næringsinntekt_info_title')}>
+                                                        {getText('næringsinntekt_info')}
+                                                    </ExpandableInfo>
+                                                }
                                             />
                                         </Box>
                                         <Box margin="xl">
-                                            <Form.Textarea
-                                                name={VirksomhetFormField.varigEndringINæringsinntekt_forklaring}
-                                                label={getText('varig_endring_tekst')}
-                                                validate={validateRequiredField}
-                                                maxLength={1000}
+                                            <Form.YesOrNoQuestion
+                                                name={
+                                                    VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                                                }
+                                                legend={getText('har_blitt_yrkesaktiv')}
+                                                validate={validateYesOrNoIsAnswered}
+                                                description={
+                                                    <ExpandableInfo title={getText('har_blitt_yrkesaktiv_info_title')}>
+                                                        {getText('har_blitt_yrkesaktiv_info')}
+                                                    </ExpandableInfo>
+                                                }
                                             />
                                         </Box>
+                                        {values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene ===
+                                            YesOrNo.YES && (
+                                            <FormBlock margin="m">
+                                                <ResponsivePanel>
+                                                    <Form.DatePicker
+                                                        name={VirksomhetFormField.oppstartsdato}
+                                                        label={getText('har_blitt_yrkesaktiv_dato')}
+                                                        showYearSelector={true}
+                                                        minDate={date3YearsAgo}
+                                                        maxDate={dateToday}
+                                                        validate={validateRequiredField}
+                                                    />
+                                                </ResponsivePanel>
+                                            </FormBlock>
+                                        )}
                                     </>
                                 )}
-                            </>
-                        )}
 
-                        {(values.fom || values.registrertINorge === YesOrNo.YES) && (
-                            <>
-                                <Box margin="xl">
-                                    <Form.YesOrNoQuestion
-                                        name={VirksomhetFormField.harRegnskapsfører}
-                                        legend={getText('regnskapsfører_spm')}
-                                        validate={validateYesOrNoIsAnswered}
-                                    />
-                                </Box>
-
-                                {values.harRegnskapsfører === YesOrNo.YES && (
-                                    <FormBlock margin="m">
-                                        <ResponsivePanel>
-                                            <Form.Input
-                                                name={VirksomhetFormField.regnskapsfører_navn}
-                                                label={getText('regnskapsfører_navn')}
-                                                validate={validateRequiredField}
-                                                maxLength={50}
+                                {/* Ikke nyoppstartet */}
+                                {erVirksomhetRegnetSomNyoppstartet(fomDate) === false && (
+                                    <>
+                                        <Box margin="xl">
+                                            <Form.YesOrNoQuestion
+                                                name={
+                                                    VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                                                }
+                                                legend={getText('varig_endring_spm')}
+                                                validate={validateYesOrNoIsAnswered}
                                             />
-                                            <Box margin="xl">
-                                                <Form.Input
-                                                    name={VirksomhetFormField.regnskapsfører_telefon}
-                                                    label={getText('regnskapsfører_telefon')}
-                                                    validate={validatePhoneNumber}
-                                                    maxLength={15}
-                                                />
-                                            </Box>
-                                        </ResponsivePanel>
-                                    </FormBlock>
+                                        </Box>
+                                        {values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES && (
+                                            <>
+                                                <Box margin="xl">
+                                                    <Form.DatePicker
+                                                        name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
+                                                        label={getText('varig_endring_dato')}
+                                                        validate={validateRequiredField}
+                                                        minDate={date4YearsAgo}
+                                                        maxDate={dateToday}
+                                                    />
+                                                </Box>
+                                                <Box margin="xl">
+                                                    <Form.NumberInput
+                                                        name={
+                                                            VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring
+                                                        }
+                                                        label={getText('varig_endring_inntekt')}
+                                                        maxLength={10}
+                                                        style={{ maxWidth: '10rem' }}
+                                                        validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
+                                                    />
+                                                </Box>
+                                                <Box margin="xl">
+                                                    <Form.Textarea
+                                                        name={
+                                                            VirksomhetFormField.varigEndringINæringsinntekt_forklaring
+                                                        }
+                                                        label={getText('varig_endring_tekst')}
+                                                        validate={validateRequiredField}
+                                                        maxLength={1000}
+                                                    />
+                                                </Box>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+
+                                {values.registrertINorge === YesOrNo.YES && (
+                                    <>
+                                        <Box margin="xl">
+                                            <Form.YesOrNoQuestion
+                                                name={VirksomhetFormField.harRegnskapsfører}
+                                                legend={getText('regnskapsfører_spm')}
+                                                validate={validateYesOrNoIsAnswered}
+                                            />
+                                        </Box>
+                                        {values.harRegnskapsfører === YesOrNo.YES && (
+                                            <FormBlock margin="m">
+                                                <ResponsivePanel>
+                                                    <Form.Input
+                                                        name={VirksomhetFormField.regnskapsfører_navn}
+                                                        label={getText('regnskapsfører_navn')}
+                                                        validate={validateRequiredField}
+                                                        maxLength={50}
+                                                    />
+                                                    <Box margin="xl">
+                                                        <Form.Input
+                                                            name={VirksomhetFormField.regnskapsfører_telefon}
+                                                            label={getText('regnskapsfører_telefon')}
+                                                            validate={validatePhoneNumber}
+                                                            maxLength={15}
+                                                        />
+                                                    </Box>
+                                                </ResponsivePanel>
+                                            </FormBlock>
+                                        )}
+                                    </>
+                                )}
+                                {values.harRegnskapsfører === YesOrNo.YES && (
+                                    <Box margin="xl">
+                                        <CounsellorPanel>
+                                            {getText('veileder_innhenter_info.1')}
+                                            <br />
+                                            {getText('veileder_innhenter_info.2')}
+                                        </CounsellorPanel>
+                                    </Box>
                                 )}
                             </>
-                        )}
-                        {values.harRegnskapsfører === YesOrNo.YES && (
-                            <Box margin="xl">
-                                <CounsellorPanel>
-                                    {getText('veileder_innhenter_info.1')}
-                                    <br />
-                                    {getText('veileder_innhenter_info.2')}
-                                </CounsellorPanel>
-                            </Box>
                         )}
                     </Form.Form>
                 );
