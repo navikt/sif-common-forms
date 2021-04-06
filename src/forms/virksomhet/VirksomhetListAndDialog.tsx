@@ -10,6 +10,7 @@ interface Props<FieldNames> {
     labels: ModalFormAndListLabels;
     skipOrgNumValidation?: boolean;
     gjelderFlereVirksomheter?: boolean;
+    makstAntall?: number;
     validate?: FormikValidateFunction;
     onAfterChange?: (virksomheter: Virksomhet[]) => void;
 }
@@ -19,6 +20,7 @@ function VirksomhetListAndDialog<FieldNames>({
     labels,
     skipOrgNumValidation,
     gjelderFlereVirksomheter,
+    makstAntall,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
@@ -28,7 +30,7 @@ function VirksomhetListAndDialog<FieldNames>({
             labels={labels}
             validate={validate}
             dialogWidth="narrow"
-            maxItems={1}
+            maxItems={makstAntall}
             sortFunc={sortItemsByFom}
             formRenderer={({ onSubmit, onCancel, item }) => (
                 <VirksomhetForm
