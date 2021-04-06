@@ -16,7 +16,7 @@ const annetBarnMessages = {
         'annetBarn.form.navn': 'Namnet til barnet',
         'annetBarn.form.okButton': 'Ok',
         'annetBarn.form.cancelButton': 'Avbryt',
-        'annetBarn.form.validation.required': 'Feltet er påkravd.',
+        'annetBarn.form.validation.required': 'Feltet er påkravd',
         'annetBarn.list.født': 'Født',
     },
 };
