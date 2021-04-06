@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import { FraværDag, FraværPeriode } from '../../../forms/fravær';
-import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioderListAndDialog';
 import FraværDagerListAndDialog from '../../../forms/fravær/FraværDagerListAndDialog';
-import FraværPeriodeForm from '../../../forms/fravær/FraværPeriodeForm';
 import FraværDagFormView from '../../../forms/fravær/FraværDagForm';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { fraværDagToFraværDateRange, validateNoCollisions } from '../../../forms/fravær/fraværUtilities';
-import { validateAll } from '../../../forms/fravær/fraværValidationUtils';
-import Panel from 'nav-frontend-paneler';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import fraværMessages from '../../../forms/fravær/fraværMessages';
+import FraværPeriodeForm from '../../../forms/fravær/FraværPeriodeForm';
+import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioderListAndDialog';
+import { fraværDagToFraværDateRange, fraværPeriodeToDateRange } from '../../../forms/fravær/fraværUtilities';
+import { validateAll, validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
+import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 
 enum FormField {
     perioder = 'perioder',
@@ -53,6 +53,10 @@ const FraværExample: React.FunctionComponent = () => {
                     onSubmit={setListFormValues}
                     renderForm={(formik) => {
                         const { values } = formik;
+                        const dateRangesToDisable = [
+                            ...values.perioder.map(fraværPeriodeToDateRange),
+                            ...values.dager.map(fraværDagToFraværDateRange),
+                        ];
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
@@ -63,18 +67,21 @@ const FraværExample: React.FunctionComponent = () => {
                                         name={FormField.perioder}
                                         minDate={date1YearAgo}
                                         maxDate={dateToday}
+                                        periodeDescription={
+                                            <p style={{ marginTop: '.5rem' }}>
+                                                Du kan kun søke for ett og samme år i en søknad. Får å søke for flere
+                                                år, må du sende en søknad for hvert år.
+                                            </p>
+                                        }
                                         validate={validateAll([
                                             validateRequiredList,
-                                            validateNoCollisions(values[FormField.dager], values[FormField.perioder]),
+                                            validateNoCollisions(values.dager, values.perioder),
                                         ])}
                                         labels={{
                                             addLabel: 'Legg til periode',
                                             modalTitle: 'Fravær hele dager',
                                         }}
-                                        dateRangesToDisable={[
-                                            ...values.perioder,
-                                            ...values.dager.map(fraværDagToFraværDateRange),
-                                        ]}
+                                        dateRangesToDisable={dateRangesToDisable}
                                         helgedagerIkkeTillat={true}
                                     />
                                 </FormBlock>
@@ -85,7 +92,7 @@ const FraværExample: React.FunctionComponent = () => {
                                         maxDate={dateToday}
                                         validate={validateAll([
                                             validateRequiredList,
-                                            validateNoCollisions(values[FormField.dager], values[FormField.perioder]),
+                                            validateNoCollisions(values.dager, values.perioder),
                                         ])}
                                         labels={{
                                             addLabel: 'Legg til dag med delvis fravær',
@@ -93,17 +100,8 @@ const FraværExample: React.FunctionComponent = () => {
                                             modalTitle: 'Fravær deler av dag',
                                             emptyListText: 'Ingen dager er lagt til',
                                         }}
-                                        dateRangesToDisable={[
-                                            ...values.perioder,
-                                            ...values.dager.map(fraværDagToFraværDateRange),
-                                        ]}
+                                        dateRangesToDisable={dateRangesToDisable}
                                         helgedagerIkkeTillatt={true}
-                                        fraværDagFormLabels={{
-                                            title: 'Dag med delvis fravær',
-                                            date: 'Dato',
-                                            antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
-                                            timerFravær: 'Antall timer du var borte fra jobb denne dagen',
-                                        }}
                                         maksArbeidstidPerDag={24}
                                     />
                                 </FormBlock>

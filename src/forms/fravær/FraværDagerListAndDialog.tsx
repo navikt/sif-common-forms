@@ -2,7 +2,7 @@ import React from 'react';
 import { DateRange, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
 import { FraværDag } from './types';
-import FraværDagFormView, { FraværDagFormLabels } from './FraværDagForm';
+import FraværDagFormView from './FraværDagForm';
 import FraværDagerList from './FraværDagerList';
 
 interface Props<FieldNames> {
@@ -10,10 +10,11 @@ interface Props<FieldNames> {
     validate?: FormikValidateFunction;
     minDate: Date;
     maxDate: Date;
+    dagDescription?: JSX.Element;
     labels: ModalFormAndListLabels;
+    formHeaderContent?: JSX.Element;
     dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
-    fraværDagFormLabels?: Partial<FraværDagFormLabels>;
     maksArbeidstidPerDag?: number;
 }
 
@@ -22,10 +23,11 @@ function FraværDagerListAndDialog<FieldNames>({
     minDate,
     maxDate,
     validate,
+    dagDescription,
     labels,
+    formHeaderContent,
     dateRangesToDisable,
     helgedagerIkkeTillatt,
-    fraværDagFormLabels,
     maksArbeidstidPerDag,
 }: Props<FieldNames>) {
     return (
@@ -43,11 +45,12 @@ function FraværDagerListAndDialog<FieldNames>({
                         fraværDag={item}
                         minDate={minDate}
                         maxDate={maxDate}
+                        headerContent={formHeaderContent}
+                        dagDescription={dagDescription}
                         dateRangesToDisable={dateRangesToDisable}
                         helgedagerIkkeTillatt={helgedagerIkkeTillatt}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
-                        labels={fraværDagFormLabels}
                         maksArbeidstidPerDag={maksArbeidstidPerDag}
                     />
                 )}

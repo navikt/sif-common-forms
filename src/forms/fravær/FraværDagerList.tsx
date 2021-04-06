@@ -1,9 +1,9 @@
 import React from 'react';
-import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
 import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
 import { prettifyDateExtended } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FraværDag } from './types';
+import FraværListItem from './FraværListItem';
 import { timeText } from './fraværUtilities';
+import { FraværDag } from './types';
 
 interface Props {
     fraværDager: FraværDag[];
@@ -13,17 +13,18 @@ interface Props {
 
 const FraværDagerList = ({ fraværDager = [], onDelete, onEdit }: Props) => {
     const getFraværDagListItemTitle = (fraværDag: FraværDag) =>
-        `${prettifyDateExtended(fraværDag.dato)}: 
-        Skulle jobbet ${fraværDag.timerArbeidsdag} ${timeText(fraværDag.timerArbeidsdag)}. 
+        `${prettifyDateExtended(fraværDag.dato)}:
+        Skulle jobbet ${fraværDag.timerArbeidsdag} ${timeText(fraværDag.timerArbeidsdag)}.
         Borte fra jobb ${fraværDag.timerFravær}  ${timeText(fraværDag.timerFravær)}.`;
 
     const renderFraværDagLabel = (fraværDag: FraværDag): React.ReactNode => {
         const title = getFraværDagListItemTitle(fraværDag);
         return (
-            <>
-                {onEdit && <ActionLink onClick={() => onEdit(fraværDag)}>{title}</ActionLink>}
-                {!onEdit && <span>{title}</span>}
-            </>
+            <FraværListItem
+                title={title}
+                årsak={fraværDag.årsak}
+                onEdit={onEdit ? () => onEdit(fraværDag) : undefined}
+            />
         );
     };
 

@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { BostedUtland, BostedUtlandFormValues } from './types';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import utils from './bostedUtlandUtils';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { BostedUtland, BostedUtlandFormValues } from './types';
 
-const id = '123';
-const fom = new Date(2000, 10, 10);
-const tom = new Date(2000, 10, 11);
+const fom = ISOStringToDate('2000-10-10')!;
+const tom = ISOStringToDate('2000-10-11')!;
+const id = 'abc';
 const landkode = 'Argentina';
 
 const bostedUtland: BostedUtland = {
     fom,
     tom,
     landkode,
+    id,
 };
 
 const formValues: BostedUtlandFormValues = {
@@ -30,12 +32,7 @@ describe('bostedUtland', () => {
     });
     it('maps formValues to bostedUtland correctly - with id', () => {
         const bostedJson = jsonSort(bostedUtland);
-        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
-        expect(bostedJson).toEqual(formJson);
-    });
-    it('maps formValues to bostedUtland correctly - without id', () => {
-        const bostedJson = jsonSort({ ...bostedUtland, id: undefined });
-        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, undefined));
+        const formJson = jsonSort(mapFormValuesToBostedUtland(formValues, id));
         expect(bostedJson).toEqual(formJson);
     });
     it('isValidBostedUtland verifies type bostedUtland correctly', () => {

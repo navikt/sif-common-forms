@@ -1,6 +1,6 @@
+import { FieldValidationErrors } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
 import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
-import { FieldValidationErrors } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { isString } from 'formik';
 import { validateAll } from '../fraværValidationUtils';
 

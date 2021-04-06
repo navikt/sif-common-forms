@@ -2,28 +2,26 @@ import React from 'react';
 import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
 import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { useIntl } from 'react-intl';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { AnnetBarn } from './types';
 import './annetBarnList.less';
 
 interface Props {
     annetBarn: AnnetBarn[];
+    includeFødselsdato: boolean;
     onEdit?: (annetBarn: AnnetBarn) => void;
     onDelete?: (annetBarn: AnnetBarn) => void;
 }
 
 const bem = bemUtils('annetBarnList');
 
-const AnnetBarnList = ({ annetBarn = [], onDelete, onEdit }: Props) => {
-    const intl = useIntl();
+const AnnetBarnList = ({ annetBarn = [], includeFødselsdato, onDelete, onEdit }: Props) => {
     const renderAnnetBarnLabel = (annetBarn: AnnetBarn): React.ReactNode => {
         return (
             <div className={bem.element('label')}>
-                <span className={bem.element('dato')}>
-                    {intlHelper(intl, 'annetBarn.list.født')} {prettifyDate(annetBarn.fødselsdato)}
-                </span>
+                {includeFødselsdato && annetBarn.fødselsdato && (
+                    <span className={bem.element('dato')}>{prettifyDate(annetBarn.fødselsdato)}</span>
+                )}
                 <span className={bem.element('land')}>
                     {onEdit && <ActionLink onClick={() => onEdit(annetBarn)}>{annetBarn.navn}</ActionLink>}
                     {!onEdit && <span>{annetBarn.navn}</span>}

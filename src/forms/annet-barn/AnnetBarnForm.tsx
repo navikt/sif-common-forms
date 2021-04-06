@@ -28,6 +28,7 @@ export interface AnnetBarnFormLabels {
 
 interface Props {
     annetBarn?: Partial<AnnetBarn>;
+    includeFødselsdatoSpørsmål: boolean;
     labels?: Partial<AnnetBarnFormLabels>;
     minDate: Date;
     maxDate: Date;
@@ -45,6 +46,7 @@ const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues>();
 
 const AnnetBarnForm = ({
     annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
+    includeFødselsdatoSpørsmål,
     labels,
     minDate,
     maxDate,
@@ -54,8 +56,12 @@ const AnnetBarnForm = ({
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: AnnetBarnFormValues) => {
-        const annetBarnToSubmit = annetBarnUtils.mapFormValuesToPartialAnnetBarn(formValues, annetBarn.id);
-        if (annetBarnUtils.isAnnetBarn(annetBarnToSubmit)) {
+        const annetBarnToSubmit = annetBarnUtils.mapFormValuesToPartialAnnetBarn(
+            formValues,
+            annetBarn.id,
+            includeFødselsdatoSpørsmål
+        );
+        if (annetBarnUtils.isAnnetBarn(annetBarnToSubmit, includeFødselsdatoSpørsmål)) {
             onSubmit(annetBarnToSubmit);
         } else {
             throw new Error('AnnetBarnForm: Formvalues is not a valid AnnetBarn on submit.');
@@ -76,7 +82,7 @@ const AnnetBarnForm = ({
     return (
         <>
             <Form.FormikWrapper
-                initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
+                initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn, includeFødselsdatoSpørsmål)}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
                     <Form.Form
@@ -91,23 +97,25 @@ const AnnetBarnForm = ({
                                 placeholder={formLabels.placeholderNavn}
                             />
                         </FormBlock>
-                        <FormBlock>
-                            <Form.DatePicker
-                                name={AnnetBarnFormFields.fødselsdato}
-                                label={
-                                    formLabels.aldersGrenseText
-                                        ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
-                                        : `${formLabels.fødselsdato}`
-                                }
-                                validate={validateAll([
-                                    validateRequiredField,
-                                    validateDateInRange({ from: minDate, to: maxDate }),
-                                ])}
-                                maxDate={maxDate}
-                                minDate={minDate}
-                                showYearSelector={true}
-                            />
-                        </FormBlock>
+                        {includeFødselsdatoSpørsmål && (
+                            <FormBlock>
+                                <Form.DatePicker
+                                    name={AnnetBarnFormFields.fødselsdato}
+                                    label={
+                                        formLabels.aldersGrenseText
+                                            ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
+                                            : `${formLabels.fødselsdato}`
+                                    }
+                                    validate={validateAll([
+                                        validateRequiredField,
+                                        validateDateInRange({ from: minDate, to: maxDate }),
+                                    ])}
+                                    maxDate={maxDate}
+                                    minDate={minDate}
+                                    showYearSelector={true}
+                                />
+                            </FormBlock>
+                        )}
                         <FormBlock>
                             <Form.Input
                                 name={AnnetBarnFormFields.fnr}

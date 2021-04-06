@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import utils from './ferieuttakUtils';
 import { Ferieuttak, FerieuttakFormValues } from './types';
 
-const fom = new Date(2000, 10, 10);
-const tom = new Date(2000, 10, 11);
+const fom = ISOStringToDate('2000-10-10')!;
+const tom = ISOStringToDate('2000-10-11')!;
+const id = 'abc';
 
 const ferieuttak: Ferieuttak = {
     fom,
     tom,
+    id,
 };
 
 const formValues: FerieuttakFormValues = {
@@ -26,18 +29,13 @@ describe('ferieuttak', () => {
     });
     it('maps formValues to ferieuttak correctly - with id', () => {
         const barnJson = jsonSort(ferieuttak);
-        const formJson = jsonSort(mapFormValuesToFerieuttak(formValues, undefined));
-        expect(barnJson).toEqual(formJson);
-    });
-    it('maps formValues to ferieuttak correctly - without id', () => {
-        const barnJson = jsonSort({ ...ferieuttak, id: undefined });
-        const formJson = jsonSort(mapFormValuesToFerieuttak(formValues, undefined));
+        const formJson = jsonSort(mapFormValuesToFerieuttak(formValues, id));
         expect(barnJson).toEqual(formJson);
     });
     it('isValidferieuttak verifies type ferieuttak correctly', () => {
         expect(isValidFerieuttak({})).toBeFalsy();
-        expect(isValidFerieuttak({ ...ferieuttak, fom: undefined })).toBeFalsy();
-        expect(isValidFerieuttak({ ...ferieuttak, tom: undefined })).toBeFalsy();
-        expect(isValidFerieuttak({ fom, tom })).toBeTruthy();
+        expect(isValidFerieuttak({ ...ferieuttak, fom: undefined, id })).toBeFalsy();
+        expect(isValidFerieuttak({ ...ferieuttak, tom: undefined, id })).toBeFalsy();
+        expect(isValidFerieuttak({ fom, tom, id })).toBeTruthy();
     });
 });
