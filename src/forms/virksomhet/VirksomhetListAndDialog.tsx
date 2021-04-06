@@ -28,6 +28,7 @@ function VirksomhetListAndDialog<FieldNames>({
             labels={labels}
             validate={validate}
             dialogWidth="narrow"
+            maxItems={1}
             sortFunc={sortItemsByFom}
             formRenderer={({ onSubmit, onCancel, item }) => (
                 <VirksomhetForm

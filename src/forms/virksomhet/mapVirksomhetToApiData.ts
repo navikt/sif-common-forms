@@ -75,15 +75,5 @@ export const mapVirksomhetToVirksomhetApiData = (
         };
     }
 
-    if (!harRegnskapsfører) {
-        if (virksomhet.harRevisor === YesOrNo.YES && virksomhet.revisor_navn && virksomhet.revisor_telefon) {
-            data.revisor = {
-                navn: virksomhet.revisor_navn,
-                telefon: virksomhet.revisor_telefon,
-                kanInnhenteOpplysninger: virksomhet.kanInnhenteOpplsyningerFraRevisor === YesOrNo.YES,
-            };
-        }
-    }
-
     return data;
 };

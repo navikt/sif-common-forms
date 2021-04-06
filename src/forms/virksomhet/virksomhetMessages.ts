@@ -37,10 +37,6 @@ const virksomhetMessages = {
         'sifForms.virksomhet.regnskapsfører_spm': 'Har du regnskapsfører?',
         'sifForms.virksomhet.regnskapsfører_navn': 'Oppgi navnet til regnskapsfører',
         'sifForms.virksomhet.regnskapsfører_telefon': 'Oppgi telefonnummeret til regnskapsfører',
-        'sifForms.virksomhet.revisor_spm': 'Har du revisor?',
-        'sifForms.virksomhet.revisor_navn': 'Oppgi navnet til revisor',
-        'sifForms.virksomhet.revisor_telefon': 'Oppgi telefonnummeret til revisor',
-        'sifForms.virksomhet.revisor_fullmakt': 'Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?',
         'sifForms.virksomhet.veileder_innhenter_info.1':
             'Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre.',
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tar kontakt med deg hvis vi trenger flere opplysninger.',
@@ -83,11 +79,6 @@ const virksomhetMessages = {
         'sifForms.virksomhet.regnskapsfører_spm': 'Har du rekneskapsførar?',
         'sifForms.virksomhet.regnskapsfører_navn': 'Gi opp namnet til rekneskapsføraren',
         'sifForms.virksomhet.regnskapsfører_telefon': 'Gi opp telefonnummeret til rekneskapsføraren',
-        'sifForms.virksomhet.revisor_spm': 'Har du revisor?',
-        'sifForms.virksomhet.revisor_navn': 'Gi opp namnet til revisoren',
-        'sifForms.virksomhet.revisor_telefon': 'Gi opp telefonnummeret til revisoren',
-        'sifForms.virksomhet.revisor_fullmakt':
-            'Gir du NAV fullmakt til å hente inn opplysningar direkte frå revisoren?',
         'sifForms.virksomhet.veileder_innhenter_info.1':
             'Vi hentar inn opplysningar om verksemda og inntekta di frå offentlege register.',
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tek kontakt med deg dersom vi treng fleire opplysningar',

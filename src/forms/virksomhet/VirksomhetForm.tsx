@@ -76,7 +76,25 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
     const intl = useIntl();
     const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
     const hideFiskerPåBladB = hideFormFields?.[VirksomhetFormField.fiskerErPåBladB] === true;
-    const hideRevisor = hideFormFields?.harRevisor === true;
+
+    const næringstypeOptions = [
+        {
+            value: Næringstype.FISKER,
+            label: getText('næringstype_fisker'),
+        },
+        {
+            value: Næringstype.JORDBRUK,
+            label: getText('næringstype_jordbruker'),
+        },
+        {
+            value: Næringstype.DAGMAMMA,
+            label: getText('næringstype_dagmamma'),
+        },
+        {
+            value: Næringstype.ANNEN,
+            label: getText('næringstype_annet'),
+        },
+    ];
 
     return (
         <Form.FormikWrapper
@@ -97,24 +115,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                         <Form.CheckboxPanelGroup
                             name={VirksomhetFormField.næringstyper}
                             legend={getText('hvilken_type_virksomhet')}
-                            checkboxes={[
-                                {
-                                    value: Næringstype.FISKER,
-                                    label: getText('næringstype_fisker'),
-                                },
-                                {
-                                    value: Næringstype.JORDBRUK,
-                                    label: getText('næringstype_jordbruker'),
-                                },
-                                {
-                                    value: Næringstype.DAGMAMMA,
-                                    label: getText('næringstype_dagmamma'),
-                                },
-                                {
-                                    value: Næringstype.ANNEN,
-                                    label: getText('næringstype_annet'),
-                                },
-                            ]}
+                            checkboxes={næringstypeOptions}
                             validate={validateRequiredList}
                         />
 
@@ -196,6 +197,7 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                                         label: getText('kalender_tom'),
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
+                                        validate: values.erPågående === true ? undefined : validateRequiredField,
                                     }}
                                 />
                                 <Form.Checkbox
@@ -334,50 +336,9 @@ const VirksomhetForm = ({ onCancel, virksomhet, onSubmit, hideFormFields, skipOr
                                         </ResponsivePanel>
                                     </FormBlock>
                                 )}
-
-                                {values.harRegnskapsfører === YesOrNo.NO && hideRevisor === false && (
-                                    <>
-                                        <Box margin="xl">
-                                            <Form.YesOrNoQuestion
-                                                name={VirksomhetFormField.harRevisor}
-                                                legend={getText('revisor_spm')}
-                                                validate={validateYesOrNoIsAnswered}
-                                            />
-                                        </Box>
-
-                                        {values.harRevisor === YesOrNo.YES && (
-                                            <FormBlock margin="m">
-                                                <ResponsivePanel>
-                                                    <Form.Input
-                                                        name={VirksomhetFormField.revisor_navn}
-                                                        label={getText('revisor_navn')}
-                                                        validate={validateRequiredField}
-                                                        maxLength={50}
-                                                    />
-                                                    <Box margin="xl">
-                                                        <Form.Input
-                                                            name={VirksomhetFormField.revisor_telefon}
-                                                            label={getText('revisor_telefon')}
-                                                            validate={validatePhoneNumber}
-                                                            maxLength={15}
-                                                        />
-                                                    </Box>
-                                                    <Box margin="xl">
-                                                        <Form.YesOrNoQuestion
-                                                            name={VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor}
-                                                            legend={getText('revisor_fullmakt')}
-                                                            validate={validateYesOrNoIsAnswered}
-                                                        />
-                                                    </Box>
-                                                </ResponsivePanel>
-                                            </FormBlock>
-                                        )}
-                                    </>
-                                )}
                             </>
                         )}
-                        {(values.harRegnskapsfører === YesOrNo.YES ||
-                            (values.harRevisor && values.harRevisor !== YesOrNo.UNANSWERED)) && (
+                        {values.harRegnskapsfører === YesOrNo.YES && (
                             <Box margin="xl">
                                 <CounsellorPanel>
                                     {getText('veileder_innhenter_info.1')}

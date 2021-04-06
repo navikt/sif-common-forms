@@ -32,7 +32,6 @@ export const mockVirksomhet: Virksomhet = {
     varigEndringINæringsinntekt_inntektEtterEndring: 200000,
     varigEndringINæringsinntekt_forklaring: 'Jeg fikk flere barn',
     harRegnskapsfører: YesOrNo.YES,
-    harRevisor: YesOrNo.YES,
     regnskapsfører_navn: 'Regnskapsefører Truls',
     regnskapsfører_telefon: '98219409',
 };
@@ -46,7 +45,6 @@ const VirksomhetExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Virksomhet> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const [hideFisker, setHideFisker] = useState<boolean>(false);
-    const [hideRevisor, setHideRevisor] = useState<boolean>(false);
     const intl = useIntl();
     return (
         <>
@@ -67,7 +65,7 @@ const VirksomhetExample = () => {
                                 <VirksomhetListAndDialog<FormField>
                                     name={FormField.virksomheter}
                                     validate={validateRequiredList}
-                                    hideFormFields={{ fiskerErPåBladB: hideFisker, harRevisor: hideRevisor }}
+                                    hideFormFields={{ fiskerErPåBladB: hideFisker }}
                                     labels={{
                                         addLabel: 'Legg til',
                                         listTitle: 'Virksomhet',
@@ -87,7 +85,7 @@ const VirksomhetExample = () => {
             <DialogFormWrapper width="wide">
                 <Panel border={true}>
                     <VirksomhetForm
-                        hideFormFields={{ fiskerErPåBladB: hideFisker, harRevisor: hideRevisor }}
+                        hideFormFields={{ fiskerErPåBladB: hideFisker }}
                         onCancel={() => setSingleFormValues({})}
                         onSubmit={(values) => setSingleFormValues(values)}
                     />
@@ -100,13 +98,6 @@ const VirksomhetExample = () => {
                                     label="Fisker på Blad B"
                                     checked={hideFisker}
                                     onChange={(evt) => setHideFisker(evt.currentTarget.checked)}
-                                />
-                            </Box>
-                            <Box margin="m">
-                                <Checkbox
-                                    label="Revisor"
-                                    checked={hideRevisor}
-                                    onChange={(evt) => setHideRevisor(evt.currentTarget.checked)}
                                 />
                             </Box>
                         </Panel>

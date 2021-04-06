@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
-import { dateToISOString, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { YesOrNo } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 
 import { mapVirksomhetToVirksomhetApiData } from '../mapVirksomhetToApiData';
@@ -24,12 +24,6 @@ const virksomhetFormData: Virksomhet = {
     harRegnskapsfører: YesOrNo.YES,
     regnskapsfører_navn: 'RegnskapsførerHenrik',
     regnskapsfører_telefon: '234',
-};
-
-export const revisorInfo = {
-    revisor_navn: 'RevisorHenrik',
-    revisor_telefon: '2341',
-    kanInnhenteOpplsyningerFraRevisor: YesOrNo.YES,
 };
 
 const virksomhetApiData: VirksomhetApiData = {
@@ -62,25 +56,6 @@ describe('mapVirksomhetToApiData', () => {
     it('should verify standard required fields to be mapped', () => {
         const mappedData = mapVirksomhetToVirksomhetApiData('nb', virksomhetFormData as Virksomhet);
         expect(JSON.stringify(jsonSort(mappedData))).toEqual(JSON.stringify(jsonSort(virksomhetApiData)));
-    });
-
-    it('should not include revisor if user has regnskapsfører', () => {
-        const mappedData = mapVirksomhetToVirksomhetApiData('nb', {
-            ...virksomhetFormData,
-            harRegnskapsfører: YesOrNo.NO,
-            harRevisor: YesOrNo.YES,
-            ...revisorInfo,
-        });
-        const apiData: VirksomhetApiData = {
-            ...virksomhetApiData,
-            regnskapsfører: undefined,
-            revisor: {
-                navn: revisorInfo.revisor_navn,
-                telefon: revisorInfo.revisor_telefon,
-                kanInnhenteOpplysninger: true,
-            },
-        };
-        expect(JSON.stringify(jsonSort(mappedData))).toEqual(JSON.stringify(jsonSort(apiData)));
     });
 
     it('should not include orgnumber if it is not registered in Norway', () => {

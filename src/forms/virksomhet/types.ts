@@ -30,15 +30,10 @@ export enum VirksomhetFormField {
     'regnskapsfører' = 'regnskapsfører',
     'regnskapsfører_navn' = 'regnskapsfører_navn',
     'regnskapsfører_telefon' = 'regnskapsfører_telefon',
-    'harRevisor' = 'harRevisor',
-    'revisor_navn' = 'revisor_navn',
-    'revisor_telefon' = 'revisor_telefon',
-    'kanInnhenteOpplsyningerFraRevisor' = 'kanInnhenteOpplsyningerFraRevisor',
 }
 
 export interface VirksomhetHideFields {
     [VirksomhetFormField.fiskerErPåBladB]?: boolean;
-    [VirksomhetFormField.harRevisor]?: boolean;
 }
 
 export interface Virksomhet {
@@ -62,10 +57,6 @@ export interface Virksomhet {
     [VirksomhetFormField.harRegnskapsfører]: YesOrNo;
     [VirksomhetFormField.regnskapsfører_navn]?: string;
     [VirksomhetFormField.regnskapsfører_telefon]?: string;
-    [VirksomhetFormField.harRevisor]?: YesOrNo;
-    [VirksomhetFormField.revisor_navn]?: string;
-    [VirksomhetFormField.revisor_telefon]?: string;
-    [VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor]?: YesOrNo;
 }
 export type VirksomhetFormValues = Partial<
     Omit<Virksomhet, 'fom' | 'tom' | 'oppstartsdato' | 'varigEndringINæringsinntekt_dato'> & {
@@ -105,10 +96,5 @@ export interface VirksomhetApiData {
     regnskapsfører?: {
         navn: string;
         telefon: string;
-    };
-    revisor?: {
-        navn: string;
-        telefon: string;
-        kanInnhenteOpplysninger?: boolean;
     };
 }
