@@ -3,7 +3,7 @@ module.exports = {
     extends: [
         'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
         'plugin:@typescript-eslint/recommended',
-        'prettier', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+        'prettier',
         'plugin:prettier/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin,
         'plugin:jsx-a11y/recommended',
     ],
@@ -14,12 +14,16 @@ module.exports = {
     },
     rules: {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
+        'react/display-name': 'off',
+        'react/prop-types': 'off',
     },
-    plugins: ['jsx-a11y'],
+    plugins: ['jsx-a11y', 'react-hooks'],
     settings: {
         react: {
             version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use

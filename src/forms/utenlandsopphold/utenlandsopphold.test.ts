@@ -31,7 +31,8 @@ describe('utenlandsopphold', () => {
         expect(mappedJson).toEqual(formJson);
     });
     it('maps formValues to utenlandsopphold correctly - with id', () => {
-        const mappedJson = jsonSort(utenlandsopphold);
+        const id = '132';
+        const mappedJson = jsonSort({ ...utenlandsopphold, id });
         const formJson = jsonSort(mapFormValuesToUtenlandsopphold(formValues, id));
         expect(mappedJson).toEqual(formJson);
     });
