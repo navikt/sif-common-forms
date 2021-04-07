@@ -18,14 +18,15 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "removeComments": true,
     "strictNullChecks": true,
     "noImplicitAny": false,
     "declaration": true,
     "moduleResolution": "node",
     "noEmit": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"
