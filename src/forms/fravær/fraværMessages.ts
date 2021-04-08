@@ -36,7 +36,7 @@ const fraværMessages = {
 
         'fravær.form.felles.hjemmePgaKorona':
             'Var du hjemme med barn fordi barnehage/skole var stengt på grunn av koronaviruset, eller på grunn av særlige smittevernshensyn?',
-        'fravær.form.felles.årsak': 'Kryss av for hvilken årsak du var hjemme med barn i perioden du har lagt inn',
+        'fravær.form.felles.årsak': 'Velg årsaken til at du var hjemme med barn i perioden du har lagt inn',
         'fravær.form.felles.ok': 'Ok',
         'fravær.form.felles.avbryt': 'Avbryt',
         'fravær.form.periode.tittel': 'Periode med fravær fra jobb',
