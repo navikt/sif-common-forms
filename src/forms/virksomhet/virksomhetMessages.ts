@@ -5,7 +5,9 @@ const virksomhetMessages = {
         'sifForms.virksomhet.næringstype_dagmamma': 'Dagmamma eller familiebarnehage i eget hjem',
         'sifForms.virksomhet.næringstype_annet': 'Annet',
         'sifForms.virksomhet.form_title': 'Opplysninger om virksomheten din',
+        'sifForms.virksomhet.form_title.flere': 'Opplysninger om den eldste virksomheten din',
         'sifForms.virksomhet.hvilken_type_virksomhet': 'Hvilken type virksomhet har du?',
+        'sifForms.virksomhet.hvilken_type_virksomhet.flere': 'Hvilken type virksomhet er den eldste virksomheten din?',
         'sifForms.virksomhet.hva_heter_virksomheten': 'Hva heter virksomheten?',
         'sifForms.virksomhet.fisker_blad_b': 'Er du fisker på blad B?',
         'sifForms.virksomhet.veileder_fisker.tittel': `Hvis du ikke har organiasjonsnummer`,
@@ -17,8 +19,13 @@ const virksomhetMessages = {
         'sifForms.virksomhet.kalender_fom': 'Startdato',
         'sifForms.virksomhet.kalender_tom': 'Eventuell sluttdato',
         'sifForms.virksomhet.kalender_pågående': 'Er pågående',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
+        'sifForms.virksomhet.næringsinntektFlere.info':
+            'Du har opplyst at du har flere næringsvirksomheter. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
         'sifForms.virksomhet.næringsinntekt':
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+            'Hva har du hatt totalt i næringsresultat før skatt de siste 12 månedene?',
+        'sifForms.virksomhet.næringsinntekt.info':
+            'Hvis virksomhetene har vart i kortere tid enn 12 måneder, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
         'sifForms.virksomhet.næringsinntekt_info':
             'Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.',
         'sifForms.virksomhet.næringsinntekt_info_title': 'Hva er næringsresultatet?',
@@ -48,7 +55,9 @@ const virksomhetMessages = {
         'sifForms.virksomhet.næringstype_dagmamma': 'Dagmamma eller familiebarnehage i eigen heim',
         'sifForms.virksomhet.næringstype_annet': 'Anna',
         'sifForms.virksomhet.form_title': 'Opplysningar om verksemda di',
+        'sifForms.virksomhet.form_title.flere': 'Opplysningar om den eldste verksemda di',
         'sifForms.virksomhet.hvilken_type_virksomhet': 'Kva type verksemd har du?',
+        'sifForms.virksomhet.hvilken_type_virksomhet.flere': 'Kva type er den eldste verksemda di?',
         'sifForms.virksomhet.hva_heter_virksomheten': 'Kva heiter verksemda?',
         'sifForms.virksomhet.fisker_blad_b': 'Er du fiskar på blad B?',
         'sifForms.virksomhet.veileder_fisker.tittel': `Dersom du ikkje har organiasjonsnummer`,
@@ -60,8 +69,14 @@ const virksomhetMessages = {
         'sifForms.virksomhet.kalender_fom': 'Startdato',
         'sifForms.virksomhet.kalender_tom': 'Eventuell sluttdato',
         'sifForms.virksomhet.kalender_pågående': 'Er i gang',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
+        'sifForms.virksomhet.næringsinntektFlere.info':
+            'Du har opplyst at du har fleire næringsverksemder. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
+
         'sifForms.virksomhet.næringsinntekt':
             'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
+        'sifForms.virksomhet.næringsinntekt.info':
+            'Dresom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Oppgi beløpet i heile kroner.',
         'sifForms.virksomhet.næringsinntekt_info':
             'Næringsresultatet er inntekter du har i næringa di, minus utgifter og avskrivingar.',
         'sifForms.virksomhet.næringsinntekt_info_title': 'Kva er næringsresultatet?',

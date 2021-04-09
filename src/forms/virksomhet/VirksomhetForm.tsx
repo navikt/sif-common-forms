@@ -81,7 +81,9 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                         onCancel={onCancel}
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Box padBottom="l">
-                            <Systemtittel tag="h1">{getText('form_title')}</Systemtittel>
+                            <Systemtittel tag="h1">
+                                {gjelderFlereVirksomheter ? getText('form_title.flere') : getText('form_title')}
+                            </Systemtittel>
                         </Box>
 
                         <Form.CheckboxPanelGroup
@@ -208,7 +210,8 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                             <>
                                 {gjelderFlereVirksomheter && (
                                     <Box margin="xxl">
-                                        <Undertittel>Felles for alle dine virksomheter</Undertittel>
+                                        <Undertittel>{getText('næringsinntektFlere.header')}</Undertittel>
+                                        <p>{getText('næringsinntektFlere.info')}</p>
                                     </Box>
                                 )}
 
@@ -223,9 +226,12 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                                                 style={{ maxWidth: '10rem' }}
                                                 validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
                                                 description={
-                                                    <ExpandableInfo title={getText('næringsinntekt_info_title')}>
-                                                        {getText('næringsinntekt_info')}
-                                                    </ExpandableInfo>
+                                                    <>
+                                                        {getText('næringsinntekt.info')}
+                                                        <ExpandableInfo title={getText('næringsinntekt_info_title')}>
+                                                            {getText('næringsinntekt_info')}
+                                                        </ExpandableInfo>
+                                                    </>
                                                 }
                                             />
                                         </Box>
