@@ -75,6 +75,8 @@ const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet }) => {
 
             {virksomhet.næringsinntekt !== undefined && (
                 <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.næringsinntekt')}>
+                    <FormattedMessage id="sifForms.virksomhet.summary.næringsinntekst" />
+                    {` `}
                     <TallSvar verdi={virksomhet.næringsinntekt} />
                 </SummaryBlock>
             )}
