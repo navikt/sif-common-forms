@@ -61,10 +61,10 @@ const virksomhetMessages = {
         'sifForms.virksomhet.summary.fisker.ikkePåBladB': 'Fisker er ikke på Blad B.',
         'sifForms.virksomhet.summary.registrertILand': 'Registrert i {land}',
         'sifForms.virksomhet.summary.registrertILand.orgnr': ' (organisasjonsnummer {orgnr})',
-        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Ble yrkesaktiv {dato}.',
+        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Ja, ble yrkesaktiv {dato}',
         'sifForms.virksomhet.summary.næringsinntekst': 'Næringsinntekt:',
         'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsfører',
-        'sifForms.virksomhet.summary.regnskapsfører.info': '{navn}, telefon {telefon}',
+        'sifForms.virksomhet.summary.regnskapsfører.info': 'Ja, {navn}, telefon {telefon}',
     },
     nn: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
@@ -130,9 +130,9 @@ const virksomhetMessages = {
         'sifForms.virksomhet.summary.registrertILand': 'Registrert i {land}',
         'sifForms.virksomhet.summary.registrertILand.orgnr': ' (organisasjonsnummer {orgnr})',
         'sifForms.virksomhet.summary.næringsinntekst': 'Næringsinntekt:',
-        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Vart yrkesaktiv {dato}.',
+        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Ja, vart yrkesaktiv {dato}',
         'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsførar',
-        'sifForms.virksomhet.summary.regnskapsfører.info': '{navn}, telefon {telefon}',
+        'sifForms.virksomhet.summary.regnskapsfører.info': 'Ja, {navn}, telefon {telefon}',
     },
 };
 export default virksomhetMessages;
