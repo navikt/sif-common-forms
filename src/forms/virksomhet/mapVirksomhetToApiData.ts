@@ -6,7 +6,7 @@ import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virk
 export const mapVirksomhetToVirksomhetApiData = (
     locale: string,
     virksomhet: Virksomhet,
-    harBesvartFikserPåBladB?: boolean
+    harBesvartFiskerPåBladB?: boolean
 ): VirksomhetApiData => {
     const registrertINorge = virksomhet.registrertINorge === YesOrNo.YES;
     const harRegnskapsfører = virksomhet.harRegnskapsfører === YesOrNo.YES;
@@ -33,7 +33,7 @@ export const mapVirksomhetToVirksomhetApiData = (
         erNyoppstartet,
     };
 
-    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFikserPåBladB !== true) {
+    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFiskerPåBladB !== true) {
         data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
     }
 

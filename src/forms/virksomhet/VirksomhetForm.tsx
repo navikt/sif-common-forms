@@ -30,7 +30,7 @@ import {
 interface Props {
     virksomhet?: Virksomhet;
     skipOrgNumValidation?: boolean;
-    gjelderFlereVirksomheter?: boolean;
+    harFlereVirksomheter?: boolean;
     onSubmit: (oppdrag: Virksomhet) => void;
     onCancel: () => void;
 }
@@ -51,7 +51,7 @@ const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | unde
     return undefined;
 };
 
-const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCancel, skipOrgNumValidation }: Props) => {
+const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, skipOrgNumValidation }: Props) => {
     const intl = useIntl();
     const getText = (key: string, value?: any): string => intlHelper(intl, `sifForms.virksomhet.${key}`, value);
 
@@ -82,7 +82,7 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                         fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
-                                {gjelderFlereVirksomheter ? getText('form_title.flere') : getText('form_title')}
+                                {harFlereVirksomheter ? getText('form_title.flere') : getText('form_title')}
                             </Systemtittel>
                         </Box>
 
@@ -208,7 +208,7 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
 
                         {fomDate && (
                             <>
-                                {gjelderFlereVirksomheter && (
+                                {harFlereVirksomheter && (
                                     <Box margin="xxl">
                                         <Undertittel>{getText('næringsinntektFlere.header')}</Undertittel>
                                         <p>{getText('næringsinntektFlere.info')}</p>

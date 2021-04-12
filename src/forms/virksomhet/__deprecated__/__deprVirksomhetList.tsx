@@ -2,7 +2,7 @@ import React from 'react';
 import ActionLink from '@navikt/sif-common-core/lib/components/action-link/ActionLink';
 import ItemList from '@navikt/sif-common-core/lib/components/item-list/ItemList';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { Virksomhet } from './types';
+import { Virksomhet } from '../types';
 import './virksomhetList.less';
 
 interface Props {

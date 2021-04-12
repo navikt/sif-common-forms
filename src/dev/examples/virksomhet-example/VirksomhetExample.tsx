@@ -4,20 +4,17 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
-import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Undertittel } from 'nav-frontend-typografi';
 import { mapVirksomhetToVirksomhetApiData } from '../../../forms/virksomhet/mapVirksomhetToApiData';
 import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhet/types';
-import VirksomhetForm from '../../../forms/virksomhet/VirksomhetForm';
-import VirksomhetListAndDialog from '../../../forms/virksomhet/VirksomhetListAndDialog';
-import PageIntro from '../../components/page-intro/PageIntro';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import VirksomhetInfoAndDialog from '../../../forms/virksomhet/VirksomhetInfoAndDialog';
 import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
+import PageIntro from '../../components/page-intro/PageIntro';
 
 enum FormField {
-    'virksomheter' = 'virksomheter',
+    'virksomhet' = 'virksomhet',
 }
 
 export const mockVirksomhet: Virksomhet = {
@@ -42,26 +39,19 @@ export const mockVirksomhet: Virksomhet = {
 };
 
 interface FormValues {
-    [FormField.virksomheter]: Virksomhet[];
+    [FormField.virksomhet]?: Virksomhet;
 }
-const initialValues: FormValues = { virksomheter: [] };
+const initialValues: FormValues = {};
 
 const VirksomhetExample = () => {
-    const [singleFormValues, setSingleFormValues] = useState<Partial<Virksomhet> | undefined>(undefined);
-    const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
-    const [hideFisker, setHideFisker] = useState<boolean>(false);
-    const [gjelderFlereVirksomheter, setGjelderFlereVirksomheter] = useState<boolean>(false);
+    const [formValues, setFormValues] = useState<Partial<FormValues> | undefined>(undefined);
+    const [harFlereVirksomheter, setHarFlereVirksomheter] = useState<boolean>(false);
     const intl = useIntl();
 
-    const virksomhetForApiMapping =
-        gjelderFlereVirksomheter && listFormValues?.virksomheter?.length === 1
-            ? listFormValues.virksomheter[0]
-            : undefined;
+    const { virksomhet } = formValues || {};
 
     const apiVirksomhet =
-        virksomhetForApiMapping && isVirksomhet(virksomhetForApiMapping)
-            ? mapVirksomhetToVirksomhetApiData(intl.locale, virksomhetForApiMapping)
-            : undefined;
+        virksomhet && isVirksomhet(virksomhet) ? mapVirksomhetToVirksomhetApiData(intl.locale, virksomhet) : undefined;
     return (
         <>
             <PageIntro title="Næringsvirksomhet">Skjema som brukes for på registrere en næringsvirksomhet.</PageIntro>
@@ -71,21 +61,22 @@ const VirksomhetExample = () => {
             <Panel border={true}>
                 <TypedFormikWrapper<FormValues>
                     initialValues={initialValues}
-                    onSubmit={setListFormValues}
+                    onSubmit={setFormValues}
                     renderForm={() => {
                         return (
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                                <VirksomhetListAndDialog<FormField>
-                                    name={FormField.virksomheter}
-                                    gjelderFlereVirksomheter={gjelderFlereVirksomheter}
-                                    maxItems={1}
+                                <VirksomhetInfoAndDialog<FormField>
+                                    name={FormField.virksomhet}
+                                    harFlereVirksomheter={harFlereVirksomheter}
                                     validate={validateRequiredList}
                                     labels={{
-                                        addLabel: gjelderFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
-                                        listTitle: 'Virksomhet',
+                                        addLabel: harFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
+                                        deleteLabel: 'Fjern',
+                                        editLabel: 'Endre',
+                                        infoTitle: 'Virksomhet',
                                         modalTitle: 'Virksomhet',
                                     }}
                                 />
@@ -99,11 +90,10 @@ const VirksomhetExample = () => {
                         <Box padBottom="m">Varianter:</Box>
                         <Box margin="m">
                             <Checkbox
-                                label="Gjelder flere virksomheter"
-                                checked={gjelderFlereVirksomheter}
-                                onChange={(evt) => setGjelderFlereVirksomheter(evt.currentTarget.checked)}
+                                label="Bruker har flere virksomheter"
+                                checked={harFlereVirksomheter}
+                                onChange={(evt) => setHarFlereVirksomheter(evt.currentTarget.checked)}
                             />
-                            <p>Denne må settes sammen med maks antall til 1</p>
                         </Box>
                     </Panel>
                 </Box>
@@ -119,46 +109,6 @@ const VirksomhetExample = () => {
                     </Panel>
                 </>
             )}
-
-            <Box margin="xxl" padBottom="l">
-                <Undertittel>Kun dialog</Undertittel>
-            </Box>
-
-            <DialogFormWrapper width="wide">
-                <Panel border={true}>
-                    <VirksomhetForm
-                        gjelderFlereVirksomheter={true}
-                        onCancel={() => setSingleFormValues({})}
-                        onSubmit={(values) => setSingleFormValues(values)}
-                    />
-                    <Box margin="l">
-                        <hr />
-                        <Panel style={{ padding: '1rem' }}>
-                            <Box padBottom="m">Spørsmål som kan skjules:</Box>
-                            <Box margin="m">
-                                <Checkbox
-                                    label="Fisker på Blad B"
-                                    checked={hideFisker}
-                                    onChange={(evt) => setHideFisker(evt.currentTarget.checked)}
-                                />
-                            </Box>
-                        </Panel>
-                    </Box>
-                    <Box margin="l">
-                        <SubmitPreview values={singleFormValues} />
-                    </Box>
-                    <Box margin="xl">
-                        <Undertittel>API-data</Undertittel>
-                        <SubmitPreview
-                            values={
-                                singleFormValues && isVirksomhet(singleFormValues)
-                                    ? mapVirksomhetToVirksomhetApiData(intl.locale, singleFormValues)
-                                    : undefined
-                            }
-                        />
-                    </Box>
-                </Panel>
-            </DialogFormWrapper>
         </>
     );
 };

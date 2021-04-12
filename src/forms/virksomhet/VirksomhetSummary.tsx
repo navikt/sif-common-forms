@@ -9,24 +9,31 @@ import JaNeiSvar from '../components/summary/JaNeiSvar';
 import Sitat from '../components/summary/Sitat';
 import SummaryBlock from '../components/summary/SummaryBlock';
 import TallSvar from '../components/summary/TallSvar';
-import { VirksomhetApiData } from './types';
-import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virksomhetUtils';
+import { Næringstype, VirksomhetApiData } from './types';
+import { erVirksomhetRegnetSomNyoppstartet } from './virksomhetUtils';
 
 interface Props {
     virksomhet: VirksomhetApiData;
 }
 
-const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape) => {
+const getFiskerNæringTekst = (intl: IntlShape, erPåBladB: boolean) => {
+    const næringstekst = intlHelper(intl, `sifForms.virksomhet.næringstype_${Næringstype.FISKE}`);
+    const bladBTekst = erPåBladB
+        ? intlHelper(intl, 'sifForms.virksomhet.summary.fisker.påBladB')
+        : intlHelper(intl, 'sifForms.virksomhet.summary.fisker.ikkePåBladB');
+    return `${næringstekst} (${bladBTekst})`;
+};
+
+export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape) => {
     const land = virksomhet.registrertIUtlandet ? virksomhet.registrertIUtlandet.landnavn : 'Norge';
+
     const næringstyper = virksomhet.næringstyper
-        .map((næring) => intlHelper(intl, `sifForms.virksomhet.næringstype_${næring}`))
+        .map((næring) =>
+            næring === Næringstype.FISKE && virksomhet.fiskerErPåBladB !== undefined
+                ? getFiskerNæringTekst(intl, virksomhet.fiskerErPåBladB)
+                : intlHelper(intl, `sifForms.virksomhet.næringstype_${næring}`)
+        )
         .join(', ');
-    const fiskerinfo =
-        harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB !== undefined
-            ? {
-                  erPåBladB: virksomhet.fiskerErPåBladB !== undefined && virksomhet.fiskerErPåBladB === true,
-              }
-            : undefined;
 
     const tidsinfo = virksomhet.tilOgMed
         ? intlHelper(intl, 'sifForms.virksomhet.summary.tidsinfo.avsluttet', {
@@ -38,18 +45,8 @@ const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape)
           });
 
     return (
-        <SummaryBlock header={virksomhet.navnPåVirksomheten}>
+        <SummaryBlock header={virksomhet.navnPåVirksomheten} margin="none">
             <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}. </IntlLabelValue>
-            {fiskerinfo && (
-                <div>
-                    {fiskerinfo.erPåBladB === false ? (
-                        <FormattedMessage id="sifForms.virksomhet.summary.fisker.ikkePåBladB" />
-                    ) : (
-                        <FormattedMessage id="sifForms.virksomhet.summary.fisker.påBladB" />
-                    )}
-                </div>
-            )}
-
             <div>
                 <FormattedMessage id="sifForms.virksomhet.summary.registrertILand" values={{ land }} />
                 {virksomhet.registrertINorge && (
