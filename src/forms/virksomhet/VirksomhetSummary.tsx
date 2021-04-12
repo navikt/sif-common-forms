@@ -1,0 +1,146 @@
+import React from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import TextareaSummary from '@navikt/sif-common-core/lib/components/textarea-summary/TextareaSummary';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import DatoSvar, { prettifyApiDate } from '../../components/DatoSvar';
+import IntlLabelValue from '../../components/IntlLabelValue';
+import JaNeiSvar from '../../components/JaNeiSvar';
+import Sitat from '../../components/Sitat';
+import SummaryBlock from '../../components/SummaryBlock';
+import TallSvar from '../../components/TallSvar';
+import { VirksomhetApiData } from './types';
+import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virksomhetUtils';
+import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+
+interface Props {
+    virksomhet: VirksomhetApiData;
+}
+
+const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape) => {
+    const land = virksomhet.registrertIUtlandet ? virksomhet.registrertIUtlandet.landnavn : 'Norge';
+    const næringstyper = virksomhet.næringstyper
+        .map((næring) => intlHelper(intl, `sifForms.virksomhet.næringstype_${næring}`))
+        .join(', ');
+    const fiskerinfo =
+        harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB !== undefined
+            ? {
+                  erPåBladB: virksomhet.fiskerErPåBladB !== undefined && virksomhet.fiskerErPåBladB === true,
+              }
+            : undefined;
+
+    const tidsinfo = virksomhet.tilOgMed
+        ? intlHelper(intl, 'sifForms.virksomhet.summary.tidsinfo.avsluttet', {
+              fraOgMed: prettifyApiDate(virksomhet.fraOgMed),
+              tilOgMed: prettifyApiDate(virksomhet.tilOgMed),
+          })
+        : intlHelper(intl, 'sifForms.virksomhet.summary.tidsinfo.pågående', {
+              fraOgMed: prettifyApiDate(virksomhet.fraOgMed),
+          });
+
+    return (
+        <SummaryBlock header={virksomhet.navnPåVirksomheten}>
+            <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}. </IntlLabelValue>
+            {fiskerinfo && (
+                <div>
+                    {fiskerinfo.erPåBladB === false ? (
+                        <FormattedMessage id="sifForms.virksomhet.summary.fisker.ikkePåBladB" />
+                    ) : (
+                        <FormattedMessage id="sifForms.virksomhet.summary.fisker.påBladB" />
+                    )}
+                </div>
+            )}
+
+            <div>
+                <FormattedMessage id="sifForms.virksomhet.summary.registrertILand" values={{ land }} />
+                {virksomhet.registrertINorge && (
+                    <FormattedMessage
+                        id="sifForms.virksomhet.summary.registrertILand.orgnr"
+                        values={{ orgnr: virksomhet.organisasjonsnummer }}
+                    />
+                )}
+                . <br />
+                {tidsinfo}
+            </div>
+        </SummaryBlock>
+    );
+};
+
+const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet }) => {
+    const intl = useIntl();
+    const erRegnetSomNyoppstartet = erVirksomhetRegnetSomNyoppstartet(apiStringDateToDate(virksomhet.fraOgMed));
+
+    return (
+        <>
+            {renderVirksomhetSummary(virksomhet, intl)}
+
+            {virksomhet.næringsinntekt !== undefined && (
+                <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.næringsinntekt')}>
+                    <TallSvar verdi={virksomhet.næringsinntekt} />
+                </SummaryBlock>
+            )}
+
+            {erRegnetSomNyoppstartet === true && (
+                <>
+                    <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.har_blitt_yrkesaktiv')}>
+                        {virksomhet.yrkesaktivSisteTreFerdigliknedeÅrene === undefined && (
+                            <JaNeiSvar harSvartJa={virksomhet.yrkesaktivSisteTreFerdigliknedeÅrene !== undefined} />
+                        )}
+                        {virksomhet.yrkesaktivSisteTreFerdigliknedeÅrene !== undefined && (
+                            <FormattedMessage
+                                id="sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato"
+                                values={{
+                                    dato: prettifyApiDate(
+                                        virksomhet.yrkesaktivSisteTreFerdigliknedeÅrene.oppstartsdato
+                                    ),
+                                }}
+                            />
+                        )}
+                    </SummaryBlock>
+                </>
+            )}
+
+            {erRegnetSomNyoppstartet === false && (
+                <>
+                    <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.varig_endring_spm')}>
+                        <JaNeiSvar harSvartJa={virksomhet.varigEndring !== undefined} />
+                    </SummaryBlock>
+                    {virksomhet.varigEndring && (
+                        <>
+                            <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.summary.varigEndring.dato')}>
+                                <DatoSvar apiDato={virksomhet.varigEndring.dato} />
+                            </SummaryBlock>
+                            <SummaryBlock
+                                header={intlHelper(intl, 'sifForms.virksomhet.summary.varigEndring.næringsinntekt')}>
+                                <TallSvar verdi={virksomhet.varigEndring.inntektEtterEndring} />
+                            </SummaryBlock>
+                            <SummaryBlock
+                                header={intlHelper(intl, 'sifForms.virksomhet.summary.varigEndring.beskrivelse')}>
+                                <Sitat>
+                                    <TextareaSummary text={virksomhet.varigEndring.forklaring} />
+                                </Sitat>
+                            </SummaryBlock>
+                        </>
+                    )}
+                </>
+            )}
+
+            {/* Regnskapsfører */}
+            {virksomhet.registrertINorge && (
+                <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.regnskapsfører_spm')}>
+                    {virksomhet.regnskapsfører === undefined && <JaNeiSvar harSvartJa={false} />}
+                    {virksomhet.regnskapsfører !== undefined && (
+                        <FormattedMessage
+                            id="sifForms.virksomhet.summary.regnskapsfører.ja.info"
+                            values={{
+                                navn: virksomhet.regnskapsfører.navn,
+                                telefon: virksomhet.regnskapsfører.telefon,
+                            }}
+                        />
+                    )}
+                </SummaryBlock>
+            )}
+        </>
+    );
+};
+
+export default VirksomhetSummary;

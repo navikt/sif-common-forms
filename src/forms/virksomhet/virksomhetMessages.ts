@@ -1,9 +1,9 @@
 const virksomhetMessages = {
     nb: {
-        'sifForms.virksomhet.næringstype_fisker': 'Fisker',
-        'sifForms.virksomhet.næringstype_jordbruker': 'Jordbruker',
-        'sifForms.virksomhet.næringstype_dagmamma': 'Dagmamma eller familiebarnehage i eget hjem',
-        'sifForms.virksomhet.næringstype_annet': 'Annet',
+        'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
+        'sifForms.virksomhet.næringstype_JORDBRUK_SKOGBRUK': 'Jordbruker',
+        'sifForms.virksomhet.næringstype_DAGMAMMA': 'Dagmamma eller familiebarnehage i eget hjem',
+        'sifForms.virksomhet.næringstype_ANNEN': 'Annet',
         'sifForms.virksomhet.form_title': 'Opplysninger om virksomheten din',
         'sifForms.virksomhet.form_title.flere': 'Opplysninger om den eldste virksomheten din',
         'sifForms.virksomhet.hvilken_type_virksomhet': 'Hvilken type virksomhet har du?',
@@ -48,12 +48,28 @@ const virksomhetMessages = {
         'sifForms.virksomhet.veileder_innhenter_info.1':
             'Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre.',
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tar kontakt med deg hvis vi trenger flere opplysninger.',
+
+        'sifForms.virksomhet.summary.tittel': 'Næringsvirksomhet som du har lagt inn:',
+        'sifForms.virksomhet.summary.næringstype': 'Næringstype',
+        'sifForms.virksomhet.summary.varigEndring.dato': 'Dato for varig endring',
+        'sifForms.virksomhet.summary.varigEndring.næringsinntekt': 'Næringsinntekt etter endring',
+        'sifForms.virksomhet.summary.varigEndring.beskrivelse': 'Beskrivelse av endring',
+        'sifForms.virksomhet.summary.ikkeRegnskapsfører': 'Har ikke regnskapsfører.',
+        'sifForms.virksomhet.summary.tidsinfo.avsluttet': 'Startet {fraOgMed}, avsluttet {tilOgMed}.',
+        'sifForms.virksomhet.summary.tidsinfo.pågående': 'Startet {fraOgMed} (pågående).',
+        'sifForms.virksomhet.summary.fisker.påBladB': 'Fisker er på Blad B.',
+        'sifForms.virksomhet.summary.fisker.ikkePåBladB': 'Fisker er ikke på Blad B.',
+        'sifForms.virksomhet.summary.registrertILand': 'Registrert i {land}',
+        'sifForms.virksomhet.summary.registrertILand.orgnr': ' (organisasjonsnummer {orgnr})',
+        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Ja. Starta som yrkesaktiv {dato}.',
+        'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsfører',
+        'sifForms.virksomhet.summary.regnskapsfører.info': '{navn}, telefon {telefon}',
     },
     nn: {
-        'sifForms.virksomhet.næringstype_fisker': 'Fisker',
-        'sifForms.virksomhet.næringstype_jordbruker': 'Jordbrukar',
-        'sifForms.virksomhet.næringstype_dagmamma': 'Dagmamma eller familiebarnehage i eigen heim',
-        'sifForms.virksomhet.næringstype_annet': 'Anna',
+        'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
+        'sifForms.virksomhet.næringstype_JORDBRUK_SKOGBRUK': 'Jordbrukar',
+        'sifForms.virksomhet.næringstype_DAGMAMMA': 'Dagmamma eller familiebarnehage i eigen heim',
+        'sifForms.virksomhet.næringstype_ANNEN': 'Anna',
         'sifForms.virksomhet.form_title': 'Opplysningar om verksemda di',
         'sifForms.virksomhet.form_title.flere': 'Opplysningar om den eldste verksemda di',
         'sifForms.virksomhet.hvilken_type_virksomhet': 'Kva type verksemd har du?',
@@ -76,7 +92,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.næringsinntekt':
             'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
         'sifForms.virksomhet.næringsinntekt.info':
-            'Dresom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Oppgi beløpet i heile kroner.',
+            'Dresom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
         'sifForms.virksomhet.næringsinntekt_info':
             'Næringsresultatet er inntekter du har i næringa di, minus utgifter og avskrivingar.',
         'sifForms.virksomhet.næringsinntekt_info_title': 'Kva er næringsresultatet?',
@@ -99,6 +115,21 @@ const virksomhetMessages = {
         'sifForms.virksomhet.veileder_innhenter_info.1':
             'Vi hentar inn opplysningar om verksemda og inntekta di frå offentlege register.',
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tek kontakt med deg dersom vi treng fleire opplysningar',
+
+        'sifForms.virksomhet.summary.tittel': 'Næringsvirksomhet som du har lagt inn:',
+        'sifForms.virksomhet.summary.næringstype': 'Næringstype',
+        'sifForms.virksomhet.summary.varigEndring.dato': 'Dato for varig endring',
+        'sifForms.virksomhet.summary.varigEndring.næringsinntekt': 'Næringsinntekt etter endring',
+        'sifForms.virksomhet.summary.varigEndring.beskrivelse': 'Skildring av endring',
+        'sifForms.virksomhet.summary.ikkeRegnskapsfører': 'Har ikkje regnskapsførar.',
+        'sifForms.virksomhet.summary.tidsinfo.avsluttet': 'Startet {fraOgMed}, avsluttet {tilOgMed}.',
+        'sifForms.virksomhet.summary.tidsinfo.pågående': 'Startet {fraOgMed} (pågåande).',
+        'sifForms.virksomhet.summary.fisker.påBladB': 'Fiskar er på Blad B.',
+        'sifForms.virksomhet.summary.fisker.ikkePåBladB': 'Fiskar er ikkje på Blad B.',
+        'sifForms.virksomhet.summary.registrertILand': 'Registrert i {land}',
+        'sifForms.virksomhet.summary.registrertILand.orgnr': ' (organisasjonsnummer {orgnr})',
+        'sifForms.virksomhet.summary.yrkesaktiv.jaStartetDato': 'Ja. Starta som yrkesaktiv {dato}.',
+        'sifForms.virksomhet.summary.regnskapsfører.ja.info': 'Ja. {navn}, telefon {telefon}',
     },
 };
 export default virksomhetMessages;

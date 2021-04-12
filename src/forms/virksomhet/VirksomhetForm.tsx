@@ -91,20 +91,20 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                             legend={getText('hvilken_type_virksomhet')}
                             checkboxes={[
                                 {
-                                    value: Næringstype.FISKER,
-                                    label: getText('næringstype_fisker'),
+                                    value: Næringstype.FISKE,
+                                    label: getText(`næringstype_${Næringstype.FISKE}`),
                                 },
                                 {
-                                    value: Næringstype.JORDBRUK,
-                                    label: getText('næringstype_jordbruker'),
+                                    value: Næringstype.JORDBRUK_SKOGBRUK,
+                                    label: getText(`næringstype_${Næringstype.JORDBRUK_SKOGBRUK}`),
                                 },
                                 {
                                     value: Næringstype.DAGMAMMA,
-                                    label: getText('næringstype_dagmamma'),
+                                    label: getText(`næringstype_${Næringstype.DAGMAMMA}`),
                                 },
                                 {
                                     value: Næringstype.ANNEN,
-                                    label: getText('næringstype_annet'),
+                                    label: getText(`næringstype_${Næringstype.ANNEN}`),
                                 },
                             ]}
                             validate={validateRequiredList}
@@ -254,7 +254,7 @@ const VirksomhetForm = ({ virksomhet, gjelderFlereVirksomheter, onSubmit, onCanc
                                             <FormBlock margin="m">
                                                 <ResponsivePanel>
                                                     <Form.DatePicker
-                                                        name={VirksomhetFormField.oppstartsdato}
+                                                        name={VirksomhetFormField.blittYrkesaktivDato}
                                                         label={getText('har_blitt_yrkesaktiv_dato')}
                                                         showYearSelector={true}
                                                         minDate={date3YearsAgo}

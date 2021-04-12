@@ -23,6 +23,7 @@ const bokmålstekster = {
     ...tidsperiodeMessages.nb,
     ...virksomhetMessages.nb,
     ...annetBarnMessages.nb,
+    'common.fieldvalidation.ugyldigTall': 'Ugyldig tall',
 };
 
 const nynorsktekster = {
@@ -36,6 +37,7 @@ const nynorsktekster = {
     ...tidsperiodeMessages.nn,
     ...virksomhetMessages.nn,
     ...annetBarnMessages.nn,
+    'common.fieldvalidation.ugyldigTall': 'Ugyldig tall',
 };
 
 export const appMessages = {

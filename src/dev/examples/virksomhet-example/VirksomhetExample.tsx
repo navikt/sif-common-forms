@@ -14,6 +14,7 @@ import VirksomhetForm from '../../../forms/virksomhet/VirksomhetForm';
 import VirksomhetListAndDialog from '../../../forms/virksomhet/VirksomhetListAndDialog';
 import PageIntro from '../../components/page-intro/PageIntro';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
 
 enum FormField {
     'virksomheter' = 'virksomheter',
@@ -21,12 +22,16 @@ enum FormField {
 
 export const mockVirksomhet: Virksomhet = {
     id: '024782550-1402-01448-04932-71872390929312',
-    næringstyper: [Næringstype.ANNEN, Næringstype.DAGMAMMA],
-    navnPåVirksomheten: 'Gamle greier',
+    næringstyper: [Næringstype.ANNEN, Næringstype.DAGMAMMA, Næringstype.FISKE, Næringstype.JORDBRUK_SKOGBRUK],
+    fiskerErPåBladB: YesOrNo.YES,
+    navnPåVirksomheten: 'Virksomhet AS',
     registrertINorge: YesOrNo.YES,
     organisasjonsnummer: '123123123',
     fom: new Date('2007-02-01T00:00:00.000Z'),
     erPågående: true,
+    næringsinntekt: 20000,
+    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: YesOrNo.YES,
+    blittYrkesaktivDato: new Date(),
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: YesOrNo.YES,
     varigEndringINæringsinntekt_dato: new Date('2019-12-09T00:00:00.000Z'),
     varigEndringINæringsinntekt_inntektEtterEndring: 200000,
@@ -45,7 +50,18 @@ const VirksomhetExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<Virksomhet> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const [hideFisker, setHideFisker] = useState<boolean>(false);
+    const [gjelderFlereVirksomheter, setGjelderFlereVirksomheter] = useState<boolean>(false);
     const intl = useIntl();
+
+    const virksomhetForApiMapping =
+        gjelderFlereVirksomheter && listFormValues?.virksomheter?.length === 1
+            ? listFormValues.virksomheter[0]
+            : undefined;
+
+    const apiVirksomhet =
+        virksomhetForApiMapping && isVirksomhet(virksomhetForApiMapping)
+            ? mapVirksomhetToVirksomhetApiData(intl.locale, virksomhetForApiMapping)
+            : undefined;
     return (
         <>
             <PageIntro title="Næringsvirksomhet">Skjema som brukes for på registrere en næringsvirksomhet.</PageIntro>
@@ -64,10 +80,11 @@ const VirksomhetExample = () => {
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                                 <VirksomhetListAndDialog<FormField>
                                     name={FormField.virksomheter}
-                                    gjelderFlereVirksomheter={true}
+                                    gjelderFlereVirksomheter={gjelderFlereVirksomheter}
+                                    maxItems={1}
                                     validate={validateRequiredList}
                                     labels={{
-                                        addLabel: 'Legg til',
+                                        addLabel: gjelderFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
                                         listTitle: 'Virksomhet',
                                         modalTitle: 'Virksomhet',
                                     }}
@@ -76,12 +93,37 @@ const VirksomhetExample = () => {
                         );
                     }}
                 />
-                <SubmitPreview values={listFormValues} />
+                <Box margin="l">
+                    <hr />
+                    <Panel style={{ padding: '1rem' }}>
+                        <Box padBottom="m">Varianter:</Box>
+                        <Box margin="m">
+                            <Checkbox
+                                label="Gjelder flere virksomheter"
+                                checked={gjelderFlereVirksomheter}
+                                onChange={(evt) => setGjelderFlereVirksomheter(evt.currentTarget.checked)}
+                            />
+                            <p>Denne må settes sammen med maks antall til 1</p>
+                        </Box>
+                    </Panel>
+                </Box>
             </Panel>
+
+            {apiVirksomhet && (
+                <>
+                    <Box margin="xxl" padBottom="l">
+                        <Undertittel>Oppsummering av api data</Undertittel>
+                    </Box>
+                    <Panel border={true}>
+                        <VirksomhetSummary virksomhet={apiVirksomhet} />
+                    </Panel>
+                </>
+            )}
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
             </Box>
+
             <DialogFormWrapper width="wide">
                 <Panel border={true}>
                     <VirksomhetForm

@@ -10,6 +10,7 @@ export const mapVirksomhetToVirksomhetApiData = (
 ): VirksomhetApiData => {
     const registrertINorge = virksomhet.registrertINorge === YesOrNo.YES;
     const harRegnskapsfører = virksomhet.harRegnskapsfører === YesOrNo.YES;
+    const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(virksomhet.fom);
 
     const data: VirksomhetApiData = {
         næringstyper: [...virksomhet.næringstyper],
@@ -27,22 +28,36 @@ export const mapVirksomhetToVirksomhetApiData = (
                         }
                       : undefined,
               }),
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
         tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
-        næringsinntekt: virksomhet.næringsinntekt,
-        erNyoppstartet: erVirksomhetRegnetSomNyoppstartet(virksomhet.fom),
+        erNyoppstartet,
     };
 
-    if (virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
-        const harHatt = virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES;
+    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFikserPåBladB !== true) {
+        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
+    }
+
+    /** Bedrift regnet som nyoppstartet  */
+    if (erNyoppstartet === true) {
+        data.næringsinntekt = virksomhet.næringsinntekt;
+        const harBlittAktiv = virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES;
+        if (harBlittAktiv && virksomhet.blittYrkesaktivDato) {
+            data.yrkesaktivSisteTreFerdigliknedeÅrene = {
+                oppstartsdato: formatDateToApiFormat(virksomhet.blittYrkesaktivDato),
+            };
+        }
+    }
+
+    /** Bedrift ikke regnet som nyoppstartet  */
+    if (erNyoppstartet === false) {
+        const harHattVarigEndring = virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES;
         const {
             varigEndringINæringsinntekt_dato,
             varigEndringINæringsinntekt_forklaring,
             varigEndringINæringsinntekt_inntektEtterEndring,
         } = virksomhet;
         if (
-            harHatt &&
+            harHattVarigEndring &&
             varigEndringINæringsinntekt_dato &&
             varigEndringINæringsinntekt_inntektEtterEndring !== undefined &&
             varigEndringINæringsinntekt_forklaring
@@ -51,19 +66,6 @@ export const mapVirksomhetToVirksomhetApiData = (
                 dato: formatDateToApiFormat(varigEndringINæringsinntekt_dato),
                 forklaring: varigEndringINæringsinntekt_forklaring,
                 inntektEtterEndring: varigEndringINæringsinntekt_inntektEtterEndring,
-            };
-        }
-    }
-
-    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFikserPåBladB !== true) {
-        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
-    }
-
-    if (virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene) {
-        const harBlittAktiv = virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES;
-        if (harBlittAktiv && virksomhet.oppstartsdato) {
-            data.yrkesaktivSisteTreFerdigliknedeÅrene = {
-                oppstartsdato: formatDateToApiFormat(virksomhet.oppstartsdato),
             };
         }
     }
