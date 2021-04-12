@@ -45,7 +45,10 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
           });
 
     return (
-        <SummaryBlock header={virksomhet.navnPåVirksomheten} margin="none">
+        <>
+            <IntlLabelValue labelKey="sifForms.virksomhet.summary.navn">
+                {virksomhet.navnPåVirksomheten}.
+            </IntlLabelValue>
             <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}. </IntlLabelValue>
             <div>
                 <FormattedMessage id="sifForms.virksomhet.summary.registrertILand" values={{ land }} />
@@ -58,7 +61,7 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
                 . <br />
                 {tidsinfo}
             </div>
-        </SummaryBlock>
+        </>
     );
 };
 

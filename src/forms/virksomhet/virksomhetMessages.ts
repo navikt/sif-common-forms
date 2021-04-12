@@ -50,6 +50,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tar kontakt med deg hvis vi trenger flere opplysninger.',
 
         'sifForms.virksomhet.summary.tittel': 'Næringsvirksomhet som du har lagt inn:',
+        'sifForms.virksomhet.summary.navn': 'Navn',
         'sifForms.virksomhet.summary.næringstype': 'Næringstype',
         'sifForms.virksomhet.summary.varigEndring.dato': 'Dato for varig endring',
         'sifForms.virksomhet.summary.varigEndring.næringsinntekt': 'Næringsinntekt etter endring',
@@ -118,6 +119,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.veileder_innhenter_info.2': 'Vi tek kontakt med deg dersom vi treng fleire opplysningar',
 
         'sifForms.virksomhet.summary.tittel': 'Næringsvirksomhet som du har lagt inn:',
+        'sifForms.virksomhet.summary.navn': 'Namn',
         'sifForms.virksomhet.summary.næringstype': 'Næringstype',
         'sifForms.virksomhet.summary.varigEndring.dato': 'Dato for varig endring',
         'sifForms.virksomhet.summary.varigEndring.næringsinntekt': 'Næringsinntekt etter endring',
