@@ -15,6 +15,7 @@ import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
 import { dateToday, date4YearsAgo } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { Checkbox } from 'nav-frontend-skjema';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -28,11 +29,20 @@ const initialValues: FormValues = { annetBarn: [] };
 const AnnetBarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<AnnetBarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
+    const [inkluderFødselsdatoSpørsmål, setInkluderFødselsdatoSpørsmål] = useState<boolean>(true);
     const intl = useIntl();
     return (
         <>
             <Box padBottom="l">
                 <Undertittel>Liste og dialog</Undertittel>
+                <Box margin="l">
+                    <p>Det er muligheter for å skru på og av spørsmålet om fødselsdato</p>
+                    <Checkbox
+                        label="Inkluder spørsmål om fødselsdato i dialog og fødselsdato i liste"
+                        checked={inkluderFødselsdatoSpørsmål}
+                        onChange={(evt) => setInkluderFødselsdatoSpørsmål(evt.target.checked === true)}
+                    />
+                </Box>
             </Box>
             <Panel border={true}>
                 <TypedFormikWrapper<FormValues>
@@ -46,6 +56,7 @@ const AnnetBarnExample = () => {
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
+                                    includeFødselsdatoSpørsmål={inkluderFødselsdatoSpørsmål}
                                     validate={validateRequiredList}
                                     labels={{
                                         addLabel: 'Legg til barn',
@@ -70,6 +81,7 @@ const AnnetBarnExample = () => {
                 <Panel border={true}>
                     <AnnetBarnForm
                         annetBarn={{}}
+                        includeFødselsdatoSpørsmål={inkluderFødselsdatoSpørsmål}
                         onSubmit={setSingleFormValues}
                         onCancel={() => console.log('cancel me')}
                         minDate={date4YearsAgo}

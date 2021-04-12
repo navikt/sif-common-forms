@@ -19,6 +19,7 @@ import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { mapFomTomToDateRange } from '../utils';
 import { Utenlandsopphold, UtenlandsoppholdFormValues, UtenlandsoppholdÅrsak } from './types';
 import utils from './utenlandsoppholdUtils';
+import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     minDate: Date;
@@ -80,6 +81,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 } = formik;
 
                 const hasDateStringValues = hasValue(fom) && hasValue(tom);
+                const fomDate = ISOStringToDate(fom);
+                const tomDate = ISOStringToDate(tom);
 
                 const includeInnlagtPerioderQuestion =
                     hasDateStringValues && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
@@ -115,6 +118,9 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 fromInputProps={{
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
+                                    dayPickerProps: {
+                                        initialMonth: fomDate || minDate || dateToday,
+                                    },
                                     validate: (dateString) =>
                                         dateRangeValidation.validateFromDate(
                                             ISOStringToDate(dateString),
@@ -126,6 +132,9 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 toInputProps={{
                                     name: UtenlandsoppholdFormFields.tom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.tilDato'),
+                                    dayPickerProps: {
+                                        initialMonth: tomDate || fomDate || dateToday,
+                                    },
                                     validate: (dateString) =>
                                         dateRangeValidation.validateToDate(
                                             ISOStringToDate(dateString),

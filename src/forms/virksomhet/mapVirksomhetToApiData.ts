@@ -6,10 +6,11 @@ import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virk
 export const mapVirksomhetToVirksomhetApiData = (
     locale: string,
     virksomhet: Virksomhet,
-    harBesvartFikserPåBladB?: boolean
+    harBesvartFiskerPåBladB?: boolean
 ): VirksomhetApiData => {
     const registrertINorge = virksomhet.registrertINorge === YesOrNo.YES;
     const harRegnskapsfører = virksomhet.harRegnskapsfører === YesOrNo.YES;
+    const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(virksomhet.fom);
 
     const data: VirksomhetApiData = {
         næringstyper: [...virksomhet.næringstyper],
@@ -27,22 +28,36 @@ export const mapVirksomhetToVirksomhetApiData = (
                         }
                       : undefined,
               }),
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
         tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
-        næringsinntekt: virksomhet.næringsinntekt,
-        erNyoppstartet: erVirksomhetRegnetSomNyoppstartet(virksomhet.fom),
+        erNyoppstartet,
     };
 
-    if (virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår) {
-        const harHatt = virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES;
+    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFiskerPåBladB !== true) {
+        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
+    }
+
+    /** Bedrift regnet som nyoppstartet  */
+    if (erNyoppstartet === true) {
+        data.næringsinntekt = virksomhet.næringsinntekt;
+        const harBlittAktiv = virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES;
+        if (harBlittAktiv && virksomhet.blittYrkesaktivDato) {
+            data.yrkesaktivSisteTreFerdigliknedeÅrene = {
+                oppstartsdato: formatDateToApiFormat(virksomhet.blittYrkesaktivDato),
+            };
+        }
+    }
+
+    /** Bedrift ikke regnet som nyoppstartet  */
+    if (erNyoppstartet === false) {
+        const harHattVarigEndring = virksomhet.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.YES;
         const {
             varigEndringINæringsinntekt_dato,
             varigEndringINæringsinntekt_forklaring,
             varigEndringINæringsinntekt_inntektEtterEndring,
         } = virksomhet;
         if (
-            harHatt &&
+            harHattVarigEndring &&
             varigEndringINæringsinntekt_dato &&
             varigEndringINæringsinntekt_inntektEtterEndring !== undefined &&
             varigEndringINæringsinntekt_forklaring
@@ -55,34 +70,11 @@ export const mapVirksomhetToVirksomhetApiData = (
         }
     }
 
-    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFikserPåBladB !== true) {
-        data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
-    }
-
-    if (virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene) {
-        const harBlittAktiv = virksomhet.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.YES;
-        if (harBlittAktiv && virksomhet.oppstartsdato) {
-            data.yrkesaktivSisteTreFerdigliknedeÅrene = {
-                oppstartsdato: formatDateToApiFormat(virksomhet.oppstartsdato),
-            };
-        }
-    }
-
     if (harRegnskapsfører && virksomhet.regnskapsfører_navn && virksomhet.regnskapsfører_telefon) {
         data.regnskapsfører = {
             navn: virksomhet.regnskapsfører_navn,
             telefon: virksomhet.regnskapsfører_telefon,
         };
-    }
-
-    if (!harRegnskapsfører) {
-        if (virksomhet.harRevisor === YesOrNo.YES && virksomhet.revisor_navn && virksomhet.revisor_telefon) {
-            data.revisor = {
-                navn: virksomhet.revisor_navn,
-                telefon: virksomhet.revisor_telefon,
-                kanInnhenteOpplysninger: virksomhet.kanInnhenteOpplsyningerFraRevisor === YesOrNo.YES,
-            };
-        }
     }
 
     return data;

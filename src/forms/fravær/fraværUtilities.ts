@@ -1,26 +1,31 @@
+import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
-import { dateToISOString, FormikValidateFunction, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { isString } from 'formik';
+import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { isString } from 'formik';
 import { guid } from 'nav-frontend-js-utils';
-import { FraværFieldValidationErrors } from './fraværValidationUtils';
-import { FraværDag, FraværDagFormValues, FraværPeriode, FraværPeriodeFormValues } from './types';
+import { FraværDag, FraværDagFormValues, FraværPeriode, FraværPeriodeFormValues, FraværÅrsak } from './types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {
     return (
-        fraværDag.dato !== undefined && fraværDag.timerArbeidsdag !== undefined && fraværDag.timerFravær !== undefined
+        fraværDag.dato !== undefined &&
+        fraværDag.timerArbeidsdag !== undefined &&
+        fraværDag.timerFravær !== undefined &&
+        fraværDag.årsak !== undefined
     );
 };
 
 export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): fraværPeriode is FraværPeriode => {
-    return fraværPeriode.from !== undefined && fraværPeriode.to !== undefined;
+    return (
+        fraværPeriode.fraOgMed !== undefined &&
+        fraværPeriode.tilOgMed !== undefined &&
+        fraværPeriode.årsak !== undefined
+    );
 };
 
 export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
@@ -28,25 +33,10 @@ export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange 
     to: fraværDag.dato,
 });
 
-export const datesCollideWithDateRanges = (dates: Date[], ranges: DateRange[]): boolean => {
-    if (ranges.length > 0 && dates.length > 0) {
-        return dates.some((d) => {
-            return ranges.some((range) => dayjs(d).isSameOrAfter(range.from) && dayjs(d).isSameOrBefore(range.to));
-        });
-    }
-    return false;
-};
-
-export const validateNoCollisions = (
-    fraværDager: FraværDag[],
-    fraværPerioder: FraværPeriode[]
-): FormikValidateFunction => (): FieldValidationResult =>
-    datesCollideWithDateRanges(
-        fraværDager.map((d) => d.dato),
-        fraværPerioder
-    )
-        ? createFieldValidationError(FraværFieldValidationErrors.dager_med_fravær_overlapper_perioder)
-        : undefined;
+export const fraværPeriodeToDateRange = (fraværDag: FraværPeriode): DateRange => ({
+    from: fraværDag.fraOgMed,
+    to: fraværDag.tilOgMed,
+});
 
 export enum Weekday {
     monday = 'monday',
@@ -82,9 +72,27 @@ export const getWeekdayName = (date: Date): Weekday | undefined => {
 export const dateErHelg = (date: Date) =>
     getWeekdayName(date) === Weekday.saturday || getWeekdayName(date) === Weekday.sunday;
 
-export const validateNotHelgedag = (maybeDate: string | undefined): FieldValidationResult => {
-    const date = ISOStringToDate(maybeDate);
-    return date && dateErHelg(date) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
+export const rangeCollideWithRanges = (range: DateRange, ranges: DateRange[] = []): boolean => {
+    if (!range || !range.from || !range.to || ranges.length === 0) {
+        return false;
+    }
+    return ranges.some((periode) => {
+        const fromDay = dayjs(range.from);
+        const toDay = dayjs(range.to);
+        const { from, to } = periode;
+        if (fromDay.isBefore(from) && toDay.isAfter(to)) return true;
+        if (fromDay.isSameOrAfter(from, 'day') && fromDay.isSameOrBefore(to, 'day')) return true;
+        if (toDay.isSameOrAfter(from, 'day') && toDay.isSameOrBefore(to, 'day')) return true;
+    });
+};
+
+export const dateCollideWithRanges = (date: Date | undefined, ranges: DateRange[] = []): boolean => {
+    if (!date || ranges.length === 0) {
+        return false;
+    }
+    return ranges.some((range) => {
+        return dayjs(date).isSameOrAfter(range.from, 'day') && dayjs(date).isSameOrBefore(range.to, 'day');
+    });
 };
 
 export const timeText = (timer: string): string =>
@@ -101,21 +109,36 @@ export const toMaybeNumber = (timerArbeidsdag: string | undefined): number | und
     return undefined;
 };
 
+export const getHjemmePgaKoronaFormValueFromFraværÅrsak = (årsak?: FraværÅrsak): YesOrNo => {
+    if (årsak === undefined) {
+        return YesOrNo.UNANSWERED;
+    }
+    return årsak === FraværÅrsak.smittevernhensyn || årsak === FraværÅrsak.stengtSkoleBhg ? YesOrNo.YES : YesOrNo.NO;
+};
+
+export const getÅrsakFromFraværFormValues = (formValues: FraværDagFormValues | FraværPeriodeFormValues): FraværÅrsak =>
+    formValues.hjemmePgaKorona === YesOrNo.YES && formValues.årsak ? formValues.årsak : FraværÅrsak.ordinært;
+
 export const mapFormValuesToFraværDag = (
     formValues: FraværDagFormValues,
     id: string | undefined
 ): Partial<FraværDag> => {
     return {
-        ...formValues,
         id: id || guid(),
+        timerArbeidsdag: formValues.timerArbeidsdag,
+        timerFravær: formValues.timerFravær,
         dato: ISOStringToDate(formValues.dato),
+        årsak: getÅrsakFromFraværFormValues(formValues),
     };
 };
 
 export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): FraværDagFormValues => {
     return {
-        ...fraværDag,
+        timerArbeidsdag: fraværDag.timerArbeidsdag,
+        timerFravær: fraværDag.timerFravær,
         dato: fraværDag.dato ? dateToISOString(fraværDag.dato) : '',
+        hjemmePgaKorona: getHjemmePgaKoronaFormValueFromFraværÅrsak(fraværDag.årsak),
+        årsak: fraværDag.årsak,
     };
 };
 
@@ -124,17 +147,18 @@ export const mapFormValuesToFraværPeriode = (
     id: string | undefined
 ): Partial<FraværPeriode> => {
     return {
-        ...formValues,
         id: id || guid(),
-        from: ISOStringToDate(formValues.from),
-        to: ISOStringToDate(formValues.to),
+        fraOgMed: ISOStringToDate(formValues.fraOgMed),
+        tilOgMed: ISOStringToDate(formValues.tilOgMed),
+        årsak: getÅrsakFromFraværFormValues(formValues),
     };
 };
 
 export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPeriode>): FraværPeriodeFormValues => {
     return {
-        ...fraværPeriode,
-        from: fraværPeriode.from ? dateToISOString(fraværPeriode.from) : '',
-        to: fraværPeriode.to ? dateToISOString(fraværPeriode.to) : '',
+        fraOgMed: fraværPeriode.fraOgMed ? dateToISOString(fraværPeriode.fraOgMed) : '',
+        tilOgMed: fraværPeriode.tilOgMed ? dateToISOString(fraværPeriode.tilOgMed) : '',
+        hjemmePgaKorona: getHjemmePgaKoronaFormValueFromFraværÅrsak(fraværPeriode.årsak),
+        årsak: fraværPeriode.årsak,
     };
 };

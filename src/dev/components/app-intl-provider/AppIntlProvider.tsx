@@ -6,6 +6,9 @@ import '@formatjs/intl-pluralrules//locale-data/nn';
 import '@formatjs/intl-pluralrules/polyfill';
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import { appMessages } from './messages';
+import dayjs from 'dayjs';
+require('dayjs/locale/nb');
+require('dayjs/locale/nn');
 
 export interface IntlProviderProps {
     locale: Locale;
@@ -15,6 +18,7 @@ export interface IntlProviderProps {
 
 const AppIntlProvider = ({ locale, onError, children }: IntlProviderProps) => {
     const messages = locale === 'nb' ? appMessages.nb : appMessages.nn;
+    dayjs.locale(locale === 'nb' ? 'nb' : 'nn');
     return (
         <IntlProvider locale={locale} messages={messages} onError={onError}>
             {children}

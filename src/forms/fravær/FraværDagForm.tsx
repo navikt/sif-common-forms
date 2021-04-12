@@ -1,83 +1,89 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
-import { Systemtittel } from 'nav-frontend-typografi';
-import FraværTimerSelect from './FraværTimerSelect';
+import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
-    isFraværDag,
-    mapFormValuesToFraværDag,
-    mapFraværDagToFormValues,
-    toMaybeNumber,
+    validateDateInRange,
+    validateRequiredField,
+    validateYesOrNoIsAnswered,
+} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
+import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
+import dayjs from 'dayjs';
+import { Systemtittel } from 'nav-frontend-typografi';
+import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
+import FraværTimerSelect from './FraværTimerSelect';
+import { isFraværDag, mapFormValuesToFraværDag, mapFraværDagToFormValues, toMaybeNumber } from './fraværUtilities';
+import {
+    validateAll,
+    validateFraværDagCollision,
+    validateLessOrEqualTo,
     validateNotHelgedag,
-} from './fraværUtilities';
-import { validateAll, validateLessOrEqualTo } from './fraværValidationUtils';
+} from './fraværValidationUtils';
+import { getFraværÅrsakRadios } from './fraværÅrsakRadios';
 import { FraværDag, FraværDagFormValues } from './types';
+import ÅrsakInfo from './ÅrsakInfo';
 
 export interface FraværDagFormLabels {
-    title: string;
-    date: string;
+    tittel: string;
+    dato: string;
     antallArbeidstimer: string;
     timerFravær: string;
-    okButton: string;
-    cancelButton: string;
+    hjemmePgaKorona: string;
+    årsak: string;
+    ok: string;
+    avbryt: string;
 }
 
 interface Props {
     fraværDag?: Partial<FraværDag>;
+    dagDescription?: JSX.Element;
     minDate: Date;
     maxDate: Date;
     dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillatt?: boolean;
-    labels?: Partial<FraværDagFormLabels>;
+    headerContent?: JSX.Element;
     maksArbeidstidPerDag?: number;
     onSubmit: (values: FraværDag) => void;
     onCancel: () => void;
 }
 
-const defaultLabels: FraværDagFormLabels = {
-    title: 'Dag med delvis fravær',
-    date: 'Dato',
-    antallArbeidstimer: 'Antall timer du skulle ha jobbet denne dagen',
-    timerFravær: 'Antall timer du var borte fra jobb denne dagen',
-    okButton: 'Ok',
-    cancelButton: 'Avbryt',
-};
-
 export enum FraværDagFormFields {
     dato = 'dato',
     timerArbeidsdag = 'timerArbeidsdag',
     timerFravær = 'timerFravær',
+    hjemmePgaKorona = 'hjemmePgaKorona',
+    årsak = 'årsak',
 }
-
-export const outDenneHvisInkludert = (initialValues: Partial<FraværDag>): ((dateRange: DateRange) => boolean) => (
-    dateRange: DateRange
-) => !(dateRange.from === initialValues.dato && dateRange.to === initialValues.dato);
 
 export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FraværDagFormValues>();
 
 const FraværDagFormView = ({
-    fraværDag: initialValues = {
+    fraværDag = {
         dato: undefined,
         timerArbeidsdag: undefined,
         timerFravær: undefined,
+        årsak: undefined,
     },
+    dagDescription,
     maxDate,
     minDate,
     dateRangesToDisable,
     helgedagerIkkeTillatt,
-    labels,
     maksArbeidstidPerDag,
+    headerContent,
     onSubmit,
     onCancel,
 }: Props) => {
     const intl = useIntl();
     const onFormikSubmit = (formValues: FraværDagFormValues) => {
-        const fraværDagToSubmit = mapFormValuesToFraværDag(formValues, initialValues.id);
+        const fraværDagToSubmit = mapFormValuesToFraværDag(formValues, fraværDag.id);
         if (isFraværDag(fraværDagToSubmit)) {
             onSubmit(fraværDagToSubmit);
         } else {
@@ -85,29 +91,51 @@ const FraværDagFormView = ({
         }
     };
 
-    const formLabels: FraværDagFormLabels = { ...defaultLabels, ...labels };
+    const formLabels: FraværDagFormLabels = {
+        ok: intlHelper(intl, 'fravær.form.felles.ok'),
+        avbryt: intlHelper(intl, 'fravær.form.felles.avbryt'),
+        årsak: intlHelper(intl, 'fravær.form.felles.årsak'),
+        tittel: intlHelper(intl, 'fravær.form.dag.tittel'),
+        dato: intlHelper(intl, 'fravær.form.dag.dato'),
+        antallArbeidstimer: intlHelper(intl, 'fravær.form.dag.antallArbeidstimer'),
+        timerFravær: intlHelper(intl, 'fravær.form.dag.timerFravær'),
+        hjemmePgaKorona: intlHelper(intl, 'fravær.form.felles.hjemmePgaKorona'),
+    };
+    const fraværÅrsakRadios = getFraværÅrsakRadios(intl);
+    const disabledDateRanges = dateRangesToDisable
+        ? dateRangesToDisable.filter((range) => {
+              const { dato } = fraværDag;
+              return !(dato && dayjs(dato).isSame(range.from, 'day') && dayjs(dato).isSame(range.to, 'day'));
+          })
+        : undefined;
 
     return (
         <>
             <FraværDagForm.FormikWrapper
-                initialValues={mapFraværDagToFormValues(initialValues)}
+                initialValues={mapFraværDagToFormValues(fraværDag)}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
                     const { values } = formik;
+                    const valgtDato = datepickerUtils.getDateFromDateString(values.dato);
                     const datepickerProps: FormikDatepickerProps<FraværDagFormFields> = {
-                        label: formLabels.date,
+                        label: formLabels.dato,
                         name: FraværDagFormFields.dato,
                         fullscreenOverlay: true,
-
+                        dayPickerProps: {
+                            initialMonth: dayjs(dateToday).isAfter(maxDate) ? maxDate : dateToday,
+                        },
                         minDate,
                         maxDate,
                         disableWeekend: helgedagerIkkeTillatt || false,
-                        disabledDateRanges: dateRangesToDisable
-                            ? dateRangesToDisable.filter(outDenneHvisInkludert(initialValues))
-                            : undefined,
+                        disabledDateRanges,
                         validate: helgedagerIkkeTillatt
-                            ? validateAll<string>([validateRequiredField, validateNotHelgedag])
-                            : validateRequiredField,
+                            ? validateAll([
+                                  validateRequiredField,
+                                  validateDateInRange({ from: minDate, to: maxDate }),
+                                  validateNotHelgedag,
+                                  () => validateFraværDagCollision(valgtDato, disabledDateRanges),
+                              ])
+                            : validateAll([validateRequiredField, validateDateInRange({ from: minDate, to: maxDate })]),
                         onChange: () => {
                             setTimeout(() => {
                                 formik.validateField(FraværDagFormFields.dato);
@@ -119,9 +147,10 @@ const FraværDagFormView = ({
                         <FraværDagForm.Form
                             onCancel={onCancel}
                             fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
-                            <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
+                            <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
+                            {headerContent && <Box>{headerContent}</Box>}
                             <FormBlock>
-                                <FraværDagForm.DatePicker {...datepickerProps} />
+                                <FraværDagForm.DatePicker {...datepickerProps} description={dagDescription} />
                             </FormBlock>
                             <FormBlock>
                                 <FraværTimerSelect
@@ -142,6 +171,29 @@ const FraværDagFormView = ({
                                     maksTid={maksArbeidstidPerDag}
                                 />
                             </FormBlock>
+                            <FormBlock>
+                                <FraværDagForm.YesOrNoQuestion
+                                    legend={formLabels.hjemmePgaKorona}
+                                    name={FraværDagFormFields.hjemmePgaKorona}
+                                    validate={validateYesOrNoIsAnswered}
+                                    description={
+                                        <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
+                                            <FormattedHtmlMessage id="info.smittevern.info.html" />
+                                        </ExpandableInfo>
+                                    }
+                                />
+                            </FormBlock>
+                            {values.hjemmePgaKorona === YesOrNo.YES && (
+                                <FormBlock>
+                                    <FraværDagForm.RadioPanelGroup
+                                        legend={formLabels.årsak}
+                                        name={FraværDagFormFields.årsak}
+                                        validate={validateRequiredField}
+                                        radios={fraværÅrsakRadios}
+                                        description={<ÅrsakInfo />}
+                                    />
+                                </FormBlock>
+                            )}
                         </FraværDagForm.Form>
                     );
                 }}

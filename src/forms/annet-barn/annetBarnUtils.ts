@@ -3,27 +3,36 @@ import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib'
 import { guid } from 'nav-frontend-js-utils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 
-const isAnnetBarn = (annetBarn: Partial<AnnetBarn>): annetBarn is AnnetBarn => {
+const isAnnetBarn = (annetBarn: Partial<AnnetBarn>, includeFødselsdatoSpørsmål = true): annetBarn is AnnetBarn => {
     const { fnr, navn, fødselsdato } = annetBarn;
-    return hasValue(fnr) && hasValue(navn) && hasValue(fødselsdato);
+    return hasValue(fnr) && hasValue(navn) && (includeFødselsdatoSpørsmål === false || hasValue(fødselsdato));
 };
 
 const mapFormValuesToPartialAnnetBarn = (
     formValues: AnnetBarnFormValues,
-    id: string | undefined
+    id: string | undefined,
+    includeFødselsdatoSpørsmål: boolean
 ): Partial<AnnetBarn> => {
     return {
         ...formValues,
         id: id || guid(),
-        fødselsdato: formValues.fødselsdato ? ISOStringToDate(formValues.fødselsdato) : undefined,
+        fødselsdato:
+            includeFødselsdatoSpørsmål && formValues.fødselsdato ? ISOStringToDate(formValues.fødselsdato) : undefined,
     };
 };
 
-const mapAnnetBarnToFormValues = (annetBarn: Partial<AnnetBarn>): AnnetBarnFormValues => {
+const mapAnnetBarnToFormValues = (
+    annetBarn: Partial<AnnetBarn>,
+    includeFødselsdatoSpørsmål: boolean
+): AnnetBarnFormValues => {
     return {
         fnr: annetBarn.fnr,
         navn: annetBarn.navn,
-        fødselsdato: annetBarn.fødselsdato ? dateToISOString(annetBarn.fødselsdato) : '',
+        fødselsdato: includeFødselsdatoSpørsmål
+            ? annetBarn.fødselsdato
+                ? dateToISOString(annetBarn.fødselsdato)
+                : ''
+            : undefined,
     };
 };
 

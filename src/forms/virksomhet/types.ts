@@ -2,8 +2,8 @@ import { ApiStringDate } from '@navikt/sif-common-core/lib/types/ApiStringDate';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 
 export enum Næringstype {
-    'FISKER' = 'FISKE',
-    'JORDBRUK' = 'JORDBRUK_SKOGBRUK',
+    'FISKE' = 'FISKE',
+    'JORDBRUK_SKOGBRUK' = 'JORDBRUK_SKOGBRUK',
     'DAGMAMMA' = 'DAGMAMMA',
     'ANNEN' = 'ANNEN',
 }
@@ -20,7 +20,7 @@ export enum VirksomhetFormField {
     'registrertINorge' = 'registrertINorge',
     'registrertILand' = 'registrertILand',
     'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene' = 'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene',
-    'oppstartsdato' = 'oppstartsdato',
+    'blittYrkesaktivDato' = 'blittYrkesaktivDato',
     'hattVarigEndringAvNæringsinntektSiste4Kalenderår' = 'hattVarigEndringAvNæringsinntektSiste4Kalenderår',
     'varigEndringINæringsinntekt_dato' = 'varigEndringINæringsinntekt_dato',
     'varigEndringINæringsinntekt_inntektEtterEndring' = 'varigEndringINæringsinntekt_inntektEtterEndring',
@@ -30,15 +30,6 @@ export enum VirksomhetFormField {
     'regnskapsfører' = 'regnskapsfører',
     'regnskapsfører_navn' = 'regnskapsfører_navn',
     'regnskapsfører_telefon' = 'regnskapsfører_telefon',
-    'harRevisor' = 'harRevisor',
-    'revisor_navn' = 'revisor_navn',
-    'revisor_telefon' = 'revisor_telefon',
-    'kanInnhenteOpplsyningerFraRevisor' = 'kanInnhenteOpplsyningerFraRevisor',
-}
-
-export interface VirksomhetHideFields {
-    [VirksomhetFormField.fiskerErPåBladB]?: boolean;
-    [VirksomhetFormField.harRevisor]?: boolean;
 }
 
 export interface Virksomhet {
@@ -54,7 +45,7 @@ export interface Virksomhet {
     [VirksomhetFormField.registrertINorge]: YesOrNo;
     [VirksomhetFormField.registrertILand]?: string;
     [VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene]?: YesOrNo;
-    [VirksomhetFormField.oppstartsdato]?: Date;
+    [VirksomhetFormField.blittYrkesaktivDato]?: Date;
     [VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår]?: YesOrNo;
     [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: Date;
     [VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring]?: number;
@@ -62,16 +53,12 @@ export interface Virksomhet {
     [VirksomhetFormField.harRegnskapsfører]: YesOrNo;
     [VirksomhetFormField.regnskapsfører_navn]?: string;
     [VirksomhetFormField.regnskapsfører_telefon]?: string;
-    [VirksomhetFormField.harRevisor]?: YesOrNo;
-    [VirksomhetFormField.revisor_navn]?: string;
-    [VirksomhetFormField.revisor_telefon]?: string;
-    [VirksomhetFormField.kanInnhenteOpplsyningerFraRevisor]?: YesOrNo;
 }
 export type VirksomhetFormValues = Partial<
-    Omit<Virksomhet, 'fom' | 'tom' | 'oppstartsdato' | 'varigEndringINæringsinntekt_dato'> & {
+    Omit<Virksomhet, 'fom' | 'tom' | 'blittYrkesaktivDato' | 'varigEndringINæringsinntekt_dato'> & {
         [VirksomhetFormField.fom]: string;
         [VirksomhetFormField.tom]?: string;
-        [VirksomhetFormField.oppstartsdato]?: string;
+        [VirksomhetFormField.blittYrkesaktivDato]?: string;
         [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: string;
     }
 >;
@@ -105,10 +92,5 @@ export interface VirksomhetApiData {
     regnskapsfører?: {
         navn: string;
         telefon: string;
-    };
-    revisor?: {
-        navn: string;
-        telefon: string;
-        kanInnhenteOpplysninger?: boolean;
     };
 }

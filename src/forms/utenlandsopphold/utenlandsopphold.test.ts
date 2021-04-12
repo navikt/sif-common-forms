@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { jsonSort } from '@navikt/sif-common-core/lib/utils/jsonSort';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { Utenlandsopphold, UtenlandsoppholdFormValues } from './types';
@@ -6,11 +7,13 @@ import utils from './utenlandsoppholdUtils';
 const fom = ISOStringToDate('2000-10-10')!;
 const tom = ISOStringToDate('2000-10-11')!;
 const landkode = 'no';
+const id = 'abc';
 
 const utenlandsopphold: Utenlandsopphold = {
     fom,
     tom,
     landkode,
+    id,
 };
 
 const formValues: UtenlandsoppholdFormValues = {

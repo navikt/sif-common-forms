@@ -14,6 +14,11 @@ import AnnetBarnExample from './AnnetBarnExample';
 
 const tabRoutes: RouteConfig[] = [
     {
+        path: 'fravær',
+        renderContent: () => <FraværExample />,
+        title: 'Fravær',
+    },
+    {
         path: 'tidsrom',
         renderContent: () => <TidsperiodeExample />,
         title: 'Tidsperiode',
@@ -37,11 +42,6 @@ const tabRoutes: RouteConfig[] = [
         path: 'fosterbarn',
         renderContent: () => <FosterbarnExample />,
         title: 'Fosterbarn',
-    },
-    {
-        path: 'fravær',
-        renderContent: () => <FraværExample />,
-        title: 'Fravær',
     },
     {
         path: 'annetbarn',
