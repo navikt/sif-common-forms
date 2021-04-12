@@ -132,7 +132,7 @@ const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet }) => {
                     {virksomhet.regnskapsfører === undefined && <JaNeiSvar harSvartJa={false} />}
                     {virksomhet.regnskapsfører !== undefined && (
                         <FormattedMessage
-                            id="sifForms.virksomhet.summary.regnskapsfører.ja.info"
+                            id="sifForms.virksomhet.summary.regnskapsfører.info"
                             values={{
                                 navn: virksomhet.regnskapsfører.navn,
                                 telefon: virksomhet.regnskapsfører.telefon,
