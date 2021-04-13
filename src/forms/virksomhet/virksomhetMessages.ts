@@ -19,9 +19,12 @@ const virksomhetMessages = {
         'sifForms.virksomhet.kalender_fom': 'Startdato',
         'sifForms.virksomhet.kalender_tom': 'Eventuell sluttdato',
         'sifForms.virksomhet.kalender_pågående': 'Er pågående',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
-        'sifForms.virksomhet.næringsinntektFlere.info':
+        'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
+        'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Virksomhetene dine',
+        'sifForms.virksomhet.næringsinntektFlere.info':
+            'Du har opplyst at du har flere næringsvirksomheter. Her skal svare ut fra alle virksomhetene du har.',
         'sifForms.virksomhet.næringsinntekt':
             'Hva har du hatt totalt i næringsresultat før skatt de siste 12 månedene?',
         'sifForms.virksomhet.næringsinntekt.info':
@@ -36,12 +39,12 @@ const virksomhetMessages = {
             'Du skal svare ja på spørsmålet hvis du før oppstart av næringsvirksomheten din hadde lav eller ingen inntekt.',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_dato': 'Oppgi dato for når du begynte i arbeidslivet',
         'sifForms.virksomhet.varig_endring_spm':
-            'Har du hatt en varig endring i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din de siste fire årene?',
+            'Har du hatt en varig endring i noen av arbeidsforholdene, virksomhetene eller arbeidssituasjonen din de siste fire årene?',
         'sifForms.virksomhet.varig_endring_dato': 'Oppgi dato for endringen',
         'sifForms.virksomhet.varig_endring_inntekt':
             'Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.',
         'sifForms.virksomhet.varig_endring_tekst':
-            'Her kan du skrive kort hva som har endret seg i arbeidsforholdet ditt, virksomheten eller arbeidssituasjonen din',
+            'Her kan du skrive kort hva som har endret seg i arbeidsforholdene, virksomhetene eller arbeidssituasjonen din',
         'sifForms.virksomhet.regnskapsfører_spm': 'Har du regnskapsfører?',
         'sifForms.virksomhet.regnskapsfører_navn': 'Oppgi navnet til regnskapsfører',
         'sifForms.virksomhet.regnskapsfører_telefon': 'Oppgi telefonnummeret til regnskapsfører',
@@ -87,10 +90,12 @@ const virksomhetMessages = {
         'sifForms.virksomhet.kalender_fom': 'Startdato',
         'sifForms.virksomhet.kalender_tom': 'Eventuell sluttdato',
         'sifForms.virksomhet.kalender_pågående': 'Er i gang',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
+        'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
+        'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
+            'Du har opplyst at du har fleire næringsverksemder. Her skal du leggje inn næringsresultatet totalt for alle verksemdene du har.',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Virksomhetene dine',
         'sifForms.virksomhet.næringsinntektFlere.info':
-            'Du har opplyst at du har fleire næringsverksemder. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
-
+            'Du har opplyst at du har flere næringsverksemder. Her skal svare ut frå alle verksemdene du har.',
         'sifForms.virksomhet.næringsinntekt':
             'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
         'sifForms.virksomhet.næringsinntekt.info':
@@ -105,12 +110,12 @@ const virksomhetMessages = {
             'Du skal svare ja på spørsmålet dersom du før oppstart av næringsverksemda di hadde låg eller inga inntekt.',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_dato': 'Gi opp datoen for når du begynte i arbeidslivet',
         'sifForms.virksomhet.varig_endring_spm':
-            'Har du hatt ei varig endring i arbeidsforholdet ditt, verksemda di eller arbeidssituasjonen din dei siste fire åra?',
+            'Har du hatt ei varig endring i nokre av arbeidsforholda, verksemdene eller arbeidssituasjonen din dei siste fire åra?',
         'sifForms.virksomhet.varig_endring_dato': 'Gi opp datoen for endringa',
         'sifForms.virksomhet.varig_endring_inntekt':
             'Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.',
         'sifForms.virksomhet.varig_endring_tekst':
-            'Her kan du skrive kort kva som har endra seg i arbeidsforholdet ditt, verksemda di eller arbeidssituasjonen din.',
+            'Her kan du skrive kort kva som har endra seg i arbeidsforholda, verksemdene eller arbeidssituasjonen din',
         'sifForms.virksomhet.regnskapsfører_spm': 'Har du rekneskapsførar?',
         'sifForms.virksomhet.regnskapsfører_navn': 'Gi opp namnet til rekneskapsføraren',
         'sifForms.virksomhet.regnskapsfører_telefon': 'Gi opp telefonnummeret til rekneskapsføraren',

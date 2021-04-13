@@ -210,15 +210,26 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                             <>
                                 {harFlereVirksomheter && (
                                     <Box margin="xxl">
-                                        <Undertittel>{getText('næringsinntektFlere.header')}</Undertittel>
-                                        <p>{getText('næringsinntektFlere.info')}</p>
+                                        {erVirksomhetRegnetSomNyoppstartet(fomDate) ? (
+                                            <>
+                                                <Undertittel>
+                                                    {getText('nyoppstartet.næringsinntektFlere.header')}
+                                                </Undertittel>
+                                                <p>{getText('nyoppstartet.næringsinntektFlere.info')}</p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Undertittel>{getText('næringsinntektFlere.header')}</Undertittel>
+                                                <p>{getText('næringsinntektFlere.info')}</p>
+                                            </>
+                                        )}
                                     </Box>
                                 )}
 
                                 {/* Nyoppstartet  */}
                                 {erVirksomhetRegnetSomNyoppstartet(fomDate) && (
                                     <>
-                                        <Box margin="l">
+                                        <Box margin="xl">
                                             <Form.NumberInput
                                                 name={VirksomhetFormField.næringsinntekt}
                                                 label={getText('næringsinntekt')}
