@@ -22,9 +22,9 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Virksomhetene dine',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
         'sifForms.virksomhet.næringsinntektFlere.info':
-            'Du har opplyst at du har flere næringsvirksomheter. Her skal svare ut fra alle virksomhetene du har.',
+            'Du har opplyst at du har flere næringsvirksomheter som selvstendig næringsdrivende. Nå skal du svare på spørsmål som gjelder alle virksomhetene dine.',
         'sifForms.virksomhet.næringsinntekt':
             'Hva har du hatt totalt i næringsresultat før skatt de siste 12 månedene?',
         'sifForms.virksomhet.næringsinntekt.info':
@@ -93,9 +93,9 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har fleire næringsverksemder. Her skal du leggje inn næringsresultatet totalt for alle verksemdene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Virksomhetene dine',
+        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsverksemdene dine',
         'sifForms.virksomhet.næringsinntektFlere.info':
-            'Du har opplyst at du har flere næringsverksemder. Her skal svare ut frå alle verksemdene du har.',
+            'Du har opplyst at du har fleire næringsverksemder som sjølvstendig næringsdrivande. Nå skal du svare på spørsmål som gjeld alle verksemdene dine.',
         'sifForms.virksomhet.næringsinntekt':
             'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
         'sifForms.virksomhet.næringsinntekt.info':
