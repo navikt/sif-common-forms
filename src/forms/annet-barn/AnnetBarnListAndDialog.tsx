@@ -6,7 +6,6 @@ import { AnnetBarn } from './types';
 
 interface Props<FieldNames> {
     name: FieldNames;
-    includeFødselsdatoSpørsmål?: boolean;
     validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
     minDate: Date;
@@ -23,7 +22,6 @@ function AnnetBarnListAndDialog<FieldNames>({
     minDate,
     maxDate,
     aldersGrenseText,
-    includeFødselsdatoSpørsmål = true,
     placeholderFnr,
     placeholderNavn,
 }: Props<FieldNames>) {
@@ -37,7 +35,6 @@ function AnnetBarnListAndDialog<FieldNames>({
                 formRenderer={({ onSubmit, onCancel, item }) => (
                     <AnnetBarnForm
                         annetBarn={item}
-                        includeFødselsdatoSpørsmål={includeFødselsdatoSpørsmål}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                         minDate={minDate}
@@ -50,12 +47,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (
-                    <AnnetBarnList
-                        annetBarn={items}
-                        includeFødselsdato={includeFødselsdatoSpørsmål}
-                        onEdit={onEdit}
-                        onDelete={onDelete}
-                    />
+                    <AnnetBarnList annetBarn={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
             />
         </>

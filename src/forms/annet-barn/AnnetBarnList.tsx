@@ -8,20 +8,17 @@ import './annetBarnList.less';
 
 interface Props {
     annetBarn: AnnetBarn[];
-    includeFødselsdato: boolean;
     onEdit?: (annetBarn: AnnetBarn) => void;
     onDelete?: (annetBarn: AnnetBarn) => void;
 }
 
 const bem = bemUtils('annetBarnList');
 
-const AnnetBarnList = ({ annetBarn = [], includeFødselsdato, onDelete, onEdit }: Props) => {
+const AnnetBarnList = ({ annetBarn = [], onDelete, onEdit }: Props) => {
     const renderAnnetBarnLabel = (annetBarn: AnnetBarn): React.ReactNode => {
         return (
             <div className={bem.element('label')}>
-                {includeFødselsdato && annetBarn.fødselsdato && (
-                    <span className={bem.element('dato')}>{prettifyDate(annetBarn.fødselsdato)}</span>
-                )}
+                <span className={bem.element('dato')}>{prettifyDate(annetBarn.fødselsdato)}</span>
                 <span className={bem.element('land')}>
                     {onEdit && <ActionLink onClick={() => onEdit(annetBarn)}>{annetBarn.navn}</ActionLink>}
                     {!onEdit && <span>{annetBarn.navn}</span>}
