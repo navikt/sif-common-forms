@@ -28,17 +28,12 @@ const { mapFormValuesToPartialAnnetBarn, isAnnetBarn, mapAnnetBarnToFormValues }
 describe('annetBarn', () => {
     it('maps annet barn to formValues correctly', () => {
         const formJson = jsonSort(formValues);
-        const barnJson = jsonSort(mapAnnetBarnToFormValues(annetBarn, true));
-        expect(barnJson).toEqual(formJson);
-    });
-    it('maps annet barn to formValues correctly when inkluderFødselsdatoSpørsmål === false', () => {
-        const formJson = jsonSort({ ...formValues, fødselsdato: undefined });
-        const barnJson = jsonSort(mapAnnetBarnToFormValues(annetBarn, false));
+        const barnJson = jsonSort(mapAnnetBarnToFormValues(annetBarn));
         expect(barnJson).toEqual(formJson);
     });
     it('maps formValues to annetBarn correctly - with id', () => {
         const barnJson = jsonSort(annetBarn);
-        const formJson = jsonSort(mapFormValuesToPartialAnnetBarn(formValues, id, true));
+        const formJson = jsonSort(mapFormValuesToPartialAnnetBarn(formValues, id));
         expect(barnJson).toEqual(formJson);
     });
     it('isAnnetBarn verifies type AnnetBarn correctly', () => {
@@ -46,13 +41,6 @@ describe('annetBarn', () => {
         expect(isAnnetBarn({ ...annetBarn, fødselsdato: undefined })).toBeFalsy();
         expect(isAnnetBarn({ ...annetBarn, navn: undefined })).toBeFalsy();
         expect(isAnnetBarn({ ...annetBarn, fnr: undefined })).toBeFalsy();
-        expect(isAnnetBarn({ fnr, navn, fødselsdato })).toBeTruthy();
-    });
-    it('isAnnetBarn verifies type AnnetBarn correctly when inkluderFødselsdatoSpørsmål is false', () => {
-        expect(isAnnetBarn({})).toBeFalsy();
-        expect(isAnnetBarn({ ...annetBarn, navn: undefined })).toBeFalsy();
-        expect(isAnnetBarn({ ...annetBarn, fnr: undefined })).toBeFalsy();
-        expect(isAnnetBarn({ ...annetBarn, fødselsdato: undefined }, false)).toBeTruthy();
         expect(isAnnetBarn({ fnr, navn, fødselsdato })).toBeTruthy();
     });
 });

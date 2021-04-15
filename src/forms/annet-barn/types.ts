@@ -1,7 +1,7 @@
 export interface AnnetBarn {
     id?: string;
     fnr: string;
-    fødselsdato?: Date;
+    fødselsdato: Date;
     navn: string;
 }
 

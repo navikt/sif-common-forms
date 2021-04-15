@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import { date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
@@ -9,13 +11,10 @@ import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import AnnetBarnForm from '../../../forms/annet-barn/AnnetBarnForm';
+import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
+import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import { AnnetBarn } from '../../../forms/annet-barn/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
-import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
-import { dateToday, date4YearsAgo } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { Checkbox } from 'nav-frontend-skjema';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -29,20 +28,11 @@ const initialValues: FormValues = { annetBarn: [] };
 const AnnetBarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<AnnetBarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
-    const [inkluderFødselsdatoSpørsmål, setInkluderFødselsdatoSpørsmål] = useState<boolean>(true);
     const intl = useIntl();
     return (
         <>
             <Box padBottom="l">
                 <Undertittel>Liste og dialog</Undertittel>
-                <Box margin="l">
-                    <p>Det er muligheter for å skru på og av spørsmålet om fødselsdato</p>
-                    <Checkbox
-                        label="Inkluder spørsmål om fødselsdato i dialog og fødselsdato i liste"
-                        checked={inkluderFødselsdatoSpørsmål}
-                        onChange={(evt) => setInkluderFødselsdatoSpørsmål(evt.target.checked === true)}
-                    />
-                </Box>
             </Box>
             <Panel border={true}>
                 <TypedFormikWrapper<FormValues>
@@ -56,7 +46,6 @@ const AnnetBarnExample = () => {
                                 fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
-                                    includeFødselsdatoSpørsmål={inkluderFødselsdatoSpørsmål}
                                     validate={validateRequiredList}
                                     labels={{
                                         addLabel: 'Legg til barn',
@@ -81,7 +70,6 @@ const AnnetBarnExample = () => {
                 <Panel border={true}>
                     <AnnetBarnForm
                         annetBarn={{}}
-                        includeFødselsdatoSpørsmål={inkluderFødselsdatoSpørsmål}
                         onSubmit={setSingleFormValues}
                         onCancel={() => console.log('cancel me')}
                         minDate={date4YearsAgo}
