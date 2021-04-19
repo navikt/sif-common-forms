@@ -1,7 +1,6 @@
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { createFieldValidationError } from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { FieldValidationResult } from '@navikt/sif-common-core/lib/validation/types';
-import { FormikValidateFunction, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 import {
     dateCollideWithRanges,
     dateErHelg,
@@ -38,25 +37,14 @@ export enum FraværFieldValidationErrors {
     'dato_overlapper_med_andre_perioder' = 'fravær.form.validation.dato_overlapper_med_andre_perioder',
 }
 
-export type FieldValidationArray<ValueType> = (
-    validations: FormikValidateFunction<ValueType>[]
-) => (value: ValueType) => FieldValidationResult;
-
-export const validateAll = <ValueType>(validations: FormikValidateFunction<ValueType>[]): FormikValidateFunction => (
-    value: ValueType
-): FieldValidationResult =>
-    validations
-        .map((validate: FormikValidateFunction<ValueType>) => validate(value))
-        .reduce((prev: FieldValidationResult, curr: FieldValidationResult) => prev || curr, undefined);
-
-export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): FormikValidateFunction => (
+export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): ValidationFunction<any> => (
     maybeValue: string | undefined
 ) => {
     const maybeValueFloat: number | undefined = maybeValue ? parseFloat(maybeValue) : undefined;
     if (maybeMaxValue && maybeValueFloat) {
         return maybeValueFloat <= maybeMaxValue
             ? undefined
-            : createFieldValidationError(FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer);
+            : FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer;
     }
     return undefined;
 };
@@ -65,69 +53,68 @@ export const validateErSammeÅr = (maybeDateFrom: string | undefined, maybeDateT
     const fromDate = ISOStringToDate(maybeDateFrom);
     const toDate = ISOStringToDate(maybeDateTo);
     if (fromDate && toDate && fromDate.getFullYear() !== toDate.getFullYear()) {
-        return createFieldValidationError(FraværFieldValidationErrors.fra_og_til_er_ulike_år);
+        return FraværFieldValidationErrors.fra_og_til_er_ulike_år;
     }
     return undefined;
 };
 
-export const validateNotHelgedag = (maybeDate: string | undefined): FieldValidationResult => {
+export const validateNotHelgedag = (maybeDate: string | undefined): FraværFieldValidationErrors | undefined => {
     const date = ISOStringToDate(maybeDate);
-    return date && dateErHelg(date) ? createFieldValidationError(FraværFieldValidationErrors.er_helg) : undefined;
+    return date && dateErHelg(date) ? FraværFieldValidationErrors.er_helg : undefined;
 };
 
 export const validateFraværPeriodeCollision = (
     from: Date | undefined,
     to: Date | undefined,
     ranges: DateRange[] | undefined
-): FieldValidationResult => {
+): FraværFieldValidationErrors | undefined => {
     if (!from || !to || (ranges || []).length === 0) {
         return undefined;
     }
     return rangeCollideWithRanges({ from, to }, ranges)
-        ? createFieldValidationError(FraværFieldValidationErrors.dager_overlapper_med_andre_dager)
+        ? FraværFieldValidationErrors.dager_overlapper_med_andre_dager
         : undefined;
 };
 
 export const validateFraOgMedForCollision = (
     date: Date | undefined,
     ranges: DateRange[] | undefined
-): FieldValidationResult => {
+): FraværFieldValidationErrors | undefined => {
     if (!date || (ranges || []).length === 0) {
         return undefined;
     }
     return dateCollideWithRanges(date, ranges)
-        ? createFieldValidationError(FraværFieldValidationErrors.fra_dato_kolliderer_med_annet_fravær)
+        ? FraværFieldValidationErrors.fra_dato_kolliderer_med_annet_fravær
         : undefined;
 };
 
 export const validateTilOgMedForCollision = (
     date: Date | undefined,
     ranges: DateRange[] | undefined
-): FieldValidationResult => {
+): FraværFieldValidationErrors | undefined => {
     if (!date || (ranges || []).length === 0) {
         return undefined;
     }
     return dateCollideWithRanges(date, ranges)
-        ? createFieldValidationError(FraværFieldValidationErrors.til_dato_kolliderer_med_annet_fravær)
+        ? FraværFieldValidationErrors.til_dato_kolliderer_med_annet_fravær
         : undefined;
 };
 
 export const validateFraværDagCollision = (
     date: Date | undefined,
     ranges: DateRange[] | undefined
-): FieldValidationResult => {
+): FraværFieldValidationErrors | undefined => {
     if (!date || (ranges || []).length === 0) {
         return undefined;
     }
     return dateCollideWithRanges(date, ranges)
-        ? createFieldValidationError(FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær)
+        ? FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær
         : undefined;
 };
 
-export const validateNoCollisions = (
-    fraværDager: FraværDag[],
-    fraværPerioder: FraværPeriode[]
-) => (): FieldValidationResult => {
+export const validateNoCollisions = (fraværDager: FraværDag[], fraværPerioder: FraværPeriode[]) => ():
+    | FraværFieldValidationErrors
+    | undefined => {
     if (fraværPerioder.length === 0 && fraværDager.length === 0) {
         return undefined;
     }
@@ -151,6 +138,6 @@ export const validateNoCollisions = (
         return rangeCollideWithRanges(fraværPeriodeToDateRange(periode), rangesWithoutCurrentPeriode);
     });
     return hasDateCollision || hasRangeCollision
-        ? createFieldValidationError(FraværFieldValidationErrors.dager_overlapper_med_andre_dager)
+        ? FraværFieldValidationErrors.dager_overlapper_med_andre_dager
         : undefined;
 };

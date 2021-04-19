@@ -1,25 +1,27 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
+import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import {
-    validateRequiredField,
-    validateRequiredList,
-    validateRequiredSelect,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
-import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import {
+    dateRangeValidation,
+    validateList,
+    validateRequiredValue,
+    validateYesOrNoIsAnswered,
+} from '@navikt/sif-common-formik/lib/validation';
+import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import TidsperiodeListAndDialog from '../tidsperiode/TidsperiodeListAndDialog';
 import { mapFomTomToDateRange } from '../utils';
 import { Utenlandsopphold, UtenlandsoppholdFormValues, UtenlandsoppholdÅrsak } from './types';
 import utils from './utenlandsoppholdUtils';
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     minDate: Date;
@@ -104,7 +106,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                     <Form.Form
                         includeButtons={areAllQuestionsAnswered}
                         onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'utenlandsoppholdForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'utenlandsoppholdForm')}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id="utenlandsopphold.form.tittel" />
                         </Systemtittel>
@@ -121,13 +124,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     dayPickerProps: {
                                         initialMonth: fomDate || minDate || dateToday,
                                     },
-                                    validate: (dateString) =>
-                                        dateRangeValidation.validateFromDate(
-                                            ISOStringToDate(dateString),
-                                            minDate,
-                                            maxDate,
-                                            ISOStringToDate(tom)
-                                        ),
+                                    validate: dateRangeValidation.validateFromDate({
+                                        required: true,
+                                        min: minDate,
+                                        max: maxDate,
+                                        toDate: ISOStringToDate(tom),
+                                    }),
                                 }}
                                 toInputProps={{
                                     name: UtenlandsoppholdFormFields.tom,
@@ -135,13 +137,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     dayPickerProps: {
                                         initialMonth: tomDate || fomDate || dateToday,
                                     },
-                                    validate: (dateString) =>
-                                        dateRangeValidation.validateToDate(
-                                            ISOStringToDate(dateString),
-                                            minDate,
-                                            maxDate,
-                                            ISOStringToDate(fom)
-                                        ),
+                                    validate: dateRangeValidation.validateToDate({
+                                        required: true,
+                                        min: minDate,
+                                        max: maxDate,
+                                        fromDate: ISOStringToDate(fom),
+                                    }),
                                 }}
                             />
                         </FormBlock>
@@ -150,7 +151,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}
                                     label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
-                                    validate={validateRequiredSelect}
+                                    validate={validateList({ required: true })}
                                 />
                             </FormBlock>
                         )}
@@ -172,7 +173,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                             name={UtenlandsoppholdFormFields.barnInnlagtPerioder}
                                             minDate={ISOStringToDate(fom)}
                                             maxDate={ISOStringToDate(tom)}
-                                            validate={validateRequiredList}
+                                            validate={validateList({ required: true })}
                                             formTitle={intlHelper(
                                                 intl,
                                                 'utenlandsopphold.form.perioderBarnetErInnlag.formTitle'
@@ -202,7 +203,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                                     land: getCountryName(landkode, intl.locale),
                                                 })}
                                                 name={UtenlandsoppholdFormFields.årsak}
-                                                validate={validateRequiredField}
+                                                validate={validateRequiredValue}
                                                 radios={[
                                                     {
                                                         value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE,

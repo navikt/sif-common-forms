@@ -1,11 +1,14 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { dateRangeValidation } from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import ferieuttakUtils from './ferieuttakUtils';
@@ -72,7 +75,8 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                 renderForm={(formik) => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'ferieuttakForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'ferieuttakForm')}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.DateRangePicker
@@ -85,13 +89,12 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                 fromInputProps={{
                                     label: formLabels.fromDate,
                                     name: FerieuttakFormFields.fom,
-                                    validate: (dateString) =>
-                                        dateRangeValidation.validateFromDate(
-                                            ISOStringToDate(dateString),
-                                            minDate,
-                                            maxDate,
-                                            ISOStringToDate(formik.values.tom)
-                                        ),
+                                    validate: dateRangeValidation.validateFromDate({
+                                        required: true,
+                                        min: minDate,
+                                        max: maxDate,
+                                        toDate: ISOStringToDate(formik.values.tom),
+                                    }),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.tom);
@@ -101,13 +104,13 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                 toInputProps={{
                                     label: formLabels.toDate,
                                     name: FerieuttakFormFields.tom,
-                                    validate: (dateString) =>
-                                        dateRangeValidation.validateToDate(
-                                            ISOStringToDate(dateString),
-                                            minDate,
-                                            maxDate,
-                                            ISOStringToDate(formik.values.fom)
-                                        ),
+
+                                    validate: dateRangeValidation.validateToDate({
+                                        required: true,
+                                        min: minDate,
+                                        max: maxDate,
+                                        fromDate: ISOStringToDate(formik.values.fom),
+                                    }),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.fom);

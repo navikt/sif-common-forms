@@ -1,15 +1,14 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
-    validateAll,
-    validateDateInRange,
-    validateFødselsnummer,
-    validateRequiredField,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { validateDate, validateFødselsnummer, validateRequiredValue } from '@navikt/sif-common-formik/lib/validation';
+import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
@@ -81,13 +80,14 @@ const AnnetBarnForm = ({
                 renderForm={() => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'annetBarnForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'annetBarnForm')}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.Input
                                 name={AnnetBarnFormFields.navn}
                                 label={formLabels.navn}
-                                validate={validateRequiredField}
+                                validate={validateRequiredValue}
                                 placeholder={formLabels.placeholderNavn}
                             />
                         </FormBlock>
@@ -99,10 +99,12 @@ const AnnetBarnForm = ({
                                         ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
                                         : `${formLabels.fødselsdato}`
                                 }
-                                validate={validateAll([
-                                    validateRequiredField,
-                                    validateDateInRange({ from: minDate, to: maxDate }),
-                                ])}
+                                validate={(value) =>
+                                    validateAll([
+                                        () => validateRequiredValue(value),
+                                        () => validateDate({ min: minDate, max: maxDate })(value),
+                                    ])
+                                }
                                 maxDate={maxDate}
                                 minDate={minDate}
                                 showYearSelector={true}
@@ -113,7 +115,12 @@ const AnnetBarnForm = ({
                             <Form.Input
                                 name={AnnetBarnFormFields.fnr}
                                 label={formLabels.fnr}
-                                validate={validateAll([validateRequiredField, validateFødselsnummer])}
+                                validate={(value) =>
+                                    validateAll([
+                                        () => validateRequiredValue(value),
+                                        () => validateFødselsnummer({ required: true })(value),
+                                    ])
+                                }
                                 inputMode="numeric"
                                 maxLength={11}
                                 placeholder={formLabels.placeholderFnr}

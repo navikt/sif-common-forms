@@ -1,5 +1,5 @@
-import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
 import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 

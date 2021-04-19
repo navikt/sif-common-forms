@@ -1,13 +1,16 @@
 import React from 'react';
 import { DateRange, sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
-import { FraværDag } from './types';
-import FraværDagFormView from './FraværDagForm';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import FraværDagerList from './FraværDagerList';
+import FraværDagFormView from './FraværDagForm';
+import { FraværDag } from './types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     minDate: Date;
     maxDate: Date;
     dagDescription?: JSX.Element;

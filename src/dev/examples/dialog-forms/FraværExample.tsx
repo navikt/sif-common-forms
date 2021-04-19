@@ -3,9 +3,12 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
+
 import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import Panel from 'nav-frontend-paneler';
@@ -18,8 +21,10 @@ import fraværMessages from '../../../forms/fravær/fraværMessages';
 import FraværPeriodeForm from '../../../forms/fravær/FraværPeriodeForm';
 import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioderListAndDialog';
 import { fraværDagToFraværDateRange, fraværPeriodeToDateRange } from '../../../forms/fravær/fraværUtilities';
-import { validateAll, validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
+import { validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 
 enum FormField {
     perioder = 'perioder',
@@ -61,7 +66,8 @@ const FraværExample: React.FunctionComponent = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'fraværExample')}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fraværExample')}>
                                 <FormBlock>
                                     <FraværPerioderListAndDialog<FormField>
                                         name={FormField.perioder}
@@ -73,10 +79,12 @@ const FraværExample: React.FunctionComponent = () => {
                                                 år, må du sende en søknad for hvert år.
                                             </p>
                                         }
-                                        validate={validateAll([
-                                            validateRequiredList,
-                                            validateNoCollisions(values.dager, values.perioder),
-                                        ])}
+                                        validate={(value) =>
+                                            validateAll([
+                                                () => validateList({ required: true })(value),
+                                                () => validateNoCollisions(values.dager, values.perioder),
+                                            ])
+                                        }
                                         labels={{
                                             addLabel: 'Legg til periode',
                                             modalTitle: 'Fravær hele dager',
@@ -90,10 +98,12 @@ const FraværExample: React.FunctionComponent = () => {
                                         name={FormField.dager}
                                         minDate={date1YearAgo}
                                         maxDate={dateToday}
-                                        validate={validateAll([
-                                            validateRequiredList,
-                                            validateNoCollisions(values.dager, values.perioder),
-                                        ])}
+                                        validate={(value) =>
+                                            validateAll([
+                                                () => validateList({ required: true })(value),
+                                                () => validateNoCollisions(values.dager, values.perioder),
+                                            ])
+                                        }
                                         labels={{
                                             addLabel: 'Legg til dag med delvis fravær',
                                             listTitle: 'Dager med delvis fravær',

@@ -1,17 +1,20 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { FormikModalFormAndInfo, FormikValidateFunction, ModalFormAndInfoLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndInfo,
+    ModalFormAndInfoLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import { mapVirksomhetToVirksomhetApiData } from './mapVirksomhetToApiData';
 import { Virksomhet } from './types';
 import VirksomhetForm from './VirksomhetForm';
 import VirksomhetSummary from './VirksomhetSummary';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps {
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     skipOrgNumValidation?: boolean;
     harFlereVirksomheter?: boolean;
-    validate?: FormikValidateFunction;
     onAfterChange?: (virksomhet: Virksomhet) => void;
 }
 

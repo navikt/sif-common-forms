@@ -5,18 +5,21 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
-    validateOrgNumber,
-    validatePhoneNumber,
-    validateRequiredField,
-    validateRequiredList,
-    validateRequiredNumber,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import {
+    validateList,
+    validateNumber,
+    validateOrgNumber,
+    validateRequiredValue,
+    validateString,
+    validateYesOrNoIsAnswered,
+} from '@navikt/sif-common-formik/lib/validation';
 import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
@@ -79,7 +82,8 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                     <Form.Form
                         includeValidationSummary={true}
                         onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'virksomhetForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'virksomhetForm')}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
                                 {harFlereVirksomheter ? getText('form_title.flere') : getText('form_title')}
@@ -107,7 +111,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                     label: getText(`næringstype_${Næringstype.ANNEN}`),
                                 },
                             ]}
-                            validate={validateRequiredList}
+                            validate={validateList({ required: true })}
                         />
 
                         {harFiskerNæringstype(næringstyper) && (
@@ -124,7 +128,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
                                 label={getText('hva_heter_virksomheten')}
-                                validate={validateRequiredField}
+                                validate={validateRequiredValue}
                                 maxLength={50}
                             />
                         </Box>
@@ -153,7 +157,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                 <Form.CountrySelect
                                     name={VirksomhetFormField.registrertILand}
                                     label={getText('registert_i_hvilket_land', { navnPåVirksomheten })}
-                                    validate={validateRequiredField}
+                                    validate={validateRequiredValue}
                                     useAlpha3Code={true}
                                 />
                             </Box>
@@ -166,12 +170,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                     label={getText('organisasjonsnummer')}
                                     style={{ maxWidth: '10rem' }}
                                     maxLength={9}
-                                    validate={
-                                        skipOrgNumValidation
-                                            ? undefined
-                                            : (value) =>
-                                                  validateOrgNumber(value, values.registrertINorge === YesOrNo.YES)
-                                    }
+                                    validate={skipOrgNumValidation ? undefined : validateOrgNumber({ required: true })}
                                 />
                             </Box>
                         )}
@@ -185,13 +184,13 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                     fromInputProps={{
                                         label: getText('kalender_fom'),
                                         name: VirksomhetFormField.fom,
-                                        validate: validateRequiredField,
+                                        validate: validateRequiredValue,
                                     }}
                                     toInputProps={{
                                         label: getText('kalender_tom'),
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
-                                        validate: values.erPågående === true ? undefined : validateRequiredField,
+                                        validate: values.erPågående === true ? undefined : validateRequiredValue,
                                     }}
                                 />
                                 <Form.Checkbox
@@ -235,7 +234,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                 label={getText('næringsinntekt')}
                                                 maxLength={10}
                                                 style={{ maxWidth: '10rem' }}
-                                                validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
+                                                validate={validateNumber({ min: 0, max: MAKS_INNTEKT })}
                                                 description={
                                                     <>
                                                         {getText('næringsinntekt.info')}
@@ -270,7 +269,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         showYearSelector={true}
                                                         minDate={date3YearsAgo}
                                                         maxDate={dateToday}
-                                                        validate={validateRequiredField}
+                                                        validate={validateRequiredValue}
                                                     />
                                                 </ResponsivePanel>
                                             </FormBlock>
@@ -296,7 +295,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     <Form.DatePicker
                                                         name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
                                                         label={getText('varig_endring_dato')}
-                                                        validate={validateRequiredField}
+                                                        validate={validateRequiredValue}
                                                         minDate={date4YearsAgo}
                                                         maxDate={dateToday}
                                                     />
@@ -309,7 +308,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         label={getText('varig_endring_inntekt')}
                                                         maxLength={10}
                                                         style={{ maxWidth: '10rem' }}
-                                                        validate={validateRequiredNumber({ min: 0, max: MAKS_INNTEKT })}
+                                                        validate={validateNumber({ min: 0, max: MAKS_INNTEKT })}
                                                     />
                                                 </Box>
                                                 <Box margin="xl">
@@ -318,7 +317,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                             VirksomhetFormField.varigEndringINæringsinntekt_forklaring
                                                         }
                                                         label={getText('varig_endring_tekst')}
-                                                        validate={validateRequiredField}
+                                                        validate={validateRequiredValue}
                                                         maxLength={1000}
                                                     />
                                                 </Box>
@@ -342,14 +341,14 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     <Form.Input
                                                         name={VirksomhetFormField.regnskapsfører_navn}
                                                         label={getText('regnskapsfører_navn')}
-                                                        validate={validateRequiredField}
+                                                        validate={validateRequiredValue}
                                                         maxLength={50}
                                                     />
                                                     <Box margin="xl">
                                                         <Form.Input
                                                             name={VirksomhetFormField.regnskapsfører_telefon}
                                                             label={getText('regnskapsfører_telefon')}
-                                                            validate={validatePhoneNumber}
+                                                            validate={validateString({ maxLength: 15 })}
                                                             maxLength={15}
                                                         />
                                                     </Box>

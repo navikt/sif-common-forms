@@ -2,13 +2,16 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Tiles from '@navikt/sif-common-core/lib/components/tiles/Tiles';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { validateFødselsnummer, validateRequiredValue } from '@navikt/sif-common-formik/lib/validation';
+import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { guid } from 'nav-frontend-js-utils';
 
 interface FosterbarnFormText {
     form_fødselsnummer_label: string;
@@ -66,13 +69,14 @@ const FosterbarnForm = ({
                 renderForm={() => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'fosterbarnForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fosterbarnForm')}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={validateFødselsnummer}
+                                validate={validateFødselsnummer({ required: true })}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}
@@ -84,14 +88,14 @@ const FosterbarnForm = ({
                                     <Form.Input
                                         name={FosterbarnFormField.fornavn}
                                         label={txt.form_fornavn_label}
-                                        validate={validateRequiredField}
+                                        validate={validateRequiredValue}
                                     />
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.Input
                                         name={FosterbarnFormField.etternavn}
                                         label={txt.form_etternavn_label}
-                                        validate={validateRequiredField}
+                                        validate={validateRequiredValue}
                                     />
                                 </FormBlock>
                             </Tiles>

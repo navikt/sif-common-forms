@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
+
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import Panel from 'nav-frontend-paneler';
@@ -14,6 +17,7 @@ import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/Utenl
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import { validateList } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'utenlandsopphold' = 'utenlandsopphold',
@@ -44,12 +48,16 @@ const UtenlandsoppholdExample = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'utenlandsoppholdExample')}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(
+                                    intl,
+                                    'utenlandsoppholdExample'
+                                )}>
                                 <UtenlandsoppholdListAndDialog
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
                                     name={FormField.utenlandsopphold}
-                                    validate={validateRequiredList}
+                                    validate={validateList({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til utenlandsopphold',
                                         listTitle: 'Registrerte utenlandsopphold',

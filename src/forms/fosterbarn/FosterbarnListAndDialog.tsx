@@ -1,10 +1,10 @@
 import React from 'react';
-import { FormikModalFormAndList, FormikValidateFunction } from '@navikt/sif-common-formik';
+import { useIntl } from 'react-intl';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { FormikModalFormAndList, TypedFormInputValidationProps } from '@navikt/sif-common-formik';
 import FosterbarnForm from './FosterbarnForm';
 import FosterbarnList from './FosterbarnList';
 import { Fosterbarn } from './types';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { useIntl } from 'react-intl';
 
 export interface FosterbarnListAndDialogText {
     liste_legg_til_knapp: string;
@@ -13,9 +13,8 @@ export interface FosterbarnListAndDialogText {
     modal_tittel: string;
 }
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     texts?: FosterbarnListAndDialogText;
     includeName?: boolean;
 }

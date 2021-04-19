@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { validateList } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import FerieuttakForm from '../../../forms/ferieuttak/FerieuttakForm';
 import FerieuttakListAndDialog from '../../../forms/ferieuttak/FerieuttakListAndDialog';
+import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 
 enum FormField {
     'ferie' = 'ferie',
@@ -43,12 +46,13 @@ const FormikExample = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'ferieuttakExample')}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'ferieuttakExample')}>
                                 <FerieuttakListAndDialog<FormField>
                                     name={FormField.ferie}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={validateRequiredList}
+                                    validate={validateList({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til ferie',
                                         listTitle: 'Registrerte ferier',

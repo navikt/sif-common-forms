@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -12,6 +14,7 @@ import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhe
 import VirksomhetInfoAndDialog from '../../../forms/virksomhet/VirksomhetInfoAndDialog';
 import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
 import PageIntro from '../../components/page-intro/PageIntro';
+import { validateList } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'virksomhet' = 'virksomhet',
@@ -67,11 +70,12 @@ const VirksomhetExample = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'virksomhetExample')}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'virksomhetExample')}>
                                 <VirksomhetInfoAndDialog<FormField>
                                     name={FormField.virksomhet}
                                     harFlereVirksomheter={harFlereVirksomheter}
-                                    validate={validateRequiredList}
+                                    validate={validateList({ required: true })}
                                     labels={{
                                         addLabel: harFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
                                         deleteLabel: 'Fjern',

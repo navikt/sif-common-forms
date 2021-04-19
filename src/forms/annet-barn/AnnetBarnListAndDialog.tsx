@@ -1,12 +1,15 @@
 import React from 'react';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import AnnetBarnForm from './AnnetBarnForm';
 import AnnetBarnList from './AnnetBarnList';
 import { AnnetBarn } from './types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
     minDate: Date;
     maxDate: Date;

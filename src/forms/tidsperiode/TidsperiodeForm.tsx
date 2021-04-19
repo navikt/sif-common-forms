@@ -1,10 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import { dateRangeValidation } from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
@@ -72,24 +75,6 @@ const TidsperiodeForm = ({
                 initialValues={tidsperiodeUtils.mapDateTidsperiodeToFormValues(tidsperiode || {})}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
-                    const validateFromDate = (dateString?: string) => {
-                        return dateRangeValidation.validateFromDate(
-                            ISOStringToDate(dateString),
-                            minDate,
-                            maxDate,
-                            ISOStringToDate(formik.values.tom)
-                        );
-                    };
-
-                    const validateToDate = (dateString?: string) => {
-                        return dateRangeValidation.validateToDate(
-                            ISOStringToDate(dateString),
-                            minDate,
-                            maxDate,
-                            ISOStringToDate(formik.values.tom)
-                        );
-                    };
-
                     const disabledDateRanges =
                         tidsperiode === undefined
                             ? alleTidsperioder.map(mapFomTomToDateRange)
@@ -98,7 +83,8 @@ const TidsperiodeForm = ({
                     return (
                         <Form.Form
                             onCancel={onCancel}
-                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                            fieldErrorRenderer={getFieldErrorRenderer(intl, 'tidsperiodeForm')}
+                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'tidsperiodeForm')}>
                             <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
                             <FormBlock>
                                 <Form.DateRangePicker
@@ -110,7 +96,12 @@ const TidsperiodeForm = ({
                                     fromInputProps={{
                                         label: inlineLabels.fromDate,
                                         name: TidsperiodeFormFields.fom,
-                                        validate: validateFromDate,
+                                        validate: dateRangeValidation.validateFromDate({
+                                            required: true,
+                                            min: minDate,
+                                            max: maxDate,
+                                            toDate: ISOStringToDate(formik.values.tom),
+                                        }),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(TidsperiodeFormFields.tom);
@@ -120,7 +111,12 @@ const TidsperiodeForm = ({
                                     toInputProps={{
                                         label: inlineLabels.toDate,
                                         name: TidsperiodeFormFields.tom,
-                                        validate: validateToDate,
+                                        validate: dateRangeValidation.validateToDate({
+                                            required: true,
+                                            min: minDate,
+                                            max: maxDate,
+                                            fromDate: ISOStringToDate(formik.values.fom),
+                                        }),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(TidsperiodeFormFields.fom);

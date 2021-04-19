@@ -4,21 +4,25 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import dateRangeValidation from '@navikt/sif-common-core/lib/validation/dateRangeValidation';
 import {
-    validateRequiredField,
-    validateYesOrNoIsAnswered,
-} from '@navikt/sif-common-core/lib/validation/fieldValidations';
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import {
+    dateRangeValidation,
+    validateRequiredValue,
+    validateYesOrNoIsAnswered,
+} from '@navikt/sif-common-formik/lib/validation';
+import { ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
+import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
 import { isFraværPeriode, mapFormValuesToFraværPeriode, mapFraværPeriodeToFormValues } from './fraværUtilities';
 import {
-    validateAll,
     validateErSammeÅr,
     validateFraOgMedForCollision,
     validateFraværPeriodeCollision,
@@ -121,7 +125,8 @@ const FraværPeriodeForm = ({
                     return (
                         <Form.Form
                             onCancel={onCancel}
-                            fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                            fieldErrorRenderer={getFieldErrorRenderer(intl, 'fraværForm')}
+                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fraværForm')}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box margin="l">{headerContent}</Box>}
                             <FormBlock>
@@ -145,20 +150,29 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: validateAll<string>([
-                                            ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                            ...(begrensTilSammeÅr
-                                                ? [(dateString) => validateErSammeÅr(dateString, tilOgMed)]
-                                                : []),
-                                            () => validateFraOgMedForCollision(fromDate, disabledDateRanges),
-                                            (dateString) =>
-                                                dateRangeValidation.validateFromDate(
-                                                    ISOStringToDate(dateString),
-                                                    minDate,
-                                                    maxDate,
-                                                    toDate
-                                                ),
-                                        ]),
+                                        validate: (value) => {
+                                            const validations: Array<() => ValidationResult<any>> = [];
+                                            if (helgedagerIkkeTillat) {
+                                                validations.push(() => validateNotHelgedag(value));
+                                            }
+                                            if (begrensTilSammeÅr) {
+                                                validations.push(() => validateErSammeÅr(value, tilOgMed));
+                                            }
+                                            validations.push(() =>
+                                                validateTilOgMedForCollision(fromDate, disabledDateRanges)
+                                            );
+                                            validations.push(() =>
+                                                dateRangeValidation.validateFromDate({
+                                                    required: true,
+                                                    min: minDate,
+                                                    max: maxDate,
+                                                    toDate,
+                                                })(value)
+                                            );
+                                            console.log(validateAll(validations));
+
+                                            return validateAll(validations);
+                                        },
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -180,20 +194,28 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: validateAll<string>([
-                                            ...(helgedagerIkkeTillat ? [validateNotHelgedag] : []),
-                                            ...(begrensTilSammeÅr
-                                                ? [(dateString) => validateErSammeÅr(fraOgMed, dateString)]
-                                                : []),
-                                            () => validateTilOgMedForCollision(toDate, disabledDateRanges),
-                                            (dateString) =>
-                                                dateRangeValidation.validateToDate(
-                                                    ISOStringToDate(dateString),
-                                                    minDate,
-                                                    maxDate,
-                                                    fromDate
-                                                ),
-                                        ]),
+                                        validate: (value) => {
+                                            const validations: Array<() => ValidationResult<any>> = [];
+                                            if (helgedagerIkkeTillat) {
+                                                validations.push(() => validateNotHelgedag(value));
+                                            }
+                                            if (begrensTilSammeÅr) {
+                                                validations.push(() => validateErSammeÅr(fraOgMed, value));
+                                            }
+                                            validations.push(() =>
+                                                validateFraOgMedForCollision(toDate, disabledDateRanges)
+                                            );
+                                            validations.push(() =>
+                                                dateRangeValidation.validateToDate({
+                                                    required: true,
+                                                    min: minDate,
+                                                    max: maxDate,
+                                                    fromDate,
+                                                })(value)
+                                            );
+
+                                            return validateAll(validations);
+                                        },
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -221,7 +243,7 @@ const FraværPeriodeForm = ({
                                     <Form.RadioPanelGroup
                                         legend={formLabels.årsak}
                                         name={FraværPeriodeFormFields.årsak}
-                                        validate={validateRequiredField}
+                                        validate={validateRequiredValue}
                                         radios={fraværÅrsakRadios}
                                         description={<ÅrsakInfo />}
                                     />

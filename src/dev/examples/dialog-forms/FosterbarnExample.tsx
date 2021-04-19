@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import {
+    getFieldErrorRenderer,
+    getSummaryFieldErrorRenderer,
+} from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import Panel from 'nav-frontend-paneler';
@@ -14,6 +16,7 @@ import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAnd
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import { validateList } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -42,10 +45,11 @@ const FosterbarnExample = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'fosterbarnExample')}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fosterbarnExample')}>
                                 <FosterbarnListAndDialog<FormField>
                                     name={FormField.fosterbarn}
-                                    validate={validateRequiredList}
+                                    validate={validateList({ required: true })}
                                 />
                             </TypedFormikForm>
                         );
