@@ -14,7 +14,7 @@ import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhe
 import VirksomhetInfoAndDialog from '../../../forms/virksomhet/VirksomhetInfoAndDialog';
 import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
 import PageIntro from '../../components/page-intro/PageIntro';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'virksomhet' = 'virksomhet',
@@ -75,7 +75,7 @@ const VirksomhetExample = () => {
                                 <VirksomhetInfoAndDialog<FormField>
                                     name={FormField.virksomhet}
                                     harFlereVirksomheter={harFlereVirksomheter}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: harFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
                                         deleteLabel: 'Fjern',

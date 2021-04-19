@@ -7,7 +7,11 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { validateDate, validateFødselsnummer, validateRequiredValue } from '@navikt/sif-common-formik/lib/validation';
+import {
+    getDateValidator,
+    getFødselsnummerValidator,
+    getRequiredFieldValidator,
+} from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
@@ -87,7 +91,7 @@ const AnnetBarnForm = ({
                             <Form.Input
                                 name={AnnetBarnFormFields.navn}
                                 label={formLabels.navn}
-                                validate={validateRequiredValue}
+                                validate={getRequiredFieldValidator()}
                                 placeholder={formLabels.placeholderNavn}
                             />
                         </FormBlock>
@@ -101,8 +105,8 @@ const AnnetBarnForm = ({
                                 }
                                 validate={(value) =>
                                     validateAll([
-                                        () => validateRequiredValue(value),
-                                        () => validateDate({ min: minDate, max: maxDate })(value),
+                                        () => getRequiredFieldValidator()(value),
+                                        () => getDateValidator({ min: minDate, max: maxDate })(value),
                                     ])
                                 }
                                 maxDate={maxDate}
@@ -117,8 +121,8 @@ const AnnetBarnForm = ({
                                 label={formLabels.fnr}
                                 validate={(value) =>
                                     validateAll([
-                                        () => validateRequiredValue(value),
-                                        () => validateFødselsnummer({ required: true })(value),
+                                        () => getRequiredFieldValidator()(value),
+                                        () => getFødselsnummerValidator({ required: true })(value),
                                     ])
                                 }
                                 inputMode="numeric"

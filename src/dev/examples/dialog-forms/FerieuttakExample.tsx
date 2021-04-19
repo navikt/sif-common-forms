@@ -9,7 +9,7 @@ import {
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -52,7 +52,7 @@ const FormikExample = () => {
                                     name={FormField.ferie}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til ferie',
                                         listTitle: 'Registrerte ferier',

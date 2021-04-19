@@ -8,7 +8,7 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { dateRangeValidation } from '@navikt/sif-common-formik/lib/validation';
+import { getDateRangeValidator } from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import ferieuttakUtils from './ferieuttakUtils';
@@ -89,7 +89,7 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                 fromInputProps={{
                                     label: formLabels.fromDate,
                                     name: FerieuttakFormFields.fom,
-                                    validate: dateRangeValidation.validateFromDate({
+                                    validate: getDateRangeValidator.validateFromDate({
                                         required: true,
                                         min: minDate,
                                         max: maxDate,
@@ -105,7 +105,7 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                     label: formLabels.toDate,
                                     name: FerieuttakFormFields.tom,
 
-                                    validate: dateRangeValidation.validateToDate({
+                                    validate: getDateRangeValidator.validateToDate({
                                         required: true,
                                         min: minDate,
                                         max: maxDate,

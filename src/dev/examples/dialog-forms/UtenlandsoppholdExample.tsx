@@ -17,7 +17,7 @@ import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/Utenl
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'utenlandsopphold' = 'utenlandsopphold',
@@ -57,7 +57,7 @@ const UtenlandsoppholdExample = () => {
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
                                     name={FormField.utenlandsopphold}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til utenlandsopphold',
                                         listTitle: 'Registrerte utenlandsopphold',

@@ -23,7 +23,7 @@ import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioder
 import { fraværDagToFraværDateRange, fraværPeriodeToDateRange } from '../../../forms/fravær/fraværUtilities';
 import { validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 
 enum FormField {
@@ -81,7 +81,7 @@ const FraværExample: React.FunctionComponent = () => {
                                         }
                                         validate={(value) =>
                                             validateAll([
-                                                () => validateList({ required: true })(value),
+                                                () => getListValidator({ required: true })(value),
                                                 () => validateNoCollisions(values.dager, values.perioder),
                                             ])
                                         }
@@ -100,7 +100,7 @@ const FraværExample: React.FunctionComponent = () => {
                                         maxDate={dateToday}
                                         validate={(value) =>
                                             validateAll([
-                                                () => validateList({ required: true })(value),
+                                                () => getListValidator({ required: true })(value),
                                                 () => validateNoCollisions(values.dager, values.perioder),
                                             ])
                                         }

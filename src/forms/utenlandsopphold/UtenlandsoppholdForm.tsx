@@ -11,10 +11,10 @@ import {
 import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
-    dateRangeValidation,
-    validateList,
-    validateRequiredValue,
-    validateYesOrNoIsAnswered,
+    getDateRangeValidator,
+    getListValidator,
+    getRequiredFieldValidator,
+    getYesOrNoValidator,
 } from '@navikt/sif-common-formik/lib/validation';
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -124,7 +124,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     dayPickerProps: {
                                         initialMonth: fomDate || minDate || dateToday,
                                     },
-                                    validate: dateRangeValidation.validateFromDate({
+                                    validate: getDateRangeValidator.validateFromDate({
                                         required: true,
                                         min: minDate,
                                         max: maxDate,
@@ -137,7 +137,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                     dayPickerProps: {
                                         initialMonth: tomDate || fomDate || dateToday,
                                     },
-                                    validate: dateRangeValidation.validateToDate({
+                                    validate: getDateRangeValidator.validateToDate({
                                         required: true,
                                         min: minDate,
                                         max: maxDate,
@@ -151,7 +151,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}
                                     label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                 />
                             </FormBlock>
                         )}
@@ -164,7 +164,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         legend={intlHelper(intl, 'utenlandsopphold.form.erBarnetInnlagt.spm', {
                                             land: getCountryName(landkode, intl.locale),
                                         })}
-                                        validate={validateYesOrNoIsAnswered}
+                                        validate={getYesOrNoValidator()}
                                     />
                                 </FormBlock>
                                 {includeInnlagtPerioderQuestion && (
@@ -173,7 +173,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                             name={UtenlandsoppholdFormFields.barnInnlagtPerioder}
                                             minDate={ISOStringToDate(fom)}
                                             maxDate={ISOStringToDate(tom)}
-                                            validate={validateList({ required: true })}
+                                            validate={getListValidator({ required: true })}
                                             formTitle={intlHelper(
                                                 intl,
                                                 'utenlandsopphold.form.perioderBarnetErInnlag.formTitle'
@@ -203,7 +203,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                                     land: getCountryName(landkode, intl.locale),
                                                 })}
                                                 name={UtenlandsoppholdFormFields.årsak}
-                                                validate={validateRequiredValue}
+                                                validate={getRequiredFieldValidator()}
                                                 radios={[
                                                     {
                                                         value: UtenlandsoppholdÅrsak.INNLAGT_DEKKET_NORGE,

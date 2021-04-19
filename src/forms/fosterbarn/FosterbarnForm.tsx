@@ -8,7 +8,7 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { validateFødselsnummer, validateRequiredValue } from '@navikt/sif-common-formik/lib/validation';
+import { getFødselsnummerValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
 import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
@@ -76,7 +76,7 @@ const FosterbarnForm = ({
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={validateFødselsnummer({ required: true })}
+                                validate={getFødselsnummerValidator({ required: true })}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}
@@ -88,14 +88,14 @@ const FosterbarnForm = ({
                                     <Form.Input
                                         name={FosterbarnFormField.fornavn}
                                         label={txt.form_fornavn_label}
-                                        validate={validateRequiredValue}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.Input
                                         name={FosterbarnFormField.etternavn}
                                         label={txt.form_etternavn_label}
-                                        validate={validateRequiredValue}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                             </Tiles>

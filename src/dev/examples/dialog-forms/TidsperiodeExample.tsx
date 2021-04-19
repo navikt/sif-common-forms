@@ -18,7 +18,7 @@ import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeList
 import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'tidsperiode' = 'tidsperiode',
@@ -53,7 +53,7 @@ const TidsperiodeExample = () => {
                                     name={FormField.tidsperiode}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til periode',
                                         listTitle: 'Registrerte periode',

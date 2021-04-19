@@ -16,7 +16,7 @@ import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAnd
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { validateList } from '@navikt/sif-common-formik/lib/validation';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -49,7 +49,7 @@ const FosterbarnExample = () => {
                                 summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fosterbarnExample')}>
                                 <FosterbarnListAndDialog<FormField>
                                     name={FormField.fosterbarn}
-                                    validate={validateList({ required: true })}
+                                    validate={getListValidator({ required: true })}
                                 />
                             </TypedFormikForm>
                         );

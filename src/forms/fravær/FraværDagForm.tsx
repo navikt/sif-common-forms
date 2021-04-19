@@ -14,9 +14,9 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import {
-    validateDate,
-    validateRequiredValue,
-    validateYesOrNoIsAnswered,
+    getRequiredFieldValidator,
+    getYesOrNoValidator,
+    getDateValidator,
 } from '@navikt/sif-common-formik/lib/validation';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -130,15 +130,15 @@ const FraværDagFormView = ({
                         validate: helgedagerIkkeTillatt
                             ? (value) =>
                                   validateAll([
-                                      () => validateRequiredValue(value),
-                                      () => validateDate({ min: minDate, max: maxDate })(value),
+                                      () => getRequiredFieldValidator()(value),
+                                      () => getDateValidator({ min: minDate, max: maxDate })(value),
                                       () => validateNotHelgedag(value),
                                       () => validateFraværDagCollision(valgtDato, disabledDateRanges),
                                   ])
                             : (value) =>
                                   validateAll([
-                                      () => validateRequiredValue(value),
-                                      () => validateDate({ min: minDate, max: maxDate }),
+                                      () => getRequiredFieldValidator()(value),
+                                      () => getDateValidator({ min: minDate, max: maxDate }),
                                   ]),
                         onChange: () => {
                             setTimeout(() => {
@@ -160,7 +160,7 @@ const FraværDagFormView = ({
                             <FormBlock>
                                 <FraværTimerSelect
                                     name={FraværDagFormFields.timerArbeidsdag}
-                                    validate={validateRequiredValue}
+                                    validate={getRequiredFieldValidator()}
                                     label={formLabels.antallArbeidstimer}
                                     maksTid={maksArbeidstidPerDag}
                                 />
@@ -170,7 +170,7 @@ const FraværDagFormView = ({
                                     name={FraværDagFormFields.timerFravær}
                                     validate={(value) =>
                                         validateAll([
-                                            () => validateRequiredValue(value),
+                                            () => getRequiredFieldValidator()(value),
                                             () => validateLessOrEqualTo(toMaybeNumber(values.timerArbeidsdag))(value),
                                         ])
                                     }
@@ -182,7 +182,7 @@ const FraværDagFormView = ({
                                 <FraværDagForm.YesOrNoQuestion
                                     legend={formLabels.hjemmePgaKorona}
                                     name={FraværDagFormFields.hjemmePgaKorona}
-                                    validate={validateYesOrNoIsAnswered}
+                                    validate={getYesOrNoValidator()}
                                     description={
                                         <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
                                             <FormattedHtmlMessage id="info.smittevern.info.html" />
@@ -195,7 +195,7 @@ const FraværDagFormView = ({
                                     <FraværDagForm.RadioPanelGroup
                                         legend={formLabels.årsak}
                                         name={FraværDagFormFields.årsak}
-                                        validate={validateRequiredValue}
+                                        validate={getRequiredFieldValidator()}
                                         radios={fraværÅrsakRadios}
                                         description={<ÅrsakInfo />}
                                     />

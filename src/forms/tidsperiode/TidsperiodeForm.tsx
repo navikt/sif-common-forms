@@ -7,7 +7,7 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { dateRangeValidation } from '@navikt/sif-common-formik/lib/validation';
+import { getDateRangeValidator } from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
@@ -96,7 +96,7 @@ const TidsperiodeForm = ({
                                     fromInputProps={{
                                         label: inlineLabels.fromDate,
                                         name: TidsperiodeFormFields.fom,
-                                        validate: dateRangeValidation.validateFromDate({
+                                        validate: getDateRangeValidator.validateFromDate({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,
@@ -111,7 +111,7 @@ const TidsperiodeForm = ({
                                     toInputProps={{
                                         label: inlineLabels.toDate,
                                         name: TidsperiodeFormFields.tom,
-                                        validate: dateRangeValidation.validateToDate({
+                                        validate: getDateRangeValidator.validateToDate({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,

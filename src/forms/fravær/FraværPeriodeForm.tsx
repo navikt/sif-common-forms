@@ -12,9 +12,9 @@ import {
 } from '@navikt/sif-common-core/lib/validation/renderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
-    dateRangeValidation,
-    validateRequiredValue,
-    validateYesOrNoIsAnswered,
+    getDateRangeValidator,
+    getRequiredFieldValidator,
+    getYesOrNoValidator,
 } from '@navikt/sif-common-formik/lib/validation';
 import { ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
@@ -162,7 +162,7 @@ const FraværPeriodeForm = ({
                                                 validateTilOgMedForCollision(fromDate, disabledDateRanges)
                                             );
                                             validations.push(() =>
-                                                dateRangeValidation.validateFromDate({
+                                                getDateRangeValidator.validateFromDate({
                                                     required: true,
                                                     min: minDate,
                                                     max: maxDate,
@@ -206,7 +206,7 @@ const FraværPeriodeForm = ({
                                                 validateFraOgMedForCollision(toDate, disabledDateRanges)
                                             );
                                             validations.push(() =>
-                                                dateRangeValidation.validateToDate({
+                                                getDateRangeValidator.validateToDate({
                                                     required: true,
                                                     min: minDate,
                                                     max: maxDate,
@@ -229,7 +229,7 @@ const FraværPeriodeForm = ({
                                 <Form.YesOrNoQuestion
                                     legend={formLabels.hjemmePgaKorona}
                                     name={FraværPeriodeFormFields.hjemmePgaKorona}
-                                    validate={validateYesOrNoIsAnswered}
+                                    validate={getYesOrNoValidator()}
                                     description={
                                         <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
                                             <FormattedHtmlMessage id="info.smittevern.info.html" />
@@ -243,7 +243,7 @@ const FraværPeriodeForm = ({
                                     <Form.RadioPanelGroup
                                         legend={formLabels.årsak}
                                         name={FraværPeriodeFormFields.årsak}
-                                        validate={validateRequiredValue}
+                                        validate={getRequiredFieldValidator()}
                                         radios={fraværÅrsakRadios}
                                         description={<ÅrsakInfo />}
                                     />
