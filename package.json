@@ -40,8 +40,8 @@
     ],
     "dependencies": {},
     "peerDependencies": {
-        "@navikt/sif-common-core": "^8.x",
-        "@navikt/sif-common-formik": "^15.5.1"
+        "@navikt/sif-common-core": "^9.0.2",
+        "@navikt/sif-common-formik": "^17.0.2"
     },
     "devDependencies": {
         "@craco/craco": "^6.1.1",
@@ -50,7 +50,7 @@
         "@navikt/sif-common-formik": "^17.0.2",
         "@testing-library/jest-dom": "^5.11.10",
         "@testing-library/react": "^11.2.6",
-        "@testing-library/user-event": "^13.1.4",
+        "@testing-library/user-event": "^13.1.5",
         "@types/jest": "^26.0.22",
         "@types/node": "^14.14.41",
         "@types/react": "^17.0.3",
@@ -67,9 +67,9 @@
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.6",
         "eslint": "^7.24.0",
-        "eslint-config-prettier": "8.1.0",
+        "eslint-config-prettier": "8.2.0",
         "eslint-plugin-jsx-a11y": "6.4.1",
-        "eslint-plugin-prettier": "3.3.1",
+        "eslint-plugin-prettier": "3.4.0",
         "eslint-plugin-react": "7.23.2",
         "formik": "^2.2.6",
         "gh-pages": "^3.1.0",
