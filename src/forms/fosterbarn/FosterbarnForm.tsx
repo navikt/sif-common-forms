@@ -23,6 +23,7 @@ interface Props {
     fosterbarn?: Partial<Fosterbarn>;
     onSubmit: (values: Fosterbarn) => void;
     onCancel: () => void;
+    disallowedFødselsnumre?: string[];
     includeName?: boolean;
     text?: FosterbarnFormText;
 }
@@ -39,6 +40,7 @@ const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
 
 const FosterbarnForm = ({
     fosterbarn: initialValues = { fornavn: '', etternavn: '', fødselsnummer: '' },
+    disallowedFødselsnumre,
     text,
     includeName,
     onSubmit,
@@ -76,7 +78,10 @@ const FosterbarnForm = ({
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={getFødselsnummerValidator({ required: true })}
+                                validate={getFødselsnummerValidator({
+                                    required: true,
+                                    disallowedValues: disallowedFødselsnumre,
+                                })}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}

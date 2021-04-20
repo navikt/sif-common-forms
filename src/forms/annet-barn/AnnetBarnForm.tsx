@@ -11,9 +11,6 @@ import {
     getDateValidator,
     getFødselsnummerValidator,
     getRequiredFieldValidator,
-    ValidateDateError,
-    ValidateFødselsnummerError,
-    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -37,6 +34,7 @@ interface Props {
     labels?: Partial<AnnetBarnFormLabels>;
     minDate: Date;
     maxDate: Date;
+    disallowedFødselsnumre?: string[];
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
 }
@@ -49,33 +47,12 @@ enum AnnetBarnFormFields {
 
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues>();
 
-export interface AnnetBarnFieldValidationErrors {
-    [AnnetBarnFormFields.navn]: {
-        [ValidateRequiredFieldError.noValue]: string;
-    };
-    [AnnetBarnFormFields.fnr]: {
-        [ValidateRequiredFieldError.noValue]: string;
-        [ValidateFødselsnummerError.invalidFødselsnummer]: string;
-        [ValidateFødselsnummerError.disallowedFødselsnummer]: string;
-    };
-    [AnnetBarnFormFields.fødselsdato]: {
-        [ValidateRequiredFieldError.noValue]: string;
-        [ValidateDateError.invalidDateFormat]: string;
-        [ValidateDateError.dateAfterMax]: string;
-    };
-}
-
-// const nbMessages: AnnetBarnFieldValidationErrors = {
-//     navn: {
-//         noValue: 'Ingen verdi',
-//     },
-// };
-
 const AnnetBarnForm = ({
     annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
     labels,
     minDate,
     maxDate,
+    disallowedFødselsnumre,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -147,7 +124,11 @@ const AnnetBarnForm = ({
                                 validate={(value) =>
                                     validateAll([
                                         () => getRequiredFieldValidator()(value),
-                                        () => getFødselsnummerValidator({ required: true })(value),
+                                        () =>
+                                            getFødselsnummerValidator({
+                                                required: true,
+                                                disallowedValues: disallowedFødselsnumre,
+                                            })(value),
                                     ])
                                 }
                                 inputMode="numeric"

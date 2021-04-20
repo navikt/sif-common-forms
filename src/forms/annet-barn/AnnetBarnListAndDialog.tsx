@@ -13,6 +13,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps {
     labels: ModalFormAndListLabels;
     minDate: Date;
     maxDate: Date;
+    disallowedFødselsnumre?: string[];
     aldersGrenseText?: string;
     placeholderFnr?: string;
     placeholderNavn?: string;
@@ -24,6 +25,7 @@ function AnnetBarnListAndDialog<FieldNames>({
     labels,
     minDate,
     maxDate,
+    disallowedFødselsnumre,
     aldersGrenseText,
     placeholderFnr,
     placeholderNavn,
@@ -42,6 +44,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                         onCancel={onCancel}
                         minDate={minDate}
                         maxDate={maxDate}
+                        disallowedFødselsnumre={disallowedFødselsnumre}
                         labels={{
                             aldersGrenseText: aldersGrenseText,
                             placeholderFnr: placeholderFnr,
