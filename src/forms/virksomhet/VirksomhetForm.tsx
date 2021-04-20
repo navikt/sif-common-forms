@@ -10,7 +10,7 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     getListValidator,

@@ -6,7 +6,7 @@ import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 
 import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';

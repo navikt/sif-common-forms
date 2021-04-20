@@ -3,11 +3,11 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
-import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';

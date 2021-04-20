@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';

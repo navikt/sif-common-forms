@@ -9,7 +9,7 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';

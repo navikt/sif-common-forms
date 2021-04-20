@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';

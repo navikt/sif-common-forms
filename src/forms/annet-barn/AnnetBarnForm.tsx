@@ -5,12 +5,15 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-core/lib/validation/renderUtils';
+} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
     getRequiredFieldValidator,
+    ValidateDateError,
+    ValidateFødselsnummerError,
+    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -45,6 +48,28 @@ enum AnnetBarnFormFields {
 }
 
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues>();
+
+export interface AnnetBarnFieldValidationErrors {
+    [AnnetBarnFormFields.navn]: {
+        [ValidateRequiredFieldError.noValue]: string;
+    };
+    [AnnetBarnFormFields.fnr]: {
+        [ValidateRequiredFieldError.noValue]: string;
+        [ValidateFødselsnummerError.invalidFødselsnummer]: string;
+        [ValidateFødselsnummerError.disallowedFødselsnummer]: string;
+    };
+    [AnnetBarnFormFields.fødselsdato]: {
+        [ValidateRequiredFieldError.noValue]: string;
+        [ValidateDateError.invalidDateFormat]: string;
+        [ValidateDateError.dateAfterMax]: string;
+    };
+}
+
+// const nbMessages: AnnetBarnFieldValidationErrors = {
+//     navn: {
+//         noValue: 'Ingen verdi',
+//     },
+// };
 
 const AnnetBarnForm = ({
     annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
