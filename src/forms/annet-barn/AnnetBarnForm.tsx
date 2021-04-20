@@ -2,11 +2,11 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
@@ -29,6 +29,12 @@ export interface AnnetBarnFormLabels {
     aldersGrenseText?: string;
 }
 
+enum AnnetBarnFormFields {
+    fnr = 'fnr',
+    fødselsdato = 'fødselsdato',
+    navn = 'navn',
+}
+
 interface Props {
     annetBarn?: Partial<AnnetBarn>;
     labels?: Partial<AnnetBarnFormLabels>;
@@ -37,12 +43,6 @@ interface Props {
     disallowedFødselsnumre?: string[];
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
-}
-
-enum AnnetBarnFormFields {
-    fnr = 'fnr',
-    fødselsdato = 'fødselsdato',
-    navn = 'navn',
 }
 
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues>();
