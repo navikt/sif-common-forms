@@ -9,7 +9,7 @@ import FraværPeriodeForm from './FraværPeriodeForm';
 import FraværPerioderList from './FraværPerioderList';
 import { FraværPeriode } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;

@@ -18,7 +18,7 @@ import {
     ValidateDateError,
     ValidateDateInRangeError,
     ValidateRequiredFieldError,
-    validateYesOrNoIsAnsweredError,
+    ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
@@ -86,7 +86,7 @@ export const FraværPeriodeFormErrorKeys = {
             FraværFieldValidationErrors.til_dato_kolliderer_med_annet_fravær,
         ],
         [FraværPeriodeFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
-        [FraværPeriodeFormFields.hjemmePgaKorona]: Object.keys(validateYesOrNoIsAnsweredError),
+        [FraværPeriodeFormFields.hjemmePgaKorona]: Object.keys(ValidateYesOrNoError),
         ['fraOgMed_tilOgMed']: [FraværFieldValidationErrors.dager_overlapper_med_andre_dager],
     },
 };

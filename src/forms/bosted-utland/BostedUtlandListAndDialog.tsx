@@ -9,7 +9,7 @@ import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;

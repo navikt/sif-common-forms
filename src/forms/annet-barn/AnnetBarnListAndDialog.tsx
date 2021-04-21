@@ -8,7 +8,7 @@ import AnnetBarnForm from './AnnetBarnForm';
 import AnnetBarnList from './AnnetBarnList';
 import { AnnetBarn } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     labels: ModalFormAndListLabels;
     minDate: Date;

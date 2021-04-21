@@ -41,13 +41,13 @@
     "dependencies": {},
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.1.0",
-        "@navikt/sif-common-formik": "^17.1.2"
+        "@navikt/sif-common-formik": "^17.2.1"
     },
     "devDependencies": {
         "@craco/craco": "^6.1.1",
         "@formatjs/intl-pluralrules": "^4.0.14",
         "@navikt/sif-common-core": "^9.1.0",
-        "@navikt/sif-common-formik": "^17.1.2",
+        "@navikt/sif-common-formik": "^17.2.1",
         "@testing-library/jest-dom": "^5.11.10",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^13.1.5",
@@ -71,6 +71,7 @@
         "eslint-plugin-jsx-a11y": "6.4.1",
         "eslint-plugin-prettier": "3.4.0",
         "eslint-plugin-react": "7.23.2",
+        "flat": "^5.0.2",
         "formik": "^2.2.6",
         "gh-pages": "^3.1.0",
         "history": "^5.0.0",

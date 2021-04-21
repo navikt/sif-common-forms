@@ -9,7 +9,7 @@ import FerieuttakForm from './FerieuttakForm';
 import FerieuttakList from './FerieuttakList';
 import { Ferieuttak } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;

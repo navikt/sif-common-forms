@@ -19,7 +19,6 @@ import {
     getRequiredFieldValidator,
     getStringValidator,
     getYesOrNoValidator,
-    ValidateListError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
@@ -40,10 +39,6 @@ interface Props {
 }
 
 const MAKS_INNTEKT = 999999999;
-
-export const VirksomhetFormErrorKeys = {
-    [VirksomhetFormField.næringstyper]: Object.keys(ValidateListError),
-};
 
 export const VirksomhetFormName = 'virksomhetForm';
 

@@ -2,10 +2,6 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
@@ -17,6 +13,7 @@ import {
 } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
+import { getFormsFieldErrorRenderer } from '../utils';
 import annetBarnUtils from './annetBarnUtils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 
@@ -38,21 +35,22 @@ enum AnnetBarnFormFields {
     navn = 'navn',
 }
 
-export const AnnetBarnFormErrorKeys = {
-    fields: {
-        [AnnetBarnFormFields.navn]: [...Object.keys(ValidateRequiredFieldError)],
-        [AnnetBarnFormFields.fødselsdato]: [
-            ...Object.keys(ValidateRequiredFieldError),
-            ...Object.keys(ValidateDateError),
-        ],
-        [AnnetBarnFormFields.fnr]: [
-            ...Object.keys(ValidateRequiredFieldError),
-            ...Object.keys(ValidateFødselsnummerError),
-        ],
+export const AnnetBarnFormErrors = {
+    [AnnetBarnFormFields.navn]: { [ValidateRequiredFieldError.noValue]: 'annetBarn.navn.noValue' },
+    [AnnetBarnFormFields.fødselsdato]: {
+        [ValidateRequiredFieldError.noValue]: 'annetBarn.fødselsdato.noValue',
+        [ValidateDateError.dateBeforeMin]: 'annetBarn.fødselsdato.dateBeforeMin',
+        [ValidateDateError.dateAfterMax]: 'annetBarn.fødselsdato.dateAfterMax',
+        [ValidateDateError.invalidDateFormat]: 'annetBarn.fødselsdato.invalidFormat',
+    },
+    [AnnetBarnFormFields.fnr]: {
+        [ValidateRequiredFieldError.noValue]: 'annetBarn.fnr.noValue',
+        [ValidateFødselsnummerError.invalidFødselsnummer]: 'annetBarn.fnr.invalidFødselsnummer',
+        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'annetBarn.fnr.fødselsnummerNot11Chars',
+        [ValidateFødselsnummerError.fødselsnummerChecksumError]: 'annetBarn.fnr.fødselsnummerChecksumError',
+        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'annetBarn.fnr.disallowedFødselsnummer',
     },
 };
-
-export const AnnetBarnFormName = 'annetBarnForm';
 
 interface Props {
     annetBarn?: Partial<AnnetBarn>;
@@ -98,67 +96,91 @@ const AnnetBarnForm = ({
     const formLabels: AnnetBarnFormLabels = { ...defaultLabels, ...labels };
 
     return (
-        <>
-            <Form.FormikWrapper
-                initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
-                onSubmit={onFormikSubmit}
-                renderForm={() => (
-                    <Form.Form
-                        onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, AnnetBarnFormName)}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, AnnetBarnFormName)}>
-                        <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
-                        <FormBlock>
-                            <Form.Input
-                                name={AnnetBarnFormFields.navn}
-                                label={formLabels.navn}
-                                validate={getRequiredFieldValidator()}
-                                placeholder={formLabels.placeholderNavn}
-                            />
-                        </FormBlock>
-                        <FormBlock>
-                            <Form.DatePicker
-                                name={AnnetBarnFormFields.fødselsdato}
-                                label={
-                                    formLabels.aldersGrenseText
-                                        ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
-                                        : `${formLabels.fødselsdato}`
-                                }
-                                validate={(value) =>
-                                    validateAll([
-                                        () => getRequiredFieldValidator()(value),
-                                        () => getDateValidator({ min: minDate, max: maxDate })(value),
-                                    ])
-                                }
-                                maxDate={maxDate}
-                                minDate={minDate}
-                                showYearSelector={true}
-                            />
-                        </FormBlock>
+        <Form.FormikWrapper
+            initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
+            onSubmit={onFormikSubmit}
+            renderForm={() => (
+                <Form.Form onCancel={onCancel} fieldErrorRenderer={getFormsFieldErrorRenderer(intl)}>
+                    <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
+                    <FormBlock>
+                        <Form.Input
+                            name={AnnetBarnFormFields.navn}
+                            label={formLabels.navn}
+                            validate={getRequiredFieldValidator({
+                                noValue: AnnetBarnFormErrors.fnr.noValue,
+                            })}
+                            placeholder={formLabels.placeholderNavn}
+                        />
+                    </FormBlock>
+                    <FormBlock>
+                        <Form.DatePicker
+                            name={AnnetBarnFormFields.fødselsdato}
+                            label={
+                                formLabels.aldersGrenseText
+                                    ? `${formLabels.fødselsdato} ${formLabels.aldersGrenseText}`
+                                    : `${formLabels.fødselsdato}`
+                            }
+                            validate={(value) =>
+                                validateAll([
+                                    () =>
+                                        getRequiredFieldValidator({
+                                            noValue: AnnetBarnFormErrors.fødselsdato.noValue,
+                                        })(value),
+                                    () =>
+                                        getDateValidator(
+                                            { min: minDate, max: maxDate },
+                                            {
+                                                dateAfterMax: AnnetBarnFormErrors.fødselsdato.dateAfterMax,
+                                                dateBeforeMin: AnnetBarnFormErrors.fødselsdato.dateBeforeMin,
+                                                invalidDateFormat: AnnetBarnFormErrors.fødselsdato.invalidDateFormat,
+                                                noValue: AnnetBarnFormErrors.fødselsdato.noValue,
+                                            }
+                                        )(value),
+                                ])
+                            }
+                            maxDate={maxDate}
+                            minDate={minDate}
+                            showYearSelector={true}
+                        />
+                    </FormBlock>
 
-                        <FormBlock>
-                            <Form.Input
-                                name={AnnetBarnFormFields.fnr}
-                                label={formLabels.fnr}
-                                validate={(value) =>
-                                    validateAll([
-                                        () => getRequiredFieldValidator()(value),
-                                        () =>
-                                            getFødselsnummerValidator({
+                    <FormBlock>
+                        <Form.Input
+                            name={AnnetBarnFormFields.fnr}
+                            label={formLabels.fnr}
+                            validate={(value) =>
+                                validateAll([
+                                    () =>
+                                        getRequiredFieldValidator({
+                                            noValue: AnnetBarnFormErrors.fnr.noValue,
+                                        })(value),
+                                    () =>
+                                        getFødselsnummerValidator(
+                                            {
                                                 required: true,
                                                 disallowedValues: disallowedFødselsnumre,
-                                            })(value),
-                                    ])
-                                }
-                                inputMode="numeric"
-                                maxLength={11}
-                                placeholder={formLabels.placeholderFnr}
-                            />
-                        </FormBlock>
-                    </Form.Form>
-                )}
-            />
-        </>
+                                            },
+                                            {
+                                                noValue: AnnetBarnFormErrors.fnr.noValue,
+                                                invalidFødselsnummer: AnnetBarnFormErrors.fnr.invalidFødselsnummer,
+                                                disallowedFødselsnummer:
+                                                    AnnetBarnFormErrors.fnr.disallowedFødselsnummer,
+                                                fødselsnummerChecksumError:
+                                                    AnnetBarnFormErrors.fnr.fødselsnummerChecksumError,
+                                                fødselsnummerNot11Chars:
+                                                    AnnetBarnFormErrors.fnr.fødselsnummerNot11Chars,
+                                            }
+                                        )(value),
+                                ])
+                            }
+                            inputMode="numeric"
+                            maxLength={11}
+                            placeholder={formLabels.placeholderFnr}
+                        />
+                    </FormBlock>
+                </Form.Form>
+            )}
+        />
     );
 };
 

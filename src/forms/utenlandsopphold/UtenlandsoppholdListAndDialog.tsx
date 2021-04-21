@@ -9,7 +9,7 @@ import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import UtenlandsoppholdListe from './UtenlandsoppholdList';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;

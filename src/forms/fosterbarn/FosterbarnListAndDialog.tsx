@@ -13,7 +13,7 @@ export interface FosterbarnListAndDialogText {
     modal_tittel: string;
 }
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     texts?: FosterbarnListAndDialogText;
     includeName?: boolean;

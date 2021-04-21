@@ -3,7 +3,7 @@ import { TypedFormInputValidationProps } from '@navikt/sif-common-formik/lib';
 import { FraværDagForm, FraværDagFormFields } from './FraværDagForm';
 import { timeText } from './fraværUtilities';
 
-interface Props extends TypedFormInputValidationProps {
+interface Props extends TypedFormInputValidationProps<any> {
     name: FraværDagFormFields;
     label?: string;
     maksTid?: number;

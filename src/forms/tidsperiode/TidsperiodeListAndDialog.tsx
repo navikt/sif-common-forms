@@ -9,7 +9,7 @@ import TidsperiodeForm from './TidsperiodeForm';
 import TidsperiodeList from './TidsperiodeList';
 import { DateTidsperiode } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     formTitle?: string;
     minDate?: Date;

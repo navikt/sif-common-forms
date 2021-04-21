@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flatten from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import AnnetBarnForm, { AnnetBarnFormErrorKeys, AnnetBarnFormName } from '../../../forms/annet-barn/AnnetBarnForm';
+import AnnetBarnForm, { AnnetBarnFormErrors } from '../../../forms/annet-barn/AnnetBarnForm';
 import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import { AnnetBarn } from '../../../forms/annet-barn/types';
@@ -32,7 +28,7 @@ const initialValues: FormValues = { annetBarn: [] };
 const AnnetBarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<AnnetBarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
-    const intl = useIntl();
+    // const intl = useIntl();
     return (
         <>
             <Box padBottom="l">
@@ -44,11 +40,7 @@ const AnnetBarnExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
-                                includeButtons={true}
-                                submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getFieldErrorRenderer(intl, AnnetBarnFormName)}
-                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, AnnetBarnFormName)}>
+                            <TypedFormikForm<FormValues> includeButtons={true} submitButtonLabel="Valider skjema">
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
                                     validate={getListValidator({ required: true })}
@@ -69,7 +61,7 @@ const AnnetBarnExample = () => {
             </Panel>
             <Box margin="xxl" padBottom="l">
                 <FormValidationErrorMessages
-                    validationErrors={AnnetBarnFormErrorKeys}
+                    validationErrorIntlKeys={flatten(AnnetBarnFormErrors)}
                     formName={'annetBarn'}
                     intlMessages={annetBarnMessages}
                 />

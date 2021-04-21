@@ -19,7 +19,7 @@ import {
     getDateValidator,
     ValidateRequiredFieldError,
     ValidateDateError,
-    validateYesOrNoIsAnsweredError,
+    ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -81,7 +81,7 @@ export const FraværDagFormErrorKeys = {
             ...Object.keys(ValidateRequiredFieldError),
             FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer,
         ],
-        [FraværDagFormFields.hjemmePgaKorona]: Object.keys(validateYesOrNoIsAnsweredError),
+        [FraværDagFormFields.hjemmePgaKorona]: Object.keys(ValidateYesOrNoError),
         [FraværDagFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
     },
 };

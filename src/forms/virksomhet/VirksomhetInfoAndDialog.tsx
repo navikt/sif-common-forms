@@ -10,7 +10,7 @@ import { Virksomhet } from './types';
 import VirksomhetForm from './VirksomhetForm';
 import VirksomhetSummary from './VirksomhetSummary';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     skipOrgNumValidation?: boolean;

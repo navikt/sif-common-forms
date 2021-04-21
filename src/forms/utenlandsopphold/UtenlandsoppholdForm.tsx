@@ -19,7 +19,7 @@ import {
     ValidateDateInRangeError,
     ValidateListError,
     ValidateRequiredFieldError,
-    validateYesOrNoIsAnsweredError,
+    ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -58,7 +58,7 @@ export const UtlandsoppholdFormErrorKeys = {
         ],
         [UtenlandsoppholdFormFields.landkode]: Object.keys(ValidateRequiredFieldError),
         [UtenlandsoppholdFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
-        [UtenlandsoppholdFormFields.erBarnetInnlagt]: Object.keys(validateYesOrNoIsAnsweredError),
+        [UtenlandsoppholdFormFields.erBarnetInnlagt]: Object.keys(ValidateYesOrNoError),
         [UtenlandsoppholdFormFields.barnInnlagtPerioder]: [
             ValidateListError.listIsEmpty,
             ValidateListError.listHasTooFewItems,

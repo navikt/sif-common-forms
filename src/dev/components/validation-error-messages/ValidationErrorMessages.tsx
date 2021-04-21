@@ -9,27 +9,42 @@ export type ValidationErrorMessagesDocType = {
 
 interface Props {
     formName: string;
-    validationErrors: ValidationErrorMessagesDocType;
+    validationErrors?: ValidationErrorMessagesDocType;
+    validationErrorIntlKeys?: { [key: string]: string };
     intlMessages: MessageFileFormat;
 }
 
-const FormValidationErrorMessages: React.FunctionComponent<Props> = ({ validationErrors, formName, intlMessages }) => {
+const FormValidationErrorMessages: React.FunctionComponent<Props> = ({
+    validationErrors,
+    formName,
+    intlMessages,
+    validationErrorIntlKeys,
+}) => {
     const validationeMessages: MessageFileFormat = {
         nb: {},
         nn: {},
     };
 
-    const fields = validationErrors.fields;
+    if (validationErrors) {
+        const fields = validationErrors.fields;
 
-    Object.keys(fields).forEach((field) =>
-        Object.keys(fields[field]).forEach((errorKey) => {
-            const error = fields[field][errorKey];
-            const intlKey = createFieldErrorIntlKey(error, field, formName);
+        Object.keys(fields).forEach((field) =>
+            Object.keys(fields[field]).forEach((errorKey) => {
+                const error = fields[field][errorKey];
+                const intlKey = createFieldErrorIntlKey(error, field, formName);
+                validationeMessages['nb'][intlKey] = intlMessages['nb'][intlKey];
+                validationeMessages['nn'][intlKey] = intlMessages['nn'][intlKey];
+            })
+        );
+    }
+
+    if (validationErrorIntlKeys) {
+        Object.keys(validationErrorIntlKeys).forEach((key) => {
+            const intlKey = validationErrorIntlKeys[key];
             validationeMessages['nb'][intlKey] = intlMessages['nb'][intlKey];
             validationeMessages['nn'][intlKey] = intlMessages['nn'][intlKey];
-        })
-    );
-
+        });
+    }
     return (
         <MessagesPreview
             title="Feilmeldinger"
