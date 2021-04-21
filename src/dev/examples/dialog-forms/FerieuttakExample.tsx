@@ -13,11 +13,12 @@ import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import FerieuttakForm from '../../../forms/ferieuttak/FerieuttakForm';
+import FerieuttakForm, { FerieuttakFormErrorKeys, FerieuttakFormName } from '../../../forms/ferieuttak/FerieuttakForm';
 import FerieuttakListAndDialog from '../../../forms/ferieuttak/FerieuttakListAndDialog';
 import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'ferie' = 'ferie',
@@ -66,6 +67,14 @@ const FormikExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrors={FerieuttakFormErrorKeys}
+                    formName={FerieuttakFormName}
+                    intlMessages={ferieuttakMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

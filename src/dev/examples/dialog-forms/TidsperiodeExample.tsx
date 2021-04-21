@@ -15,10 +15,14 @@ import { Undertittel } from 'nav-frontend-typografi';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import { DateTidsperiode } from '../../../forms/tidsperiode';
 import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeListAndDialog';
-import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
+import TidsperiodeForm, {
+    TidsperiodeFormErrorKeys,
+    TidsperiodeFormName,
+} from '../../../forms/tidsperiode/TidsperiodeForm';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'tidsperiode' = 'tidsperiode',
@@ -66,6 +70,14 @@ const TidsperiodeExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrors={TidsperiodeFormErrorKeys}
+                    formName={TidsperiodeFormName}
+                    intlMessages={tidsperiodeMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

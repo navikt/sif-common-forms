@@ -7,7 +7,11 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { getDateRangeValidator } from '@navikt/sif-common-formik/lib/validation';
+import {
+    getDateRangeValidator,
+    ValidateDateError,
+    ValidateDateInRangeError,
+} from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
@@ -36,6 +40,21 @@ enum TidsperiodeFormFields {
     tom = 'tom',
     fom = 'fom',
 }
+
+export const TidsperiodeFormErrorKeys = {
+    fields: {
+        [TidsperiodeFormFields.fom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.fromDateIsAfterToDate,
+        ],
+        [TidsperiodeFormFields.tom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.toDateIsBeforeFromDate,
+        ],
+    },
+};
+
+export const TidsperiodeFormName = 'tidsperiodeForm';
 
 const Form = getTypedFormComponents<TidsperiodeFormFields, DateTidsperiodeFormValues>();
 
@@ -83,8 +102,8 @@ const TidsperiodeForm = ({
                     return (
                         <Form.Form
                             onCancel={onCancel}
-                            fieldErrorRenderer={getFieldErrorRenderer(intl, 'tidsperiodeForm')}
-                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'tidsperiodeForm')}>
+                            fieldErrorRenderer={getFieldErrorRenderer(intl, TidsperiodeFormName)}
+                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, TidsperiodeFormName)}>
                             <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
                             <FormBlock>
                                 <Form.DateRangePicker

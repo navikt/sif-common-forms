@@ -3,12 +3,16 @@ import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { getDateRangeValidator } from '@navikt/sif-common-formik/lib/validation';
+import {
+    getDateRangeValidator,
+    ValidateDateError,
+    ValidateDateInRangeError,
+} from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import ferieuttakUtils from './ferieuttakUtils';
@@ -37,6 +41,18 @@ enum FerieuttakFormFields {
     tom = 'tom',
     fom = 'fom',
 }
+
+export const FerieuttakFormErrorKeys = {
+    fields: {
+        [FerieuttakFormFields.fom]: [...Object.keys(ValidateDateError), ValidateDateInRangeError.fromDateIsAfterToDate],
+        [FerieuttakFormFields.tom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.toDateIsBeforeFromDate,
+        ],
+    },
+};
+
+export const FerieuttakFormName = 'ferieuttakForm';
 
 const Form = getTypedFormComponents<FerieuttakFormFields, FerieuttakFormValues>();
 
@@ -75,8 +91,8 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                 renderForm={(formik) => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'ferieuttakForm')}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'ferieuttakForm')}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, FerieuttakFormName)}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FerieuttakFormName)}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.DateRangePicker

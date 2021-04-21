@@ -15,6 +15,11 @@ import {
     getListValidator,
     getRequiredFieldValidator,
     getYesOrNoValidator,
+    ValidateDateError,
+    ValidateDateInRangeError,
+    ValidateListError,
+    ValidateRequiredFieldError,
+    validateYesOrNoIsAnsweredError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -41,6 +46,26 @@ enum UtenlandsoppholdFormFields {
     barnInnlagtPerioder = 'barnInnlagtPerioder',
 }
 
+export const UtlandsoppholdFormErrorKeys = {
+    fields: {
+        [UtenlandsoppholdFormFields.fom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.fromDateIsAfterToDate,
+        ],
+        [UtenlandsoppholdFormFields.tom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.toDateIsBeforeFromDate,
+        ],
+        [UtenlandsoppholdFormFields.landkode]: Object.keys(ValidateRequiredFieldError),
+        [UtenlandsoppholdFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
+        [UtenlandsoppholdFormFields.erBarnetInnlagt]: Object.keys(validateYesOrNoIsAnsweredError),
+        [UtenlandsoppholdFormFields.barnInnlagtPerioder]: [
+            ValidateListError.listIsEmpty,
+            ValidateListError.listHasTooFewItems,
+        ],
+    },
+};
+
 const defaultFormValues: UtenlandsoppholdFormValues = {
     fom: undefined,
     tom: undefined,
@@ -49,6 +74,8 @@ const defaultFormValues: UtenlandsoppholdFormValues = {
     barnInnlagtPerioder: [],
     årsak: undefined,
 };
+
+export const UtenlandsoppholdFormName = 'utenlandsoppholdForm';
 
 const Form = getTypedFormComponents<UtenlandsoppholdFormFields, UtenlandsoppholdFormValues>();
 
@@ -106,8 +133,8 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                     <Form.Form
                         includeButtons={areAllQuestionsAnswered}
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'utenlandsoppholdForm')}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'utenlandsoppholdForm')}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, UtenlandsoppholdFormName)}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, UtenlandsoppholdFormName)}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id="utenlandsopphold.form.tittel" />
                         </Systemtittel>
@@ -151,7 +178,7 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}
                                     label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
-                                    validate={getListValidator({ required: true })}
+                                    validate={getRequiredFieldValidator()}
                                 />
                             </FormBlock>
                         )}

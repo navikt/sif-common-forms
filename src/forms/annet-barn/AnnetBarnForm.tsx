@@ -2,15 +2,18 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
+import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
     getRequiredFieldValidator,
+    ValidateDateError,
+    ValidateFødselsnummerError,
+    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -34,6 +37,22 @@ enum AnnetBarnFormFields {
     fødselsdato = 'fødselsdato',
     navn = 'navn',
 }
+
+export const AnnetBarnFormErrorKeys = {
+    fields: {
+        [AnnetBarnFormFields.navn]: [...Object.keys(ValidateRequiredFieldError)],
+        [AnnetBarnFormFields.fødselsdato]: [
+            ...Object.keys(ValidateRequiredFieldError),
+            ...Object.keys(ValidateDateError),
+        ],
+        [AnnetBarnFormFields.fnr]: [
+            ...Object.keys(ValidateRequiredFieldError),
+            ...Object.keys(ValidateFødselsnummerError),
+        ],
+    },
+};
+
+export const AnnetBarnFormName = 'annetBarnForm';
 
 interface Props {
     annetBarn?: Partial<AnnetBarn>;
@@ -86,8 +105,8 @@ const AnnetBarnForm = ({
                 renderForm={() => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'annetBarnForm')}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'annetBarnForm')}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, AnnetBarnFormName)}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, AnnetBarnFormName)}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.Input

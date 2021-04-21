@@ -13,11 +13,12 @@ import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import AnnetBarnForm from '../../../forms/annet-barn/AnnetBarnForm';
+import AnnetBarnForm, { AnnetBarnFormErrorKeys, AnnetBarnFormName } from '../../../forms/annet-barn/AnnetBarnForm';
 import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import { AnnetBarn } from '../../../forms/annet-barn/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -46,8 +47,8 @@ const AnnetBarnExample = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'annetBarnForm')}
-                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'annetBarnForm')}>
+                                fieldErrorRenderer={getFieldErrorRenderer(intl, AnnetBarnFormName)}
+                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, AnnetBarnFormName)}>
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
                                     validate={getListValidator({ required: true })}
@@ -66,6 +67,13 @@ const AnnetBarnExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrors={AnnetBarnFormErrorKeys}
+                    formName={'annetBarn'}
+                    intlMessages={annetBarnMessages}
+                />
+            </Box>
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
             </Box>

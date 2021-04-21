@@ -17,13 +17,21 @@ import {
     getRequiredFieldValidator,
     getYesOrNoValidator,
     getDateValidator,
+    ValidateRequiredFieldError,
+    ValidateDateError,
+    validateYesOrNoIsAnsweredError,
 } from '@navikt/sif-common-formik/lib/validation';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
 import FraværTimerSelect from './FraværTimerSelect';
 import { isFraværDag, mapFormValuesToFraværDag, mapFraværDagToFormValues, toMaybeNumber } from './fraværUtilities';
-import { validateFraværDagCollision, validateLessOrEqualTo, validateNotHelgedag } from './fraværValidationUtils';
+import {
+    FraværFieldValidationErrors,
+    validateFraværDagCollision,
+    validateLessOrEqualTo,
+    validateNotHelgedag,
+} from './fraværValidationUtils';
 import { getFraværÅrsakRadios } from './fraværÅrsakRadios';
 import { FraværDag, FraværDagFormValues } from './types';
 import ÅrsakInfo from './ÅrsakInfo';
@@ -60,6 +68,25 @@ export enum FraværDagFormFields {
     hjemmePgaKorona = 'hjemmePgaKorona',
     årsak = 'årsak',
 }
+
+export const FraværDagFormErrorKeys = {
+    fields: {
+        [FraværDagFormFields.dato]: [
+            ...Object.keys(ValidateDateError),
+            FraværFieldValidationErrors.er_helg,
+            FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær,
+        ],
+        [FraværDagFormFields.timerArbeidsdag]: [...Object.keys(ValidateRequiredFieldError)],
+        [FraværDagFormFields.timerFravær]: [
+            ...Object.keys(ValidateRequiredFieldError),
+            FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer,
+        ],
+        [FraværDagFormFields.hjemmePgaKorona]: Object.keys(validateYesOrNoIsAnsweredError),
+        [FraværDagFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
+    },
+};
+
+export const FraværDagFormName = 'fraværDagForm';
 
 export const FraværDagForm = getTypedFormComponents<FraværDagFormFields, FraværDagFormValues>();
 
@@ -150,8 +177,8 @@ const FraværDagFormView = ({
                     return (
                         <FraværDagForm.Form
                             onCancel={onCancel}
-                            fieldErrorRenderer={getFieldErrorRenderer(intl, 'fraværDagForm')}
-                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fraværDagForm')}>
+                            fieldErrorRenderer={getFieldErrorRenderer(intl, FraværDagFormName)}
+                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FraværDagFormName)}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box>{headerContent}</Box>}
                             <FormBlock>

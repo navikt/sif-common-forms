@@ -44,6 +44,7 @@ export const mockVirksomhet: Virksomhet = {
 interface FormValues {
     [FormField.virksomhet]?: Virksomhet;
 }
+
 const initialValues: FormValues = {};
 
 const VirksomhetExample = () => {

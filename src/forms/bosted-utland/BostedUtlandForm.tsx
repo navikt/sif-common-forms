@@ -2,12 +2,18 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
-import { getDateRangeValidator, getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import {
+    getDateRangeValidator,
+    getRequiredFieldValidator,
+    ValidateDateError,
+    ValidateDateInRangeError,
+    ValidateRequiredFieldError,
+} from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { mapFomTomToDateRange } from '../utils';
 import bostedUtlandUtils from './bostedUtlandUtils';
@@ -36,6 +42,23 @@ interface DateLimits {
     minDate: Date;
     maxDate: Date;
 }
+
+export const BostedUtlandFormErrorKeys = {
+    fields: {
+        [BostedUtlandFormFields.fom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.fromDateIsAfterToDate,
+        ],
+        [BostedUtlandFormFields.tom]: [
+            ...Object.keys(ValidateDateError),
+            ValidateDateInRangeError.toDateIsBeforeFromDate,
+        ],
+        [BostedUtlandFormFields.landkode]: Object.keys(ValidateRequiredFieldError),
+    },
+};
+
+export const BostedUtlandFormName = 'BostedUtlandFormName';
+
 const Form = getTypedFormComponents<BostedUtlandFormFields, BostedUtlandFormValues>();
 
 const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmit, onCancel }: Props) => {
@@ -73,8 +96,8 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                 return (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'bostedUtlandForm')}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'bostedUtlandForm')}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, BostedUtlandFormName)}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, BostedUtlandFormName)}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id="bostedUtland.form.tittel" />
                         </Systemtittel>
@@ -113,7 +136,7 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                             <Form.CountrySelect
                                 name={BostedUtlandFormFields.landkode}
                                 label={intlHelper(intl, 'bostedUtland.form.land.spm')}
-                                validate={getListValidator({ required: true })}
+                                validate={getRequiredFieldValidator()}
                             />
                         </FormBlock>
                     </Form.Form>

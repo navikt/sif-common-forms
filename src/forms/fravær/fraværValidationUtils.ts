@@ -11,30 +11,13 @@ import {
 import { FraværDag, FraværPeriode } from './types';
 
 export enum FraværFieldValidationErrors {
-    'påkrevd' = 'fieldvalidation.påkrevd',
-    'fraværsperioder_mangler' = 'fieldvalidation.fraværsperioder_mangler',
-    'fraværsperioder_overlapper' = 'fieldvalidation.fraværsperioder_overlapper',
-    'fraværsperioder_utenfor_periode' = 'fieldvalidation.fraværsperioder_utenfor_periode',
-    'dager_med_fravær_ugyldig_dag' = 'fieldvalidation.dager_med_fravær_ugyldig_dag',
-    'dager_med_fravær_mangler' = 'fieldvalidation.dager_med_fravær_mangler',
-    'dager_med_fravær_like' = 'fieldvalidation.dager_med_fravær_like',
-    'dager_med_fravær_utenfor_periode' = 'fieldvalidation.dager_med_fravær_utenfor_periode',
-    'dager_med_for_mange_timer' = 'fieldvalidation.dager_med_for_mange_timer',
-    'dager_overlapper_med_andre_dager' = 'fieldvalidation.dager_overlapper_med_andre_dager',
-    'fra_dato_kolliderer_med_annet_fravær' = 'fieldvalidation.fra_dato_kolliderer_med_annet_fravær',
-    'til_dato_kolliderer_med_annet_fravær' = 'fieldvalidation.til_dato_kolliderer_med_annet_fravær',
-    'dato_kolliderer_med_annet_fravær' = 'fieldvalidation.dato_kolliderer_med_annet_fravær',
-    'timer_ikke_tall' = 'fieldvalidation.timer_ikke_tall',
-    'timer_for_mange_timer' = 'fieldvalidation.timer_for_mange_timer',
-    'dato_utenfor_gyldig_tidsrom' = 'fieldvalidation.dato_utenfor_gyldig_tidsrom',
-    'tom_er_før_fom' = 'fieldvalidation.tom_er_før_fom',
-    'ingen_dokumenter' = 'fieldvalidation.ingen_dokumenter',
-    'for_mange_dokumenter' = 'fieldvalidation.for_mange_dokumenter',
-    'fravær_timer_mer_enn_arbeidstimer' = 'fravær.form.validation.timer_mer_enn_arbeidstimer',
-    'er_helg' = 'fravær.form.validation.er_helg',
-    'fra_og_til_er_ulike_år' = 'fravær.form.validation.fra_og_til_er_ulike_år',
-    'fra_og_til_overlapper_andre_perioder' = 'fravær.form.validation.fra_og_til_overlapper_andre_perioder',
-    'dato_overlapper_med_andre_perioder' = 'fravær.form.validation.dato_overlapper_med_andre_perioder',
+    fravær_timer_mer_enn_arbeidstimer = 'fravær_timer_mer_enn_arbeidstimer',
+    fra_og_til_er_ulike_år = 'fra_og_til_er_ulike_år',
+    er_helg = 'er_helg',
+    fra_dato_kolliderer_med_annet_fravær = 'fra_dato_kolliderer_med_annet_fravær',
+    til_dato_kolliderer_med_annet_fravær = 'til_dato_kolliderer_med_annet_fravær',
+    dato_kolliderer_med_annet_fravær = 'dato_kolliderer_med_annet_fravær',
+    dager_overlapper_med_andre_dager = 'dager_overlapper_med_andre_dager',
 }
 
 export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): ValidationFunction<any> => (
@@ -68,7 +51,11 @@ export const validateFraværPeriodeCollision = (
     to: Date | undefined,
     ranges: DateRange[] | undefined
 ): FraværFieldValidationErrors | undefined => {
+    console.log(ranges);
+
     if (!from || !to || (ranges || []).length === 0) {
+        console.log('nope');
+
         return undefined;
     }
     return rangeCollideWithRanges({ from, to }, ranges)

@@ -11,12 +11,13 @@ import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Fosterbarn } from '../../../forms/fosterbarn';
-import FosterbarnForm from '../../../forms/fosterbarn/FosterbarnForm';
+import FosterbarnForm, { FosterbarnFormErrorKeys, FosterbarnFormName } from '../../../forms/fosterbarn/FosterbarnForm';
 import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -57,6 +58,14 @@ const FosterbarnExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrors={FosterbarnFormErrorKeys}
+                    formName={FosterbarnFormName}
+                    intlMessages={fosterbarnMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

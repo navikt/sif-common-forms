@@ -12,12 +12,16 @@ import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-m
 import Panel from 'nav-frontend-paneler';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Utenlandsopphold } from '../../../forms/utenlandsopphold/types';
-import UtenlandsoppholdForm from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
+import UtenlandsoppholdForm, {
+    UtenlandsoppholdFormName,
+    UtlandsoppholdFormErrorKeys,
+} from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
 import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/UtenlandsoppholdListAndDialog';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'utenlandsopphold' = 'utenlandsopphold',
@@ -71,6 +75,14 @@ const UtenlandsoppholdExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrors={UtlandsoppholdFormErrorKeys}
+                    formName={UtenlandsoppholdFormName}
+                    intlMessages={utenlandsoppholdMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

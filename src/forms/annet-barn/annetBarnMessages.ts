@@ -8,6 +8,7 @@ const annetBarnMessages = {
         'annetBarn.form.cancelButton': 'Avbryt',
         'annetBarn.form.validation.required': 'Feltet er påkrevd',
         'annetBarn.list.født': 'Født',
+        'annetBarn.validation.navn.noValue': 'Du må skrive inn navn på barnet',
     },
     nn: {
         'annetBarn.form.title': 'Legg til barn',

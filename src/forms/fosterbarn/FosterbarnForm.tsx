@@ -8,7 +8,12 @@ import {
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
-import { getFødselsnummerValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
+import {
+    getFødselsnummerValidator,
+    getRequiredFieldValidator,
+    ValidateFødselsnummerError,
+    ValidateRequiredFieldError,
+} from '@navikt/sif-common-formik/lib/validation';
 import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
@@ -35,6 +40,19 @@ enum FosterbarnFormField {
 }
 
 type FormValues = Partial<Fosterbarn>;
+
+export const FosterbarnFormErrorKeys = {
+    fields: {
+        [FosterbarnFormField.fornavn]: [...Object.keys(ValidateRequiredFieldError)],
+        [FosterbarnFormField.etternavn]: [...Object.keys(ValidateRequiredFieldError)],
+        [FosterbarnFormField.fødselsnummer]: [
+            ...Object.keys(ValidateRequiredFieldError),
+            ...Object.keys(ValidateFødselsnummerError),
+        ],
+    },
+};
+
+export const FosterbarnFormName = 'fosterbarnForm';
 
 const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
 
@@ -71,8 +89,8 @@ const FosterbarnForm = ({
                 renderForm={() => (
                     <Form.Form
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'fosterbarnForm')}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fosterbarnForm')}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, FosterbarnFormName)}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FosterbarnFormName)}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input
