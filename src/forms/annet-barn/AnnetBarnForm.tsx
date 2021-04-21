@@ -13,7 +13,7 @@ import {
 } from '@navikt/sif-common-formik/lib/validation';
 import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { getFormsFieldErrorRenderer } from '../utils';
+import { getIntlFormErrorRenderer } from '../utils';
 import annetBarnUtils from './annetBarnUtils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
 
@@ -100,7 +100,7 @@ const AnnetBarnForm = ({
             initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
             onSubmit={onFormikSubmit}
             renderForm={() => (
-                <Form.Form onCancel={onCancel} fieldErrorRenderer={getFormsFieldErrorRenderer(intl)}>
+                <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                     <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                     <FormBlock>
                         <Form.Input

@@ -6,24 +6,21 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import { FormikDatepickerProps } from '@navikt/sif-common-formik/lib/components/formik-datepicker/FormikDatepicker';
 import {
+    getDateValidator,
     getRequiredFieldValidator,
     getYesOrNoValidator,
-    getDateValidator,
-    ValidateRequiredFieldError,
     ValidateDateError,
+    ValidateRequiredFieldError,
     ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
+import { getIntlFormErrorRenderer } from '../utils';
 import FraværTimerSelect from './FraværTimerSelect';
 import { isFraværDag, mapFormValuesToFraværDag, mapFraværDagToFormValues, toMaybeNumber } from './fraværUtilities';
 import {
@@ -35,7 +32,6 @@ import {
 import { getFraværÅrsakRadios } from './fraværÅrsakRadios';
 import { FraværDag, FraværDagFormValues } from './types';
 import ÅrsakInfo from './ÅrsakInfo';
-import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 
 export interface FraværDagFormLabels {
     tittel: string;
@@ -69,21 +65,28 @@ export enum FraværDagFormFields {
     årsak = 'årsak',
 }
 
-export const FraværDagFormErrorKeys = {
-    fields: {
-        [FraværDagFormFields.dato]: [
-            ...Object.keys(ValidateDateError),
-            FraværFieldValidationErrors.er_helg,
-            FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær,
-        ],
-        [FraværDagFormFields.timerArbeidsdag]: [...Object.keys(ValidateRequiredFieldError)],
-        [FraværDagFormFields.timerFravær]: [
-            ...Object.keys(ValidateRequiredFieldError),
-            FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer,
-        ],
-        [FraværDagFormFields.hjemmePgaKorona]: Object.keys(ValidateYesOrNoError),
-        [FraværDagFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
+export const FraværDagFormErrors = {
+    [FraværDagFormFields.dato]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.dato.noValue',
+        [ValidateDateError.invalidDateFormat]: 'fraværDagForm.dato.invalidDateFormat',
+        [ValidateDateError.dateAfterMax]: 'fraværDagForm.dato.dateAfterMax',
+        [ValidateDateError.dateBeforeMin]: 'fraværDagForm.dato.dateBeforeMin',
+        [FraværFieldValidationErrors.er_helg]: 'fraværDagForm.dato.er_helg',
+        [FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær]:
+            'fraværDagForm.dato.dato_kolliderer_med_annet_fravær',
     },
+    [FraværDagFormFields.timerArbeidsdag]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.timerArbeidsdag.noValue',
+    },
+    [FraværDagFormFields.timerFravær]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.timerFravær.noValue',
+        [FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer]:
+            'fraværDagForm.timerFravær.fravær_timer_mer_enn_arbeidstimer',
+    },
+    [FraværDagFormFields.hjemmePgaKorona]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'fraværDagForm.hjemmePgaKorona.yesOrNoIsUnanswered',
+    },
+    [FraværDagFormFields.årsak]: { [ValidateRequiredFieldError.noValue]: 'fraværDagForm.årsak.noValue' },
 };
 
 export const FraværDagFormName = 'fraværDagForm';
@@ -154,19 +157,23 @@ const FraværDagFormView = ({
                         maxDate,
                         disableWeekend: helgedagerIkkeTillatt || false,
                         disabledDateRanges,
-                        validate: helgedagerIkkeTillatt
-                            ? (value) =>
-                                  validateAll([
-                                      () => getRequiredFieldValidator()(value),
-                                      () => getDateValidator({ min: minDate, max: maxDate })(value),
-                                      () => validateNotHelgedag(value),
-                                      () => validateFraværDagCollision(valgtDato, disabledDateRanges),
-                                  ])
-                            : (value) =>
-                                  validateAll([
-                                      () => getRequiredFieldValidator()(value),
-                                      () => getDateValidator({ min: minDate, max: maxDate }),
-                                  ]),
+                        validate: (value) => {
+                            if (helgedagerIkkeTillatt && validateNotHelgedag(value)) {
+                                return FraværDagFormErrors.dato.er_helg;
+                            }
+                            if (validateFraværDagCollision(valgtDato, disabledDateRanges)) {
+                                return FraværDagFormErrors.dato.dato_kolliderer_med_annet_fravær;
+                            }
+                            return getDateValidator(
+                                { required: true, min: minDate, max: maxDate },
+                                {
+                                    dateAfterMax: FraværDagFormErrors.dato.dateAfterMax,
+                                    dateBeforeMin: FraværDagFormErrors.dato.dateBeforeMin,
+                                    invalidDateFormat: FraværDagFormErrors.dato.invalidDateFormat,
+                                    noValue: FraværDagFormErrors.dato.noValue,
+                                }
+                            )(value);
+                        },
                         onChange: () => {
                             setTimeout(() => {
                                 formik.validateField(FraværDagFormFields.dato);
@@ -175,10 +182,7 @@ const FraværDagFormView = ({
                     };
 
                     return (
-                        <FraværDagForm.Form
-                            onCancel={onCancel}
-                            fieldErrorRenderer={getFieldErrorRenderer(intl, FraværDagFormName)}
-                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FraværDagFormName)}>
+                        <FraværDagForm.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box>{headerContent}</Box>}
                             <FormBlock>
@@ -187,7 +191,9 @@ const FraværDagFormView = ({
                             <FormBlock>
                                 <FraværTimerSelect
                                     name={FraværDagFormFields.timerArbeidsdag}
-                                    validate={getRequiredFieldValidator()}
+                                    validate={getRequiredFieldValidator({
+                                        noValue: FraværDagFormErrors.timerArbeidsdag.noValue,
+                                    })}
                                     label={formLabels.antallArbeidstimer}
                                     maksTid={maksArbeidstidPerDag}
                                 />
@@ -195,12 +201,14 @@ const FraværDagFormView = ({
                             <FormBlock>
                                 <FraværTimerSelect
                                     name={FraværDagFormFields.timerFravær}
-                                    validate={(value) =>
-                                        validateAll([
-                                            () => getRequiredFieldValidator()(value),
-                                            () => validateLessOrEqualTo(toMaybeNumber(values.timerArbeidsdag))(value),
-                                        ])
-                                    }
+                                    validate={(value) => {
+                                        if (validateLessOrEqualTo(toMaybeNumber(values.timerArbeidsdag))(value)) {
+                                            return FraværDagFormErrors.timerFravær.fravær_timer_mer_enn_arbeidstimer;
+                                        }
+                                        return getRequiredFieldValidator({
+                                            noValue: FraværDagFormErrors.timerFravær.noValue,
+                                        })(value);
+                                    }}
                                     label={formLabels.timerFravær}
                                     maksTid={maksArbeidstidPerDag}
                                 />
@@ -209,7 +217,9 @@ const FraværDagFormView = ({
                                 <FraværDagForm.YesOrNoQuestion
                                     legend={formLabels.hjemmePgaKorona}
                                     name={FraværDagFormFields.hjemmePgaKorona}
-                                    validate={getYesOrNoValidator()}
+                                    validate={getYesOrNoValidator({
+                                        yesOrNoIsUnanswered: FraværDagFormErrors.hjemmePgaKorona.yesOrNoIsUnanswered,
+                                    })}
                                     description={
                                         <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
                                             <FormattedHtmlMessage id="info.smittevern.info.html" />
@@ -222,7 +232,9 @@ const FraværDagFormView = ({
                                     <FraværDagForm.RadioPanelGroup
                                         legend={formLabels.årsak}
                                         name={FraværDagFormFields.årsak}
-                                        validate={getRequiredFieldValidator()}
+                                        validate={getRequiredFieldValidator({
+                                            noValue: FraværDagFormErrors.årsak.noValue,
+                                        })}
                                         radios={fraværÅrsakRadios}
                                         description={<ÅrsakInfo />}
                                     />

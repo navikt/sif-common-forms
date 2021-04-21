@@ -5,16 +5,13 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import {
     getDateRangeValidator,
     ValidateDateError,
     ValidateDateInRangeError,
+    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { mapFomTomToDateRange } from '../utils';
+import { getIntlFormErrorRenderer, mapFomTomToDateRange } from '../utils';
 import ferieuttakUtils from './ferieuttakUtils';
 import { Ferieuttak, FerieuttakFormValues } from './types';
 
@@ -42,17 +39,22 @@ enum FerieuttakFormFields {
     fom = 'fom',
 }
 
-export const FerieuttakFormErrorKeys = {
-    fields: {
-        [FerieuttakFormFields.fom]: [...Object.keys(ValidateDateError), ValidateDateInRangeError.fromDateIsAfterToDate],
-        [FerieuttakFormFields.tom]: [
-            ...Object.keys(ValidateDateError),
-            ValidateDateInRangeError.toDateIsBeforeFromDate,
-        ],
+export const FerieuttakFormErrors = {
+    [FerieuttakFormFields.fom]: {
+        [ValidateRequiredFieldError.noValue]: 'ferieuttakForm.fom.noValue',
+        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'ferieuttakForm.fom.fromDateIsAfterToDate',
+        [ValidateDateError.invalidDateFormat]: 'ferieuttakForm.fom.invalidDateFormat',
+        [ValidateDateError.dateBeforeMin]: 'ferieuttakForm.fom.dateBeforeMin',
+        [ValidateDateError.dateAfterMax]: 'ferieuttakForm.fom.dateAfterMax',
+    },
+    [FerieuttakFormFields.tom]: {
+        [ValidateRequiredFieldError.noValue]: 'ferieuttakForm.tom.noValue',
+        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'ferieuttakForm.tom.toDateIsBeforeFromDate',
+        [ValidateDateError.invalidDateFormat]: 'ferieuttakForm.tom.invalidDateFormat',
+        [ValidateDateError.dateBeforeMin]: 'ferieuttakForm.tom.dateBeforeMin',
+        [ValidateDateError.dateAfterMax]: 'ferieuttakForm.tom.dateAfterMax',
     },
 };
-
-export const FerieuttakFormName = 'ferieuttakForm';
 
 const Form = getTypedFormComponents<FerieuttakFormFields, FerieuttakFormValues>();
 
@@ -89,10 +91,7 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                 initialValues={ferieuttakUtils.mapFerieuttakToFormValues(ferieuttak || {})}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => (
-                    <Form.Form
-                        onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, FerieuttakFormName)}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FerieuttakFormName)}>
+                    <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                         <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                         <FormBlock>
                             <Form.DateRangePicker
@@ -105,12 +104,21 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                 fromInputProps={{
                                     label: formLabels.fromDate,
                                     name: FerieuttakFormFields.fom,
-                                    validate: getDateRangeValidator.validateFromDate({
-                                        required: true,
-                                        min: minDate,
-                                        max: maxDate,
-                                        toDate: ISOStringToDate(formik.values.tom),
-                                    }),
+                                    validate: getDateRangeValidator.validateFromDate(
+                                        {
+                                            required: true,
+                                            min: minDate,
+                                            max: maxDate,
+                                            toDate: ISOStringToDate(formik.values.tom),
+                                        },
+                                        {
+                                            noValue: FerieuttakFormErrors.fom.noValue,
+                                            dateAfterMax: FerieuttakFormErrors.fom.dateAfterMax,
+                                            dateBeforeMin: FerieuttakFormErrors.fom.dateBeforeMin,
+                                            fromDateIsAfterToDate: FerieuttakFormErrors.fom.fromDateIsAfterToDate,
+                                            invalidDateFormat: FerieuttakFormErrors.fom.invalidDateFormat,
+                                        }
+                                    ),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.tom);
@@ -121,12 +129,21 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                     label: formLabels.toDate,
                                     name: FerieuttakFormFields.tom,
 
-                                    validate: getDateRangeValidator.validateToDate({
-                                        required: true,
-                                        min: minDate,
-                                        max: maxDate,
-                                        fromDate: ISOStringToDate(formik.values.fom),
-                                    }),
+                                    validate: getDateRangeValidator.validateToDate(
+                                        {
+                                            required: true,
+                                            min: minDate,
+                                            max: maxDate,
+                                            fromDate: ISOStringToDate(formik.values.fom),
+                                        },
+                                        {
+                                            noValue: FerieuttakFormErrors.tom.noValue,
+                                            dateAfterMax: FerieuttakFormErrors.tom.dateAfterMax,
+                                            dateBeforeMin: FerieuttakFormErrors.tom.dateBeforeMin,
+                                            toDateIsBeforeFromDate: FerieuttakFormErrors.tom.toDateIsBeforeFromDate,
+                                            invalidDateFormat: FerieuttakFormErrors.tom.invalidDateFormat,
+                                        }
+                                    ),
                                     onChange: () => {
                                         setTimeout(() => {
                                             formik.validateField(FerieuttakFormFields.fom);

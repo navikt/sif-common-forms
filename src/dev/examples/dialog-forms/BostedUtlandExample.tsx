@@ -13,15 +13,13 @@ import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import BostedUtlandForm, {
-    BostedUtlandFormErrorKeys,
-    BostedUtlandFormName,
-} from '../../../forms/bosted-utland/BostedUtlandForm';
+import BostedUtlandForm, { BostedUtlandFormErrors } from '../../../forms/bosted-utland/BostedUtlandForm';
 import BostedUtlandListAndDialog from '../../../forms/bosted-utland/BostedUtlandListAndDialog';
 import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessages';
 import { BostedUtland } from '../../../forms/bosted-utland/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
+import flat from 'flat';
 
 enum FormField {
     'bosted' = 'bosted',
@@ -56,7 +54,7 @@ const FormikExample = () => {
                                     name={FormField.bosted}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={getListValidator({ required: true })}
+                                    validate={getListValidator({ required: true }, { listIsEmpty: 'Tom liste' })}
                                     labels={{
                                         addLabel: 'Legg til bosted',
                                         listTitle: 'Registrerte bosteder',
@@ -70,10 +68,10 @@ const FormikExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
             <Box margin="xxl" padBottom="l">
                 <FormValidationErrorMessages
-                    validationErrors={BostedUtlandFormErrorKeys}
-                    formName={BostedUtlandFormName}
+                    validationErrorIntlKeys={flat(BostedUtlandFormErrors)}
                     intlMessages={bostedUtlandMessages}
                 />
             </Box>

@@ -3,10 +3,6 @@ import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Tiles from '@navikt/sif-common-core/lib/components/tiles/Tiles';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getFødselsnummerValidator,
@@ -17,6 +13,7 @@ import {
 import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
+import { getIntlFormErrorRenderer } from '../utils';
 
 interface FosterbarnFormText {
     form_fødselsnummer_label: string;
@@ -41,18 +38,18 @@ enum FosterbarnFormField {
 
 type FormValues = Partial<Fosterbarn>;
 
-export const FosterbarnFormErrorKeys = {
-    fields: {
-        [FosterbarnFormField.fornavn]: [...Object.keys(ValidateRequiredFieldError)],
-        [FosterbarnFormField.etternavn]: [...Object.keys(ValidateRequiredFieldError)],
-        [FosterbarnFormField.fødselsnummer]: [
-            ...Object.keys(ValidateRequiredFieldError),
-            ...Object.keys(ValidateFødselsnummerError),
-        ],
+export const FosterbarnFormErrors = {
+    [FosterbarnFormField.fornavn]: { [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.fornavn.noValue' },
+    [FosterbarnFormField.etternavn]: { [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.etternavn.noValue' },
+    [FosterbarnFormField.fødselsnummer]: {
+        [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.fødselsnummer.noValue',
+        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'fosterbarnForm.fødselsnummer.disallowedFødselsnummer',
+        [ValidateFødselsnummerError.fødselsnummerChecksumError]:
+            'fosterbarnForm.fødselsnummer.fødselsnummerChecksumError',
+        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'fosterbarnForm.fødselsnummer.fødselsnummerNot11Chars',
+        [ValidateFødselsnummerError.invalidFødselsnummer]: 'fosterbarnForm.fødselsnummer.invalidFødselsnummer',
     },
 };
-
-export const FosterbarnFormName = 'fosterbarnForm';
 
 const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
 
@@ -87,19 +84,28 @@ const FosterbarnForm = ({
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
-                    <Form.Form
-                        onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, FosterbarnFormName)}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FosterbarnFormName)}>
+                    <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={getFødselsnummerValidator({
-                                    required: true,
-                                    disallowedValues: disallowedFødselsnumre,
-                                })}
+                                validate={getFødselsnummerValidator(
+                                    {
+                                        required: true,
+                                        disallowedValues: disallowedFødselsnumre,
+                                    },
+                                    {
+                                        noValue: FosterbarnFormErrors.fødselsnummer.noValue,
+                                        disallowedFødselsnummer:
+                                            FosterbarnFormErrors.fødselsnummer.disallowedFødselsnummer,
+                                        invalidFødselsnummer: FosterbarnFormErrors.fødselsnummer.invalidFødselsnummer,
+                                        fødselsnummerChecksumError:
+                                            FosterbarnFormErrors.fødselsnummer.fødselsnummerChecksumError,
+                                        fødselsnummerNot11Chars:
+                                            FosterbarnFormErrors.fødselsnummer.fødselsnummerNot11Chars,
+                                    }
+                                )}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}
@@ -111,14 +117,18 @@ const FosterbarnForm = ({
                                     <Form.Input
                                         name={FosterbarnFormField.fornavn}
                                         label={txt.form_fornavn_label}
-                                        validate={getRequiredFieldValidator()}
+                                        validate={getRequiredFieldValidator({
+                                            noValue: FosterbarnFormErrors.fornavn.noValue,
+                                        })}
                                     />
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.Input
                                         name={FosterbarnFormField.etternavn}
                                         label={txt.form_etternavn_label}
-                                        validate={getRequiredFieldValidator()}
+                                        validate={getRequiredFieldValidator({
+                                            noValue: FosterbarnFormErrors.etternavn.noValue,
+                                        })}
                                     />
                                 </FormBlock>
                             </Tiles>

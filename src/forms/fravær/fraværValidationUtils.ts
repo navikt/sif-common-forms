@@ -51,11 +51,7 @@ export const validateFraværPeriodeCollision = (
     to: Date | undefined,
     ranges: DateRange[] | undefined
 ): FraværFieldValidationErrors | undefined => {
-    console.log(ranges);
-
     if (!from || !to || (ranges || []).length === 0) {
-        console.log('nope');
-
         return undefined;
     }
     return rangeCollideWithRanges({ from, to }, ranges)

@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
+import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-
-import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
-import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Utenlandsopphold } from '../../../forms/utenlandsopphold/types';
-import UtenlandsoppholdForm, {
-    UtenlandsoppholdFormName,
-    UtlandsoppholdFormErrorKeys,
-} from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
+import UtenlandsoppholdForm, { UtlandsoppholdFormErrors } from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
 import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/UtenlandsoppholdListAndDialog';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
@@ -78,8 +75,7 @@ const UtenlandsoppholdExample = () => {
 
             <Box margin="xxl" padBottom="l">
                 <FormValidationErrorMessages
-                    validationErrors={UtlandsoppholdFormErrorKeys}
-                    formName={UtenlandsoppholdFormName}
+                    validationErrorIntlKeys={flat(UtlandsoppholdFormErrors)}
                     intlMessages={utenlandsoppholdMessages}
                 />
             </Box>

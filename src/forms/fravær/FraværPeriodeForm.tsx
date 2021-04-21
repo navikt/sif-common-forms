@@ -6,10 +6,6 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
@@ -20,11 +16,10 @@ import {
     ValidateRequiredFieldError,
     ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
-import { ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
-import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
+import { getIntlFormErrorRenderer } from '../utils';
 import { isFraværPeriode, mapFormValuesToFraværPeriode, mapFraværPeriodeToFormValues } from './fraværUtilities';
 import {
     FraværFieldValidationErrors,
@@ -69,25 +64,38 @@ enum FraværPeriodeFormFields {
     hjemmePgaKorona = 'hjemmePgaKorona',
 }
 
-export const FraværPeriodeFormErrorKeys = {
-    fields: {
-        [FraværPeriodeFormFields.fraOgMed]: [
-            ...Object.keys(ValidateDateError),
-            ValidateDateInRangeError.fromDateIsAfterToDate,
-            FraværFieldValidationErrors.er_helg,
-            FraværFieldValidationErrors.fra_og_til_er_ulike_år,
-            FraværFieldValidationErrors.fra_dato_kolliderer_med_annet_fravær,
-        ],
-        [FraværPeriodeFormFields.tilOgMed]: [
-            ...Object.keys(ValidateDateError),
-            ValidateDateInRangeError.toDateIsBeforeFromDate,
-            FraværFieldValidationErrors.er_helg,
-            FraværFieldValidationErrors.fra_og_til_er_ulike_år,
-            FraværFieldValidationErrors.til_dato_kolliderer_med_annet_fravær,
-        ],
-        [FraværPeriodeFormFields.årsak]: Object.keys(ValidateRequiredFieldError),
-        [FraværPeriodeFormFields.hjemmePgaKorona]: Object.keys(ValidateYesOrNoError),
-        ['fraOgMed_tilOgMed']: [FraværFieldValidationErrors.dager_overlapper_med_andre_dager],
+export const FraværPeriodeFormErrors = {
+    [FraværPeriodeFormFields.fraOgMed]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværPeriodeForm.fraOgMed.noValue',
+        [ValidateDateError.dateAfterMax]: 'fraværPeriodeForm.fraOgMed.dateAfterMax',
+        [ValidateDateError.dateBeforeMin]: 'fraværPeriodeForm.fraOgMed.dateBeforeMin',
+        [ValidateDateError.invalidDateFormat]: 'fraværPeriodeForm.fraOgMed.invalidDateFormat',
+        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'fraværPeriodeForm.fraOgMed.fromDateIsAfterToDate',
+        [FraværFieldValidationErrors.er_helg]: 'fraværPeriodeForm.fraOgMed.er_helg',
+        [FraværFieldValidationErrors.fra_og_til_er_ulike_år]: 'fraværPeriodeForm.fraOgMed.fra_og_til_er_ulike_år',
+        [FraværFieldValidationErrors.fra_dato_kolliderer_med_annet_fravær]:
+            'fraværPeriodeForm.fraOgMed.fra_dato_kolliderer_med_annet_fravær',
+    },
+    [FraværPeriodeFormFields.tilOgMed]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværPeriodeForm.tilOgMed.noValue',
+        [ValidateDateError.dateAfterMax]: 'fraværPeriodeForm.tilOgMed.dateAfterMax',
+        [ValidateDateError.dateBeforeMin]: 'fraværPeriodeForm.tilOgMed.dateBeforeMin',
+        [ValidateDateError.invalidDateFormat]: 'fraværPeriodeForm.tilOgMed.invalidDateFormat',
+        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'fraværPeriodeForm.tilOgMed.toDateIsBeforeFromDate',
+        [FraværFieldValidationErrors.er_helg]: 'fraværPeriodeForm.tilOgMed.er_helg',
+        [FraværFieldValidationErrors.fra_og_til_er_ulike_år]: 'fraværPeriodeForm.tilOgMed.fra_og_til_er_ulike_år',
+        [FraværFieldValidationErrors.til_dato_kolliderer_med_annet_fravær]:
+            'fraværPeriodeForm.tilOgMed.til_dato_kolliderer_med_annet_fravær',
+    },
+    [FraværPeriodeFormFields.årsak]: {
+        [ValidateRequiredFieldError.noValue]: 'fraværPeriodeForm.årsak.noValue',
+    },
+    [FraværPeriodeFormFields.hjemmePgaKorona]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'fraværPeriodeForm.årsak.yesOrNoIsUnanswered',
+    },
+    ['fraOgMed_tilOgMed']: {
+        [FraværFieldValidationErrors.dager_overlapper_med_andre_dager]:
+            'fraværPeriodeForm.periode.dager_overlapper_med_andre_dager',
     },
 };
 
@@ -152,10 +160,7 @@ const FraværPeriodeForm = ({
                     const fromDate: Date | undefined = ISOStringToDate(fraOgMed);
                     const toDate: Date | undefined = ISOStringToDate(tilOgMed);
                     return (
-                        <Form.Form
-                            onCancel={onCancel}
-                            fieldErrorRenderer={getFieldErrorRenderer(intl, FraværPeriodeFormName)}
-                            summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, FraværPeriodeFormName)}>
+                        <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box margin="l">{headerContent}</Box>}
                             <FormBlock>
@@ -163,7 +168,15 @@ const FraværPeriodeForm = ({
                                     legend={formLabels.tidsrom}
                                     description={periodeDescription}
                                     validate={() => {
-                                        return validateFraværPeriodeCollision(fromDate, toDate, disabledDateRanges);
+                                        const err = validateFraværPeriodeCollision(
+                                            fromDate,
+                                            toDate,
+                                            disabledDateRanges
+                                        );
+                                        if (err) {
+                                            return FraværPeriodeFormErrors.fraOgMed_tilOgMed
+                                                .dager_overlapper_med_andre_dager;
+                                        }
                                     }}
                                     fromDatepickerProps={{
                                         label: formLabels.fom,
@@ -179,27 +192,15 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: (value) => {
-                                            const validations: Array<() => ValidationResult<any>> = [];
-                                            if (helgedagerIkkeTillat) {
-                                                validations.push(() => validateNotHelgedag(value));
-                                            }
-                                            if (begrensTilSammeÅr) {
-                                                validations.push(() => validateErSammeÅr(value, tilOgMed));
-                                            }
-                                            validations.push(() =>
-                                                validateFraOgMedForCollision(toDate, disabledDateRanges)
-                                            );
-                                            validations.push(() =>
-                                                getDateRangeValidator.validateFromDate({
-                                                    required: true,
-                                                    min: minDate,
-                                                    max: maxDate,
-                                                    toDate,
-                                                })(value)
-                                            );
-                                            return validateAll(validations);
-                                        },
+                                        validate: getFromDateValidator({
+                                            begrensTilSammeÅr,
+                                            minDate,
+                                            maxDate,
+                                            helgedagerIkkeTillat,
+                                            disabledDateRanges,
+                                            toDate,
+                                            tilOgMed,
+                                        }),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -221,28 +222,15 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: (value) => {
-                                            const validations: Array<() => ValidationResult<any>> = [];
-                                            if (helgedagerIkkeTillat) {
-                                                validations.push(() => validateNotHelgedag(value));
-                                            }
-                                            if (begrensTilSammeÅr) {
-                                                validations.push(() => validateErSammeÅr(fraOgMed, value));
-                                            }
-                                            validations.push(() =>
-                                                validateTilOgMedForCollision(fromDate, disabledDateRanges)
-                                            );
-                                            validations.push(() =>
-                                                getDateRangeValidator.validateToDate({
-                                                    required: true,
-                                                    min: minDate,
-                                                    max: maxDate,
-                                                    fromDate,
-                                                })(value)
-                                            );
-
-                                            return validateAll(validations);
-                                        },
+                                        validate: getToDateValidator({
+                                            begrensTilSammeÅr,
+                                            disabledDateRanges,
+                                            fraOgMed,
+                                            fromDate,
+                                            helgedagerIkkeTillat,
+                                            maxDate,
+                                            minDate,
+                                        }),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -256,7 +244,10 @@ const FraværPeriodeForm = ({
                                 <Form.YesOrNoQuestion
                                     legend={formLabels.hjemmePgaKorona}
                                     name={FraværPeriodeFormFields.hjemmePgaKorona}
-                                    validate={getYesOrNoValidator()}
+                                    validate={getYesOrNoValidator({
+                                        yesOrNoIsUnanswered:
+                                            FraværPeriodeFormErrors.hjemmePgaKorona.yesOrNoIsUnanswered,
+                                    })}
                                     description={
                                         <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
                                             <FormattedHtmlMessage id="info.smittevern.info.html" />
@@ -270,7 +261,9 @@ const FraværPeriodeForm = ({
                                     <Form.RadioPanelGroup
                                         legend={formLabels.årsak}
                                         name={FraværPeriodeFormFields.årsak}
-                                        validate={getRequiredFieldValidator()}
+                                        validate={getRequiredFieldValidator({
+                                            noValue: FraværPeriodeFormErrors.årsak.noValue,
+                                        })}
                                         radios={fraværÅrsakRadios}
                                         description={<ÅrsakInfo />}
                                     />
@@ -282,6 +275,93 @@ const FraværPeriodeForm = ({
             />
         </>
     );
+};
+
+const getToDateValidator = ({
+    helgedagerIkkeTillat,
+    begrensTilSammeÅr,
+    fraOgMed,
+    fromDate,
+    disabledDateRanges,
+    minDate,
+    maxDate,
+}: {
+    helgedagerIkkeTillat?: boolean;
+    begrensTilSammeÅr?: boolean;
+    fraOgMed?: string;
+    fromDate?: Date;
+    disabledDateRanges?: DateRange[];
+    minDate?: Date;
+    maxDate?: Date;
+}) => (value) => {
+    if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
+        return FraværPeriodeFormErrors.tilOgMed.er_helg;
+    }
+    if (begrensTilSammeÅr && validateErSammeÅr(fraOgMed, value)) {
+        return FraværPeriodeFormErrors.tilOgMed.fra_og_til_er_ulike_år;
+    }
+    if (validateTilOgMedForCollision(fromDate, disabledDateRanges)) {
+        return FraværPeriodeFormErrors.tilOgMed.til_dato_kolliderer_med_annet_fravær;
+    }
+    return getDateRangeValidator.validateToDate(
+        {
+            required: true,
+            min: minDate,
+            max: maxDate,
+            fromDate,
+        },
+        {
+            noValue: FraværPeriodeFormErrors.tilOgMed.noValue,
+            invalidDateFormat: FraværPeriodeFormErrors.tilOgMed.invalidDateFormat,
+            dateAfterMax: FraværPeriodeFormErrors.tilOgMed.dateAfterMax,
+            dateBeforeMin: FraværPeriodeFormErrors.tilOgMed.dateBeforeMin,
+            toDateIsBeforeFromDate: FraværPeriodeFormErrors.tilOgMed.toDateIsBeforeFromDate,
+        }
+    )(value);
+};
+
+const getFromDateValidator = ({
+    helgedagerIkkeTillat,
+    begrensTilSammeÅr,
+    tilOgMed,
+    toDate,
+    disabledDateRanges,
+    minDate,
+    maxDate,
+}: {
+    helgedagerIkkeTillat?: boolean;
+    begrensTilSammeÅr?: boolean;
+    tilOgMed?: string;
+    toDate?: Date;
+    disabledDateRanges?: DateRange[];
+    minDate?: Date;
+    maxDate?: Date;
+}) => (value) => {
+    if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
+        return FraværPeriodeFormErrors.fraOgMed.er_helg;
+    }
+    if (begrensTilSammeÅr && validateErSammeÅr(value, tilOgMed)) {
+        return FraværPeriodeFormErrors.fraOgMed.fra_og_til_er_ulike_år;
+    }
+    if (validateFraOgMedForCollision(toDate, disabledDateRanges)) {
+        return FraværPeriodeFormErrors.fraOgMed.fra_dato_kolliderer_med_annet_fravær;
+    }
+
+    return getDateRangeValidator.validateFromDate(
+        {
+            required: true,
+            min: minDate,
+            max: maxDate,
+            toDate,
+        },
+        {
+            noValue: FraværPeriodeFormErrors.fraOgMed.noValue,
+            invalidDateFormat: FraværPeriodeFormErrors.fraOgMed.invalidDateFormat,
+            dateAfterMax: FraværPeriodeFormErrors.fraOgMed.dateAfterMax,
+            dateBeforeMin: FraværPeriodeFormErrors.fraOgMed.dateBeforeMin,
+            fromDateIsAfterToDate: FraværPeriodeFormErrors.fraOgMed.fromDateIsAfterToDate,
+        }
+    )(value);
 };
 
 export default FraværPeriodeForm;

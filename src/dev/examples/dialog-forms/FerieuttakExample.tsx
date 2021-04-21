@@ -3,17 +3,18 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
+import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
-import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import FerieuttakForm, { FerieuttakFormErrorKeys, FerieuttakFormName } from '../../../forms/ferieuttak/FerieuttakForm';
+import FerieuttakForm, { FerieuttakFormErrors } from '../../../forms/ferieuttak/FerieuttakForm';
 import FerieuttakListAndDialog from '../../../forms/ferieuttak/FerieuttakListAndDialog';
 import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
@@ -70,8 +71,7 @@ const FormikExample = () => {
 
             <Box margin="xxl" padBottom="l">
                 <FormValidationErrorMessages
-                    validationErrors={FerieuttakFormErrorKeys}
-                    formName={FerieuttakFormName}
+                    validationErrorIntlKeys={flat(FerieuttakFormErrors)}
                     intlMessages={ferieuttakMessages}
                 />
             </Box>

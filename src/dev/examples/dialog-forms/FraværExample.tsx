@@ -3,31 +3,25 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-
 import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import { FraværDag, FraværPeriode } from '../../../forms/fravær';
 import FraværDagerListAndDialog from '../../../forms/fravær/FraværDagerListAndDialog';
-import FraværDagFormView, { FraværDagFormErrorKeys, FraværDagFormName } from '../../../forms/fravær/FraværDagForm';
+import FraværDagFormView, { FraværDagFormErrors } from '../../../forms/fravær/FraværDagForm';
 import fraværMessages from '../../../forms/fravær/fraværMessages';
-import FraværPeriodeForm, {
-    FraværPeriodeFormErrorKeys,
-    FraværPeriodeFormName,
-} from '../../../forms/fravær/FraværPeriodeForm';
+import FraværPeriodeForm, { FraværPeriodeFormErrors } from '../../../forms/fravær/FraværPeriodeForm';
 import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioderListAndDialog';
 import { fraværDagToFraværDateRange, fraværPeriodeToDateRange } from '../../../forms/fravær/fraværUtilities';
 import { validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
+import { getIntlFormErrorRenderer } from '../../../forms/utils';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
-import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
@@ -70,8 +64,7 @@ const FraværExample: React.FunctionComponent = () => {
                             <TypedFormikForm<FormValues>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'fraværExample')}
-                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'fraværExample')}>
+                                fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
                                 <FormBlock>
                                     <FraværPerioderListAndDialog<FormField>
                                         name={FormField.perioder}
@@ -128,13 +121,11 @@ const FraværExample: React.FunctionComponent = () => {
 
             <Box margin="xxl" padBottom="l">
                 <FormValidationErrorMessages
-                    validationErrors={FraværPeriodeFormErrorKeys}
-                    formName={FraværPeriodeFormName}
+                    validationErrorIntlKeys={flat(FraværPeriodeFormErrors)}
                     intlMessages={fraværMessages}
                 />
                 <FormValidationErrorMessages
-                    validationErrors={FraværDagFormErrorKeys}
-                    formName={FraværDagFormName}
+                    validationErrorIntlKeys={flat(FraværDagFormErrors)}
                     intlMessages={fraværMessages}
                 />
             </Box>

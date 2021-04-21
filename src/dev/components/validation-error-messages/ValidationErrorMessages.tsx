@@ -8,7 +8,7 @@ export type ValidationErrorMessagesDocType = {
 };
 
 interface Props {
-    formName: string;
+    formName?: string;
     validationErrors?: ValidationErrorMessagesDocType;
     validationErrorIntlKeys?: { [key: string]: string };
     intlMessages: MessageFileFormat;
