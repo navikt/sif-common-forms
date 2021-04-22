@@ -1,3 +1,5 @@
+import defaultValidationMessages from '../i18n/defaultMessages';
+
 const virksomhetMessages = {
     nb: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
@@ -69,6 +71,58 @@ const virksomhetMessages = {
         'sifForms.virksomhet.summary.næringsinntekst': 'Næringsinntekt:',
         'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsfører',
         'sifForms.virksomhet.summary.regnskapsfører.info': 'Ja, {navn}, telefon {telefon}',
+
+        'virksomhetForm.næringstyper.listIsEmpty': 'Du må velge hvilken type virksomhet du har',
+        'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'virksomhetForm.navnPåVirksomheten.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.registrertINorge.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'virksomhetForm.registrertILand.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.organisasjonsnummer.invalidOrgNumberFormat': 'Organisasjonsnummeret har ugyldig format',
+        'virksomhetForm.fom.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.fom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'virksomhetForm.fom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'virksomhetForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
+        'virksomhetForm.tom.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'virksomhetForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'virksomhetForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'virksomhetForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.toDateIsBeforeFromDate,
+        'virksomhetForm.næringsinntekt.invalidNumberFormat': defaultValidationMessages.nb.invalidNumberFormat,
+        'virksomhetForm.næringsinntekt.numberIsTooSmall': defaultValidationMessages.nb.numberIsTooSmall,
+        'virksomhetForm.næringsinntekt.numberIsTooLarge': defaultValidationMessages.nb.numberIsTooLarge,
+        'virksomhetForm.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.yesOrNoIsUnanswered':
+            defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'virksomhetForm.blittYrkesaktivDato.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.blittYrkesaktivDato.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'virksomhetForm.blittYrkesaktivDato.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'virksomhetForm.blittYrkesaktivDato.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'virksomhetForm.hattVarigEndringAvNæringsinntektSiste4Kalenderår.yesOrNoIsUnanswered':
+            defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'virksomhetForm.varigEndringINæringsinntekt_dato.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.varigEndringINæringsinntekt_dato.invalidDateFormat':
+            defaultValidationMessages.nb.invalidDateFormat,
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.invalidNumberFormat':
+            defaultValidationMessages.nb.invalidNumberFormat,
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge':
+            defaultValidationMessages.nb.numberIsTooLarge,
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooSmall':
+            defaultValidationMessages.nb.numberIsTooSmall,
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooLong':
+            defaultValidationMessages.nb.stringIsTooLong,
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooShort':
+            defaultValidationMessages.nb.stringIsTooShort,
+
+        'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'virksomhetForm.regnskapsfører_navn.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.regnskapsfører_navn.stringIsTooLong': defaultValidationMessages.nb.stringIsTooLong,
+        'virksomhetForm.regnskapsfører_navn.stringIsTooShort': defaultValidationMessages.nb.stringIsTooShort,
+        'virksomhetForm.regnskapsfører_telefon.noValue': defaultValidationMessages.nb.noValue,
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooLong': defaultValidationMessages.nb.stringIsTooLong,
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooShort': defaultValidationMessages.nb.stringIsTooShort,
     },
     nn: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',

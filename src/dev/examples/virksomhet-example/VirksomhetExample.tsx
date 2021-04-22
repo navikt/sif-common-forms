@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Undertittel } from 'nav-frontend-typografi';
+import { VirksomhetFormErrors } from '../../../forms';
 import { mapVirksomhetToVirksomhetApiData } from '../../../forms/virksomhet/mapVirksomhetToApiData';
 import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhet/types';
 import VirksomhetInfoAndDialog from '../../../forms/virksomhet/VirksomhetInfoAndDialog';
+import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
 import PageIntro from '../../components/page-intro/PageIntro';
-import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'virksomhet' = 'virksomhet',
@@ -103,6 +107,13 @@ const VirksomhetExample = () => {
                     </Panel>
                 </Box>
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(VirksomhetFormErrors)}
+                    intlMessages={virksomhetMessages}
+                />
+            </Box>
 
             {apiVirksomhet && (
                 <>

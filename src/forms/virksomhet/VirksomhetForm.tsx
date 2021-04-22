@@ -5,20 +5,30 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
-import { date3YearsAgo, date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { date3YearsAgo, date4YearsAgo, dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
     getFieldErrorRenderer,
     getSummaryFieldErrorRenderer,
 } from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
-import { FormikYesOrNoQuestion, getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
 import {
+    getDateRangeValidator,
+    getDateValidator,
     getListValidator,
     getNumberValidator,
     getOrgNumberValidator,
     getRequiredFieldValidator,
     getStringValidator,
     getYesOrNoValidator,
+    ValidateDateError,
+    ValidateDateInRangeError,
+    ValidateListError,
+    ValidateNumberError,
+    ValidateOrgNumberError,
+    ValidateRequiredFieldError,
+    ValidateStringError,
+    ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
 import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
@@ -40,7 +50,92 @@ interface Props {
 
 const MAKS_INNTEKT = 999999999;
 
-export const VirksomhetFormName = 'virksomhetForm';
+export const VirksomhetFormErrors = {
+    [VirksomhetFormField.næringstyper]: {
+        [ValidateListError.listIsEmpty]: 'virksomhetForm.næringstyper.listIsEmpty',
+    },
+    [VirksomhetFormField.fiskerErPåBladB]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered',
+    },
+    [VirksomhetFormField.navnPåVirksomheten]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.navnPåVirksomheten.noValue',
+    },
+    [VirksomhetFormField.registrertINorge]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.registrertINorge.yesOrNoIsUnanswered',
+    },
+    [VirksomhetFormField.registrertILand]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.registrertILand.noValue',
+    },
+    [VirksomhetFormField.organisasjonsnummer]: {
+        [ValidateOrgNumberError.invalidOrgNumberFormat]: 'virksomhetForm.organisasjonsnummer.invalidOrgNumberFormat',
+    },
+    [VirksomhetFormField.fom]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.fom.noValue',
+        [ValidateDateError.dateAfterMax]: 'virksomhetForm.fom.dateAfterMax',
+        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.fom.invalidDateFormat',
+        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'virksomhetForm.fom.fromDateIsAfterToDate',
+    },
+    [VirksomhetFormField.tom]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.tom.noValue',
+        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.tom.dateBeforeMin',
+        [ValidateDateError.dateAfterMax]: 'virksomhetForm.tom.dateAfterMax',
+        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.tom.invalidDateFormat',
+        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'virksomhetForm.tom.toDateIsBeforeFromDate',
+    },
+    [VirksomhetFormField.næringsinntekt]: {
+        [ValidateNumberError.invalidNumberFormat]: 'virksomhetForm.næringsinntekt.invalidNumberFormat',
+        [ValidateNumberError.numberIsTooSmall]: 'virksomhetForm.næringsinntekt.numberIsTooSmall',
+        [ValidateNumberError.numberIsTooLarge]: 'virksomhetForm.næringsinntekt.numberIsTooLarge',
+    },
+    [VirksomhetFormField.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]:
+            'virksomhetForm.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.yesOrNoIsUnanswered',
+    },
+    [VirksomhetFormField.blittYrkesaktivDato]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.blittYrkesaktivDato.noValue',
+        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.blittYrkesaktivDato.invalidDateFormat',
+        [ValidateDateError.dateAfterMax]: 'virksomhetForm.blittYrkesaktivDato.dateAfterMax',
+        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.blittYrkesaktivDato.dateBeforeMin',
+    },
+    [VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]:
+            'virksomhetForm.hattVarigEndringAvNæringsinntektSiste4Kalenderår.yesOrNoIsUnanswered',
+    },
+    [VirksomhetFormField.varigEndringINæringsinntekt_dato]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_dato.noValue',
+        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.varigEndringINæringsinntekt_dato.invalidDateFormat',
+        [ValidateDateError.dateAfterMax]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateAfterMax',
+        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateBeforeMin',
+    },
+    [VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.noValue',
+        [ValidateNumberError.invalidNumberFormat]:
+            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.invalidNumberFormat',
+        [ValidateNumberError.numberIsTooLarge]:
+            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge',
+        [ValidateNumberError.numberIsTooSmall]:
+            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooSmall',
+    },
+    [VirksomhetFormField.varigEndringINæringsinntekt_forklaring]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_forklaring.noValue',
+        [ValidateStringError.stringIsTooLong]: 'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooLong',
+        [ValidateStringError.stringIsTooShort]:
+            'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooShort',
+    },
+    [VirksomhetFormField.harRegnskapsfører]: {
+        [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered',
+    },
+    [VirksomhetFormField.regnskapsfører_navn]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.regnskapsfører_navn.noValue',
+        [ValidateStringError.stringIsTooLong]: 'virksomhetForm.regnskapsfører_navn.stringIsTooLong',
+        [ValidateStringError.stringIsTooShort]: 'virksomhetForm.regnskapsfører_navn.stringIsTooShort',
+    },
+    [VirksomhetFormField.regnskapsfører_telefon]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.regnskapsfører_telefon.noValue',
+        [ValidateStringError.stringIsTooLong]: 'virksomhetForm.regnskapsfører_telefon.stringIsTooLong',
+        [ValidateStringError.stringIsTooShort]: 'virksomhetForm.regnskapsfører_telefon.stringIsTooShort',
+    },
+};
 
 const Form = getTypedFormComponents<VirksomhetFormField, VirksomhetFormValues>();
 
@@ -80,12 +175,13 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                 const { values, setFieldValue } = formik;
                 const { navnPåVirksomheten = 'virksomheten', næringstyper = [] } = values;
                 const fomDate = ISOStringToDate(values.fom);
+                const tomDate = ISOStringToDate(values.tom);
                 return (
                     <Form.Form
                         includeValidationSummary={true}
                         onCancel={onCancel}
-                        fieldErrorRenderer={getFieldErrorRenderer(intl, VirksomhetFormName)}
-                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, VirksomhetFormName)}>
+                        fieldErrorRenderer={getFieldErrorRenderer(intl, 'virksomhetForm')}
+                        summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'virksomhetForm')}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
                                 {harFlereVirksomheter ? getText('form_title.flere') : getText('form_title')}
@@ -188,13 +284,50 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                     fromInputProps={{
                                         label: getText('kalender_fom'),
                                         name: VirksomhetFormField.fom,
-                                        validate: getRequiredFieldValidator(),
+                                        validate: getDateRangeValidator.validateFromDate(
+                                            {
+                                                required: true,
+                                                max: dateToday,
+                                                toDate: tomDate,
+                                            },
+                                            {
+                                                dateAfterMax: () =>
+                                                    intlHelper(intl, VirksomhetFormErrors.fom.dateAfterMax, {
+                                                        dato: prettifyDate(dateToday),
+                                                    }),
+                                            }
+                                        ),
                                     }}
                                     toInputProps={{
                                         label: getText('kalender_tom'),
                                         name: VirksomhetFormField.tom,
                                         disabled: values.erPågående === true,
-                                        validate: values.erPågående === true ? undefined : getRequiredFieldValidator(),
+                                        validate:
+                                            values.erPågående === true
+                                                ? undefined
+                                                : getDateRangeValidator.validateToDate(
+                                                      {
+                                                          required: true,
+                                                          max: dateToday,
+                                                          fromDate: fomDate,
+                                                      },
+                                                      {
+                                                          dateAfterMax: () =>
+                                                              intlHelper(intl, VirksomhetFormErrors.tom.dateAfterMax, {
+                                                                  dato: prettifyDate(dateToday),
+                                                              }),
+                                                          dateBeforeMin: fomDate
+                                                              ? () =>
+                                                                    intlHelper(
+                                                                        intl,
+                                                                        VirksomhetFormErrors.tom.dateBeforeMin,
+                                                                        {
+                                                                            dato: prettifyDate(fomDate),
+                                                                        }
+                                                                    )
+                                                              : undefined,
+                                                      }
+                                                  ),
                                     }}
                                 />
                                 <Form.Checkbox
@@ -238,7 +371,23 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                 label={getText('næringsinntekt')}
                                                 maxLength={10}
                                                 style={{ maxWidth: '10rem' }}
-                                                validate={getNumberValidator({ min: 0, max: MAKS_INNTEKT })}
+                                                validate={getNumberValidator(
+                                                    { min: 0, max: MAKS_INNTEKT },
+                                                    {
+                                                        numberIsTooLarge: () =>
+                                                            intlHelper(
+                                                                intl,
+                                                                VirksomhetFormErrors.næringsinntekt.numberIsTooLarge,
+                                                                { maks: MAKS_INNTEKT }
+                                                            ),
+                                                        numberIsTooSmall: () =>
+                                                            intlHelper(
+                                                                intl,
+                                                                VirksomhetFormErrors.næringsinntekt.numberIsTooSmall,
+                                                                { min: 0 }
+                                                            ),
+                                                    }
+                                                )}
                                                 description={
                                                     <>
                                                         {getText('næringsinntekt.info')}
@@ -273,7 +422,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         showYearSelector={true}
                                                         minDate={date3YearsAgo}
                                                         maxDate={dateToday}
-                                                        validate={getRequiredFieldValidator()}
+                                                        validate={getDateValidator({
+                                                            required: true,
+                                                            max: dateToday,
+                                                            min: date3YearsAgo,
+                                                        })}
                                                     />
                                                 </ResponsivePanel>
                                             </FormBlock>
@@ -299,7 +452,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     <Form.DatePicker
                                                         name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
                                                         label={getText('varig_endring_dato')}
-                                                        validate={getRequiredFieldValidator()}
+                                                        validate={getDateValidator({
+                                                            required: true,
+                                                            min: date4YearsAgo,
+                                                            max: dateToday,
+                                                        })}
                                                         minDate={date4YearsAgo}
                                                         maxDate={dateToday}
                                                     />
@@ -312,7 +469,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         label={getText('varig_endring_inntekt')}
                                                         maxLength={10}
                                                         style={{ maxWidth: '10rem' }}
-                                                        validate={getNumberValidator({ min: 0, max: MAKS_INNTEKT })}
+                                                        validate={getNumberValidator({
+                                                            required: true,
+                                                            min: 0,
+                                                            max: MAKS_INNTEKT,
+                                                        })}
                                                     />
                                                 </Box>
                                                 <Box margin="xl">
@@ -321,7 +482,31 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                             VirksomhetFormField.varigEndringINæringsinntekt_forklaring
                                                         }
                                                         label={getText('varig_endring_tekst')}
-                                                        validate={getRequiredFieldValidator()}
+                                                        validate={getStringValidator(
+                                                            {
+                                                                required: true,
+                                                                minLength: 5,
+                                                                maxLength: 1000,
+                                                            },
+                                                            {
+                                                                stringIsTooLong: () =>
+                                                                    intlHelper(
+                                                                        intl,
+                                                                        VirksomhetFormErrors
+                                                                            .varigEndringINæringsinntekt_forklaring
+                                                                            .stringIsTooLong,
+                                                                        { lengde: 1000 }
+                                                                    ),
+                                                                stringIsTooShort: () =>
+                                                                    intlHelper(
+                                                                        intl,
+                                                                        VirksomhetFormErrors
+                                                                            .varigEndringINæringsinntekt_forklaring
+                                                                            .stringIsTooShort,
+                                                                        { lengde: 5 }
+                                                                    ),
+                                                            }
+                                                        )}
                                                         maxLength={1000}
                                                     />
                                                 </Box>
@@ -345,14 +530,58 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     <Form.Input
                                                         name={VirksomhetFormField.regnskapsfører_navn}
                                                         label={getText('regnskapsfører_navn')}
-                                                        validate={getRequiredFieldValidator()}
+                                                        validate={getStringValidator(
+                                                            {
+                                                                minLength: 3,
+                                                                maxLength: 50,
+                                                                required: true,
+                                                            },
+                                                            {
+                                                                stringIsTooLong: () =>
+                                                                    intlHelper(
+                                                                        intl,
+                                                                        VirksomhetFormErrors.regnskapsfører_navn
+                                                                            .stringIsTooLong,
+                                                                        { lengde: 50 }
+                                                                    ),
+                                                                stringIsTooShort: () =>
+                                                                    intlHelper(
+                                                                        intl,
+                                                                        VirksomhetFormErrors.regnskapsfører_navn
+                                                                            .stringIsTooShort,
+                                                                        { lengde: 3 }
+                                                                    ),
+                                                            }
+                                                        )}
                                                         maxLength={50}
                                                     />
                                                     <Box margin="xl">
                                                         <Form.Input
                                                             name={VirksomhetFormField.regnskapsfører_telefon}
                                                             label={getText('regnskapsfører_telefon')}
-                                                            validate={getStringValidator({ maxLength: 15 })}
+                                                            validate={getStringValidator(
+                                                                {
+                                                                    maxLength: 15,
+                                                                    minLength: 5,
+                                                                    required: true,
+                                                                },
+                                                                {
+                                                                    stringIsTooLong: () =>
+                                                                        intlHelper(
+                                                                            intl,
+                                                                            VirksomhetFormErrors.regnskapsfører_telefon
+                                                                                .stringIsTooLong,
+                                                                            { lengde: 50 }
+                                                                        ),
+                                                                    stringIsTooShort: () =>
+                                                                        intlHelper(
+                                                                            intl,
+                                                                            VirksomhetFormErrors.regnskapsfører_telefon
+                                                                                .stringIsTooShort,
+                                                                            { lengde: 3 }
+                                                                        ),
+                                                                }
+                                                            )}
                                                             maxLength={15}
                                                         />
                                                     </Box>
