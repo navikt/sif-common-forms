@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
@@ -152,8 +152,14 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         },
                                         {
                                             noValue: UtlandsoppholdFormErrors.fom.noValue,
-                                            dateAfterMax: UtlandsoppholdFormErrors.fom.dateAfterMax,
-                                            dateBeforeMin: UtlandsoppholdFormErrors.fom.dateBeforeMin,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, UtlandsoppholdFormErrors.fom.dateBeforeMin, {
+                                                    dato: prettifyDate(minDate),
+                                                }),
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, UtlandsoppholdFormErrors.fom.dateAfterMax, {
+                                                    dato: prettifyDate(maxDate),
+                                                }),
                                             invalidDateFormat: UtlandsoppholdFormErrors.fom.invalidDateFormat,
                                             fromDateIsAfterToDate: UtlandsoppholdFormErrors.fom.fromDateIsAfterToDate,
                                         }
@@ -174,8 +180,14 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         },
                                         {
                                             noValue: UtlandsoppholdFormErrors.tom.noValue,
-                                            dateAfterMax: UtlandsoppholdFormErrors.tom.dateAfterMax,
-                                            dateBeforeMin: UtlandsoppholdFormErrors.tom.dateBeforeMin,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, UtlandsoppholdFormErrors.tom.dateBeforeMin, {
+                                                    dato: prettifyDate(minDate),
+                                                }),
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, UtlandsoppholdFormErrors.tom.dateAfterMax, {
+                                                    dato: prettifyDate(maxDate),
+                                                }),
                                             invalidDateFormat: UtlandsoppholdFormErrors.tom.invalidDateFormat,
                                             toDateIsBeforeFromDate: UtlandsoppholdFormErrors.tom.toDateIsBeforeFromDate,
                                         }

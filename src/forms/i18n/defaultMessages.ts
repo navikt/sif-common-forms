@@ -16,8 +16,8 @@ const defaultValidationMessages = {
         [ValidateFødselsnummerError.disallowedFødselsnummer]:
             'Fødselsnummeret du har fylt uter ditt eget fødselsnummer',
         [ValidateDateError.invalidDateFormat]: 'Ugyldig datoformat. Formatet må være dd.mm.åååå',
-        [ValidateDateError.dateBeforeMin]: 'Datoen er for tidlig',
-        [ValidateDateError.dateAfterMax]: `Datoen er for sen`,
+        [ValidateDateError.dateBeforeMin]: 'Dato ikke være tidligere enn {dato}',
+        [ValidateDateError.dateAfterMax]: `Dato kan ikke være etter {dato}`,
         [ValidateDateInRangeError.fromDateIsAfterToDate]: 'Fra-dato må være lik eller før til-dato',
         [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'Til-dato må være lik eller etter fra-dato',
         [ValidateListError.listIsEmpty]: 'Du har ikke lagt til noe i listen',

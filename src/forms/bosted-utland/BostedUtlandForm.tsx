@@ -120,16 +120,15 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                         },
                                         {
                                             noValue: BostedUtlandFormErrors.fom.noValue,
+                                            invalidDateFormat: BostedUtlandFormErrors.fom.invalidDateFormat,
                                             dateBeforeMin: () =>
                                                 intlHelper(intl, BostedUtlandFormErrors.fom.dateBeforeMin, {
                                                     dato: prettifyDate(fomDateLimits.minDate),
                                                 }),
-                                            invalidDateFormat: BostedUtlandFormErrors.fom.invalidDateFormat,
                                             dateAfterMax: () =>
                                                 intlHelper(intl, BostedUtlandFormErrors.fom.dateAfterMax, {
                                                     dato: prettifyDate(fomDateLimits.maxDate),
                                                 }),
-
                                             fromDateIsAfterToDate: BostedUtlandFormErrors.fom.fromDateIsAfterToDate,
                                         }
                                     ),
@@ -146,9 +145,15 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                         },
                                         {
                                             noValue: BostedUtlandFormErrors.tom.noValue,
-                                            dateBeforeMin: BostedUtlandFormErrors.tom.dateBeforeMin,
                                             invalidDateFormat: BostedUtlandFormErrors.tom.invalidDateFormat,
-                                            dateAfterMax: BostedUtlandFormErrors.tom.dateAfterMax,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, BostedUtlandFormErrors.tom.dateBeforeMin, {
+                                                    dato: prettifyDate(fomDateLimits.minDate),
+                                                }),
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, BostedUtlandFormErrors.tom.dateAfterMax, {
+                                                    dato: prettifyDate(fomDateLimits.maxDate),
+                                                }),
                                             toDateIsBeforeFromDate: BostedUtlandFormErrors.tom.toDateIsBeforeFromDate,
                                         }
                                     ),

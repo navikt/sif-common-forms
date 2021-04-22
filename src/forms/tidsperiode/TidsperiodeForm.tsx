@@ -14,6 +14,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { getIntlFormErrorRenderer, mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
 import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
+import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -126,8 +127,18 @@ const TidsperiodeForm = ({
                                             },
                                             {
                                                 noValue: TidsperiodeFormErrors.fom.noValue,
-                                                dateAfterMax: TidsperiodeFormErrors.fom.dateAfterMax,
-                                                dateBeforeMin: TidsperiodeFormErrors.fom.dateBeforeMin,
+                                                dateBeforeMin: minDate
+                                                    ? () =>
+                                                          intlHelper(intl, TidsperiodeFormErrors.fom.dateBeforeMin, {
+                                                              dato: prettifyDate(minDate),
+                                                          })
+                                                    : undefined,
+                                                dateAfterMax: maxDate
+                                                    ? () =>
+                                                          intlHelper(intl, TidsperiodeFormErrors.fom.dateAfterMax, {
+                                                              dato: prettifyDate(maxDate),
+                                                          })
+                                                    : undefined,
                                                 invalidDateFormat: TidsperiodeFormErrors.fom.invalidDateFormat,
                                                 fromDateIsAfterToDate: TidsperiodeFormErrors.fom.fromDateIsAfterToDate,
                                             }
@@ -150,8 +161,18 @@ const TidsperiodeForm = ({
                                             },
                                             {
                                                 noValue: TidsperiodeFormErrors.tom.noValue,
-                                                dateAfterMax: TidsperiodeFormErrors.tom.dateAfterMax,
-                                                dateBeforeMin: TidsperiodeFormErrors.tom.dateBeforeMin,
+                                                dateBeforeMin: minDate
+                                                    ? () =>
+                                                          intlHelper(intl, TidsperiodeFormErrors.tom.dateBeforeMin, {
+                                                              dato: prettifyDate(minDate),
+                                                          })
+                                                    : undefined,
+                                                dateAfterMax: maxDate
+                                                    ? () =>
+                                                          intlHelper(intl, TidsperiodeFormErrors.tom.dateAfterMax, {
+                                                              dato: prettifyDate(maxDate),
+                                                          })
+                                                    : undefined,
                                                 invalidDateFormat: TidsperiodeFormErrors.tom.invalidDateFormat,
                                                 toDateIsBeforeFromDate:
                                                     TidsperiodeFormErrors.tom.toDateIsBeforeFromDate,

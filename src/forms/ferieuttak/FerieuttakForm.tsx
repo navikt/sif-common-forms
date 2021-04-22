@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
@@ -113,8 +113,14 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                         },
                                         {
                                             noValue: FerieuttakFormErrors.fom.noValue,
-                                            dateAfterMax: FerieuttakFormErrors.fom.dateAfterMax,
-                                            dateBeforeMin: FerieuttakFormErrors.fom.dateBeforeMin,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, FerieuttakFormErrors.fom.dateBeforeMin, {
+                                                    dato: prettifyDate(minDate),
+                                                }),
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, FerieuttakFormErrors.fom.dateAfterMax, {
+                                                    dato: prettifyDate(maxDate),
+                                                }),
                                             fromDateIsAfterToDate: FerieuttakFormErrors.fom.fromDateIsAfterToDate,
                                             invalidDateFormat: FerieuttakFormErrors.fom.invalidDateFormat,
                                         }
@@ -138,8 +144,14 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                         },
                                         {
                                             noValue: FerieuttakFormErrors.tom.noValue,
-                                            dateAfterMax: FerieuttakFormErrors.tom.dateAfterMax,
-                                            dateBeforeMin: FerieuttakFormErrors.tom.dateBeforeMin,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, FerieuttakFormErrors.tom.dateBeforeMin, {
+                                                    dato: prettifyDate(minDate),
+                                                }),
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, FerieuttakFormErrors.tom.dateAfterMax, {
+                                                    dato: prettifyDate(maxDate),
+                                                }),
                                             toDateIsBeforeFromDate: FerieuttakFormErrors.tom.toDateIsBeforeFromDate,
                                             invalidDateFormat: FerieuttakFormErrors.tom.invalidDateFormat,
                                         }

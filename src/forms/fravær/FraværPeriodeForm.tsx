@@ -1,10 +1,10 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange, dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
@@ -192,15 +192,18 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: getFromDateValidator({
-                                            begrensTilSammeÅr,
-                                            minDate,
-                                            maxDate,
-                                            helgedagerIkkeTillat,
-                                            disabledDateRanges,
-                                            toDate,
-                                            tilOgMed,
-                                        }),
+                                        validate: getFromDateValidator(
+                                            {
+                                                begrensTilSammeÅr,
+                                                minDate,
+                                                maxDate,
+                                                helgedagerIkkeTillat,
+                                                disabledDateRanges,
+                                                toDate,
+                                                tilOgMed,
+                                            },
+                                            intl
+                                        ),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -222,15 +225,18 @@ const FraværPeriodeForm = ({
                                                     ? maxDate
                                                     : dateToday,
                                         },
-                                        validate: getToDateValidator({
-                                            begrensTilSammeÅr,
-                                            disabledDateRanges,
-                                            fraOgMed,
-                                            fromDate,
-                                            helgedagerIkkeTillat,
-                                            maxDate,
-                                            minDate,
-                                        }),
+                                        validate: getToDateValidator(
+                                            {
+                                                begrensTilSammeÅr,
+                                                disabledDateRanges,
+                                                fraOgMed,
+                                                fromDate,
+                                                helgedagerIkkeTillat,
+                                                maxDate,
+                                                minDate,
+                                            },
+                                            intl
+                                        ),
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(FraværPeriodeFormFields.fraOgMed);
@@ -277,23 +283,26 @@ const FraværPeriodeForm = ({
     );
 };
 
-const getToDateValidator = ({
-    helgedagerIkkeTillat,
-    begrensTilSammeÅr,
-    fraOgMed,
-    fromDate,
-    disabledDateRanges,
-    minDate,
-    maxDate,
-}: {
-    helgedagerIkkeTillat?: boolean;
-    begrensTilSammeÅr?: boolean;
-    fraOgMed?: string;
-    fromDate?: Date;
-    disabledDateRanges?: DateRange[];
-    minDate?: Date;
-    maxDate?: Date;
-}) => (value) => {
+const getToDateValidator = (
+    {
+        helgedagerIkkeTillat,
+        begrensTilSammeÅr,
+        fraOgMed,
+        fromDate,
+        disabledDateRanges,
+        minDate,
+        maxDate,
+    }: {
+        helgedagerIkkeTillat?: boolean;
+        begrensTilSammeÅr?: boolean;
+        fraOgMed?: string;
+        fromDate?: Date;
+        disabledDateRanges?: DateRange[];
+        minDate?: Date;
+        maxDate?: Date;
+    },
+    intl: IntlShape
+) => (value) => {
     if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
         return FraværPeriodeFormErrors.tilOgMed.er_helg;
     }
@@ -313,30 +322,43 @@ const getToDateValidator = ({
         {
             noValue: FraværPeriodeFormErrors.tilOgMed.noValue,
             invalidDateFormat: FraværPeriodeFormErrors.tilOgMed.invalidDateFormat,
-            dateAfterMax: FraværPeriodeFormErrors.tilOgMed.dateAfterMax,
-            dateBeforeMin: FraværPeriodeFormErrors.tilOgMed.dateBeforeMin,
+            dateBeforeMin: minDate
+                ? () =>
+                      intlHelper(intl, FraværPeriodeFormErrors.tilOgMed.dateBeforeMin, {
+                          dato: prettifyDate(minDate),
+                      })
+                : undefined,
+            dateAfterMax: maxDate
+                ? () =>
+                      intlHelper(intl, FraværPeriodeFormErrors.tilOgMed.dateAfterMax, {
+                          dato: prettifyDate(maxDate),
+                      })
+                : undefined,
             toDateIsBeforeFromDate: FraværPeriodeFormErrors.tilOgMed.toDateIsBeforeFromDate,
         }
     )(value);
 };
 
-const getFromDateValidator = ({
-    helgedagerIkkeTillat,
-    begrensTilSammeÅr,
-    tilOgMed,
-    toDate,
-    disabledDateRanges,
-    minDate,
-    maxDate,
-}: {
-    helgedagerIkkeTillat?: boolean;
-    begrensTilSammeÅr?: boolean;
-    tilOgMed?: string;
-    toDate?: Date;
-    disabledDateRanges?: DateRange[];
-    minDate?: Date;
-    maxDate?: Date;
-}) => (value) => {
+const getFromDateValidator = (
+    {
+        helgedagerIkkeTillat,
+        begrensTilSammeÅr,
+        tilOgMed,
+        toDate,
+        disabledDateRanges,
+        minDate,
+        maxDate,
+    }: {
+        helgedagerIkkeTillat?: boolean;
+        begrensTilSammeÅr?: boolean;
+        tilOgMed?: string;
+        toDate?: Date;
+        disabledDateRanges?: DateRange[];
+        minDate?: Date;
+        maxDate?: Date;
+    },
+    intl: IntlShape
+) => (value) => {
     if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
         return FraværPeriodeFormErrors.fraOgMed.er_helg;
     }
@@ -357,8 +379,18 @@ const getFromDateValidator = ({
         {
             noValue: FraværPeriodeFormErrors.fraOgMed.noValue,
             invalidDateFormat: FraværPeriodeFormErrors.fraOgMed.invalidDateFormat,
-            dateAfterMax: FraværPeriodeFormErrors.fraOgMed.dateAfterMax,
-            dateBeforeMin: FraværPeriodeFormErrors.fraOgMed.dateBeforeMin,
+            dateBeforeMin: minDate
+                ? () =>
+                      intlHelper(intl, FraværPeriodeFormErrors.fraOgMed.dateBeforeMin, {
+                          dato: prettifyDate(minDate),
+                      })
+                : undefined,
+            dateAfterMax: maxDate
+                ? () =>
+                      intlHelper(intl, FraværPeriodeFormErrors.fraOgMed.dateAfterMax, {
+                          dato: prettifyDate(maxDate),
+                      })
+                : undefined,
             fromDateIsAfterToDate: FraværPeriodeFormErrors.fraOgMed.fromDateIsAfterToDate,
         }
     )(value);
