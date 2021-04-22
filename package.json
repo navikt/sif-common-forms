@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "14.0.0-beta.5",
+    "version": "14.0.0-beta.6",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -41,14 +41,14 @@
     "dependencies": {},
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.1.0",
-        "@navikt/sif-common-formik": "^17.3.1"
+        "@navikt/sif-common-formik": "^17.4.1"
     },
     "devDependencies": {
         "@craco/craco": "^6.1.1",
         "@formatjs/intl-pluralrules": "^4.0.14",
         "@navikt/sif-common-core": "^9.1.0",
-        "@navikt/sif-common-formik": "^17.4.0",
-        "@testing-library/jest-dom": "^5.11.10",
+        "@navikt/sif-common-formik": "^17.4.1",
+        "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^13.1.5",
         "@types/jest": "^26.0.22",
@@ -60,7 +60,7 @@
         "@typescript-eslint/parser": "4.22.0",
         "axios": "^0.21.1",
         "copyfiles": "^2.4.1",
-        "core-js": "^3.10.2",
+        "core-js": "^3.11.0",
         "craco-less": "^1.17.1",
         "cz-conventional-changelog": "^3.3.0",
         "dayjs": "^1.10.4",
