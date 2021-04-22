@@ -14,6 +14,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { getIntlFormErrorRenderer, mapFomTomToDateRange } from '../utils';
 import bostedUtlandUtils from './bostedUtlandUtils';
 import { BostedUtland, BostedUtlandFormValues } from './types';
+import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -119,9 +120,16 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                         },
                                         {
                                             noValue: BostedUtlandFormErrors.fom.noValue,
-                                            dateBeforeMin: BostedUtlandFormErrors.fom.dateBeforeMin,
+                                            dateBeforeMin: () =>
+                                                intlHelper(intl, BostedUtlandFormErrors.fom.dateBeforeMin, {
+                                                    dato: prettifyDate(fomDateLimits.minDate),
+                                                }),
                                             invalidDateFormat: BostedUtlandFormErrors.fom.invalidDateFormat,
-                                            dateAfterMax: BostedUtlandFormErrors.fom.dateAfterMax,
+                                            dateAfterMax: () =>
+                                                intlHelper(intl, BostedUtlandFormErrors.fom.dateAfterMax, {
+                                                    dato: prettifyDate(fomDateLimits.maxDate),
+                                                }),
+
                                             fromDateIsAfterToDate: BostedUtlandFormErrors.fom.fromDateIsAfterToDate,
                                         }
                                     ),

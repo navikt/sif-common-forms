@@ -44,8 +44,6 @@ export const FosterbarnFormErrors = {
     [FosterbarnFormField.fødselsnummer]: {
         [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.fødselsnummer.noValue',
         [ValidateFødselsnummerError.disallowedFødselsnummer]: 'fosterbarnForm.fødselsnummer.disallowedFødselsnummer',
-        [ValidateFødselsnummerError.fødselsnummerChecksumError]:
-            'fosterbarnForm.fødselsnummer.fødselsnummerChecksumError',
         [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'fosterbarnForm.fødselsnummer.fødselsnummerNot11Chars',
         [ValidateFødselsnummerError.invalidFødselsnummer]: 'fosterbarnForm.fødselsnummer.invalidFødselsnummer',
     },
@@ -100,8 +98,6 @@ const FosterbarnForm = ({
                                         disallowedFødselsnummer:
                                             FosterbarnFormErrors.fødselsnummer.disallowedFødselsnummer,
                                         invalidFødselsnummer: FosterbarnFormErrors.fødselsnummer.invalidFødselsnummer,
-                                        fødselsnummerChecksumError:
-                                            FosterbarnFormErrors.fødselsnummer.fødselsnummerChecksumError,
                                         fødselsnummerNot11Chars:
                                             FosterbarnFormErrors.fødselsnummer.fødselsnummerNot11Chars,
                                     }

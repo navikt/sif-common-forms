@@ -1,3 +1,5 @@
+import defaultValidationMessages from '../i18n/defaultMessages';
+
 const utenlandsoppholdMessages = {
     nb: {
         'utenlandsopphold.list.add': '+ Legg til opphold',
@@ -20,6 +22,20 @@ const utenlandsoppholdMessages = {
         'utenlandsopphold.oppsummering.årsak.ANNET': 'Jeg dekker utgiftene selv',
         'utenlandsopphold.form.ok': 'Legg til',
         'utenlandsopphold.form.avbryt': 'Avbryt',
+        'utenlandsoppholdForm.fom.noValue': defaultValidationMessages.nb.noValue,
+        'utenlandsoppholdForm.fom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'utenlandsoppholdForm.fom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'utenlandsoppholdForm.fom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'utenlandsoppholdForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
+        'utenlandsoppholdForm.tom.noValue': defaultValidationMessages.nb.noValue,
+        'utenlandsoppholdForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'utenlandsoppholdForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'utenlandsoppholdForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'utenlandsoppholdForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.invalidDateFormat,
+        'utenlandsoppholdForm.landkode.noValue': defaultValidationMessages.nb.noValue,
+        'utenlandsoppholdForm.årsak.noValue': defaultValidationMessages.nb.noValue,
+        'utenlandsoppholdForm.erBarnetInnlagt.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
+        'utenlandsoppholdForm.barnInnlagtPerioder.listIsEmpty': defaultValidationMessages.nb.listIsEmpty,
     },
     nn: {
         'utenlandsopphold.list.add': 'Legg til opphald',

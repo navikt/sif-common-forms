@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
+import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import {
     getDateRangeValidator,
     ValidateDateError,
@@ -93,6 +94,10 @@ const TidsperiodeForm = ({
                 initialValues={tidsperiodeUtils.mapDateTidsperiodeToFormValues(tidsperiode || {})}
                 onSubmit={onFormikSubmit}
                 renderForm={(formik) => {
+                    const {
+                        values: { fom },
+                    } = formik;
+                    const initialMonth = datepickerUtils.getDateFromDateString(fom) || minDate;
                     const disabledDateRanges =
                         tidsperiode === undefined
                             ? alleTidsperioder.map(mapFomTomToDateRange)
@@ -111,6 +116,7 @@ const TidsperiodeForm = ({
                                     fromInputProps={{
                                         label: inlineLabels.fromDate,
                                         name: TidsperiodeFormFields.fom,
+                                        dayPickerProps: { initialMonth },
                                         validate: getDateRangeValidator.validateFromDate(
                                             {
                                                 required: true,

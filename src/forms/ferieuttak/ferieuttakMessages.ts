@@ -1,3 +1,5 @@
+import defaultValidationMessages from '../i18n/defaultMessages';
+
 const ferieuttakMessages = {
     nb: {
         'ferieuttak.list.title': 'Registrer uttak av ferie',
@@ -10,6 +12,16 @@ const ferieuttakMessages = {
         'ferieuttak.form.validation.dateOutsideRange': 'Første gyldige dato er {fom}, og siste gyldige dato er {tom}',
         'ferieuttak.form.validation.fromDateAfterToDate': 'Fra-dato må være lik eller før til-dato',
         'ferieuttak.form.validation.toDateBeforeFromDate': 'Til-dato må være lik eller etter fra-dato',
+        'ferieuttakForm.fom.noValue': defaultValidationMessages.nb.noValue,
+        'ferieuttakForm.fom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'ferieuttakForm.fom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'ferieuttakForm.fom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'ferieuttakForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
+        'ferieuttakForm.tom.noValue': defaultValidationMessages.nb.noValue,
+        'ferieuttakForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'ferieuttakForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'ferieuttakForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'ferieuttakForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.invalidDateFormat,
     },
     nn: {
         'ferieuttak.list.title': 'Registrer uttak av ferie',

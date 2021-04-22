@@ -45,8 +45,6 @@ function TidsperiodeListAndDialog<FieldNames>({
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => {
-                    console.log(items);
-
                     return <TidsperiodeList tidsperiode={items} onEdit={onEdit} onDelete={onDelete} />;
                 }}
             />

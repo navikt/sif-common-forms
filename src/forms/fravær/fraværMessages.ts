@@ -1,5 +1,6 @@
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { IntlShape } from 'react-intl';
+import defaultValidationMessages from '../i18n/defaultMessages';
 import { FraværÅrsak } from './types';
 
 const fraværMessages = {
@@ -47,6 +48,41 @@ const fraværMessages = {
         'fravær.form.dag.dato': 'Dato',
         'fravær.form.dag.antallArbeidstimer': 'Antall timer du skulle ha jobbet denne dagen',
         'fravær.form.dag.timerFravær': 'Antall timer du var borte fra jobb denne dagen',
+
+        'fraværDagForm.dato.noValue': defaultValidationMessages.nb.noValue,
+        'fraværDagForm.dato.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'fraværDagForm.dato.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'fraværDagForm.dato.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'fraværDagForm.dato.er_helg': 'Lørdag og søndag er ikke gyldig',
+        'fraværDagForm.dato.dato_kolliderer_med_annet_fravær': 'Datoen overlapper med allerede registrert fraværsdag',
+        'fraværDagForm.timerArbeidsdag.noValue': defaultValidationMessages.nb.noValue,
+        'fraværDagForm.timerFravær.noValue': defaultValidationMessages.nb.noValue,
+        'fraværDagForm.timerFravær.fravær_timer_mer_enn_arbeidstimer': 'Fravær kan ikke være høyere enn arbeidstimer',
+        'fraværDagForm.hjemmePgaKorona.yesOrNoIsUnanswered': defaultValidationMessages.nb.noValue,
+        'fraværDagForm.årsak.noValue': defaultValidationMessages.nb.noValue,
+
+        'fraværPeriodeForm.fraOgMed.noValue': defaultValidationMessages.nb.noValue,
+        'fraværPeriodeForm.fraOgMed.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'fraværPeriodeForm.fraOgMed.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'fraværPeriodeForm.fraOgMed.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'fraværPeriodeForm.fraOgMed.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
+        'fraværPeriodeForm.fraOgMed.er_helg': 'Lørdag og søndag er ikke gyldig',
+        'fraværPeriodeForm.fraOgMed.fra_og_til_er_ulike_år': 'Fra og til dato må være i samme år',
+        'fraværPeriodeForm.fraOgMed.fra_dato_kolliderer_med_annet_fravær':
+            'Fra og med datoen overlapper med allerede registrert fraværsdag',
+        'fraværPeriodeForm.tilOgMed.noValue': defaultValidationMessages.nb.noValue,
+        'fraværPeriodeForm.tilOgMed.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
+        'fraværPeriodeForm.tilOgMed.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+        'fraværPeriodeForm.tilOgMed.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
+        'fraværPeriodeForm.tilOgMed.toDateIsBeforeFromDate': defaultValidationMessages.nb.toDateIsBeforeFromDate,
+        'fraværPeriodeForm.tilOgMed.er_helg': 'Lørdag og søndag er ikke gyldig',
+        'fraværPeriodeForm.tilOgMed.fra_og_til_er_ulike_år': 'Fra og til dato må være i samme år',
+        'fraværPeriodeForm.tilOgMed.til_dato_kolliderer_med_annet_fravær':
+            'Til og med datoen overlapper med allerede registrert fraværsdag',
+        'fraværPeriodeForm.årsak.noValue': defaultValidationMessages.nb.noValue,
+        'fraværPeriodeForm.årsak.yesOrNoIsUnanswered': defaultValidationMessages.nb.noValue,
+        'fraværPeriodeForm.periode.dager_overlapper_med_andre_dager':
+            'Én eller flere dager med fravær overlapper med andre dager med fravær.',
     },
     nn: {
         'fravær.list.årsak': 'På grunn av {årsak}',

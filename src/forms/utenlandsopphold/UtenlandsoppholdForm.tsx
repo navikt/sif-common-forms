@@ -188,7 +188,9 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 <Form.CountrySelect
                                     name={UtenlandsoppholdFormFields.landkode}
                                     label={intlHelper(intl, 'utenlandsopphold.form.land.spm')}
-                                    validate={getRequiredFieldValidator()}
+                                    validate={getRequiredFieldValidator({
+                                        noValue: UtlandsoppholdFormErrors.landkode.noValue,
+                                    })}
                                 />
                             </FormBlock>
                         )}

@@ -16,6 +16,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import { getIntlFormErrorRenderer } from '../utils';
 import annetBarnUtils from './annetBarnUtils';
 import { AnnetBarn, AnnetBarnFormValues } from './types';
+import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -36,19 +37,18 @@ enum AnnetBarnFormFields {
 }
 
 export const AnnetBarnFormErrors = {
-    [AnnetBarnFormFields.navn]: { [ValidateRequiredFieldError.noValue]: 'annetBarn.navn.noValue' },
+    [AnnetBarnFormFields.navn]: { [ValidateRequiredFieldError.noValue]: 'annetBarnForm.navn.noValue' },
     [AnnetBarnFormFields.fødselsdato]: {
-        [ValidateRequiredFieldError.noValue]: 'annetBarn.fødselsdato.noValue',
-        [ValidateDateError.dateBeforeMin]: 'annetBarn.fødselsdato.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'annetBarn.fødselsdato.dateAfterMax',
-        [ValidateDateError.invalidDateFormat]: 'annetBarn.fødselsdato.invalidFormat',
+        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.fødselsdato.noValue',
+        [ValidateDateError.dateBeforeMin]: 'annetBarnForm.fødselsdato.dateBeforeMin',
+        [ValidateDateError.dateAfterMax]: 'annetBarnForm.fødselsdato.dateAfterMax',
+        [ValidateDateError.invalidDateFormat]: 'annetBarnForm.fødselsdato.invalidFormat',
     },
     [AnnetBarnFormFields.fnr]: {
-        [ValidateRequiredFieldError.noValue]: 'annetBarn.fnr.noValue',
-        [ValidateFødselsnummerError.invalidFødselsnummer]: 'annetBarn.fnr.invalidFødselsnummer',
-        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'annetBarn.fnr.fødselsnummerNot11Chars',
-        [ValidateFødselsnummerError.fødselsnummerChecksumError]: 'annetBarn.fnr.fødselsnummerChecksumError',
-        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'annetBarn.fnr.disallowedFødselsnummer',
+        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.fnr.noValue',
+        [ValidateFødselsnummerError.invalidFødselsnummer]: 'annetBarnForm.fnr.invalidFødselsnummer',
+        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'annetBarnForm.fnr.fødselsnummerNot11Chars',
+        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'annetBarnForm.fnr.disallowedFødselsnummer',
     },
 };
 
@@ -131,7 +131,10 @@ const AnnetBarnForm = ({
                                             { min: minDate, max: maxDate },
                                             {
                                                 dateAfterMax: AnnetBarnFormErrors.fødselsdato.dateAfterMax,
-                                                dateBeforeMin: AnnetBarnFormErrors.fødselsdato.dateBeforeMin,
+                                                dateBeforeMin: () =>
+                                                    intlHelper(intl, AnnetBarnFormErrors.fødselsdato.dateBeforeMin, {
+                                                        dato: prettifyDate(minDate),
+                                                    }),
                                                 invalidDateFormat: AnnetBarnFormErrors.fødselsdato.invalidDateFormat,
                                                 noValue: AnnetBarnFormErrors.fødselsdato.noValue,
                                             }
@@ -165,8 +168,6 @@ const AnnetBarnForm = ({
                                                 invalidFødselsnummer: AnnetBarnFormErrors.fnr.invalidFødselsnummer,
                                                 disallowedFødselsnummer:
                                                     AnnetBarnFormErrors.fnr.disallowedFødselsnummer,
-                                                fødselsnummerChecksumError:
-                                                    AnnetBarnFormErrors.fnr.fødselsnummerChecksumError,
                                                 fødselsnummerNot11Chars:
                                                     AnnetBarnFormErrors.fnr.fødselsnummerNot11Chars,
                                             }
