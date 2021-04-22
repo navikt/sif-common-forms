@@ -16,7 +16,7 @@ const annetBarnMessages = {
         'annetBarnForm.fnr.noValue': 'Feltet er påkrevd',
         'annetBarnForm.fnr.invalidFødselsnummer': 'Ugyldig fødselsnummer',
         'annetBarnForm.fnr.fødselsnummerNot11Chars': 'Fødselsnummeret må bestå av 11 siffer',
-        'annetBarnForm.fnr.disallowedFødselsnummer': 'Fødselsnummeret du har fylt uter ditt eget fødselsnummer',
+        'annetBarnForm.fnr.disallowedFødselsnummer': 'Fødselsnummeret du har fylt ut er ditt eget fødselsnummer',
     },
     nn: {
         'annetBarn.form.title': 'Legg til barn',
