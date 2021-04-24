@@ -12,7 +12,7 @@ const annetBarnMessages = {
         'annetBarnForm.fødselsdato.noValue': 'Feltet er påkrevd',
         'annetBarnForm.fødselsdato.dateBeforeMin': 'Fødselsdato kan ikke være tidligere enn {dato}',
         'annetBarnForm.fødselsdato.dateAfterMax': 'Fødselsdato kan ikke være etter dagens dato',
-        'annetBarnForm.fødselsdato.invalidFormat': 'Ugyldig datoformat. Formatet må være dd.mm.åååå',
+        'annetBarnForm.fødselsdato.invalidDateFormat': 'Ugyldig datoformat. Formatet må være dd.mm.åååå',
         'annetBarnForm.fnr.noValue': 'Feltet er påkrevd',
         'annetBarnForm.fnr.invalidFødselsnummer': 'Ugyldig fødselsnummer',
         'annetBarnForm.fnr.fødselsnummerNot11Chars': 'Fødselsnummeret må bestå av 11 siffer',

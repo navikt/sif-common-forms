@@ -9,8 +9,9 @@ import { mapVirksomhetToVirksomhetApiData } from './mapVirksomhetToApiData';
 import { Virksomhet } from './types';
 import VirksomhetForm from './VirksomhetForm';
 import VirksomhetSummary from './VirksomhetSummary';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     skipOrgNumValidation?: boolean;
@@ -28,7 +29,7 @@ function VirksomhetInfoAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     const intl = useIntl();
     return (
-        <FormikModalFormAndInfo<FieldNames, Virksomhet>
+        <FormikModalFormAndInfo<FieldNames, Virksomhet, ValidationError>
             name={name}
             validate={validate}
             labels={labels}

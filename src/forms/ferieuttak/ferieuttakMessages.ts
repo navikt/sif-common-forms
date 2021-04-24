@@ -21,7 +21,7 @@ const ferieuttakMessages = {
         'ferieuttakForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
         'ferieuttakForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
         'ferieuttakForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'ferieuttakForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.invalidDateFormat,
+        'ferieuttakForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.toDateIsBeforeFromDate,
     },
     nn: {
         'ferieuttak.list.title': 'Registrer uttak av ferie',

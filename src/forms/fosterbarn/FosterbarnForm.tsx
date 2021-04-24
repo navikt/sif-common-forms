@@ -10,10 +10,11 @@ import {
     ValidateFødselsnummerError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
-import { getIntlFormErrorRenderer } from '../utils';
 
 interface FosterbarnFormText {
     form_fødselsnummer_label: string;
@@ -49,7 +50,7 @@ export const FosterbarnFormErrors = {
     },
 };
 
-const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
+const Form = getTypedFormComponents<FosterbarnFormField, FormValues, ValidationError>();
 
 const FosterbarnForm = ({
     fosterbarn: initialValues = { fornavn: '', etternavn: '', fødselsnummer: '' },
@@ -82,26 +83,16 @@ const FosterbarnForm = ({
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
-                    <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
+                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorHandler(intl, 'fosterbarnForm')}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={getFødselsnummerValidator(
-                                    {
-                                        required: true,
-                                        disallowedValues: disallowedFødselsnumre,
-                                    },
-                                    {
-                                        noValue: FosterbarnFormErrors.fødselsnummer.noValue,
-                                        disallowedFødselsnummer:
-                                            FosterbarnFormErrors.fødselsnummer.disallowedFødselsnummer,
-                                        invalidFødselsnummer: FosterbarnFormErrors.fødselsnummer.invalidFødselsnummer,
-                                        fødselsnummerNot11Chars:
-                                            FosterbarnFormErrors.fødselsnummer.fødselsnummerNot11Chars,
-                                    }
-                                )}
+                                validate={getFødselsnummerValidator({
+                                    required: true,
+                                    disallowedValues: disallowedFødselsnumre,
+                                })}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}
@@ -113,18 +104,14 @@ const FosterbarnForm = ({
                                     <Form.Input
                                         name={FosterbarnFormField.fornavn}
                                         label={txt.form_fornavn_label}
-                                        validate={getRequiredFieldValidator({
-                                            noValue: FosterbarnFormErrors.fornavn.noValue,
-                                        })}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.Input
                                         name={FosterbarnFormField.etternavn}
                                         label={txt.form_etternavn_label}
-                                        validate={getRequiredFieldValidator({
-                                            noValue: FosterbarnFormErrors.etternavn.noValue,
-                                        })}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                             </Tiles>

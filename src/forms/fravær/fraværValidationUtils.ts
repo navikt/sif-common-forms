@@ -95,9 +95,10 @@ export const validateFraværDagCollision = (
         : undefined;
 };
 
-export const validateNoCollisions = (fraværDager: FraværDag[], fraværPerioder: FraværPeriode[]) => ():
-    | FraværFieldValidationErrors
-    | undefined => {
+export const validateNoCollisions = (
+    fraværDager: FraværDag[],
+    fraværPerioder: FraværPeriode[]
+): FraværFieldValidationErrors | undefined => {
     if (fraværPerioder.length === 0 && fraværDager.length === 0) {
         return undefined;
     }

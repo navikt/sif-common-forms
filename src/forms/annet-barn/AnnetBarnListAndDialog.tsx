@@ -7,8 +7,9 @@ import {
 import AnnetBarnForm from './AnnetBarnForm';
 import AnnetBarnList from './AnnetBarnList';
 import { AnnetBarn } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     labels: ModalFormAndListLabels;
     minDate: Date;
@@ -32,7 +33,7 @@ function AnnetBarnListAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, AnnetBarn>
+            <FormikModalFormAndList<FieldNames, AnnetBarn, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

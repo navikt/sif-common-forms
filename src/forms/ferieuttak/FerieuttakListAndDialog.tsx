@@ -8,8 +8,9 @@ import {
 import FerieuttakForm from './FerieuttakForm';
 import FerieuttakList from './FerieuttakList';
 import { Ferieuttak } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;
@@ -19,7 +20,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
 function FerieuttakListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Ferieuttak>
+            <FormikModalFormAndList<FieldNames, Ferieuttak, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

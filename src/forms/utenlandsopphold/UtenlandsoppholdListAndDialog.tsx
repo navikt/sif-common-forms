@@ -8,8 +8,9 @@ import {
 import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import UtenlandsoppholdListe from './UtenlandsoppholdList';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;
@@ -18,7 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
 
 function UtenlandsoppholdListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
     return (
-        <FormikModalFormAndList<FieldNames, Utenlandsopphold>
+        <FormikModalFormAndList<FieldNames, Utenlandsopphold, ValidationError>
             name={name}
             labels={labels}
             validate={validate}

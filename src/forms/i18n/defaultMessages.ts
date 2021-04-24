@@ -1,6 +1,6 @@
 import {
     ValidateDateError,
-    ValidateDateInRangeError,
+    ValidateDateRangeError,
     ValidateFødselsnummerError,
     ValidateListError,
     ValidateNumberError,
@@ -20,8 +20,8 @@ const defaultValidationMessages = {
         [ValidateDateError.invalidDateFormat]: 'Ugyldig datoformat. Formatet må være dd.mm.åååå',
         [ValidateDateError.dateBeforeMin]: 'Dato kan ikke være tidligere enn {dato}',
         [ValidateDateError.dateAfterMax]: `Dato kan ikke være etter {dato}`,
-        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'Fra-dato må være lik eller før til-dato',
-        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'Til-dato må være lik eller etter fra-dato',
+        [ValidateDateRangeError.fromDateIsAfterToDate]: 'Fra-dato må være lik eller før til-dato',
+        [ValidateDateRangeError.toDateIsBeforeFromDate]: 'Til-dato må være lik eller etter fra-dato',
         [ValidateListError.listIsEmpty]: 'Du har ikke lagt til noe i listen',
         [ValidateListError.listHasTooFewItems]: 'Du har lagt til for få',
         [ValidateListError.listHasTooFewItems]: 'Du har lagt til for mange',

@@ -8,8 +8,9 @@ import {
 import FraværPeriodeForm from './FraværPeriodeForm';
 import FraværPerioderList from './FraværPerioderList';
 import { FraværPeriode } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;
@@ -35,7 +36,7 @@ function FraværPerioderListAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, FraværPeriode>
+            <FormikModalFormAndList<FieldNames, FraværPeriode, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

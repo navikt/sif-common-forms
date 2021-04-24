@@ -15,6 +15,7 @@ import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import { AnnetBarn } from '../../../forms/annet-barn/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -40,7 +41,9 @@ const AnnetBarnExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues> includeButtons={true} submitButtonLabel="Valider skjema">
+                            <TypedFormikForm<FormValues, ValidationError>
+                                includeButtons={true}
+                                submitButtonLabel="Valider skjema">
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
                                     validate={getListValidator({ required: true })}

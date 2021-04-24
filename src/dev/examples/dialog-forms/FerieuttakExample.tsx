@@ -5,10 +5,7 @@ import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
 import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
@@ -20,6 +17,7 @@ import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 enum FormField {
     'ferie' = 'ferie',
@@ -45,11 +43,10 @@ const FormikExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'ferieuttakExample')}
-                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'ferieuttakExample')}>
+                                fieldErrorHandler={getFieldErrorHandler(intl)}>
                                 <FerieuttakListAndDialog<FormField>
                                     name={FormField.ferie}
                                     minDate={date1YearAgo}

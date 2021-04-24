@@ -7,14 +7,15 @@ import {
     getDateRangeValidator,
     getRequiredFieldValidator,
     ValidateDateError,
-    ValidateDateInRangeError,
+    ValidateDateRangeError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { getIntlFormErrorRenderer, mapFomTomToDateRange } from '../utils';
+import { handleDateRangeValidationError, mapFomTomToDateRange } from '../utils';
 import bostedUtlandUtils from './bostedUtlandUtils';
 import { BostedUtland, BostedUtlandFormValues } from './types';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface BostedUtlandFormLabels {
     tittel: string;
@@ -46,21 +47,21 @@ export const BostedUtlandFormErrors = {
         [ValidateDateError.dateAfterMax]: 'bostedUtlandForm.fom.dateAfterMax',
         [ValidateDateError.dateBeforeMin]: 'bostedUtlandForm.fom.dateBeforeMin',
         [ValidateDateError.invalidDateFormat]: 'bostedUtlandForm.fom.invalidDateFormat',
-        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'bostedUtlandForm.fom.fromDateIsAfterToDate',
+        [ValidateDateRangeError.fromDateIsAfterToDate]: 'bostedUtlandForm.fom.fromDateIsAfterToDate',
     },
     [BostedUtlandFormFields.tom]: {
         [ValidateRequiredFieldError.noValue]: 'bostedUtlandForm.tom.noValue',
         [ValidateDateError.dateAfterMax]: 'bostedUtlandForm.tom.dateAfterMax',
         [ValidateDateError.dateBeforeMin]: 'bostedUtlandForm.tom.dateBeforeMin',
         [ValidateDateError.invalidDateFormat]: 'bostedUtlandForm.tom.invalidDateFormat',
-        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'bostedUtlandForm.tom.toDateIsBeforeFromDate',
+        [ValidateDateRangeError.toDateIsBeforeFromDate]: 'bostedUtlandForm.tom.toDateIsBeforeFromDate',
     },
     [BostedUtlandFormFields.landkode]: {
         [ValidateRequiredFieldError.noValue]: 'bostedUtlandForm.landkode.noValue',
     },
 };
 
-const Form = getTypedFormComponents<BostedUtlandFormFields, BostedUtlandFormValues>();
+const Form = getTypedFormComponents<BostedUtlandFormFields, BostedUtlandFormValues, ValidationError>();
 
 const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmit, onCancel }: Props) => {
     const intl = useIntl();
@@ -95,7 +96,7 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                         : alleBosteder.filter((b) => b.id !== bosted.id).map(mapFomTomToDateRange);
 
                 return (
-                    <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
+                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorHandler(intl, 'bostedUtlandForm')}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id="bostedUtland.form.tittel" />
                         </Systemtittel>
@@ -111,52 +112,36 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                 fromInputProps={{
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
-                                    validate: getDateRangeValidator.validateFromDate(
-                                        {
+                                    validate: (value) => {
+                                        const error = getDateRangeValidator.validateFromDate({
                                             required: true,
                                             min: fomDateLimits.minDate,
                                             max: fomDateLimits.maxDate,
                                             toDate: ISOStringToDate(values.tom),
-                                        },
-                                        {
-                                            noValue: BostedUtlandFormErrors.fom.noValue,
-                                            invalidDateFormat: BostedUtlandFormErrors.fom.invalidDateFormat,
-                                            dateBeforeMin: () =>
-                                                intlHelper(intl, BostedUtlandFormErrors.fom.dateBeforeMin, {
-                                                    dato: prettifyDate(fomDateLimits.minDate),
-                                                }),
-                                            dateAfterMax: () =>
-                                                intlHelper(intl, BostedUtlandFormErrors.fom.dateAfterMax, {
-                                                    dato: prettifyDate(fomDateLimits.maxDate),
-                                                }),
-                                            fromDateIsAfterToDate: BostedUtlandFormErrors.fom.fromDateIsAfterToDate,
-                                        }
-                                    ),
+                                        })(value);
+                                        return handleDateRangeValidationError(
+                                            error,
+                                            fomDateLimits.minDate,
+                                            fomDateLimits.maxDate
+                                        );
+                                    },
                                 }}
                                 toInputProps={{
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
-                                    validate: getDateRangeValidator.validateToDate(
-                                        {
+                                    validate: (value) => {
+                                        const error = getDateRangeValidator.validateToDate({
                                             required: true,
                                             min: tomDateLimits.minDate,
                                             max: tomDateLimits.maxDate,
                                             fromDate: ISOStringToDate(values.fom),
-                                        },
-                                        {
-                                            noValue: BostedUtlandFormErrors.tom.noValue,
-                                            invalidDateFormat: BostedUtlandFormErrors.tom.invalidDateFormat,
-                                            dateBeforeMin: () =>
-                                                intlHelper(intl, BostedUtlandFormErrors.tom.dateBeforeMin, {
-                                                    dato: prettifyDate(fomDateLimits.minDate),
-                                                }),
-                                            dateAfterMax: () =>
-                                                intlHelper(intl, BostedUtlandFormErrors.tom.dateAfterMax, {
-                                                    dato: prettifyDate(fomDateLimits.maxDate),
-                                                }),
-                                            toDateIsBeforeFromDate: BostedUtlandFormErrors.tom.toDateIsBeforeFromDate,
-                                        }
-                                    ),
+                                        })(value);
+                                        return handleDateRangeValidationError(
+                                            error,
+                                            tomDateLimits.minDate,
+                                            tomDateLimits.maxDate
+                                        );
+                                    },
                                 }}
                             />
                         </FormBlock>
@@ -164,9 +149,7 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                             <Form.CountrySelect
                                 name={BostedUtlandFormFields.landkode}
                                 label={intlHelper(intl, 'bostedUtland.form.land.spm')}
-                                validate={getRequiredFieldValidator({
-                                    noValue: BostedUtlandFormErrors.landkode.noValue,
-                                })}
+                                validate={getRequiredFieldValidator()}
                             />
                         </FormBlock>
                     </Form.Form>

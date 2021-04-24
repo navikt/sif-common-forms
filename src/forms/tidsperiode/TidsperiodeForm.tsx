@@ -7,14 +7,15 @@ import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-dat
 import {
     getDateRangeValidator,
     ValidateDateError,
-    ValidateDateInRangeError,
+    ValidateDateRangeError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { getIntlFormErrorRenderer, mapFomTomToDateRange } from '../utils';
+import { handleDateRangeValidationError, mapFomTomToDateRange } from '../utils';
 import tidsperiodeUtils from './tidsperiodeUtils';
 import { DateTidsperiode, DateTidsperiodeFormValues } from './types';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 export interface TidsperiodeFormLabels {
     title?: string;
@@ -43,21 +44,21 @@ enum TidsperiodeFormFields {
 export const TidsperiodeFormErrors = {
     [TidsperiodeFormFields.fom]: {
         [ValidateRequiredFieldError.noValue]: 'tidsperiodeForm.fom.noValue',
-        [ValidateDateInRangeError.fromDateIsAfterToDate]: 'tidsperiodeForm.fom.fromDateIsAfterToDate',
+        [ValidateDateRangeError.fromDateIsAfterToDate]: 'tidsperiodeForm.fom.fromDateIsAfterToDate',
         [ValidateDateError.invalidDateFormat]: 'tidsperiodeForm.fom.invalidDateFormat',
         [ValidateDateError.dateBeforeMin]: 'tidsperiodeForm.fom.dateBeforeMin',
         [ValidateDateError.dateAfterMax]: 'tidsperiodeForm.fom.dateAfterMax',
     },
     [TidsperiodeFormFields.tom]: {
         [ValidateRequiredFieldError.noValue]: 'tidsperiodeForm.tom.noValue',
-        [ValidateDateInRangeError.toDateIsBeforeFromDate]: 'tidsperiodeForm.tom.toDateIsBeforeFromDate',
+        [ValidateDateRangeError.toDateIsBeforeFromDate]: 'tidsperiodeForm.tom.toDateIsBeforeFromDate',
         [ValidateDateError.invalidDateFormat]: 'tidsperiodeForm.tom.invalidDateFormat',
         [ValidateDateError.dateBeforeMin]: 'tidsperiodeForm.tom.dateBeforeMin',
         [ValidateDateError.dateAfterMax]: 'tidsperiodeForm.tom.dateAfterMax',
     },
 };
 
-const Form = getTypedFormComponents<TidsperiodeFormFields, DateTidsperiodeFormValues>();
+const Form = getTypedFormComponents<TidsperiodeFormFields, DateTidsperiodeFormValues, ValidationError>();
 
 const TidsperiodeForm = ({
     maxDate,
@@ -105,7 +106,9 @@ const TidsperiodeForm = ({
                             : alleTidsperioder.filter((t) => t.id !== tidsperiode.id).map(mapFomTomToDateRange);
 
                     return (
-                        <Form.Form onCancel={onCancel} fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
+                        <Form.Form
+                            onCancel={onCancel}
+                            fieldErrorHandler={getFieldErrorHandler(intl, 'tidsperiodeForm')}>
                             <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
                             <FormBlock>
                                 <Form.DateRangePicker
@@ -118,31 +121,15 @@ const TidsperiodeForm = ({
                                         label: inlineLabels.fromDate,
                                         name: TidsperiodeFormFields.fom,
                                         dayPickerProps: { initialMonth },
-                                        validate: getDateRangeValidator.validateFromDate(
-                                            {
+                                        validate: (value) => {
+                                            const error = getDateRangeValidator.validateFromDate({
                                                 required: true,
                                                 min: minDate,
                                                 max: maxDate,
                                                 toDate: ISOStringToDate(formik.values.tom),
-                                            },
-                                            {
-                                                noValue: TidsperiodeFormErrors.fom.noValue,
-                                                dateBeforeMin: minDate
-                                                    ? () =>
-                                                          intlHelper(intl, TidsperiodeFormErrors.fom.dateBeforeMin, {
-                                                              dato: prettifyDate(minDate),
-                                                          })
-                                                    : undefined,
-                                                dateAfterMax: maxDate
-                                                    ? () =>
-                                                          intlHelper(intl, TidsperiodeFormErrors.fom.dateAfterMax, {
-                                                              dato: prettifyDate(maxDate),
-                                                          })
-                                                    : undefined,
-                                                invalidDateFormat: TidsperiodeFormErrors.fom.invalidDateFormat,
-                                                fromDateIsAfterToDate: TidsperiodeFormErrors.fom.fromDateIsAfterToDate,
-                                            }
-                                        ),
+                                            })(value);
+                                            return handleDateRangeValidationError(error, minDate, maxDate);
+                                        },
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(TidsperiodeFormFields.tom);
@@ -158,25 +145,25 @@ const TidsperiodeForm = ({
                                                 min: minDate,
                                                 max: maxDate,
                                                 fromDate: ISOStringToDate(formik.values.fom),
-                                            },
-                                            {
-                                                noValue: TidsperiodeFormErrors.tom.noValue,
-                                                dateBeforeMin: minDate
-                                                    ? () =>
-                                                          intlHelper(intl, TidsperiodeFormErrors.tom.dateBeforeMin, {
-                                                              dato: prettifyDate(minDate),
-                                                          })
-                                                    : undefined,
-                                                dateAfterMax: maxDate
-                                                    ? () =>
-                                                          intlHelper(intl, TidsperiodeFormErrors.tom.dateAfterMax, {
-                                                              dato: prettifyDate(maxDate),
-                                                          })
-                                                    : undefined,
-                                                invalidDateFormat: TidsperiodeFormErrors.tom.invalidDateFormat,
-                                                toDateIsBeforeFromDate:
-                                                    TidsperiodeFormErrors.tom.toDateIsBeforeFromDate,
                                             }
+                                            // {
+                                            //     noValue: TidsperiodeFormErrors.tom.noValue,
+                                            //     dateBeforeMin: minDate
+                                            //         ? () =>
+                                            //               intlHelper(intl, TidsperiodeFormErrors.tom.dateBeforeMin, {
+                                            //                   dato: prettifyDate(minDate),
+                                            //               })
+                                            //         : undefined,
+                                            //     dateAfterMax: maxDate
+                                            //         ? () =>
+                                            //               intlHelper(intl, TidsperiodeFormErrors.tom.dateAfterMax, {
+                                            //                   dato: prettifyDate(maxDate),
+                                            //               })
+                                            //         : undefined,
+                                            //     invalidDateFormat: TidsperiodeFormErrors.tom.invalidDateFormat,
+                                            //     toDateIsBeforeFromDate:
+                                            //         TidsperiodeFormErrors.tom.toDateIsBeforeFromDate,
+                                            // }
                                         ),
                                         onChange: () => {
                                             setTimeout(() => {

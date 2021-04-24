@@ -5,11 +5,12 @@ import {
     ModalFormAndListLabels,
     TypedFormInputValidationProps,
 } from '@navikt/sif-common-formik';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import BostedUtlandForm from './BostedUtlandForm';
 import BostedUtlandListe from './BostedUtlandList';
 import { BostedUtland } from './types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     minDate: Date;
     maxDate: Date;
@@ -18,7 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
 
 function BostedUtlandListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
     return (
-        <FormikModalFormAndList<FieldNames, BostedUtland>
+        <FormikModalFormAndList<FieldNames, BostedUtland, ValidationError>
             name={name}
             labels={labels}
             validate={validate}

@@ -5,11 +5,10 @@ import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
-import {
-    getFieldErrorRenderer,
-    getSummaryFieldErrorRenderer,
-} from '@navikt/sif-common-formik/lib/utils/formikErrorRenderUtils';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -19,7 +18,6 @@ import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessa
 import { BostedUtland } from '../../../forms/bosted-utland/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
-import flat from 'flat';
 
 enum FormField {
     'bosted' = 'bosted',
@@ -45,16 +43,15 @@ const FormikExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getFieldErrorRenderer(intl, 'bostedUtlandForm')}
-                                summaryFieldErrorRenderer={getSummaryFieldErrorRenderer(intl, 'bostedUtlandForm')}>
+                                fieldErrorHandler={getFieldErrorHandler(intl)}>
                                 <BostedUtlandListAndDialog<FormField>
                                     name={FormField.bosted}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={getListValidator({ required: true }, { listIsEmpty: 'Tom liste' })}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til bosted',
                                         listTitle: 'Registrerte bosteder',

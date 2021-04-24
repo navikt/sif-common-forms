@@ -83,6 +83,7 @@ const fraværMessages = {
         'fraværPeriodeForm.årsak.yesOrNoIsUnanswered': defaultValidationMessages.nb.noValue,
         'fraværPeriodeForm.periode.dager_overlapper_med_andre_dager':
             'Én eller flere dager med fravær overlapper med andre dager med fravær.',
+        'fraværPeriodeForm.hjemmePgaKorona.yesOrNoIsUnanswered': defaultValidationMessages.nb.noValue,
     },
     nn: {
         'fravær.list.årsak': 'På grunn av {årsak}',

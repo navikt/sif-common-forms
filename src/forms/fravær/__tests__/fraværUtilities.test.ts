@@ -207,27 +207,27 @@ describe('timeText', () => {
 
         describe('detects no collisions when', () => {
             it('has no data', () => {
-                expect(validateNoCollisions([], [])()).toBeUndefined();
+                expect(validateNoCollisions([], [])).toBeUndefined();
             });
             it('has only dates and none of then are colliding', () => {
-                expect(validateNoCollisions([dag1, dag2], [])()).toBeUndefined();
+                expect(validateNoCollisions([dag1, dag2], [])).toBeUndefined();
             });
             it('has dates and ranges and none of then are colliding', () => {
-                expect(validateNoCollisions([dag1, dag2], [periode3])()).toBeUndefined();
+                expect(validateNoCollisions([dag1, dag2], [periode3])).toBeUndefined();
             });
         });
         describe('detects collisions when', () => {
             it('to dates collide', () => {
-                expect(validateNoCollisions([{ ...dag1 }, { ...dag1 }], [])()).toBeDefined();
+                expect(validateNoCollisions([{ ...dag1 }, { ...dag1 }], [])).toBeDefined();
             });
             it('a date collide with a range', () => {
-                expect(validateNoCollisions([dag1], [periode1])()).toBeDefined();
+                expect(validateNoCollisions([dag1], [periode1])).toBeDefined();
             });
             it('a range surrounds a date', () => {
-                expect(validateNoCollisions([dag1], [periode2])()).toBeDefined();
+                expect(validateNoCollisions([dag1], [periode2])).toBeDefined();
             });
             it('a range surrounds another range', () => {
-                expect(validateNoCollisions([], [periode1, periode2])()).toBeDefined();
+                expect(validateNoCollisions([], [periode1, periode2])).toBeDefined();
             });
         });
     });

@@ -7,7 +7,8 @@ import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-co
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
-import { validateAll } from '@navikt/sif-common-formik/lib/validation/validationUtils';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
@@ -19,8 +20,7 @@ import fraværMessages from '../../../forms/fravær/fraværMessages';
 import FraværPeriodeForm, { FraværPeriodeFormErrors } from '../../../forms/fravær/FraværPeriodeForm';
 import FraværPerioderListAndDialog from '../../../forms/fravær/FraværPerioderListAndDialog';
 import { fraværDagToFraværDateRange, fraværPeriodeToDateRange } from '../../../forms/fravær/fraværUtilities';
-import { validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
-import { getIntlFormErrorRenderer } from '../../../forms/utils';
+import { FraværFieldValidationErrors, validateNoCollisions } from '../../../forms/fravær/fraværValidationUtils';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
@@ -61,10 +61,10 @@ const FraværExample: React.FunctionComponent = () => {
                             ...values.dager.map(fraværDagToFraværDateRange),
                         ];
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError | FraværFieldValidationErrors>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
+                                fieldErrorHandler={getFieldErrorHandler(intl)}>
                                 <FormBlock>
                                     <FraværPerioderListAndDialog<FormField>
                                         name={FormField.perioder}
@@ -76,12 +76,16 @@ const FraværExample: React.FunctionComponent = () => {
                                                 år, må du sende en søknad for hvert år.
                                             </p>
                                         }
-                                        validate={(value) =>
-                                            validateAll([
-                                                () => getListValidator({ required: true })(value),
-                                                () => validateNoCollisions(values.dager, values.perioder),
-                                            ])
-                                        }
+                                        validate={(value) => {
+                                            const listError = getListValidator({ required: true })(value);
+                                            if (listError) {
+                                                return listError;
+                                            }
+                                            const collisionError = validateNoCollisions(values.dager, values.perioder);
+                                            if (collisionError) {
+                                                return collisionError;
+                                            }
+                                        }}
                                         labels={{
                                             addLabel: 'Legg til periode',
                                             modalTitle: 'Fravær hele dager',
@@ -95,12 +99,16 @@ const FraværExample: React.FunctionComponent = () => {
                                         name={FormField.dager}
                                         minDate={date1YearAgo}
                                         maxDate={dateToday}
-                                        validate={(value) =>
-                                            validateAll([
-                                                () => getListValidator({ required: true })(value),
-                                                () => validateNoCollisions(values.dager, values.perioder),
-                                            ])
-                                        }
+                                        validate={(value) => {
+                                            const listError = getListValidator({ required: true })(value);
+                                            if (listError) {
+                                                return listError;
+                                            }
+                                            const collisionError = validateNoCollisions(values.dager, values.perioder);
+                                            if (collisionError) {
+                                                return collisionError;
+                                            }
+                                        }}
                                         labels={{
                                             addLabel: 'Legg til dag med delvis fravær',
                                             listTitle: 'Dager med delvis fravær',

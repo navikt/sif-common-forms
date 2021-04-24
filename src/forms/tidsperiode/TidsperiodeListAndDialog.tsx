@@ -8,8 +8,9 @@ import {
 import TidsperiodeForm from './TidsperiodeForm';
 import TidsperiodeList from './TidsperiodeList';
 import { DateTidsperiode } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     formTitle?: string;
     minDate?: Date;
@@ -27,7 +28,7 @@ function TidsperiodeListAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, DateTidsperiode>
+            <FormikModalFormAndList<FieldNames, DateTidsperiode, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

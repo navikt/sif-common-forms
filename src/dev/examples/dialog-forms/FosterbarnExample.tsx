@@ -5,6 +5,8 @@ import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
@@ -15,7 +17,6 @@ import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAnd
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
-import { getIntlFormErrorRenderer } from '../../../forms/utils';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -41,10 +42,10 @@ const FosterbarnExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={getIntlFormErrorRenderer(intl)}>
+                                fieldErrorHandler={getFieldErrorHandler(intl)}>
                                 <FosterbarnListAndDialog<FormField>
                                     name={FormField.fosterbarn}
                                     validate={getListValidator({ required: true })}

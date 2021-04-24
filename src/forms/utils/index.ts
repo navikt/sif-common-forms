@@ -1,18 +1,32 @@
-import { IntlShape } from 'react-intl';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { isFunction } from 'formik';
+import { DateRange, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import {
+    ValidateDateError,
+    ValidateDateRangeError,
+    ValidateRequiredFieldError,
+} from '@navikt/sif-common-formik/lib/validation';
 import { DateTidsperiode } from '../tidsperiode';
-import { FormikFieldErrorRender } from '@navikt/sif-common-formik/lib/components/typed-formik-form/TypedFormikForm';
 
 export const mapFomTomToDateRange = ({ fom, tom }: DateTidsperiode): DateRange => ({
     from: fom,
     to: tom,
 });
 
-export const getIntlFormErrorRenderer = (intl: IntlShape): FormikFieldErrorRender => (error) => {
-    if (isFunction(error)) {
-        return error();
+export const handleDateRangeValidationError = (
+    error: ValidateDateError | ValidateDateRangeError | ValidateRequiredFieldError | undefined,
+    minDate: Date | undefined,
+    maxDate: Date | undefined
+) => {
+    if (minDate && error === ValidateDateError.dateBeforeMin) {
+        return {
+            key: error,
+            values: { dato: prettifyDate(minDate) },
+        };
     }
-    return intlHelper(intl, error);
+    if (maxDate && error === ValidateDateError.dateAfterMax) {
+        return {
+            key: error,
+            values: { dato: prettifyDate(maxDate) },
+        };
+    }
+    return error;
 };

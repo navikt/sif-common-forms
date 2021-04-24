@@ -5,6 +5,7 @@ import { FormikModalFormAndList, TypedFormInputValidationProps } from '@navikt/s
 import FosterbarnForm from './FosterbarnForm';
 import FosterbarnList from './FosterbarnList';
 import { Fosterbarn } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 export interface FosterbarnListAndDialogText {
     liste_legg_til_knapp: string;
@@ -13,7 +14,7 @@ export interface FosterbarnListAndDialogText {
     modal_tittel: string;
 }
 
-interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     texts?: FosterbarnListAndDialogText;
     includeName?: boolean;
@@ -38,7 +39,7 @@ function FosterbarnListAndDialog<FieldNames>({
     const txt = { ...defaultText, ...texts };
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Fosterbarn>
+            <FormikModalFormAndList<FieldNames, Fosterbarn, ValidationError>
                 name={name}
                 labels={{
                     addLabel: txt.liste_legg_til_knapp,
