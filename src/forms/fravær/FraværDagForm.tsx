@@ -158,12 +158,18 @@ const FraværDagFormView = ({
                         maxDate,
                         disableWeekend: helgedagerIkkeTillatt || false,
                         disabledDateRanges,
-                        validate: (value) => {
+                        validate: (value): ValidationError | undefined => {
                             if (helgedagerIkkeTillatt && validateNotHelgedag(value)) {
-                                return FraværDagFormErrors.dato.er_helg;
+                                return {
+                                    key: FraværDagFormErrors.dato.er_helg,
+                                    isUniqueKey: true,
+                                };
                             }
                             if (validateFraværDagCollision(valgtDato, disabledDateRanges)) {
-                                return FraværDagFormErrors.dato.dato_kolliderer_med_annet_fravær;
+                                return {
+                                    key: FraværDagFormErrors.dato.dato_kolliderer_med_annet_fravær,
+                                    isUniqueKey: true,
+                                };
                             }
                             return getDateValidator({ required: true, min: minDate, max: maxDate })(value);
                         },

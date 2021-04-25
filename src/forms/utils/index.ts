@@ -4,6 +4,7 @@ import {
     ValidateDateRangeError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { DateTidsperiode } from '../tidsperiode';
 
 export const mapFomTomToDateRange = ({ fom, tom }: DateTidsperiode): DateRange => ({
@@ -15,7 +16,7 @@ export const handleDateRangeValidationError = (
     error: ValidateDateError | ValidateDateRangeError | ValidateRequiredFieldError | undefined,
     minDate: Date | undefined,
     maxDate: Date | undefined
-) => {
+): ValidationError | undefined => {
     if (minDate && error === ValidateDateError.dateBeforeMin) {
         return {
             key: error,
