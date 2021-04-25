@@ -366,7 +366,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     if (error === ValidateNumberError.numberIsTooLarge) {
                                                         return {
                                                             key: error,
-                                                            values: { maks: MAKS_INNTEKT },
+                                                            values: { min: MAKS_INNTEKT },
                                                         };
                                                     }
                                                     if (error === ValidateNumberError.numberIsTooSmall) {
