@@ -24,16 +24,22 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
-        'sifForms.virksomhet.næringsinntektFlere.info':
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter som selvstendig næringsdrivende. Nå skal du svare på spørsmål som gjelder alle virksomhetene dine.',
-        'sifForms.virksomhet.næringsinntekt':
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm':
+            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm.description':
+            'Hvis virksomheten har vart i kortere tid enn 12 måneder, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm':
             'Hva har du hatt totalt i næringsresultat før skatt de siste 12 månedene?',
-        'sifForms.virksomhet.næringsinntekt.info':
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm.description':
             'Hvis virksomhetene har vart i kortere tid enn 12 måneder, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
-        'sifForms.virksomhet.næringsinntekt_info':
+        'sifForms.virksomhet.hvaErNæringsresultat.enVirksomhet.text':
             'Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.',
-        'sifForms.virksomhet.næringsinntekt_info_title': 'Hva er næringsresultatet?',
+        'sifForms.virksomhet.hvaErNæringsresultat.flereVirksomheter.text':
+            'Næringsresultatet er inntekter du har i næringene din, minus utgifter og avskrivninger.',
+        'sifForms.virksomhet.hvaErNæringsresultat.title': 'Hva er næringsresultatet?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv':
             'Har du begynt i arbeidslivet i løpet av de 3 siste ferdigliknede årene?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_info_title': 'Hva betyr dette?',
@@ -147,16 +153,22 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har fleire næringsverksemder. Her skal du leggje inn næringsresultatet totalt for alle verksemdene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsverksemdene dine',
-        'sifForms.virksomhet.næringsinntektFlere.info':
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.header': 'Næringsverksemdene dine',
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har fleire næringsverksemder som sjølvstendig næringsdrivande. Nå skal du svare på spørsmål som gjeld alle verksemdene dine.',
-        'sifForms.virksomhet.næringsinntekt':
-            'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
-        'sifForms.virksomhet.næringsinntekt.info':
-            'Dresom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
-        'sifForms.virksomhet.næringsinntekt_info':
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm':
+            'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene?',
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm.description':
+            'Dersom verksemda har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm':
+            'Kva har du hatt totalt i næringsresultat før skatt dei siste 12 månadene?',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm.description':
+            'Dersom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
+        'sifForms.virksomhet.hvaErNæringsresultat.enVirksomhet.text':
             'Næringsresultatet er inntekter du har i næringa di, minus utgifter og avskrivingar.',
-        'sifForms.virksomhet.næringsinntekt_info_title': 'Kva er næringsresultatet?',
+        'sifForms.virksomhet.hvaErNæringsresultat.flereVirksomheter.text':
+            'Næringsresultatet er inntekter du har i næringane dine, minus utgifter og avskrivingar.',
+        'sifForms.virksomhet.hvaErNæringsresultat.title': 'Kva er næringsresultatet?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv':
             'Har du begynt i arbeidslivet i løpet av dei 3 siste ferdiglikna åra?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_info_title': 'Kva betyr dette?',
