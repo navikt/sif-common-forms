@@ -9,9 +9,9 @@ const fosterbarnMessages = {
         'fosterbarn.list.tittel': 'Registrerte fosterbarn',
         'fosterbarn.modal.tittel': 'Fosterbarn',
         'fosterbarnForm.fødselsnummer.noValue': defaultValidationMessages.nb.noValue,
-        'fosterbarnForm.fnr.invalidFødselsnummer': defaultValidationMessages.nb.invalidFødselsnummer,
-        'fosterbarnForm.fnr.fødselsnummerNot11Chars': defaultValidationMessages.nb.fødselsnummerNot11Chars,
-        'fosterbarnForm.fnr.disallowedFødselsnummer': defaultValidationMessages.nb.disallowedFødselsnummer,
+        'fosterbarnForm.fødselsnummer.invalidFødselsnummer': defaultValidationMessages.nb.invalidFødselsnummer,
+        'fosterbarnForm.fødselsnummer.fødselsnummerNot11Chars': defaultValidationMessages.nb.fødselsnummerNot11Chars,
+        'fosterbarnForm.fødselsnummer.disallowedFødselsnummer': defaultValidationMessages.nb.disallowedFødselsnummer,
     },
     nn: {
         'fosterbarn.form.etternavn_label': 'Etternavn',
