@@ -10,7 +10,7 @@ import {
     ValidateDateRangeError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { handleDateRangeValidationError, mapFomTomToDateRange } from '../utils';
@@ -96,7 +96,7 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                         : alleBosteder.filter((b) => b.id !== bosted.id).map(mapFomTomToDateRange);
 
                 return (
-                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorHandler(intl, 'bostedUtlandForm')}>
+                    <Form.Form onCancel={onCancel} formErrorHandler={getFormErrorHandler(intl, 'bostedUtlandForm')}>
                         <Systemtittel tag="h1">
                             <FormattedMessage id="bostedUtland.form.tittel" />
                         </Systemtittel>

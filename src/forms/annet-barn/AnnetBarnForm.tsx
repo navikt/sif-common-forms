@@ -12,7 +12,7 @@ import {
     ValidateFødselsnummerError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
@@ -100,7 +100,7 @@ const AnnetBarnForm = ({
             initialValues={annetBarnUtils.mapAnnetBarnToFormValues(annetBarn)}
             onSubmit={onFormikSubmit}
             renderForm={() => (
-                <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorHandler(intl, 'annetBarnForm')}>
+                <Form.Form onCancel={onCancel} formErrorHandler={getFormErrorHandler(intl, 'annetBarnForm')}>
                     <Systemtittel tag="h1">{formLabels.title}</Systemtittel>
                     <FormBlock>
                         <Form.Input

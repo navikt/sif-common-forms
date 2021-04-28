@@ -26,7 +26,7 @@ import {
     ValidateStringError,
     ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
@@ -179,7 +179,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                     <Form.Form
                         includeValidationSummary={true}
                         onCancel={onCancel}
-                        fieldErrorHandler={getFieldErrorHandler(intl, 'virksomhetForm')}>
+                        formErrorHandler={getFormErrorHandler(intl, 'virksomhetForm')}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
                                 {harFlereVirksomheter

@@ -10,7 +10,7 @@ import {
     ValidateDateRangeError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { handleDateRangeValidationError, mapFomTomToDateRange } from '../utils';
@@ -106,9 +106,7 @@ const TidsperiodeForm = ({
                             : alleTidsperioder.filter((t) => t.id !== tidsperiode.id).map(mapFomTomToDateRange);
 
                     return (
-                        <Form.Form
-                            onCancel={onCancel}
-                            fieldErrorHandler={getFieldErrorHandler(intl, 'tidsperiodeForm')}>
+                        <Form.Form onCancel={onCancel} formErrorHandler={getFormErrorHandler(intl, 'tidsperiodeForm')}>
                             <Systemtittel tag="h1">{inlineLabels.title}</Systemtittel>
                             <FormBlock>
                                 <Form.DateRangePicker

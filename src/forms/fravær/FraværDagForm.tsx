@@ -20,7 +20,7 @@ import {
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import FraværTimerSelect from './FraværTimerSelect';
 import { isFraværDag, mapFormValuesToFraværDag, mapFraværDagToFormValues, toMaybeNumber } from './fraværUtilities';
 import {
@@ -162,13 +162,13 @@ const FraværDagFormView = ({
                             if (helgedagerIkkeTillatt && validateNotHelgedag(value)) {
                                 return {
                                     key: FraværDagFormErrors.dato.er_helg,
-                                    isUniqueKey: true,
+                                    keepKeyUnaltered: true,
                                 };
                             }
                             if (validateFraværDagCollision(valgtDato, disabledDateRanges)) {
                                 return {
                                     key: FraværDagFormErrors.dato.dato_kolliderer_med_annet_fravær,
-                                    isUniqueKey: true,
+                                    keepKeyUnaltered: true,
                                 };
                             }
                             return getDateValidator({ required: true, min: minDate, max: maxDate })(value);
@@ -183,7 +183,7 @@ const FraværDagFormView = ({
                     return (
                         <FraværDagForm.Form
                             onCancel={onCancel}
-                            fieldErrorHandler={getFieldErrorHandler(intl, 'fraværDagForm')}>
+                            formErrorHandler={getFormErrorHandler(intl, 'fraværDagForm')}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box>{headerContent}</Box>}
                             <FormBlock>

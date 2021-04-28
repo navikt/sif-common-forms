@@ -98,7 +98,7 @@ export const validateFraværDagCollision = (
 export const validateNoCollisions = (
     fraværDager: FraværDag[],
     fraværPerioder: FraværPeriode[]
-): FraværFieldValidationErrors | undefined => {
+): FraværFieldValidationErrors.dager_overlapper_med_andre_dager | undefined => {
     if (fraværPerioder.length === 0 && fraværDager.length === 0) {
         return undefined;
     }

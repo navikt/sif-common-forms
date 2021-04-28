@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
@@ -73,7 +73,7 @@ const VirksomhetExample = () => {
                             <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorHandler={getFieldErrorHandler(intl)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <VirksomhetInfoAndDialog<FormField>
                                     name={FormField.virksomhet}
                                     harFlereVirksomheter={harFlereVirksomheter}

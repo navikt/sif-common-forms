@@ -16,7 +16,7 @@ import {
     ValidateRequiredFieldError,
     ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -164,7 +164,7 @@ const FraværPeriodeForm = ({
                     return (
                         <Form.Form
                             onCancel={onCancel}
-                            fieldErrorHandler={getFieldErrorHandler(intl, 'fraværPeriodeForm')}>
+                            formErrorHandler={getFormErrorHandler(intl, 'fraværPeriodeForm')}>
                             <Systemtittel tag="h1">{formLabels.tittel}</Systemtittel>
                             {headerContent && <Box margin="l">{headerContent}</Box>}
                             <FormBlock>
@@ -296,19 +296,19 @@ const getFromDateValidator = ({
     if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
         return {
             key: FraværPeriodeFormErrors.fraOgMed.er_helg,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     if (begrensTilSammeÅr && validateErSammeÅr(value, tilOgMed)) {
         return {
             key: FraværPeriodeFormErrors.fraOgMed.fra_og_til_er_ulike_år,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     if (validateFraOgMedForCollision(toDate, disabledDateRanges)) {
         return {
             key: FraværPeriodeFormErrors.fraOgMed.fra_dato_kolliderer_med_annet_fravær,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     const dateError = getDateRangeValidator.validateFromDate({
@@ -341,19 +341,19 @@ const getToDateValidator = ({
     if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
         return {
             key: FraværPeriodeFormErrors.tilOgMed.er_helg,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     if (begrensTilSammeÅr && validateErSammeÅr(fraOgMed, value)) {
         return {
             key: FraværPeriodeFormErrors.tilOgMed.fra_og_til_er_ulike_år,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     if (validateTilOgMedForCollision(fromDate, disabledDateRanges)) {
         return {
             key: FraværPeriodeFormErrors.tilOgMed.til_dato_kolliderer_med_annet_fravær,
-            isUniqueKey: true,
+            keepKeyUnaltered: true,
         };
     }
     const dateError = getDateRangeValidator.validateToDate({

@@ -10,7 +10,7 @@ import {
     ValidateFødselsnummerError,
     ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
@@ -83,7 +83,7 @@ const FosterbarnForm = ({
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
-                    <Form.Form onCancel={onCancel} fieldErrorHandler={getFieldErrorHandler(intl, 'fosterbarnForm')}>
+                    <Form.Form onCancel={onCancel} formErrorHandler={getFormErrorHandler(intl, 'fosterbarnForm')}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input

@@ -6,7 +6,7 @@ import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/util
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
-import getFieldErrorHandler from '@navikt/sif-common-formik/lib/validation/fieldErrorHandler';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
@@ -47,7 +47,7 @@ const UtenlandsoppholdExample = () => {
                             <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorHandler={getFieldErrorHandler(intl)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <UtenlandsoppholdListAndDialog
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
