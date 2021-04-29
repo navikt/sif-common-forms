@@ -120,12 +120,12 @@ const TidsperiodeForm = ({
                                         name: TidsperiodeFormFields.fom,
                                         dayPickerProps: { initialMonth },
                                         validate: (value) => {
-                                            const error = getDateRangeValidator.validateFromDate({
+                                            const error = getDateRangeValidator({
                                                 required: true,
                                                 min: minDate,
                                                 max: maxDate,
                                                 toDate: ISOStringToDate(formik.values.tom),
-                                            })(value);
+                                            }).validateFromDate(value);
                                             return handleDateRangeValidationError(error, minDate, maxDate);
                                         },
                                         onChange: () => {
@@ -137,32 +137,12 @@ const TidsperiodeForm = ({
                                     toInputProps={{
                                         label: inlineLabels.toDate,
                                         name: TidsperiodeFormFields.tom,
-                                        validate: getDateRangeValidator.validateToDate(
-                                            {
-                                                required: true,
-                                                min: minDate,
-                                                max: maxDate,
-                                                fromDate: ISOStringToDate(formik.values.fom),
-                                            }
-                                            // {
-                                            //     noValue: TidsperiodeFormErrors.tom.noValue,
-                                            //     dateBeforeMin: minDate
-                                            //         ? () =>
-                                            //               intlHelper(intl, TidsperiodeFormErrors.tom.dateBeforeMin, {
-                                            //                   dato: prettifyDate(minDate),
-                                            //               })
-                                            //         : undefined,
-                                            //     dateAfterMax: maxDate
-                                            //         ? () =>
-                                            //               intlHelper(intl, TidsperiodeFormErrors.tom.dateAfterMax, {
-                                            //                   dato: prettifyDate(maxDate),
-                                            //               })
-                                            //         : undefined,
-                                            //     invalidDateFormat: TidsperiodeFormErrors.tom.invalidDateFormat,
-                                            //     toDateIsBeforeFromDate:
-                                            //         TidsperiodeFormErrors.tom.toDateIsBeforeFromDate,
-                                            // }
-                                        ),
+                                        validate: getDateRangeValidator({
+                                            required: true,
+                                            min: minDate,
+                                            max: maxDate,
+                                            fromDate: ISOStringToDate(formik.values.fom),
+                                        }).validateToDate,
                                         onChange: () => {
                                             setTimeout(() => {
                                                 formik.validateField(TidsperiodeFormFields.fom);

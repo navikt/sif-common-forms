@@ -113,12 +113,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                     name: BostedUtlandFormFields.fom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.fraDato'),
                                     validate: (value) => {
-                                        const error = getDateRangeValidator.validateFromDate({
+                                        const error = getDateRangeValidator({
                                             required: true,
                                             min: fomDateLimits.minDate,
                                             max: fomDateLimits.maxDate,
                                             toDate: ISOStringToDate(values.tom),
-                                        })(value);
+                                        }).validateFromDate(value);
                                         return handleDateRangeValidationError(
                                             error,
                                             fomDateLimits.minDate,
@@ -130,12 +130,12 @@ const BostedUtlandForm = ({ maxDate, minDate, bosted, alleBosteder = [], onSubmi
                                     name: BostedUtlandFormFields.tom,
                                     label: intlHelper(intl, 'bostedUtland.form.tidsperiode.tilDato'),
                                     validate: (value) => {
-                                        const error = getDateRangeValidator.validateToDate({
+                                        const error = getDateRangeValidator({
                                             required: true,
                                             min: tomDateLimits.minDate,
                                             max: tomDateLimits.maxDate,
                                             fromDate: ISOStringToDate(values.fom),
-                                        })(value);
+                                        }).validateToDate(value);
                                         return handleDateRangeValidationError(
                                             error,
                                             tomDateLimits.minDate,

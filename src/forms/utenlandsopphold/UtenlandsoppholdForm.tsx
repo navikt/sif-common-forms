@@ -146,12 +146,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         initialMonth: fomDate || minDate || dateToday,
                                     },
                                     validate: (value) => {
-                                        const error = getDateRangeValidator.validateFromDate({
+                                        const error = getDateRangeValidator({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,
                                             toDate: ISOStringToDate(tom),
-                                        })(value);
+                                        }).validateFromDate(value);
                                         return handleDateRangeValidationError(error, minDate, maxDate);
                                     },
                                 }}
@@ -162,12 +162,12 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         initialMonth: tomDate || fomDate || dateToday,
                                     },
                                     validate: (value) => {
-                                        const error = getDateRangeValidator.validateToDate({
+                                        const error = getDateRangeValidator({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,
                                             fromDate: ISOStringToDate(fom),
-                                        })(value);
+                                        }).validateToDate(value);
                                         return handleDateRangeValidationError(error, minDate, maxDate);
                                     },
                                 }}

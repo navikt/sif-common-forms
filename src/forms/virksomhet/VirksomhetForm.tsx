@@ -287,11 +287,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                         label: getText('sifForms.virksomhet.kalender_fom'),
                                         name: VirksomhetFormField.fom,
                                         validate: (value) => {
-                                            const error = getDateRangeValidator.validateFromDate({
+                                            const error = getDateRangeValidator({
                                                 required: true,
                                                 max: dateToday,
                                                 toDate: tomDate,
-                                            })(value);
+                                            }).validateFromDate(value);
                                             if (error === ValidateDateError.dateAfterMax) {
                                                 return {
                                                     key: error,
@@ -309,11 +309,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                             values.erPågående === true
                                                 ? undefined
                                                 : (value) => {
-                                                      const error = getDateRangeValidator.validateToDate({
+                                                      const error = getDateRangeValidator({
                                                           required: true,
                                                           max: dateToday,
                                                           fromDate: fomDate,
-                                                      })(value);
+                                                      }).validateToDate(value);
                                                       return handleDateRangeValidationError(
                                                           error,
                                                           undefined,

@@ -311,12 +311,12 @@ const getFromDateValidator = ({
             keepKeyUnaltered: true,
         };
     }
-    const dateError = getDateRangeValidator.validateFromDate({
+    const dateError = getDateRangeValidator({
         required: true,
         min: minDate,
         max: maxDate,
         toDate,
-    })(value);
+    }).validateFromDate(value);
 
     return handleDateRangeValidationError(dateError, minDate, maxDate);
 };
@@ -356,12 +356,12 @@ const getToDateValidator = ({
             keepKeyUnaltered: true,
         };
     }
-    const dateError = getDateRangeValidator.validateToDate({
+    const dateError = getDateRangeValidator({
         required: true,
         min: minDate,
         max: maxDate,
         fromDate,
-    })(value);
+    }).validateToDate(value);
     return handleDateRangeValidationError(dateError, minDate, maxDate);
 };
 export default FraværPeriodeForm;

@@ -107,12 +107,12 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                     label: formLabels.fromDate,
                                     name: FerieuttakFormFields.fom,
                                     validate: (value) => {
-                                        const error = getDateRangeValidator.validateFromDate({
+                                        const error = getDateRangeValidator({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,
                                             toDate: ISOStringToDate(formik.values.tom),
-                                        })(value);
+                                        }).validateFromDate(value);
                                         return handleDateRangeValidationError(error, minDate, maxDate);
                                     },
                                     onChange: () => {
@@ -125,12 +125,12 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                     label: formLabels.toDate,
                                     name: FerieuttakFormFields.tom,
                                     validate: (value) => {
-                                        const dateError = getDateRangeValidator.validateToDate({
+                                        const dateError = getDateRangeValidator({
                                             required: true,
                                             min: minDate,
                                             max: maxDate,
                                             fromDate: ISOStringToDate(formik.values.fom),
-                                        })(value);
+                                        }).validateToDate(value);
                                         switch (dateError) {
                                             case ValidateDateError.dateBeforeMin:
                                                 return {
