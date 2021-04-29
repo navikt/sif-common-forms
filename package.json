@@ -40,8 +40,8 @@
     ],
     "dependencies": {},
     "peerDependencies": {
-        "@navikt/sif-common-core": "^9.1.0",
-        "@navikt/sif-common-formik": "^18.3.0"
+        "@navikt/sif-common-core": "^9.1.1",
+        "@navikt/sif-common-formik": "^18.4.0"
     },
     "devDependencies": {
         "@craco/craco": "^6.1.2",
