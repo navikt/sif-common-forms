@@ -1,5 +1,3 @@
-import defaultValidationMessages from '../i18n/defaultMessages';
-
 const fosterbarnMessages = {
     nb: {
         'fosterbarn.form.etternavn_label': 'Etternavn',
@@ -8,12 +6,13 @@ const fosterbarnMessages = {
         'fosterbarn.list.legg_til_knapp': 'Legg til fosterbarn',
         'fosterbarn.list.tittel': 'Registrerte fosterbarn',
         'fosterbarn.modal.tittel': 'Fosterbarn',
-        'fosterbarnForm.fødselsnummer.noValue': defaultValidationMessages.nb.noValue,
-        'fosterbarnForm.fødselsnummer.fødselsnummerIsInvalid': defaultValidationMessages.nb.fødselsnummerIsInvalid,
+        'fosterbarnForm.fødselsnummer.fødselsnummerHasNoValue': 'Skriv inn barnets fødselsnummer',
+        'fosterbarnForm.fødselsnummer.fødselsnummerIsInvalid':
+            'Du har oppgitt et ugyldig fødselsnummer. Et gyldig fødselsnummer består av 11 siffer.',
         'fosterbarnForm.fødselsnummer.fødselsnummerIsNot11Chars':
-            defaultValidationMessages.nb.fødselsnummerIsNot11Chars,
+            'Du har oppgitt et ugyldig fødselsnummer som ikke består av 11 siffer. Et gyldig fødselsnummer består av 11 siffer.',
         'fosterbarnForm.fødselsnummer.fødselsnummerIsNotAllowed':
-            defaultValidationMessages.nb.fødselsnummerIsNotAllowed,
+            'Du har oppgitt et fødselsnummer som du ikke kan bruke. Kontroller at du har tastet inn fosterbarnets fødselsnummer.',
     },
     nn: {
         'fosterbarn.form.etternavn_label': 'Etternavn',

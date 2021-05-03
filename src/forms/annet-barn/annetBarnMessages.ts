@@ -6,17 +6,22 @@ const annetBarnMessages = {
         'annetBarn.form.navn': 'Barnets navn',
         'annetBarn.form.okButton': 'Ok',
         'annetBarn.form.cancelButton': 'Avbryt',
-        'annetBarn.form.validation.required': 'Feltet er påkrevd',
         'annetBarn.list.født': 'Født',
-        'annetBarnForm.navn.stringHasNoValue': 'Feltet er påkrevd',
-        'annetBarnForm.fødselsdato.dateHasNoValue': 'Feltet er påkrevd',
-        'annetBarnForm.fødselsdato.dateIsBeforeMin': 'Fødselsdato kan ikke være tidligere enn {dato}',
-        'annetBarnForm.fødselsdato.dateIsAfterMax': 'Fødselsdato kan ikke være etter dagens dato',
-        'annetBarnForm.fødselsdato.dateHasInvalidFormat': 'Ugyldig datoformat. Formatet må være dd.mm.åååå',
-        'annetBarnForm.fnr.stringHasNoValue': 'Feltet er påkrevd',
-        'annetBarnForm.fnr.fødselsnummerIsInvalid': 'Ugyldig fødselsnummer',
-        'annetBarnForm.fnr.fødselsnummerIsNot11Chars': 'Fødselsnummeret må bestå av 11 siffer',
-        'annetBarnForm.fnr.fødselsnummerIsNotAllowed': 'Fødselsnummeret du har fylt ut er ditt eget fødselsnummer',
+        'annetBarnForm.navn.stringHasNoValue': 'Skriv inn barnets navn',
+        'annetBarnForm.fødselsdato.dateHasNoValue':
+            'Du må oppgi barnets fødselsdato. Skriv inn eller velg dato fra datovelgeren.',
+        'annetBarnForm.fødselsdato.dateIsBeforeMin':
+            'Barnets fødselsdato kan ikke være før {dato}. Skriv inn eller velg startdato fra datovelgeren.',
+        'annetBarnForm.fødselsdato.dateIsAfterMax': 'Barnets fødselsdato kan ikke være etter dagens dato',
+        'annetBarnForm.fødselsdato.dateHasInvalidFormat':
+            'Du må oppgi barnets fødselsdato i et gyldig format. Gyldig format er dd.mm.ååå.',
+        'annetBarnForm.fnr.fødselsnummerHasNoValue': 'Skriv inn barnets fødselsnummer',
+        'annetBarnForm.fnr.fødselsnummerIsInvalid':
+            'Du har oppgitt et ugyldig fødselsnummer. Et gyldig fødselsnummer består av 11 siffer.',
+        'annetBarnForm.fnr.fødselsnummerIsNot11Chars':
+            'Du har oppgitt et ugyldig fødselsnummer som ikke består av 11 siffer. Et gyldig fødselsnummer består av 11 siffer.',
+        'annetBarnForm.fnr.fødselsnummerIsNotAllowed':
+            'Du har oppgitt et fødselsnummer som du ikke kan bruke. Kontroller at du har tastet inn fosterbarnets fødselsnummer.',
     },
     nn: {
         'annetBarn.form.title': 'Legg til barn',
@@ -25,7 +30,6 @@ const annetBarnMessages = {
         'annetBarn.form.navn': 'Namnet til barnet',
         'annetBarn.form.okButton': 'Ok',
         'annetBarn.form.cancelButton': 'Avbryt',
-        'annetBarn.form.validation.required': 'Feltet er påkravd',
         'annetBarn.list.født': 'Født',
     },
 };

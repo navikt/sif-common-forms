@@ -7,7 +7,7 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
-    getRequiredFieldValidator,
+    getStringValidator,
     ValidateDateError,
     ValidateFødselsnummerError,
     ValidateStringError,
@@ -106,7 +106,7 @@ const AnnetBarnForm = ({
                         <Form.Input
                             name={AnnetBarnFormFields.navn}
                             label={formLabels.navn}
-                            validate={getRequiredFieldValidator()}
+                            validate={getStringValidator({ required: true })}
                             placeholder={formLabels.placeholderNavn}
                         />
                     </FormBlock>
