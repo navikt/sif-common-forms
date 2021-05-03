@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Undertittel } from 'nav-frontend-typografi';
+import { VirksomhetFormErrors } from '../../../forms';
 import { mapVirksomhetToVirksomhetApiData } from '../../../forms/virksomhet/mapVirksomhetToApiData';
 import { isVirksomhet, Næringstype, Virksomhet } from '../../../forms/virksomhet/types';
 import VirksomhetInfoAndDialog from '../../../forms/virksomhet/VirksomhetInfoAndDialog';
+import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import VirksomhetSummary from '../../../forms/virksomhet/VirksomhetSummary';
 import PageIntro from '../../components/page-intro/PageIntro';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'virksomhet' = 'virksomhet',
@@ -41,6 +46,7 @@ export const mockVirksomhet: Virksomhet = {
 interface FormValues {
     [FormField.virksomhet]?: Virksomhet;
 }
+
 const initialValues: FormValues = {};
 
 const VirksomhetExample = () => {
@@ -64,14 +70,14 @@ const VirksomhetExample = () => {
                     onSubmit={setFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <VirksomhetInfoAndDialog<FormField>
                                     name={FormField.virksomhet}
                                     harFlereVirksomheter={harFlereVirksomheter}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: harFlereVirksomheter ? 'Registrer virksomhet' : 'Legg til',
                                         deleteLabel: 'Fjern',
@@ -98,6 +104,13 @@ const VirksomhetExample = () => {
                     </Panel>
                 </Box>
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(VirksomhetFormErrors)}
+                    intlMessages={virksomhetMessages}
+                />
+            </Box>
 
             {apiVirksomhet && (
                 <>

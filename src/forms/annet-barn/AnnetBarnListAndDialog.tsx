@@ -1,15 +1,20 @@
 import React from 'react';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import AnnetBarnForm from './AnnetBarnForm';
 import AnnetBarnList from './AnnetBarnList';
 import { AnnetBarn } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     labels: ModalFormAndListLabels;
     minDate: Date;
     maxDate: Date;
+    disallowedFødselsnumre?: string[];
     aldersGrenseText?: string;
     placeholderFnr?: string;
     placeholderNavn?: string;
@@ -21,13 +26,14 @@ function AnnetBarnListAndDialog<FieldNames>({
     labels,
     minDate,
     maxDate,
+    disallowedFødselsnumre,
     aldersGrenseText,
     placeholderFnr,
     placeholderNavn,
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, AnnetBarn>
+            <FormikModalFormAndList<FieldNames, AnnetBarn, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"
@@ -39,6 +45,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                         onCancel={onCancel}
                         minDate={minDate}
                         maxDate={maxDate}
+                        disallowedFødselsnumre={disallowedFødselsnumre}
                         labels={{
                             aldersGrenseText: aldersGrenseText,
                             placeholderFnr: placeholderFnr,

@@ -1,13 +1,17 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import { Utenlandsopphold } from './types';
 import UtenlandsoppholdForm from './UtenlandsoppholdForm';
 import UtenlandsoppholdListe from './UtenlandsoppholdList';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     minDate: Date;
     maxDate: Date;
     labels: ModalFormAndListLabels;
@@ -15,7 +19,7 @@ interface Props<FieldNames> {
 
 function UtenlandsoppholdListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
     return (
-        <FormikModalFormAndList<FieldNames, Utenlandsopphold>
+        <FormikModalFormAndList<FieldNames, Utenlandsopphold, ValidationError>
             name={name}
             labels={labels}
             validate={validate}

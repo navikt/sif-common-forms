@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import BostedUtlandForm from '../../../forms/bosted-utland/BostedUtlandForm';
+import BostedUtlandForm, { BostedUtlandFormErrors } from '../../../forms/bosted-utland/BostedUtlandForm';
 import BostedUtlandListAndDialog from '../../../forms/bosted-utland/BostedUtlandListAndDialog';
+import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessages';
 import { BostedUtland } from '../../../forms/bosted-utland/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import bostedUtlandMessages from '../../../forms/bosted-utland/bostedUtlandMessages';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'bosted' = 'bosted',
@@ -40,15 +43,15 @@ const FormikExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <BostedUtlandListAndDialog<FormField>
                                     name={FormField.bosted}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til bosted',
                                         listTitle: 'Registrerte bosteder',
@@ -62,6 +65,13 @@ const FormikExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(BostedUtlandFormErrors)}
+                    intlMessages={bostedUtlandMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
@@ -81,7 +91,7 @@ const FormikExample = () => {
                 </DialogFormWrapper>
             </Box>
 
-            <MessagesPreview messages={bostedUtlandMessages} showExplanation={false} />
+            <MessagesPreview title="Alle tekster" messages={bostedUtlandMessages} showExplanation={false} />
         </>
     );
 };

@@ -2,13 +2,19 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Tiles from '@navikt/sif-common-core/lib/components/tiles/Tiles';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateFødselsnummer, validateRequiredField } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import {
+    getFødselsnummerValidator,
+    getRequiredFieldValidator,
+    ValidateFødselsnummerError,
+    ValidateStringError,
+} from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { guid } from 'nav-frontend-js-utils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { Fosterbarn, isFosterbarn } from './types';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { guid } from 'nav-frontend-js-utils';
 
 interface FosterbarnFormText {
     form_fødselsnummer_label: string;
@@ -20,6 +26,7 @@ interface Props {
     fosterbarn?: Partial<Fosterbarn>;
     onSubmit: (values: Fosterbarn) => void;
     onCancel: () => void;
+    disallowedFødselsnumre?: string[];
     includeName?: boolean;
     text?: FosterbarnFormText;
 }
@@ -32,10 +39,28 @@ enum FosterbarnFormField {
 
 type FormValues = Partial<Fosterbarn>;
 
-const Form = getTypedFormComponents<FosterbarnFormField, FormValues>();
+export const FosterbarnFormErrors = {
+    [FosterbarnFormField.fornavn]: {
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.fornavn.stringHasNoValue',
+    },
+    [FosterbarnFormField.etternavn]: {
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.etternavn.stringHasNoValue',
+    },
+    [FosterbarnFormField.fødselsnummer]: {
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.fødselsnummer.stringHasNoValue',
+        [ValidateFødselsnummerError.fødselsnummerIsNotAllowed]:
+            'fosterbarnForm.fødselsnummer.fødselsnummerIsNotAllowed',
+        [ValidateFødselsnummerError.fødselsnummerIsNot11Chars]:
+            'fosterbarnForm.fødselsnummer.fødselsnummerIsNot11Chars',
+        [ValidateFødselsnummerError.fødselsnummerIsInvalid]: 'fosterbarnForm.fødselsnummer.fødselsnummerIsInvalid',
+    },
+};
+
+const Form = getTypedFormComponents<FosterbarnFormField, FormValues, ValidationError>();
 
 const FosterbarnForm = ({
     fosterbarn: initialValues = { fornavn: '', etternavn: '', fødselsnummer: '' },
+    disallowedFødselsnumre,
     text,
     includeName,
     onSubmit,
@@ -64,15 +89,16 @@ const FosterbarnForm = ({
                 initialValues={initialValues}
                 onSubmit={onFormikSubmit}
                 renderForm={() => (
-                    <Form.Form
-                        onCancel={onCancel}
-                        fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                    <Form.Form onCancel={onCancel} formErrorHandler={getFormErrorHandler(intl, 'fosterbarnForm')}>
                         <Systemtittel tag="h1">Fosterbarn</Systemtittel>
                         <FormBlock>
                             <Form.Input
                                 name={FosterbarnFormField.fødselsnummer}
                                 label={txt.form_fødselsnummer_label}
-                                validate={validateFødselsnummer}
+                                validate={getFødselsnummerValidator({
+                                    required: true,
+                                    disallowedValues: disallowedFødselsnumre,
+                                })}
                                 inputMode="numeric"
                                 maxLength={11}
                                 style={{ width: '11rem' }}
@@ -84,14 +110,14 @@ const FosterbarnForm = ({
                                     <Form.Input
                                         name={FosterbarnFormField.fornavn}
                                         label={txt.form_fornavn_label}
-                                        validate={validateRequiredField}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.Input
                                         name={FosterbarnFormField.etternavn}
                                         label={txt.form_etternavn_label}
-                                        validate={validateRequiredField}
+                                        validate={getRequiredFieldValidator()}
                                     />
                                 </FormBlock>
                             </Tiles>

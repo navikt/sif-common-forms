@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
 import { date4YearsAgo, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flatten from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import AnnetBarnForm from '../../../forms/annet-barn/AnnetBarnForm';
+import AnnetBarnForm, { AnnetBarnFormErrors } from '../../../forms/annet-barn/AnnetBarnForm';
 import AnnetBarnListAndDialog from '../../../forms/annet-barn/AnnetBarnListAndDialog';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import { AnnetBarn } from '../../../forms/annet-barn/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 enum FormField {
     'annetBarn' = 'annetBarn',
@@ -28,7 +29,7 @@ const initialValues: FormValues = { annetBarn: [] };
 const AnnetBarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<AnnetBarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
-    const intl = useIntl();
+    // const intl = useIntl();
     return (
         <>
             <Box padBottom="l">
@@ -40,13 +41,12 @@ const AnnetBarnExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
-                                submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                submitButtonLabel="Valider skjema">
                                 <AnnetBarnListAndDialog<FormField>
                                     name={FormField.annetBarn}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til barn',
                                         listTitle: 'Registrerte barn',
@@ -62,6 +62,13 @@ const AnnetBarnExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flatten(AnnetBarnFormErrors)}
+                    formName={'annetBarn'}
+                    intlMessages={annetBarnMessages}
+                />
+            </Box>
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
             </Box>

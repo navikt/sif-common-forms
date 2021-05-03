@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Utenlandsopphold } from '../../../forms/utenlandsopphold/types';
-import UtenlandsoppholdForm from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
+import UtenlandsoppholdForm, { UtlandsoppholdFormErrors } from '../../../forms/utenlandsopphold/UtenlandsoppholdForm';
 import UtenlandsoppholdListAndDialog from '../../../forms/utenlandsopphold/UtenlandsoppholdListAndDialog';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import utenlandsoppholdMessages from '../../../forms/utenlandsopphold/utenlandsoppholdMessages';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'utenlandsopphold' = 'utenlandsopphold',
@@ -41,15 +44,15 @@ const UtenlandsoppholdExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <UtenlandsoppholdListAndDialog
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
                                     name={FormField.utenlandsopphold}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til utenlandsopphold',
                                         listTitle: 'Registrerte utenlandsopphold',
@@ -63,6 +66,13 @@ const UtenlandsoppholdExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(UtlandsoppholdFormErrors)}
+                    intlMessages={utenlandsoppholdMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>
