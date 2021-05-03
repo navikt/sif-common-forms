@@ -364,7 +364,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                 </Undertittel>
                                                 <p>
                                                     {getText(
-                                                        'sifForms.virksomhet.ikkeNyoppstaret.næringsinntektFlere.info'
+                                                        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info'
                                                     )}
                                                 </p>
                                             </>
