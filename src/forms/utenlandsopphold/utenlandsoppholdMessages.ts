@@ -33,19 +33,18 @@ const utenlandsoppholdMessages = {
         'utenlandsoppholdForm.tom.dateHasNoValue':
             'Du må oppgi når utenlandsoppholdet sluttet. Skriv inn eller velg dato fra datovelgeren.',
         'utenlandsoppholdForm.tom.dateIsAfterMax':
-            'Datoen for når utenlandsoppholdet sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+            'Datoen for når utenlandsoppholdet sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren',
         'utenlandsoppholdForm.tom.dateIsBeforeMin':
-            'Datoen for når utenlandsoppholdet sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+            'Datoen for når utenlandsoppholdet sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren',
         'utenlandsoppholdForm.tom.dateHasInvalidFormat':
-            'Du må oppgi dato for når utenlandsoppholdet sluttet i et gyldig format. Gyldig format er dd.mm.åååå.',
+            'Du må oppgi dato for når utenlandsoppholdet sluttet i et gyldig format. Gyldig format er dd.mm.åååå',
         'utenlandsoppholdForm.tom.toDateIsBeforeFromDate':
-            'Sluttdatoen for utenlandsoppholdet kan ikke være før startdatoen. Skriv inn eller velg dato fra datovelgeren.',
-        'utenlandsoppholdForm.landkode.noValue': 'Du må velge i hvilket land du var i.',
-        'utenlandsoppholdForm.årsak.noValue': 'Du må velge hvordan utgiftene til innleggelsen dekkes.',
+            'Sluttdatoen for utenlandsoppholdet kan ikke være før startdatoen. Skriv inn eller velg dato fra datovelgeren',
+        'utenlandsoppholdForm.landkode.noValue': 'Du må velge i hvilket land du var i',
+        'utenlandsoppholdForm.årsak.noValue': 'Du må velge hvordan utgiftene til innleggelsen dekkes',
         'utenlandsoppholdForm.erBarnetInnlagt.yesOrNoIsUnanswered':
-            'Du må svare ja eller nei på om barnet er, eller skal være innlagt i helseinstitusjon i {land}.',
-        'utenlandsoppholdForm.barnInnlagtPerioder.listIsEmpty':
-            'Du må legge til perioder barnet er, eller skal være innlagt.',
+            'Du må svare ja eller nei på om barnet er, eller skal være innlagt i helseinstitusjon i {land}',
+        'utenlandsoppholdForm.barnInnlagtPerioder.listIsEmpty': 'Du har ikke lagt til periode for innleggelse',
     },
     nn: {
         'utenlandsopphold.list.add': 'Legg til opphald',
