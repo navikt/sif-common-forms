@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import { DateTidsperiode } from '../../../forms/tidsperiode';
+import TidsperiodeForm, { TidsperiodeFormErrors } from '../../../forms/tidsperiode/TidsperiodeForm';
 import TidsperiodeListAndDialog from '../../../forms/tidsperiode/TidsperiodeListAndDialog';
-import TidsperiodeForm from '../../../forms/tidsperiode/TidsperiodeForm';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
+import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'tidsperiode' = 'tidsperiode',
@@ -40,15 +43,15 @@ const TidsperiodeExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <TidsperiodeListAndDialog<FormField>
                                     name={FormField.tidsperiode}
                                     minDate={date1YearAgo}
-                                    maxDate={date1YearFromNow}
-                                    validate={validateRequiredList}
+                                    maxDate={dateToday}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til periode',
                                         listTitle: 'Registrerte periode',
@@ -61,6 +64,13 @@ const TidsperiodeExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(TidsperiodeFormErrors)}
+                    intlMessages={tidsperiodeMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

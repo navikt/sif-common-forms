@@ -22,16 +22,22 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle virksomhetene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter. Her skal du legge inn næringsresultatet totalt for alle virksomhetene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
-        'sifForms.virksomhet.næringsinntektFlere.info':
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter som selvstendig næringsdrivende. Nå skal du svare på spørsmål som gjelder alle virksomhetene dine.',
-        'sifForms.virksomhet.næringsinntekt':
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm':
+            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm.description':
+            'Hvis virksomheten har vart i kortere tid enn 12 måneder, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm':
             'Hva har du hatt totalt i næringsresultat før skatt de siste 12 månedene?',
-        'sifForms.virksomhet.næringsinntekt.info':
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm.description':
             'Hvis virksomhetene har vart i kortere tid enn 12 måneder, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
-        'sifForms.virksomhet.næringsinntekt_info':
+        'sifForms.virksomhet.hvaErNæringsresultat.enVirksomhet.text':
             'Næringsresultatet er inntekter du har i næringen din, minus utgifter og avskrivninger.',
-        'sifForms.virksomhet.næringsinntekt_info_title': 'Hva er næringsresultatet?',
+        'sifForms.virksomhet.hvaErNæringsresultat.flereVirksomheter.text':
+            'Næringsresultatet er inntekter du har i næringene din, minus utgifter og avskrivninger.',
+        'sifForms.virksomhet.hvaErNæringsresultat.title': 'Hva er næringsresultatet?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv':
             'Har du begynt i arbeidslivet i løpet av de 3 siste ferdigliknede årene?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_info_title': 'Hva betyr dette?',
@@ -69,6 +75,90 @@ const virksomhetMessages = {
         'sifForms.virksomhet.summary.næringsinntekst': 'Næringsinntekt:',
         'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsfører',
         'sifForms.virksomhet.summary.regnskapsfører.info': 'Ja, {navn}, telefon {telefon}',
+
+        'virksomhetForm.næringstyper.listIsEmpty': 'Velg hvilken type virksomhet du har fra listen.',
+        'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du er fisker på Blad B.',
+        'virksomhetForm.navnPåVirksomheten.stringHasNoValue': 'Skriv inn navnet på virksomheten din.',
+        'virksomhetForm.registrertINorge.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om virksomheten din er registrert i Norge.',
+        'virksomhetForm.registrertILand.noValue':
+            'Du må velge hvilket land virksomheten din er registrert i. Velg land fra listen.',
+        'virksomhetForm.organisasjonsnummer.orgNumberHasNoValue':
+            'Skriv inn organisasjonsnummeret. Et gyldig organsisasjonsnummer inneholder 9 siffer',
+        'virksomhetForm.organisasjonsnummer.orgNumberHasInvalidFormat':
+            'Du har oppgitt et ugyldig organisasjonsnummer. Oppgi et gyldig organsisasjonsnummer som inneholder 9 siffer.',
+        'virksomhetForm.fom.dateHasNoValue':
+            'Du må oppgi hvilken dato du startet virksomheten. Skriv inn eller velg startdato fra datovelgeren.',
+        'virksomhetForm.fom.dateIsAfterMax':
+            'Startdatoen for når du startet {navn} må være før dagens dato. Skriv inn eller velg startdato fra datovelgeren.',
+        'virksomhetForm.fom.dateHasInvalidFormat':
+            'Du må oppgi startdato for virksomheten i et gyldig format. Gyldig format er dd.mm.ååå.',
+        'virksomhetForm.fom.fromDateIsAfterToDate':
+            'Startdatoen for når du startet {navn} må være før sluttdatoen, eller på samme dag som sluttdatoen. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.tom.dateHasNoValue':
+            'Du må oppgi hvilken dato du avsluttet virksomheten. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.tom.dateIsBeforeMin':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være før startdatoen. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.tom.dateIsAfterMax':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være etter dagens dato. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.tom.dateHasInvalidFormat':
+            'Du må oppgi dato for når du avsluttet virksomheten i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.tom.toDateIsBeforeFromDate':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være før startdatoen. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.næringsinntekt.numberHasNoValue': 'Du må oppgi næringsinntekten i {navn}.',
+        'virksomhetForm.næringsinntekt.numberHasInvalidFormat':
+            'Du må oppgi et gyldig tall for næringsinntekten i {navn}. Et gyldig tall inneholder kun siffer.',
+        'virksomhetForm.næringsinntekt.numberIsTooSmall':
+            'Tallet du har oppgitt som næringsinntekt for {navn} er for lavt. Tallet kan ikke være lavere enn {min}.',
+        'virksomhetForm.næringsinntekt.numberIsTooLarge':
+            'Tallet du har oppgitt som næringsinntekt for {navn} er for høyt. Tallet kan ikke være høyere enn {maks}.',
+        'virksomhetForm.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du har begynt arbeidslivet i løpet av de 3 siste ferdigliknede årene.',
+        'virksomhetForm.blittYrkesaktivDato.dateHasNoValue':
+            'Du må oppgi dato for når du begynte i arbeidslivet. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.blittYrkesaktivDato.dateHasInvalidFormat':
+            'Du må oppgi dato for når du begynte i arbeidslivet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.blittYrkesaktivDato.dateIsAfterMax':
+            'Datoen for når du begynte i arbeidslivet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.blittYrkesaktivDato.dateIsBeforeMin':
+            'Datoen for når du begynte i arbeidslivet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.hattVarigEndringAvNæringsinntektSiste4Kalenderår.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du har hatt varig endring i næringsinntekten i de siste 4 kalenderårene.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasNoValue':
+            'Du må oppgi fra hvilken dato du fikk en varig endring i næringsinntekten i {navn}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasInvalidFormat':
+            'Du må oppgi dato for når du fikk varig endring i næringsinntekt i {navn} i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsAfterMax':
+            'Datoen for når du fikk varig endring i næringsinntekt kan ikke være etter {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsBeforeMin':
+            'Datoen for når du fikk varig endring i næringsinntekt kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasNoValue':
+            'Du må oppgi inntekt etter inntektsendring for {navn}.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasInvalidFormat':
+            'Du må oppgi et gyldig tall for ny inntekt etter inntektsendring i {navn}. Et gyldig tall inneholder kun siffer.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge':
+            'Tallet du har oppgitt som ny inntekt etter inntektsendring for {navn} er for høyt. Tallet kan ikke være høyere enn {maks}.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooSmall':
+            'Tallet du har oppgitt som ny inntekt etter inntektsendring for {navn} er for lavt. Tallet kan ikke være lavere enn {min}.',
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringHasNoValue':
+            'Skriv en forklaring på hvorfor du har hatt en varig endring i næringsinntekten for {navn}.',
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooLong':
+            'Du har brukt for mange tegn i forklaringen din. Teksten kan ikke inneholde flere enn {maks} tegn.',
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooShort':
+            'Du har brukt for få tegn i forklaringen din. Teksten må inneholde minst {min} tegn.',
+        'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du har regnskapsfører.',
+        'virksomhetForm.regnskapsfører_navn.stringHasNoValue': 'Skriv inn navnet på regnskapsføreren din.',
+        'virksomhetForm.regnskapsfører_navn.stringIsTooLong':
+            'Navnet på regnskapsfører kan ikke inneholde flere enn {maks} tegn.',
+        'virksomhetForm.regnskapsfører_navn.stringIsTooShort':
+            'Navnet på regnskapsfører må inneholde minst {min} tegn.',
+        'virksomhetForm.regnskapsfører_telefon.stringHasNoValue': 'Skriv inn telefonnummeret til regnskapsføreren din.',
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooLong':
+            'Telefonnummeret til regnskapsfører kan ikke inneholde flere enn {maks} tegn.',
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooShort':
+            'Telefonnummeret til regnskapsfører må inneholde minst {min} tegn.',
     },
     nn: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
@@ -93,16 +183,22 @@ const virksomhetMessages = {
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.header': 'Næringsresultat for alle verksemdene dine',
         'sifForms.virksomhet.nyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har fleire næringsverksemder. Her skal du leggje inn næringsresultatet totalt for alle verksemdene du har.',
-        'sifForms.virksomhet.næringsinntektFlere.header': 'Næringsverksemdene dine',
-        'sifForms.virksomhet.næringsinntektFlere.info':
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.header': 'Næringsverksemdene dine',
+        'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har fleire næringsverksemder som sjølvstendig næringsdrivande. Nå skal du svare på spørsmål som gjeld alle verksemdene dine.',
-        'sifForms.virksomhet.næringsinntekt':
-            'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
-        'sifForms.virksomhet.næringsinntekt.info':
-            'Dresom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
-        'sifForms.virksomhet.næringsinntekt_info':
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm':
+            'Kva har du hatt i næringsresultat før skatt dei siste 12 månadene?',
+        'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm.description':
+            'Dersom verksemda har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm':
+            'Kva har du hatt totalt i næringsresultat før skatt dei siste 12 månadene?',
+        'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm.description':
+            'Dersom verksemdene har vart i kortare tid enn 12 månader, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.',
+        'sifForms.virksomhet.hvaErNæringsresultat.enVirksomhet.text':
             'Næringsresultatet er inntekter du har i næringa di, minus utgifter og avskrivingar.',
-        'sifForms.virksomhet.næringsinntekt_info_title': 'Kva er næringsresultatet?',
+        'sifForms.virksomhet.hvaErNæringsresultat.flereVirksomheter.text':
+            'Næringsresultatet er inntekter du har i næringane dine, minus utgifter og avskrivingar.',
+        'sifForms.virksomhet.hvaErNæringsresultat.title': 'Kva er næringsresultatet?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv':
             'Har du begynt i arbeidslivet i løpet av dei 3 siste ferdiglikna åra?',
         'sifForms.virksomhet.har_blitt_yrkesaktiv_info_title': 'Kva betyr dette?',

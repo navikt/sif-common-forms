@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
-import FerieuttakForm from '../../../forms/ferieuttak/FerieuttakForm';
+import FerieuttakForm, { FerieuttakFormErrors } from '../../../forms/ferieuttak/FerieuttakForm';
 import FerieuttakListAndDialog from '../../../forms/ferieuttak/FerieuttakListAndDialog';
+import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
 import { Ferieuttak } from '../../../forms/ferieuttak/types';
 import SubmitPreview from '../../components/submit-preview/SubmitPreview';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import ferieuttakMessages from '../../../forms/ferieuttak/ferieuttakMessages';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 enum FormField {
     'ferie' = 'ferie',
@@ -40,15 +43,15 @@ const FormikExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <FerieuttakListAndDialog<FormField>
                                     name={FormField.ferie}
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til ferie',
                                         listTitle: 'Registrerte ferier',
@@ -62,6 +65,13 @@ const FormikExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(FerieuttakFormErrors)}
+                    intlMessages={ferieuttakMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

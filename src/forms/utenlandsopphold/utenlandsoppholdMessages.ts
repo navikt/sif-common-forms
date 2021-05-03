@@ -20,6 +20,32 @@ const utenlandsoppholdMessages = {
         'utenlandsopphold.oppsummering.årsak.ANNET': 'Jeg dekker utgiftene selv',
         'utenlandsopphold.form.ok': 'Legg til',
         'utenlandsopphold.form.avbryt': 'Avbryt',
+        'utenlandsoppholdForm.fom.dateHasNoValue':
+            'Du må oppgi når utenlandsoppholdet startet. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.fom.dateIsAfterMax':
+            'Datoen for når utenlandsoppholdet startet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.fom.dateIsBeforeMin':
+            'Datoen for når utenlandsoppholdet startet kan ikke være før {dato}. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'utenlandsoppholdForm.fom.dateHasInvalidFormat':
+            'Du må oppgi dato for når utenlandsoppholdet startet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'utenlandsoppholdForm.fom.fromDateIsAfterToDate':
+            'Startdatoen for utenlandsoppholdet må være før sluttdatoen, eller på samme dag som sluttdatoen. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.tom.dateHasNoValue':
+            'Du må oppgi når utenlandsoppholdet sluttet. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.tom.dateIsAfterMax':
+            'Datoen for når utenlandsoppholdet sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.tom.dateIsBeforeMin':
+            'Datoen for når utenlandsoppholdet sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.tom.dateHasInvalidFormat':
+            'Du må oppgi dato for når utenlandsoppholdet sluttet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'utenlandsoppholdForm.tom.toDateIsBeforeFromDate':
+            'Sluttdatoen for utenlandsoppholdet kan ikke være før startdatoen. Skriv inn eller velg dato fra datovelgeren.',
+        'utenlandsoppholdForm.landkode.noValue': 'Du må velge i hvilket land du var i.',
+        'utenlandsoppholdForm.årsak.noValue': 'Du må velge hvordan utgiftene til innleggelsen dekkes.',
+        'utenlandsoppholdForm.erBarnetInnlagt.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på om barnet er, eller skal være innlagt i helseinstitusjon i {land}.',
+        'utenlandsoppholdForm.barnInnlagtPerioder.listIsEmpty':
+            'Du må legge til perioder barnet er, eller skal være innlagt.',
     },
     nn: {
         'utenlandsopphold.list.add': 'Legg til opphald',

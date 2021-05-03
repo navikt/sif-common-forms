@@ -1,10 +1,11 @@
 import React from 'react';
-import { FormikModalFormAndList, FormikValidateFunction } from '@navikt/sif-common-formik';
+import { useIntl } from 'react-intl';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { FormikModalFormAndList, TypedFormInputValidationProps } from '@navikt/sif-common-formik';
 import FosterbarnForm from './FosterbarnForm';
 import FosterbarnList from './FosterbarnList';
 import { Fosterbarn } from './types';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { useIntl } from 'react-intl';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
 export interface FosterbarnListAndDialogText {
     liste_legg_til_knapp: string;
@@ -13,14 +14,20 @@ export interface FosterbarnListAndDialogText {
     modal_tittel: string;
 }
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     texts?: FosterbarnListAndDialogText;
     includeName?: boolean;
+    disallowedFødselsnumre?: string[];
 }
 
-function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, includeName }: Props<FieldNames>) {
+function FosterbarnListAndDialog<FieldNames>({
+    name,
+    validate,
+    texts,
+    includeName,
+    disallowedFødselsnumre,
+}: Props<FieldNames>) {
     const intl = useIntl();
 
     const defaultText: FosterbarnListAndDialogText = {
@@ -32,7 +39,7 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, includeNam
     const txt = { ...defaultText, ...texts };
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Fosterbarn>
+            <FormikModalFormAndList<FieldNames, Fosterbarn, ValidationError>
                 name={name}
                 labels={{
                     addLabel: txt.liste_legg_til_knapp,
@@ -48,6 +55,7 @@ function FosterbarnListAndDialog<FieldNames>({ name, validate, texts, includeNam
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                         includeName={includeName}
+                        disallowedFødselsnumre={disallowedFødselsnumre}
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (

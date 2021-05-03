@@ -1,4 +1,4 @@
-import { hasValue } from '@navikt/sif-common-core/lib/validation/hasValue';
+import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 
 export interface Fosterbarn {
     id?: string;

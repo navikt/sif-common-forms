@@ -1,13 +1,17 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import FerieuttakForm from './FerieuttakForm';
 import FerieuttakList from './FerieuttakList';
 import { Ferieuttak } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     minDate: Date;
     maxDate: Date;
     labels: ModalFormAndListLabels;
@@ -16,7 +20,7 @@ interface Props<FieldNames> {
 function FerieuttakListAndDialog<FieldNames>({ name, minDate, maxDate, validate, labels }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, Ferieuttak>
+            <FormikModalFormAndList<FieldNames, Ferieuttak, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"

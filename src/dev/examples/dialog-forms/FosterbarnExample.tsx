@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { commonFieldErrorRenderer } from '@navikt/sif-common-core/lib/utils/commonFieldErrorRenderer';
-import { validateRequiredList } from '@navikt/sif-common-core/lib/validation/fieldValidations';
+import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
+import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
+import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import flat from 'flat';
 import Panel from 'nav-frontend-paneler';
 import 'nav-frontend-tabs-style';
 import { Undertittel } from 'nav-frontend-typografi';
 import { Fosterbarn } from '../../../forms/fosterbarn';
-import FosterbarnForm from '../../../forms/fosterbarn/FosterbarnForm';
+import FosterbarnForm, { FosterbarnFormErrors } from '../../../forms/fosterbarn/FosterbarnForm';
 import FosterbarnListAndDialog from '../../../forms/fosterbarn/FosterbarnListAndDialog';
-import SubmitPreview from '../../components/submit-preview/SubmitPreview';
 import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
-import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
+import SubmitPreview from '../../components/submit-preview/SubmitPreview';
+import FormValidationErrorMessages from '../../components/validation-error-messages/ValidationErrorMessages';
 
 enum FormField {
     'fosterbarn' = 'fosterbarn',
@@ -39,13 +42,13 @@ const FosterbarnExample = () => {
                     onSubmit={setListFormValues}
                     renderForm={() => {
                         return (
-                            <TypedFormikForm<FormValues>
+                            <TypedFormikForm<FormValues, ValidationError>
                                 includeButtons={true}
                                 submitButtonLabel="Valider skjema"
-                                fieldErrorRenderer={(error) => commonFieldErrorRenderer(intl, error)}>
+                                formErrorHandler={getFormErrorHandler(intl)}>
                                 <FosterbarnListAndDialog<FormField>
                                     name={FormField.fosterbarn}
-                                    validate={validateRequiredList}
+                                    validate={getListValidator({ required: true })}
                                 />
                             </TypedFormikForm>
                         );
@@ -53,6 +56,13 @@ const FosterbarnExample = () => {
                 />
                 <SubmitPreview values={listFormValues} />
             </Panel>
+
+            <Box margin="xxl" padBottom="l">
+                <FormValidationErrorMessages
+                    validationErrorIntlKeys={flat(FosterbarnFormErrors)}
+                    intlMessages={fosterbarnMessages}
+                />
+            </Box>
 
             <Box margin="xxl" padBottom="l">
                 <Undertittel>Kun dialog</Undertittel>

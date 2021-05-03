@@ -1,11 +1,11 @@
 import React from 'react';
+import { TypedFormInputValidationProps } from '@navikt/sif-common-formik/lib';
 import { FraværDagForm, FraværDagFormFields } from './FraværDagForm';
-import { FormikValidateFunction } from '@navikt/sif-common-formik/lib';
 import { timeText } from './fraværUtilities';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props {
+interface Props extends TypedFormInputValidationProps<any, ValidationError> {
     name: FraværDagFormFields;
-    validate: FormikValidateFunction;
     label?: string;
     maksTid?: number;
 }

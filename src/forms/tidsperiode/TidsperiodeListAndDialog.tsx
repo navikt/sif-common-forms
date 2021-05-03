@@ -1,13 +1,17 @@
 import React from 'react';
 import { sortItemsByFom } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { FormikModalFormAndList, FormikValidateFunction, ModalFormAndListLabels } from '@navikt/sif-common-formik';
+import {
+    FormikModalFormAndList,
+    ModalFormAndListLabels,
+    TypedFormInputValidationProps,
+} from '@navikt/sif-common-formik';
 import TidsperiodeForm from './TidsperiodeForm';
 import TidsperiodeList from './TidsperiodeList';
 import { DateTidsperiode } from './types';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props<FieldNames> {
+interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
-    validate?: FormikValidateFunction;
     formTitle?: string;
     minDate?: Date;
     maxDate?: Date;
@@ -24,7 +28,7 @@ function TidsperiodeListAndDialog<FieldNames>({
 }: Props<FieldNames>) {
     return (
         <>
-            <FormikModalFormAndList<FieldNames, DateTidsperiode>
+            <FormikModalFormAndList<FieldNames, DateTidsperiode, ValidationError>
                 name={name}
                 labels={labels}
                 dialogWidth="narrow"
@@ -42,8 +46,6 @@ function TidsperiodeListAndDialog<FieldNames>({
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => {
-                    console.log(items);
-
                     return <TidsperiodeList tidsperiode={items} onEdit={onEdit} onDelete={onDelete} />;
                 }}
             />
