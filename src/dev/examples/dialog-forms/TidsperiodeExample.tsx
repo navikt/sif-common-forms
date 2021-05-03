@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import MessagesPreview from '@navikt/sif-common-core/lib/dev-utils/intl/messages-preview/MessagesPreview';
-import { date1YearAgo, date1YearFromNow } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { date1YearAgo, date1YearFromNow, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { TypedFormikForm, TypedFormikWrapper } from '@navikt/sif-common-formik/lib';
 import DialogFormWrapper from '@navikt/sif-common-formik/lib/components/formik-modal-form-and-list/dialog-form-wrapper/DialogFormWrapper';
 import { getListValidator } from '@navikt/sif-common-formik/lib/validation';
@@ -50,7 +50,7 @@ const TidsperiodeExample = () => {
                                 <TidsperiodeListAndDialog<FormField>
                                     name={FormField.tidsperiode}
                                     minDate={date1YearAgo}
-                                    maxDate={date1YearFromNow}
+                                    maxDate={dateToday}
                                     validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til periode',

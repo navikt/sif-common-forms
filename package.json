@@ -41,13 +41,13 @@
     "dependencies": {},
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.1.1",
-        "@navikt/sif-common-formik": "^19.0.1"
+        "@navikt/sif-common-formik": "^19.0.2"
     },
     "devDependencies": {
         "@craco/craco": "^6.1.2",
-        "@formatjs/intl-pluralrules": "^4.0.16",
+        "@formatjs/intl-pluralrules": "^4.0.17",
         "@navikt/sif-common-core": "^9.1.1",
-        "@navikt/sif-common-formik": "^19.0.1",
+        "@navikt/sif-common-formik": "^19.0.2",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^13.1.8",
@@ -124,7 +124,7 @@
         "react-collapse": "^5.1.0",
         "react-day-picker": "^7.4.10",
         "react-dom": "^17.0.2",
-        "react-intl": "^5.17.2",
+        "react-intl": "^5.17.4",
         "react-modal": "^3.13.1",
         "react-responsive": "^8.2.0",
         "react-router-dom": "^5.2.0",

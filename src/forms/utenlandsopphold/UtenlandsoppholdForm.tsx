@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
@@ -113,8 +112,6 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                 } = formik;
 
                 const hasDateStringValues = hasValue(fom) && hasValue(tom);
-                const fomDate = ISOStringToDate(fom);
-                const tomDate = ISOStringToDate(tom);
 
                 const includeInnlagtPerioderQuestion =
                     hasDateStringValues && landkode !== undefined && erBarnetInnlagt === YesOrNo.YES;
@@ -142,9 +139,6 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 fromInputProps={{
                                     name: UtenlandsoppholdFormFields.fom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.fraDato'),
-                                    dayPickerProps: {
-                                        initialMonth: fomDate || minDate || dateToday,
-                                    },
                                     validate: (value) => {
                                         const error = getDateRangeValidator({
                                             required: true,
@@ -158,9 +152,6 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                 toInputProps={{
                                     name: UtenlandsoppholdFormFields.tom,
                                     label: intlHelper(intl, 'utenlandsopphold.form.tidsperiode.tilDato'),
-                                    dayPickerProps: {
-                                        initialMonth: tomDate || fomDate || dateToday,
-                                    },
                                     validate: (value) => {
                                         const error = getDateRangeValidator({
                                             required: true,
@@ -191,7 +182,15 @@ const UtenlandsoppholdForm = ({ maxDate, minDate, opphold, alleOpphold = [], onS
                                         legend={intlHelper(intl, 'utenlandsopphold.form.erBarnetInnlagt.spm', {
                                             land: getCountryName(landkode, intl.locale),
                                         })}
-                                        validate={getYesOrNoValidator()}
+                                        validate={(value) => {
+                                            const error = getYesOrNoValidator()(value);
+                                            return error
+                                                ? {
+                                                      key: error,
+                                                      values: { land: getCountryName(landkode, intl.locale) },
+                                                  }
+                                                : undefined;
+                                        }}
                                     />
                                 </FormBlock>
                                 {includeInnlagtPerioderQuestion && (

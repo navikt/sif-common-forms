@@ -1,5 +1,3 @@
-import defaultValidationMessages from '../i18n/defaultMessages';
-
 const ferieuttakMessages = {
     nb: {
         'ferieuttak.list.title': 'Registrer uttak av ferie',
@@ -8,20 +6,26 @@ const ferieuttakMessages = {
         'ferieuttak.list.intervalTitle': 'Velg tidsrom',
         'ferieuttak.list.okButton': 'Ok',
         'ferieuttak.list.cancelButton': 'Avbryt',
-        'ferieuttak.form.validation.required': 'Feltet er påkrevd',
-        'ferieuttak.form.validation.dateOutsideRange': 'Første gyldige dato er {fom}, og siste gyldige dato er {tom}',
-        'ferieuttak.form.validation.fromDateAfterToDate': 'Fra-dato må være lik eller før til-dato',
-        'ferieuttak.form.validation.toDateBeforeFromDate': 'Til-dato må være lik eller etter fra-dato',
-        'ferieuttakForm.fom.dateHasNoValue': defaultValidationMessages.nb.dateHasNoValue,
-        'ferieuttakForm.fom.dateIsAfterMax': defaultValidationMessages.nb.dateIsAfterMax,
-        'ferieuttakForm.fom.dateIsBeforeMin': defaultValidationMessages.nb.dateIsBeforeMin,
-        'ferieuttakForm.fom.dateHasInvalidFormat': defaultValidationMessages.nb.dateHasInvalidFormat,
-        'ferieuttakForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
-        'ferieuttakForm.tom.dateHasNoValue': defaultValidationMessages.nb.dateHasNoValue,
-        'ferieuttakForm.tom.dateIsAfterMax': defaultValidationMessages.nb.dateIsAfterMax,
-        'ferieuttakForm.tom.dateIsBeforeMin': defaultValidationMessages.nb.dateIsBeforeMin,
-        'ferieuttakForm.tom.dateHasInvalidFormat': defaultValidationMessages.nb.dateHasInvalidFormat,
-        'ferieuttakForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.toDateIsBeforeFromDate,
+        'ferieuttakForm.fom.dateHasNoValue':
+            'Du må oppgi når ferien startet. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.fom.dateIsAfterMax':
+            'Datoen for når ferien startet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.fom.dateIsBeforeMin':
+            'Datoen for når ferien startet kan ikke være før {dato}. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'ferieuttakForm.fom.dateHasInvalidFormat':
+            'Du må oppgi dato for når ferien startet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'ferieuttakForm.fom.fromDateIsAfterToDate':
+            'Startdatoen for ferien må være før sluttdatoen, eller på samme dag som sluttdatoen. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.tom.dateHasNoValue':
+            'Du må oppgi når ferien sluttet. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.tom.dateIsAfterMax':
+            'Datoen for når ferien sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.tom.dateIsBeforeMin':
+            'Datoen for når ferien sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.tom.dateHasInvalidFormat':
+            'Du må oppgi dato for når ferien sluttet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'ferieuttakForm.tom.toDateIsBeforeFromDate':
+            'Sluttdatoen for ferien kan ikke være før startdatoen. Skriv inn eller velg dato fra datovelgeren.',
     },
     nn: {
         'ferieuttak.list.title': 'Registrer uttak av ferie',
@@ -30,10 +34,6 @@ const ferieuttakMessages = {
         'ferieuttak.list.intervalTitle': 'Velg tidsrom',
         'ferieuttak.list.okButton': 'Ok',
         'ferieuttak.list.cancelButton': 'Avbryt',
-        'ferieuttak.form.validation.required': 'Feltet er påkrevd',
-        'ferieuttak.form.validation.dateOutsideRange': 'Første gyldige dato er {fom}, og siste gyldige dato er {tom}',
-        'ferieuttak.form.validation.fromDateAfterToDate': 'Frå-dato må vere lik eller før til-dato',
-        'ferieuttak.form.validation.toDateBeforeFromDate': 'Til-dato må vere lik eller etter frå-dato',
     },
 };
 
