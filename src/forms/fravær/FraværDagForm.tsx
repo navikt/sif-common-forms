@@ -203,7 +203,10 @@ const FraværDagFormView = ({
                                     name={FraværDagFormFields.timerFravær}
                                     validate={(value) => {
                                         if (validateLessOrEqualTo(toMaybeNumber(values.timerArbeidsdag))(value)) {
-                                            return FraværDagFormErrors.timerFravær.fravær_timer_mer_enn_arbeidstimer;
+                                            return {
+                                                key: FraværDagFormErrors.timerFravær.fravær_timer_mer_enn_arbeidstimer,
+                                                keepKeyUnaltered: true,
+                                            };
                                         }
                                         return getRequiredFieldValidator()(value);
                                     }}
