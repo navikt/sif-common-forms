@@ -25,6 +25,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.header': 'Næringsvirksomhetene dine',
         'sifForms.virksomhet.ikkeNyoppstartet.næringsinntektFlere.info':
             'Du har opplyst at du har flere næringsvirksomheter som selvstendig næringsdrivende. Nå skal du svare på spørsmål som gjelder alle virksomhetene dine.',
+        'sifForms.virksomhet.næringsinntekt': 'Næringsinntekt',
         'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm':
             'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
         'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm.description':
