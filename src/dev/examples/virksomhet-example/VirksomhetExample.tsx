@@ -118,7 +118,7 @@ const VirksomhetExample = () => {
                         <Undertittel>Oppsummering av api data</Undertittel>
                     </Box>
                     <Panel border={true}>
-                        <VirksomhetSummary virksomhet={apiVirksomhet} />
+                        <VirksomhetSummary virksomhet={apiVirksomhet} harFlereVirksomheter={harFlereVirksomheter} />
                     </Panel>
                 </>
             )}

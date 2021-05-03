@@ -14,6 +14,7 @@ import { erVirksomhetRegnetSomNyoppstartet } from './virksomhetUtils';
 
 interface Props {
     virksomhet: VirksomhetApiData;
+    harFlereVirksomheter?: boolean;
 }
 
 const getFiskerNæringTekst = (intl: IntlShape, erPåBladB: boolean) => {
@@ -65,7 +66,7 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
     );
 };
 
-const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet }) => {
+const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet, harFlereVirksomheter }) => {
     const intl = useIntl();
     const erRegnetSomNyoppstartet = erVirksomhetRegnetSomNyoppstartet(apiStringDateToDate(virksomhet.fraOgMed));
 
@@ -74,7 +75,13 @@ const VirksomhetSummary: React.FunctionComponent<Props> = ({ virksomhet }) => {
             {renderVirksomhetSummary(virksomhet, intl)}
 
             {virksomhet.næringsinntekt !== undefined && (
-                <SummaryBlock header={intlHelper(intl, 'sifForms.virksomhet.næringsinntekt')}>
+                <SummaryBlock
+                    header={intlHelper(
+                        intl,
+                        harFlereVirksomheter
+                            ? 'sifForms.virksomhet.næringsinntekt.flereVirksomheter.spm'
+                            : 'sifForms.virksomhet.næringsinntekt.enVirksomhet.spm'
+                    )}>
                     <FormattedMessage id="sifForms.virksomhet.summary.næringsinntekst" />
                     {` `}
                     <TallSvar verdi={virksomhet.næringsinntekt} />

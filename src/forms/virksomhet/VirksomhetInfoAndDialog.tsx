@@ -45,7 +45,10 @@ function VirksomhetInfoAndDialog<FieldNames>({
                 />
             )}
             infoRenderer={({ data }) => (
-                <VirksomhetSummary virksomhet={mapVirksomhetToVirksomhetApiData(intl.locale, data)} />
+                <VirksomhetSummary
+                    virksomhet={mapVirksomhetToVirksomhetApiData(intl.locale, data)}
+                    harFlereVirksomheter={harFlereVirksomheter}
+                />
             )}
             onAfterChange={onAfterChange}
         />
