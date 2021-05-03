@@ -8,7 +8,6 @@ import {
     getDateRangeValidator,
     ValidateDateError,
     ValidateDateRangeError,
-    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
@@ -43,18 +42,18 @@ enum TidsperiodeFormFields {
 
 export const TidsperiodeFormErrors = {
     [TidsperiodeFormFields.fom]: {
-        [ValidateRequiredFieldError.noValue]: 'tidsperiodeForm.fom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'tidsperiodeForm.fom.dateHasNoValue',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'tidsperiodeForm.fom.fromDateIsAfterToDate',
-        [ValidateDateError.invalidDateFormat]: 'tidsperiodeForm.fom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'tidsperiodeForm.fom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'tidsperiodeForm.fom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'tidsperiodeForm.fom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'tidsperiodeForm.fom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'tidsperiodeForm.fom.dateIsAfterMax',
     },
     [TidsperiodeFormFields.tom]: {
-        [ValidateRequiredFieldError.noValue]: 'tidsperiodeForm.tom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'tidsperiodeForm.tom.dateHasNoValue',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'tidsperiodeForm.tom.toDateIsBeforeFromDate',
-        [ValidateDateError.invalidDateFormat]: 'tidsperiodeForm.tom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'tidsperiodeForm.tom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'tidsperiodeForm.tom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'tidsperiodeForm.tom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'tidsperiodeForm.tom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'tidsperiodeForm.tom.dateIsAfterMax',
     },
 };
 

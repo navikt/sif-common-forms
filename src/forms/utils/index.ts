@@ -17,13 +17,13 @@ export const handleDateRangeValidationError = (
     minDate: Date | undefined,
     maxDate: Date | undefined
 ): ValidationError | undefined => {
-    if (minDate && error === ValidateDateError.dateBeforeMin) {
+    if (minDate && error === ValidateDateError.dateIsBeforeMin) {
         return {
             key: error,
             values: { dato: prettifyDate(minDate) },
         };
     }
-    if (maxDate && error === ValidateDateError.dateAfterMax) {
+    if (maxDate && error === ValidateDateError.dateIsAfterMax) {
         return {
             key: error,
             values: { dato: prettifyDate(maxDate) },

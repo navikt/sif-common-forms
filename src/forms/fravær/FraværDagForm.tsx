@@ -14,6 +14,7 @@ import {
     getRequiredFieldValidator,
     getYesOrNoValidator,
     ValidateDateError,
+    ValidateNumberError,
     ValidateRequiredFieldError,
     ValidateYesOrNoError,
 } from '@navikt/sif-common-formik/lib/validation';
@@ -68,19 +69,19 @@ export enum FraværDagFormFields {
 
 export const FraværDagFormErrors = {
     [FraværDagFormFields.dato]: {
-        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.dato.noValue',
-        [ValidateDateError.invalidDateFormat]: 'fraværDagForm.dato.invalidDateFormat',
-        [ValidateDateError.dateAfterMax]: 'fraværDagForm.dato.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'fraværDagForm.dato.dateBeforeMin',
+        [ValidateDateError.dateHasNoValue]: 'fraværDagForm.dato.dateHasNoValue',
+        [ValidateDateError.dateHasInvalidFormat]: 'fraværDagForm.dato.dateHasInvalidFormat',
+        [ValidateDateError.dateIsAfterMax]: 'fraværDagForm.dato.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'fraværDagForm.dato.dateIsBeforeMin',
         [FraværFieldValidationErrors.er_helg]: 'fraværDagForm.dato.er_helg',
         [FraværFieldValidationErrors.dato_kolliderer_med_annet_fravær]:
             'fraværDagForm.dato.dato_kolliderer_med_annet_fravær',
     },
     [FraværDagFormFields.timerArbeidsdag]: {
-        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.timerArbeidsdag.noValue',
+        [ValidateNumberError.numberHasNoValue]: 'fraværDagForm.timerArbeidsdag.numberHasNoValue',
     },
     [FraværDagFormFields.timerFravær]: {
-        [ValidateRequiredFieldError.noValue]: 'fraværDagForm.timerFravær.noValue',
+        [ValidateNumberError.numberHasNoValue]: 'fraværDagForm.timerFravær.numbverHasNoValue',
         [FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer]:
             'fraværDagForm.timerFravær.fravær_timer_mer_enn_arbeidstimer',
     },

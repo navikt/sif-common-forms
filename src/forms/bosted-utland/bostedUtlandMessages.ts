@@ -1,5 +1,3 @@
-import defaultValidationMessages from '../i18n/defaultMessages';
-
 const bostedUtlandMessages = {
     nb: {
         'bostedUtland.list.add': 'Legg til opphold',
@@ -10,17 +8,27 @@ const bostedUtlandMessages = {
         'bostedUtland.form.land.spm': 'Velg land',
         'bostedUtland.form.ok': 'Legg til',
         'bostedUtland.form.avbryt': 'Avbryt',
-        'bostedUtlandForm.fom.noValue': defaultValidationMessages.nb.noValue,
-        'bostedUtlandForm.fom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'bostedUtlandForm.fom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
-        'bostedUtlandForm.fom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'bostedUtlandForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
-        'bostedUtlandForm.tom.noValue': defaultValidationMessages.nb.noValue,
-        'bostedUtlandForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'bostedUtlandForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
-        'bostedUtlandForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'bostedUtlandForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.invalidDateFormat,
-        'bostedUtlandForm.landkode.noValue': defaultValidationMessages.nb.noValue,
+        'bostedUtlandForm.fom.dateHasNoValue':
+            'Du må oppgi hvilken dato utenlandsoppholdet startet. Skriv inn eller velg dato.',
+        'bostedUtlandForm.fom.dateIsAfterMax':
+            'Datoen utenlandsoppholdet startet kan ikke være etter {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'bostedUtlandForm.fom.dateIsBeforeMin':
+            'Datoen utenlandsoppholdet startet kan ikke være før {dato}. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'bostedUtlandForm.fom.dateHasInvalidFormat':
+            'Du må oppgi når utenlandsoppholdet startet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'bostedUtlandForm.fom.fromDateIsAfterToDate':
+            'Datoen utenlandsoppholdet startet kan ikke være etter datoen det ble avsluttet. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'bostedUtlandForm.tom.dateHasNoValue':
+            'Du må oppgi hvilken dato utenlandsoppholdet ble avsluttet. Skriv inn eller velg dato fra datovelgeren.',
+        'bostedUtlandForm.tom.dateIsAfterMax':
+            'Datoen utenlandsoppholdet ble avsluttet kan ikke være etter {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'bostedUtlandForm.tom.dateIsBeforeMin':
+            'Datoen utenlandsoppholdet ble avsluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'bostedUtlandForm.tom.dateHasInvalidFormat':
+            'Du må oppgi når utenlandsoppholdet ble avsluttet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'bostedUtlandForm.tom.toDateIsBeforeFromDate':
+            'Datoen utenlandsoppholdet ble avsluttet kan ikke være før datoen det ble startet. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'bostedUtlandForm.landkode.noValue': 'Du må velge hvilket land du bodde i',
     },
     nn: {
         'bostedUtland.list.add': 'Legg til opphald',

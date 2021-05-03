@@ -43,17 +43,17 @@ interface DateLimits {
 
 export const BostedUtlandFormErrors = {
     [BostedUtlandFormFields.fom]: {
-        [ValidateRequiredFieldError.noValue]: 'bostedUtlandForm.fom.noValue',
-        [ValidateDateError.dateAfterMax]: 'bostedUtlandForm.fom.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'bostedUtlandForm.fom.dateBeforeMin',
-        [ValidateDateError.invalidDateFormat]: 'bostedUtlandForm.fom.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'bostedUtlandForm.fom.dateHasNoValue',
+        [ValidateDateError.dateIsAfterMax]: 'bostedUtlandForm.fom.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'bostedUtlandForm.fom.dateIsBeforeMin',
+        [ValidateDateError.dateHasInvalidFormat]: 'bostedUtlandForm.fom.dateHasInvalidFormat',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'bostedUtlandForm.fom.fromDateIsAfterToDate',
     },
     [BostedUtlandFormFields.tom]: {
-        [ValidateRequiredFieldError.noValue]: 'bostedUtlandForm.tom.noValue',
-        [ValidateDateError.dateAfterMax]: 'bostedUtlandForm.tom.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'bostedUtlandForm.tom.dateBeforeMin',
-        [ValidateDateError.invalidDateFormat]: 'bostedUtlandForm.tom.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'bostedUtlandForm.tom.dateHasNoValue',
+        [ValidateDateError.dateIsAfterMax]: 'bostedUtlandForm.tom.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'bostedUtlandForm.tom.dateIsBeforeMin',
+        [ValidateDateError.dateHasInvalidFormat]: 'bostedUtlandForm.tom.dateHasInvalidFormat',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'bostedUtlandForm.tom.toDateIsBeforeFromDate',
     },
     [BostedUtlandFormFields.landkode]: {

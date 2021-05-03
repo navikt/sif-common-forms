@@ -1,5 +1,3 @@
-import defaultValidationMessages from '../i18n/defaultMessages';
-
 const virksomhetMessages = {
     nb: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
@@ -78,57 +76,89 @@ const virksomhetMessages = {
         'sifForms.virksomhet.summary.regnskapsfører.header': 'Regnskapsfører',
         'sifForms.virksomhet.summary.regnskapsfører.info': 'Ja, {navn}, telefon {telefon}',
 
-        'virksomhetForm.næringstyper.listIsEmpty': 'Du må velge hvilken type virksomhet du har',
-        'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
-        'virksomhetForm.navnPåVirksomheten.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.registrertINorge.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
-        'virksomhetForm.registrertILand.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.organisasjonsnummer.invalidOrgNumberFormat': 'Organisasjonsnummeret har ugyldig format',
-        'virksomhetForm.fom.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.fom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'virksomhetForm.fom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'virksomhetForm.fom.fromDateIsAfterToDate': defaultValidationMessages.nb.fromDateIsAfterToDate,
-        'virksomhetForm.tom.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.tom.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
-        'virksomhetForm.tom.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'virksomhetForm.tom.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'virksomhetForm.tom.toDateIsBeforeFromDate': defaultValidationMessages.nb.toDateIsBeforeFromDate,
-        'virksomhetForm.næringsinntekt.invalidNumberFormat': defaultValidationMessages.nb.invalidNumberFormat,
-        'virksomhetForm.næringsinntekt.numberIsTooSmall': defaultValidationMessages.nb.numberIsTooSmall,
-        'virksomhetForm.næringsinntekt.numberIsTooLarge': defaultValidationMessages.nb.numberIsTooLarge,
+        'virksomhetForm.næringstyper.listIsEmpty': 'Velg hvilken type virksomhet du har fra listen.',
+        'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du er fisker på Blad B.',
+        'virksomhetForm.navnPåVirksomheten.stringHasNoValue': 'Skriv inn navnet på virksomheten din.',
+        'virksomhetForm.registrertINorge.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om virksomheten din er registrert i Norge.',
+        'virksomhetForm.registrertILand.noValue':
+            'Du må velge hvilket land virksomheten din er registrert i. Velg land fra listen.',
+        'virksomhetForm.organisasjonsnummer.orgNumberHasNoValue':
+            'Skriv inn organisasjonsnummeret. Et gyldig organsisasjonsnummer inneholder 9 siffer',
+        'virksomhetForm.organisasjonsnummer.orgNumberHasInvalidFormat':
+            'Du har oppgitt et ugyldig organisasjonsnummer. Oppgi et gyldig organsisasjonsnummer som inneholder 9 siffer.',
+        'virksomhetForm.fom.dateHasNoValue':
+            'Du må oppgi hvilken dato du startet virksomheten. Skriv inn eller velg startdato fra datovelgeren.',
+        'virksomhetForm.fom.dateIsAfterMax':
+            'Startdatoen for når du startet {navn} må være før dagens dato. Skriv inn eller velg startdato fra datovelgeren.',
+        'virksomhetForm.fom.dateHasInvalidFormat':
+            'Du må oppgi startdato for virksomheten i et gyldig format. Gyldig format er dd.mm.ååå.',
+        'virksomhetForm.fom.fromDateIsAfterToDate':
+            'Startdatoen for når du startet {navn} må være før sluttdatoen, eller på samme dag som sluttdatoen. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.tom.dateHasNoValue':
+            'Du må oppgi hvilken dato du avsluttet virksomheten. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.tom.dateIsBeforeMin':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være før startdatoen. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.tom.dateIsAfterMax':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være etter dagens dato. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.tom.dateHasInvalidFormat':
+            'Du må oppgi dato for når du avsluttet virksomheten i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.tom.toDateIsBeforeFromDate':
+            'Sluttdatoen for når du avsluttet virksomheten kan ikke være før startdatoen. Skriv inn eller velg sluttdato fra datovelgeren.',
+        'virksomhetForm.næringsinntekt.numberHasNoValue': 'Du må oppgi næringsinntekten i {navn}.',
+        'virksomhetForm.næringsinntekt.numberHasInvalidFormat':
+            'Du må oppgi et gyldig tall for næringsinntekten i {navn}. Et gyldig tall inneholder kun siffer.',
+        'virksomhetForm.næringsinntekt.numberIsTooSmall':
+            'Tallet du har oppgitt som næringsinntekt for {navn} er for lavt. Tallet kan ikke være lavere enn {min}.',
+        'virksomhetForm.næringsinntekt.numberIsTooLarge':
+            'Tallet du har oppgitt som næringsinntekt for {navn} er for høyt. Tallet kan ikke være høyere enn {maks}.',
         'virksomhetForm.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.yesOrNoIsUnanswered':
-            defaultValidationMessages.nb.yesOrNoIsUnanswered,
-        'virksomhetForm.blittYrkesaktivDato.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.blittYrkesaktivDato.invalidDateFormat': defaultValidationMessages.nb.invalidDateFormat,
-        'virksomhetForm.blittYrkesaktivDato.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'virksomhetForm.blittYrkesaktivDato.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
+            'Du må svare ja eller nei på spørsmålet om du har begynt arbeidslivet i løpet av de 3 siste ferdigliknede årene.',
+        'virksomhetForm.blittYrkesaktivDato.dateHasNoValue':
+            'Du må oppgi dato for når du begynte i arbeidslivet. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.blittYrkesaktivDato.dateHasInvalidFormat':
+            'Du må oppgi dato for når du begynte i arbeidslivet i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.blittYrkesaktivDato.dateIsAfterMax':
+            'Datoen for når du begynte i arbeidslivet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.blittYrkesaktivDato.dateIsBeforeMin':
+            'Datoen for når du begynte i arbeidslivet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
         'virksomhetForm.hattVarigEndringAvNæringsinntektSiste4Kalenderår.yesOrNoIsUnanswered':
-            defaultValidationMessages.nb.yesOrNoIsUnanswered,
-        'virksomhetForm.varigEndringINæringsinntekt_dato.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.varigEndringINæringsinntekt_dato.invalidDateFormat':
-            defaultValidationMessages.nb.invalidDateFormat,
-        'virksomhetForm.varigEndringINæringsinntekt_dato.dateAfterMax': defaultValidationMessages.nb.dateAfterMax,
-        'virksomhetForm.varigEndringINæringsinntekt_dato.dateBeforeMin': defaultValidationMessages.nb.dateBeforeMin,
-        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.invalidNumberFormat':
-            defaultValidationMessages.nb.invalidNumberFormat,
+            'Du må svare ja eller nei på spørsmålet om du har hatt varig endring i næringsinntekten i de siste 4 kalenderårene.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasNoValue':
+            'Du må oppgi fra hvilken dato du fikk en varig endring i næringsinntekten i {navn}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasInvalidFormat':
+            'Du må oppgi dato for når du fikk varig endring i næringsinntekt i {navn} i et gyldig format. Gyldig format er dd.mm.åååå.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsAfterMax':
+            'Datoen for når du fikk varig endring i næringsinntekt kan ikke være etter {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsBeforeMin':
+            'Datoen for når du fikk varig endring i næringsinntekt kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasNoValue':
+            'Du må oppgi inntekt etter inntektsendring for {navn}.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasInvalidFormat':
+            'Du må oppgi et gyldig tall for ny inntekt etter inntektsendring i {navn}. Et gyldig tall inneholder kun siffer.',
         'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge':
-            defaultValidationMessages.nb.numberIsTooLarge,
+            'Tallet du har oppgitt som ny inntekt etter inntektsendring for {navn} er for høyt. Tallet kan ikke være høyere enn {maks}.',
         'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooSmall':
-            defaultValidationMessages.nb.numberIsTooSmall,
-        'virksomhetForm.varigEndringINæringsinntekt_forklaring.noValue': defaultValidationMessages.nb.noValue,
+            'Tallet du har oppgitt som ny inntekt etter inntektsendring for {navn} er for lavt. Tallet kan ikke være lavere enn {min}.',
+        'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringHasNoValue':
+            'Skriv en forklaring på hvorfor du har hatt en varig endring i næringsinntekten for {navn}.',
         'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooLong':
-            defaultValidationMessages.nb.stringIsTooLong,
+            'Du har brukt for mange tegn i forklaringen din. Teksten kan ikke inneholde flere enn {maks} tegn.',
         'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooShort':
-            defaultValidationMessages.nb.stringIsTooShort,
-
-        'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered': defaultValidationMessages.nb.yesOrNoIsUnanswered,
-        'virksomhetForm.regnskapsfører_navn.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.regnskapsfører_navn.stringIsTooLong': defaultValidationMessages.nb.stringIsTooLong,
-        'virksomhetForm.regnskapsfører_navn.stringIsTooShort': defaultValidationMessages.nb.stringIsTooShort,
-        'virksomhetForm.regnskapsfører_telefon.noValue': defaultValidationMessages.nb.noValue,
-        'virksomhetForm.regnskapsfører_telefon.stringIsTooLong': defaultValidationMessages.nb.stringIsTooLong,
-        'virksomhetForm.regnskapsfører_telefon.stringIsTooShort': defaultValidationMessages.nb.stringIsTooShort,
+            'Du har brukt for få tegn i forklaringen din. Teksten må inneholde minst {min} tegn.',
+        'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered':
+            'Du må svare ja eller nei på spørsmålet om du har regnskapsfører.',
+        'virksomhetForm.regnskapsfører_navn.stringHasNoValue': 'Skriv inn navnet på regnskapsføreren din.',
+        'virksomhetForm.regnskapsfører_navn.stringIsTooLong':
+            'Navnet på regnskapsfører kan ikke inneholde flere enn {maks} tegn.',
+        'virksomhetForm.regnskapsfører_navn.stringIsTooShort':
+            'Navnet på regnskapsfører må inneholde minst {min} tegn.',
+        'virksomhetForm.regnskapsfører_telefon.stringHasNoValue': 'Skriv inn telefonnummeret til regnskapsføreren din.',
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooLong':
+            'Telefonnummeret til regnskapsfører kan ikke inneholde flere enn {maks} tegn.',
+        'virksomhetForm.regnskapsfører_telefon.stringIsTooShort':
+            'Telefonnummeret til regnskapsfører må inneholde minst {min} tegn.',
     },
     nn: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',

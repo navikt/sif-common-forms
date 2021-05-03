@@ -8,7 +8,7 @@ import {
     getFødselsnummerValidator,
     getRequiredFieldValidator,
     ValidateFødselsnummerError,
-    ValidateRequiredFieldError,
+    ValidateStringError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
@@ -40,13 +40,19 @@ enum FosterbarnFormField {
 type FormValues = Partial<Fosterbarn>;
 
 export const FosterbarnFormErrors = {
-    [FosterbarnFormField.fornavn]: { [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.fornavn.noValue' },
-    [FosterbarnFormField.etternavn]: { [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.etternavn.noValue' },
+    [FosterbarnFormField.fornavn]: {
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.fornavn.stringHasNoValue',
+    },
+    [FosterbarnFormField.etternavn]: {
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.etternavn.stringHasNoValue',
+    },
     [FosterbarnFormField.fødselsnummer]: {
-        [ValidateRequiredFieldError.noValue]: 'fosterbarnForm.fødselsnummer.noValue',
-        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'fosterbarnForm.fødselsnummer.disallowedFødselsnummer',
-        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'fosterbarnForm.fødselsnummer.fødselsnummerNot11Chars',
-        [ValidateFødselsnummerError.invalidFødselsnummer]: 'fosterbarnForm.fødselsnummer.invalidFødselsnummer',
+        [ValidateStringError.stringHasNoValue]: 'fosterbarnForm.fødselsnummer.stringHasNoValue',
+        [ValidateFødselsnummerError.fødselsnummerIsNotAllowed]:
+            'fosterbarnForm.fødselsnummer.fødselsnummerIsNotAllowed',
+        [ValidateFødselsnummerError.fødselsnummerIsNot11Chars]:
+            'fosterbarnForm.fødselsnummer.fødselsnummerIsNot11Chars',
+        [ValidateFødselsnummerError.fødselsnummerIsInvalid]: 'fosterbarnForm.fødselsnummer.fødselsnummerIsInvalid',
     },
 };
 

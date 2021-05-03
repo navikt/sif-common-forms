@@ -57,7 +57,7 @@ export const VirksomhetFormErrors = {
         [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered',
     },
     [VirksomhetFormField.navnPåVirksomheten]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.navnPåVirksomheten.noValue',
+        [ValidateStringError.stringHasNoValue]: 'virksomhetForm.navnPåVirksomheten.stringHasNoValue',
     },
     [VirksomhetFormField.registrertINorge]: {
         [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.registrertINorge.yesOrNoIsUnanswered',
@@ -66,23 +66,24 @@ export const VirksomhetFormErrors = {
         [ValidateRequiredFieldError.noValue]: 'virksomhetForm.registrertILand.noValue',
     },
     [VirksomhetFormField.organisasjonsnummer]: {
-        [ValidateOrgNumberError.invalidOrgNumberFormat]: 'virksomhetForm.organisasjonsnummer.invalidOrgNumberFormat',
+        [ValidateOrgNumberError.orgNumberHasInvalidFormat]:
+            'virksomhetForm.organisasjonsnummer.orgNumberHasInvalidFormat',
     },
     [VirksomhetFormField.fom]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.fom.noValue',
-        [ValidateDateError.dateAfterMax]: 'virksomhetForm.fom.dateAfterMax',
-        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.fom.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'virksomhetForm.fom.dateHasNoValue',
+        [ValidateDateError.dateIsAfterMax]: 'virksomhetForm.fom.dateIsAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'virksomhetForm.fom.dateHasInvalidFormat',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'virksomhetForm.fom.fromDateIsAfterToDate',
     },
     [VirksomhetFormField.tom]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.tom.noValue',
-        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.tom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'virksomhetForm.tom.dateAfterMax',
-        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.tom.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'virksomhetForm.tom.dateHasNoValue',
+        [ValidateDateError.dateIsBeforeMin]: 'virksomhetForm.tom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'virksomhetForm.tom.dateIsAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'virksomhetForm.tom.dateHasInvalidFormat',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'virksomhetForm.tom.toDateIsBeforeFromDate',
     },
     [VirksomhetFormField.næringsinntekt]: {
-        [ValidateNumberError.invalidNumberFormat]: 'virksomhetForm.næringsinntekt.invalidNumberFormat',
+        [ValidateNumberError.numberHasInvalidFormat]: 'virksomhetForm.næringsinntekt.numberHasInvalidFormat',
         [ValidateNumberError.numberIsTooSmall]: 'virksomhetForm.næringsinntekt.numberIsTooSmall',
         [ValidateNumberError.numberIsTooLarge]: 'virksomhetForm.næringsinntekt.numberIsTooLarge',
     },
@@ -91,32 +92,35 @@ export const VirksomhetFormErrors = {
             'virksomhetForm.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.yesOrNoIsUnanswered',
     },
     [VirksomhetFormField.blittYrkesaktivDato]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.blittYrkesaktivDato.noValue',
-        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.blittYrkesaktivDato.invalidDateFormat',
-        [ValidateDateError.dateAfterMax]: 'virksomhetForm.blittYrkesaktivDato.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.blittYrkesaktivDato.dateBeforeMin',
+        [ValidateDateError.dateHasNoValue]: 'virksomhetForm.blittYrkesaktivDato.dateHasNoValue',
+        [ValidateDateError.dateHasInvalidFormat]: 'virksomhetForm.blittYrkesaktivDato.dateHasInvalidFormat',
+        [ValidateDateError.dateIsAfterMax]: 'virksomhetForm.blittYrkesaktivDato.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'virksomhetForm.blittYrkesaktivDato.dateIsBeforeMin',
     },
     [VirksomhetFormField.hattVarigEndringAvNæringsinntektSiste4Kalenderår]: {
         [ValidateYesOrNoError.yesOrNoIsUnanswered]:
             'virksomhetForm.hattVarigEndringAvNæringsinntektSiste4Kalenderår.yesOrNoIsUnanswered',
     },
     [VirksomhetFormField.varigEndringINæringsinntekt_dato]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_dato.noValue',
-        [ValidateDateError.invalidDateFormat]: 'virksomhetForm.varigEndringINæringsinntekt_dato.invalidDateFormat',
-        [ValidateDateError.dateAfterMax]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateBeforeMin',
+        [ValidateDateError.dateHasNoValue]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasNoValue',
+        [ValidateDateError.dateHasInvalidFormat]:
+            'virksomhetForm.varigEndringINæringsinntekt_dato.dateHasInvalidFormat',
+        [ValidateDateError.dateIsAfterMax]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'virksomhetForm.varigEndringINæringsinntekt_dato.dateIsBeforeMin',
     },
     [VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.noValue',
-        [ValidateNumberError.invalidNumberFormat]:
-            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.invalidNumberFormat',
+        [ValidateNumberError.numberHasNoValue]:
+            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasNoValue',
+        [ValidateNumberError.numberHasInvalidFormat]:
+            'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasInvalidFormat',
         [ValidateNumberError.numberIsTooLarge]:
             'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge',
         [ValidateNumberError.numberIsTooSmall]:
             'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooSmall',
     },
     [VirksomhetFormField.varigEndringINæringsinntekt_forklaring]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.varigEndringINæringsinntekt_forklaring.noValue',
+        [ValidateStringError.stringHasNoValue]:
+            'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringHasNoValue',
         [ValidateStringError.stringIsTooLong]: 'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooLong',
         [ValidateStringError.stringIsTooShort]:
             'virksomhetForm.varigEndringINæringsinntekt_forklaring.stringIsTooShort',
@@ -125,12 +129,12 @@ export const VirksomhetFormErrors = {
         [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.harRegnskapsfører.yesOrNoIsUnanswered',
     },
     [VirksomhetFormField.regnskapsfører_navn]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.regnskapsfører_navn.noValue',
+        [ValidateStringError.stringHasNoValue]: 'virksomhetForm.regnskapsfører_navn.stringHasNoValue',
         [ValidateStringError.stringIsTooLong]: 'virksomhetForm.regnskapsfører_navn.stringIsTooLong',
         [ValidateStringError.stringIsTooShort]: 'virksomhetForm.regnskapsfører_navn.stringIsTooShort',
     },
     [VirksomhetFormField.regnskapsfører_telefon]: {
-        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.regnskapsfører_telefon.noValue',
+        [ValidateStringError.stringHasNoValue]: 'virksomhetForm.regnskapsfører_telefon.stringHasNoValue',
         [ValidateStringError.stringIsTooLong]: 'virksomhetForm.regnskapsfører_telefon.stringIsTooLong',
         [ValidateStringError.stringIsTooShort]: 'virksomhetForm.regnskapsfører_telefon.stringIsTooShort',
     },
@@ -226,7 +230,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                             <Form.Input
                                 name={VirksomhetFormField.navnPåVirksomheten}
                                 label={getText('sifForms.virksomhet.hva_heter_virksomheten')}
-                                validate={getRequiredFieldValidator()}
+                                validate={getStringValidator({ required: true })}
                                 maxLength={50}
                             />
                         </Box>
@@ -292,7 +296,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                 max: dateToday,
                                                 toDate: tomDate,
                                             }).validateFromDate(value);
-                                            if (error === ValidateDateError.dateAfterMax) {
+                                            if (error === ValidateDateError.dateIsAfterMax) {
                                                 return {
                                                     key: error,
                                                     values: { dato: prettifyDate(dateToday) },
@@ -384,22 +388,21 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                 maxLength={10}
                                                 style={{ maxWidth: '10rem' }}
                                                 validate={(value) => {
-                                                    const error = getNumberValidator({ min: 0, max: MAKS_INNTEKT })(
-                                                        value
-                                                    );
-                                                    if (error === ValidateNumberError.numberIsTooLarge) {
-                                                        return {
-                                                            key: error,
-                                                            values: { min: MAKS_INNTEKT },
-                                                        };
-                                                    }
-                                                    if (error === ValidateNumberError.numberIsTooSmall) {
-                                                        return {
-                                                            key: error,
-                                                            values: { min: 0 },
-                                                        };
-                                                    }
-                                                    return error;
+                                                    const error = getNumberValidator({
+                                                        required: true,
+                                                        min: 0,
+                                                        max: MAKS_INNTEKT,
+                                                    })(value);
+                                                    return error
+                                                        ? {
+                                                              key: error,
+                                                              values: {
+                                                                  navn: navnPåVirksomheten,
+                                                                  maks: MAKS_INNTEKT,
+                                                                  min: 0,
+                                                              },
+                                                          }
+                                                        : undefined;
                                                 }}
                                                 description={
                                                     <>
@@ -483,11 +486,23 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                     <Form.DatePicker
                                                         name={VirksomhetFormField.varigEndringINæringsinntekt_dato}
                                                         label={getText('sifForms.virksomhet.varig_endring_dato')}
-                                                        validate={getDateValidator({
-                                                            required: true,
-                                                            min: date4YearsAgo,
-                                                            max: dateToday,
-                                                        })}
+                                                        validate={(value) => {
+                                                            const error = getDateValidator({
+                                                                required: true,
+                                                                min: date4YearsAgo,
+                                                                max: dateToday,
+                                                            })(value);
+                                                            if (error) {
+                                                                return {
+                                                                    key: error,
+                                                                    values: {
+                                                                        navn: navnPåVirksomheten,
+                                                                        min: prettifyDate(date4YearsAgo),
+                                                                        max: prettifyDate(dateToday),
+                                                                    },
+                                                                };
+                                                            }
+                                                        }}
                                                         minDate={date4YearsAgo}
                                                         maxDate={dateToday}
                                                     />
@@ -500,11 +515,23 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         label={getText('sifForms.virksomhet.varig_endring_inntekt')}
                                                         maxLength={10}
                                                         style={{ maxWidth: '10rem' }}
-                                                        validate={getNumberValidator({
-                                                            required: true,
-                                                            min: 0,
-                                                            max: MAKS_INNTEKT,
-                                                        })}
+                                                        validate={(value) => {
+                                                            const error = getNumberValidator({
+                                                                required: true,
+                                                                min: 0,
+                                                                max: MAKS_INNTEKT,
+                                                            })(value);
+                                                            return error
+                                                                ? {
+                                                                      key: error,
+                                                                      values: {
+                                                                          navn: navnPåVirksomheten,
+                                                                          min: 0,
+                                                                          maks: MAKS_INNTEKT,
+                                                                      },
+                                                                  }
+                                                                : undefined;
+                                                        }}
                                                     />
                                                 </Box>
                                                 <Box margin="xl">
@@ -513,27 +540,24 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                             VirksomhetFormField.varigEndringINæringsinntekt_forklaring
                                                         }
                                                         label={getText('sifForms.virksomhet.varig_endring_tekst')}
+                                                        maxLength={1000}
                                                         validate={(value) => {
                                                             const error = getStringValidator({
                                                                 required: true,
                                                                 minLength: 5,
                                                                 maxLength: 1000,
                                                             })(value);
-                                                            if (error === ValidateStringError.stringIsTooShort) {
-                                                                return {
-                                                                    key: error,
-                                                                    values: { lengde: 5 },
-                                                                };
-                                                            }
-                                                            if (error === ValidateStringError.stringIsTooLong) {
-                                                                return {
-                                                                    key: error,
-                                                                    values: { lengde: 1000 },
-                                                                };
-                                                            }
-                                                            return error;
+                                                            return error
+                                                                ? {
+                                                                      key: error,
+                                                                      values: {
+                                                                          navn: navnPåVirksomheten,
+                                                                          min: 5,
+                                                                          maks: 1000,
+                                                                      },
+                                                                  }
+                                                                : undefined;
                                                         }}
-                                                        maxLength={1000}
                                                     />
                                                 </Box>
                                             </>
@@ -559,22 +583,20 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         validate={(value) => {
                                                             const error = getStringValidator({
                                                                 required: true,
-                                                                minLength: 3,
+                                                                minLength: 2,
                                                                 maxLength: 50,
                                                             })(value);
-                                                            if (error === ValidateStringError.stringIsTooShort) {
-                                                                return {
-                                                                    key: error,
-                                                                    values: { lengde: 5 },
-                                                                };
-                                                            }
-                                                            if (error === ValidateStringError.stringIsTooLong) {
-                                                                return {
-                                                                    key: error,
-                                                                    values: { lengde: 1000 },
-                                                                };
-                                                            }
-                                                            return error;
+
+                                                            return error
+                                                                ? {
+                                                                      key: error,
+                                                                      values: {
+                                                                          navn: navnPåVirksomheten,
+                                                                          min: 2,
+                                                                          maks: 1000,
+                                                                      },
+                                                                  }
+                                                                : undefined;
                                                         }}
                                                         maxLength={50}
                                                     />
@@ -590,19 +612,17 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                     minLength: 5,
                                                                     maxLength: 15,
                                                                 })(value);
-                                                                if (error === ValidateStringError.stringIsTooShort) {
-                                                                    return {
-                                                                        key: error,
-                                                                        values: { lengde: 5 },
-                                                                    };
-                                                                }
-                                                                if (error === ValidateStringError.stringIsTooLong) {
-                                                                    return {
-                                                                        key: error,
-                                                                        values: { lengde: 1000 },
-                                                                    };
-                                                                }
-                                                                return error;
+
+                                                                return error
+                                                                    ? {
+                                                                          key: error,
+                                                                          values: {
+                                                                              navn: navnPåVirksomheten,
+                                                                              min: 5,
+                                                                              maks: 15,
+                                                                          },
+                                                                      }
+                                                                    : undefined;
                                                             }}
                                                             maxLength={15}
                                                         />

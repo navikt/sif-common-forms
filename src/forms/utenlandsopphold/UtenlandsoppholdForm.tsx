@@ -46,18 +46,18 @@ enum UtenlandsoppholdFormFields {
 
 export const UtlandsoppholdFormErrors = {
     [UtenlandsoppholdFormFields.fom]: {
-        [ValidateRequiredFieldError.noValue]: 'utenlandsoppholdForm.fom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'utenlandsoppholdForm.fom.dateHasNoValue',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'utenlandsoppholdForm.fom.fromDateIsAfterToDate',
-        [ValidateDateError.invalidDateFormat]: 'utenlandsoppholdForm.fom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'utenlandsoppholdForm.fom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'utenlandsoppholdForm.fom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'utenlandsoppholdForm.fom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'utenlandsoppholdForm.fom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'utenlandsoppholdForm.fom.dateIsAfterMax',
     },
     [UtenlandsoppholdFormFields.tom]: {
-        [ValidateRequiredFieldError.noValue]: 'utenlandsoppholdForm.tom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'utenlandsoppholdForm.tom.dateHasNoValue',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'utenlandsoppholdForm.tom.toDateIsBeforeFromDate',
-        [ValidateDateError.invalidDateFormat]: 'utenlandsoppholdForm.tom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'utenlandsoppholdForm.tom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'utenlandsoppholdForm.tom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'utenlandsoppholdForm.tom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'utenlandsoppholdForm.tom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'utenlandsoppholdForm.tom.dateIsAfterMax',
     },
     [UtenlandsoppholdFormFields.landkode]: {
         [ValidateRequiredFieldError.noValue]: 'utenlandsoppholdForm.landkode.noValue',

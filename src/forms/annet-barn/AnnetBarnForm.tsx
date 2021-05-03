@@ -10,7 +10,7 @@ import {
     getRequiredFieldValidator,
     ValidateDateError,
     ValidateFødselsnummerError,
-    ValidateRequiredFieldError,
+    ValidateStringError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
@@ -37,18 +37,18 @@ enum AnnetBarnFormFields {
 }
 
 export const AnnetBarnFormErrors = {
-    [AnnetBarnFormFields.navn]: { [ValidateRequiredFieldError.noValue]: 'annetBarnForm.navn.noValue' },
+    [AnnetBarnFormFields.navn]: { [ValidateStringError.stringHasNoValue]: 'annetBarnForm.navn.stringHasNoValue' },
     [AnnetBarnFormFields.fødselsdato]: {
-        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.fødselsdato.noValue',
-        [ValidateDateError.dateBeforeMin]: 'annetBarnForm.fødselsdato.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'annetBarnForm.fødselsdato.dateAfterMax',
-        [ValidateDateError.invalidDateFormat]: 'annetBarnForm.fødselsdato.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'annetBarnForm.fødselsdato.dateHasNoValue',
+        [ValidateDateError.dateIsBeforeMin]: 'annetBarnForm.fødselsdato.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'annetBarnForm.fødselsdato.dateIsAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'annetBarnForm.fødselsdato.dateHasInvalidFormat',
     },
     [AnnetBarnFormFields.fnr]: {
-        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.fnr.noValue',
-        [ValidateFødselsnummerError.invalidFødselsnummer]: 'annetBarnForm.fnr.invalidFødselsnummer',
-        [ValidateFødselsnummerError.fødselsnummerNot11Chars]: 'annetBarnForm.fnr.fødselsnummerNot11Chars',
-        [ValidateFødselsnummerError.disallowedFødselsnummer]: 'annetBarnForm.fnr.disallowedFødselsnummer',
+        [ValidateFødselsnummerError.fødselsnummerHasNoValue]: 'annetBarnForm.fnr.fødselsnummerHasNoValue',
+        [ValidateFødselsnummerError.fødselsnummerIsInvalid]: 'annetBarnForm.fnr.fødselsnummerIsInvalid',
+        [ValidateFødselsnummerError.fødselsnummerIsNot11Chars]: 'annetBarnForm.fnr.fødselsnummerIsNot11Chars',
+        [ValidateFødselsnummerError.fødselsnummerIsNotAllowed]: 'annetBarnForm.fnr.fødselsnummerIsNotAllowed',
     },
 };
 
@@ -122,7 +122,7 @@ const AnnetBarnForm = ({
                                 const dateError = getDateValidator({ required: true, min: minDate, max: maxDate })(
                                     value
                                 );
-                                if (dateError === ValidateDateError.dateBeforeMin) {
+                                if (dateError === ValidateDateError.dateIsBeforeMin) {
                                     return {
                                         key: dateError,
                                         values: { dato: prettifyDate(minDate) },

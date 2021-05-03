@@ -8,7 +8,6 @@ import {
     getDateRangeValidator,
     ValidateDateError,
     ValidateDateRangeError,
-    ValidateRequiredFieldError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
@@ -43,18 +42,18 @@ enum FerieuttakFormFields {
 
 export const FerieuttakFormErrors = {
     [FerieuttakFormFields.fom]: {
-        [ValidateRequiredFieldError.noValue]: 'ferieuttakForm.fom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'ferieuttakForm.fom.dateHasNoValue',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'ferieuttakForm.fom.fromDateIsAfterToDate',
-        [ValidateDateError.invalidDateFormat]: 'ferieuttakForm.fom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'ferieuttakForm.fom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'ferieuttakForm.fom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'ferieuttakForm.fom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'ferieuttakForm.fom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'ferieuttakForm.fom.dateIsAfterMax',
     },
     [FerieuttakFormFields.tom]: {
-        [ValidateRequiredFieldError.noValue]: 'ferieuttakForm.tom.noValue',
+        [ValidateDateError.dateHasNoValue]: 'ferieuttakForm.tom.dateHasNoValue',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'ferieuttakForm.tom.toDateIsBeforeFromDate',
-        [ValidateDateError.invalidDateFormat]: 'ferieuttakForm.tom.invalidDateFormat',
-        [ValidateDateError.dateBeforeMin]: 'ferieuttakForm.tom.dateBeforeMin',
-        [ValidateDateError.dateAfterMax]: 'ferieuttakForm.tom.dateAfterMax',
+        [ValidateDateError.dateHasInvalidFormat]: 'ferieuttakForm.tom.dateHasInvalidFormat',
+        [ValidateDateError.dateIsBeforeMin]: 'ferieuttakForm.tom.dateIsBeforeMin',
+        [ValidateDateError.dateIsAfterMax]: 'ferieuttakForm.tom.dateIsAfterMax',
     },
 };
 
@@ -132,12 +131,12 @@ const FerieuttakForm = ({ maxDate, minDate, labels, ferieuttak, alleFerieuttak =
                                             fromDate: ISOStringToDate(formik.values.fom),
                                         }).validateToDate(value);
                                         switch (dateError) {
-                                            case ValidateDateError.dateBeforeMin:
+                                            case ValidateDateError.dateIsBeforeMin:
                                                 return {
                                                     key: dateError,
                                                     values: { dato: prettifyDate(minDate) },
                                                 };
-                                            case ValidateDateError.dateAfterMax:
+                                            case ValidateDateError.dateIsAfterMax:
                                                 return {
                                                     key: dateError,
                                                     values: { dato: prettifyDate(maxDate) },

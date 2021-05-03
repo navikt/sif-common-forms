@@ -68,10 +68,10 @@ enum FraværPeriodeFormFields {
 
 export const FraværPeriodeFormErrors = {
     [FraværPeriodeFormFields.fraOgMed]: {
-        [ValidateRequiredFieldError.noValue]: 'fraværPeriodeForm.fraOgMed.noValue',
-        [ValidateDateError.dateAfterMax]: 'fraværPeriodeForm.fraOgMed.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'fraværPeriodeForm.fraOgMed.dateBeforeMin',
-        [ValidateDateError.invalidDateFormat]: 'fraværPeriodeForm.fraOgMed.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'fraværPeriodeForm.fraOgMed.dateHasNoValue',
+        [ValidateDateError.dateIsAfterMax]: 'fraværPeriodeForm.fraOgMed.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'fraværPeriodeForm.fraOgMed.dateIsBeforeMin',
+        [ValidateDateError.dateHasInvalidFormat]: 'fraværPeriodeForm.fraOgMed.dateHasInvalidFormat',
         [ValidateDateRangeError.fromDateIsAfterToDate]: 'fraværPeriodeForm.fraOgMed.fromDateIsAfterToDate',
         [FraværFieldValidationErrors.er_helg]: 'fraværPeriodeForm.fraOgMed.er_helg',
         [FraværFieldValidationErrors.fra_og_til_er_ulike_år]: 'fraværPeriodeForm.fraOgMed.fra_og_til_er_ulike_år',
@@ -79,10 +79,10 @@ export const FraværPeriodeFormErrors = {
             'fraværPeriodeForm.fraOgMed.fra_dato_kolliderer_med_annet_fravær',
     },
     [FraværPeriodeFormFields.tilOgMed]: {
-        [ValidateRequiredFieldError.noValue]: 'fraværPeriodeForm.tilOgMed.noValue',
-        [ValidateDateError.dateAfterMax]: 'fraværPeriodeForm.tilOgMed.dateAfterMax',
-        [ValidateDateError.dateBeforeMin]: 'fraværPeriodeForm.tilOgMed.dateBeforeMin',
-        [ValidateDateError.invalidDateFormat]: 'fraværPeriodeForm.tilOgMed.invalidDateFormat',
+        [ValidateDateError.dateHasNoValue]: 'fraværPeriodeForm.tilOgMed.dateHasNoValue',
+        [ValidateDateError.dateIsAfterMax]: 'fraværPeriodeForm.tilOgMed.dateIsAfterMax',
+        [ValidateDateError.dateIsBeforeMin]: 'fraværPeriodeForm.tilOgMed.dateIsBeforeMin',
+        [ValidateDateError.dateHasInvalidFormat]: 'fraværPeriodeForm.tilOgMed.dateHasInvalidFormat',
         [ValidateDateRangeError.toDateIsBeforeFromDate]: 'fraværPeriodeForm.tilOgMed.toDateIsBeforeFromDate',
         [FraværFieldValidationErrors.er_helg]: 'fraværPeriodeForm.tilOgMed.er_helg',
         [FraværFieldValidationErrors.fra_og_til_er_ulike_år]: 'fraværPeriodeForm.tilOgMed.fra_og_til_er_ulike_år',
