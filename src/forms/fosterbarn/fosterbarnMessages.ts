@@ -12,7 +12,7 @@ const fosterbarnMessages = {
         'fosterbarnForm.fødselsnummer.fødselsnummerIsNot11Chars':
             'Du har oppgitt et ugyldig fødselsnummer som ikke består av 11 siffer. Et gyldig fødselsnummer består av 11 siffer.',
         'fosterbarnForm.fødselsnummer.fødselsnummerIsNotAllowed':
-            'Du har oppgitt et fødselsnummer som du ikke kan bruke. Kontroller at du har tastet inn fosterbarnets fødselsnummer.',
+            'Du har oppgitt ditt eget fødselsnummer som barnets fødselsnummer. Skriv inn barnets fødselsnummer.',
     },
     nn: {
         'fosterbarn.form.etternavn_label': 'Etternavn',
