@@ -28,7 +28,7 @@ const bostedUtlandMessages = {
             'Du må oppgi når utenlandsoppholdet ble avsluttet i et gyldig format. Gyldig format er dd.mm.åååå.',
         'bostedUtlandForm.tom.toDateIsBeforeFromDate':
             'Datoen utenlandsoppholdet ble avsluttet kan ikke være før datoen det ble startet. Skriv inn eller velg sluttdato fra datovelgeren.',
-        'bostedUtlandForm.landkode.noValue': 'Du må velge i hvilket land du bodde.',
+        'bostedUtlandForm.landkode.noValue': 'Du må velge land',
     },
     nn: {
         'bostedUtland.list.add': 'Legg til opphald',
