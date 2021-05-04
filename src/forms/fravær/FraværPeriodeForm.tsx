@@ -178,8 +178,12 @@ const FraværPeriodeForm = ({
                                             disabledDateRanges
                                         );
                                         if (err) {
-                                            return FraværPeriodeFormErrors.fraOgMed_tilOgMed
-                                                .dager_overlapper_med_andre_dager;
+                                            return {
+                                                key:
+                                                    FraværPeriodeFormErrors.fraOgMed_tilOgMed
+                                                        .dager_overlapper_med_andre_dager,
+                                                keepKeyUnaltered: true,
+                                            };
                                         }
                                     }}
                                     fromDatepickerProps={{
