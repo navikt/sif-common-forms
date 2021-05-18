@@ -39,6 +39,7 @@ const virksomhetApiData: VirksomhetApiData = {
     },
     organisasjonsnummer: '123123123',
     erNyoppstartet: true,
+    harFlereAktiveVirksomheter: false,
 };
 
 describe('erVirksomhetRegnetSomNyoppstartet', () => {

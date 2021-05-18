@@ -6,6 +6,7 @@ import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virk
 export const mapVirksomhetToVirksomhetApiData = (
     locale: string,
     virksomhet: Virksomhet,
+    harFlereVirksomheter?: boolean,
     harBesvartFiskerPåBladB?: boolean
 ): VirksomhetApiData => {
     const registrertINorge = virksomhet.registrertINorge === YesOrNo.YES;
@@ -31,6 +32,7 @@ export const mapVirksomhetToVirksomhetApiData = (
         fraOgMed: formatDateToApiFormat(virksomhet.fom),
         tilOgMed: virksomhet.erPågående || virksomhet.tom === undefined ? null : formatDateToApiFormat(virksomhet.tom),
         erNyoppstartet,
+        harFlereAktiveVirksomheter: harFlereVirksomheter === true ? true : false,
     };
 
     if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFiskerPåBladB !== true) {

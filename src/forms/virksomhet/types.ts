@@ -93,4 +93,5 @@ export interface VirksomhetApiData {
         navn: string;
         telefon: string;
     };
+    harFlereAktiveVirksomheter: boolean;
 }
