@@ -179,9 +179,8 @@ const FraværPeriodeForm = ({
                                         );
                                         if (err) {
                                             return {
-                                                key:
-                                                    FraværPeriodeFormErrors.fraOgMed_tilOgMed
-                                                        .dager_overlapper_med_andre_dager,
+                                                key: FraværPeriodeFormErrors.fraOgMed_tilOgMed
+                                                    .dager_overlapper_med_andre_dager,
                                                 keepKeyUnaltered: true,
                                             };
                                         }
@@ -280,92 +279,96 @@ const FraværPeriodeForm = ({
     );
 };
 
-const getFromDateValidator = ({
-    helgedagerIkkeTillat,
-    begrensTilSammeÅr,
-    tilOgMed,
-    toDate,
-    disabledDateRanges,
-    minDate,
-    maxDate,
-}: {
-    helgedagerIkkeTillat?: boolean;
-    begrensTilSammeÅr?: boolean;
-    tilOgMed?: string;
-    toDate?: Date;
-    disabledDateRanges?: DateRange[];
-    minDate?: Date;
-    maxDate?: Date;
-}) => (value): ValidationError | undefined => {
-    if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
-        return {
-            key: FraværPeriodeFormErrors.fraOgMed.er_helg,
-            keepKeyUnaltered: true,
-        };
-    }
-    if (begrensTilSammeÅr && validateErSammeÅr(value, tilOgMed)) {
-        return {
-            key: FraværPeriodeFormErrors.fraOgMed.fra_og_til_er_ulike_år,
-            keepKeyUnaltered: true,
-        };
-    }
-    if (validateFraOgMedForCollision(toDate, disabledDateRanges)) {
-        return {
-            key: FraværPeriodeFormErrors.fraOgMed.fra_dato_kolliderer_med_annet_fravær,
-            keepKeyUnaltered: true,
-        };
-    }
-    const dateError = getDateRangeValidator({
-        required: true,
-        min: minDate,
-        max: maxDate,
+const getFromDateValidator =
+    ({
+        helgedagerIkkeTillat,
+        begrensTilSammeÅr,
+        tilOgMed,
         toDate,
-    }).validateFromDate(value);
+        disabledDateRanges,
+        minDate,
+        maxDate,
+    }: {
+        helgedagerIkkeTillat?: boolean;
+        begrensTilSammeÅr?: boolean;
+        tilOgMed?: string;
+        toDate?: Date;
+        disabledDateRanges?: DateRange[];
+        minDate?: Date;
+        maxDate?: Date;
+    }) =>
+    (value): ValidationError | undefined => {
+        if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
+            return {
+                key: FraværPeriodeFormErrors.fraOgMed.er_helg,
+                keepKeyUnaltered: true,
+            };
+        }
+        if (begrensTilSammeÅr && validateErSammeÅr(value, tilOgMed)) {
+            return {
+                key: FraværPeriodeFormErrors.fraOgMed.fra_og_til_er_ulike_år,
+                keepKeyUnaltered: true,
+            };
+        }
+        if (validateFraOgMedForCollision(toDate, disabledDateRanges)) {
+            return {
+                key: FraværPeriodeFormErrors.fraOgMed.fra_dato_kolliderer_med_annet_fravær,
+                keepKeyUnaltered: true,
+            };
+        }
+        const dateError = getDateRangeValidator({
+            required: true,
+            min: minDate,
+            max: maxDate,
+            toDate,
+        }).validateFromDate(value);
 
-    return handleDateRangeValidationError(dateError, minDate, maxDate);
-};
+        return handleDateRangeValidationError(dateError, minDate, maxDate);
+    };
 
-const getToDateValidator = ({
-    helgedagerIkkeTillat,
-    begrensTilSammeÅr,
-    fraOgMed,
-    fromDate,
-    disabledDateRanges,
-    minDate,
-    maxDate,
-}: {
-    helgedagerIkkeTillat?: boolean;
-    begrensTilSammeÅr?: boolean;
-    fraOgMed?: string;
-    fromDate?: Date;
-    disabledDateRanges?: DateRange[];
-    minDate?: Date;
-    maxDate?: Date;
-}) => (value) => {
-    if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
-        return {
-            key: FraværPeriodeFormErrors.tilOgMed.er_helg,
-            keepKeyUnaltered: true,
-        };
-    }
-    if (begrensTilSammeÅr && validateErSammeÅr(fraOgMed, value)) {
-        return {
-            key: FraværPeriodeFormErrors.tilOgMed.fra_og_til_er_ulike_år,
-            keepKeyUnaltered: true,
-        };
-    }
-    if (validateTilOgMedForCollision(fromDate, disabledDateRanges)) {
-        return {
-            key: FraværPeriodeFormErrors.tilOgMed.til_dato_kolliderer_med_annet_fravær,
-            keepKeyUnaltered: true,
-        };
-    }
-    const dateError = getDateRangeValidator({
-        required: true,
-        min: minDate,
-        max: maxDate,
+const getToDateValidator =
+    ({
+        helgedagerIkkeTillat,
+        begrensTilSammeÅr,
+        fraOgMed,
         fromDate,
-    }).validateToDate(value);
-    return handleDateRangeValidationError(dateError, minDate, maxDate);
-};
+        disabledDateRanges,
+        minDate,
+        maxDate,
+    }: {
+        helgedagerIkkeTillat?: boolean;
+        begrensTilSammeÅr?: boolean;
+        fraOgMed?: string;
+        fromDate?: Date;
+        disabledDateRanges?: DateRange[];
+        minDate?: Date;
+        maxDate?: Date;
+    }) =>
+    (value) => {
+        if (helgedagerIkkeTillat && validateNotHelgedag(value)) {
+            return {
+                key: FraværPeriodeFormErrors.tilOgMed.er_helg,
+                keepKeyUnaltered: true,
+            };
+        }
+        if (begrensTilSammeÅr && validateErSammeÅr(fraOgMed, value)) {
+            return {
+                key: FraværPeriodeFormErrors.tilOgMed.fra_og_til_er_ulike_år,
+                keepKeyUnaltered: true,
+            };
+        }
+        if (validateTilOgMedForCollision(fromDate, disabledDateRanges)) {
+            return {
+                key: FraværPeriodeFormErrors.tilOgMed.til_dato_kolliderer_med_annet_fravær,
+                keepKeyUnaltered: true,
+            };
+        }
+        const dateError = getDateRangeValidator({
+            required: true,
+            min: minDate,
+            max: maxDate,
+            fromDate,
+        }).validateToDate(value);
+        return handleDateRangeValidationError(dateError, minDate, maxDate);
+    };
 export default FraværPeriodeForm;
