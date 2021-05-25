@@ -4,6 +4,7 @@ import DialogForms from '../examples/dialog-forms/DialogForms';
 import VirksomhetExample from '../examples/virksomhet-example/VirksomhetExample';
 import Intro from '../Intro';
 import Texts from '../examples/texts/Texts';
+import OmsorgstilbudExample from '../examples/omsorgstilbud-example/OmsorgstilbudExample';
 
 export interface RouteConfig {
     path: string;
@@ -26,6 +27,11 @@ export const routes: RouteConfig[] = [
         path: 'næring',
         title: 'Næringsvirksomhet',
         renderContent: () => <VirksomhetExample />,
+    },
+    {
+        path: 'omsorgstilbud',
+        title: 'Omsorgstilbud',
+        renderContent: () => <OmsorgstilbudExample />,
     },
     {
         path: 'texts',

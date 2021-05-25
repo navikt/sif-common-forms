@@ -1,0 +1,115 @@
+.varighet {
+    display: flex;
+    align-items: flex-start;
+    &__ikon {
+        display: block;
+        margin-right: 0.5rem;
+    }
+    &__tid {
+        display: block;
+        position: relative;
+        margin-top: -.075rem;
+    }
+    @media (max-width: 800px) {
+        .varighet__ikon {
+            display: none;
+        }
+    }
+}
+.placeholder() {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+.omsorgstilbudDager {
+    legend {
+        .typo-element {
+            font-weight: normal;
+        }
+    }
+    &--wide {
+        .skjemagruppe__legend {
+            min-width: 10rem;
+            text-align: left;
+            display: block;
+        }
+    }
+    .caps {
+        text-transform: capitalize;
+    }
+    input::-webkit-input-placeholder {
+        .placeholder();
+    }
+    input:-ms-input-placeholder {
+        .placeholder();
+    }
+    input::placeholder {
+        .placeholder();
+    }
+    input:focus::placeholder {
+        opacity: 0;
+    }
+    .skjemaelement__feilmelding {
+        margin-bottom: 1rem;
+    }
+}
+
+.modal {
+    &__content {
+        padding: 1rem 1rem 2rem 1rem;
+        @media (max-width: 736px) {
+            padding: 1rem 0 1rem 0;
+        }
+    }
+}
+
+.omsorgstilbudDialog {
+    width: 100%;
+    max-width: 30rem;
+    .dialogFormWrapper {
+        width: 100%;
+    }
+}
+
+.skjemaelement.timeInput__minutes input,
+.skjemaelement.timeInput__hours input {
+    padding-right: 1.7rem;
+}
+
+.timeInput__suffix {
+    margin-top: 0.1rem;
+    font-size: 0.6rem;
+}
+.timeInput--withHours {
+    .timeInput__suffix--hours {
+        margin-top: 0;
+        font-size: 0.8rem;
+        opacity: 1;
+        right: 0.4rem;
+    }
+}
+.timeInput--withMinutes,
+.timeInput--withMinute {
+    .timeInput__suffix--min {
+        margin-top: 0;
+        font-size: 0.8rem;
+        opacity: 1;
+        right: 0.3rem;
+    }
+}
+
+.omsorgstilbudListe {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    &__dag {
+        margin: 0 0 0.5rem 0;
+    }
+    &__dato {
+        text-transform: capitalize;
+        font-weight: bold;
+        white-space: nowrap;
+        min-width: 5rem;
+        padding: 0 1rem 0 0;
+        display: inline-block;
+    }
+}

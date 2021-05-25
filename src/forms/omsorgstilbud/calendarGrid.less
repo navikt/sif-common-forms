@@ -1,0 +1,69 @@
+.calendarGrid {
+    display: grid;
+    grid-template-columns: 2.5rem repeat(5, 1fr);
+    width: 100%;
+    > * {
+        align-items: flex-start;
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem 0.5rem;
+    }
+
+    > *::before:not(:first-child) {
+        content: '';
+        display: inline-block;
+        height: 0;
+        padding-bottom: 100%;
+    }
+
+    > *.today {
+        color: white;
+        border: 0.1em solid white;
+        border-radius: 100%;
+    }
+    &__week {
+        padding: 0.5rem 0.5rem;
+        margin-right: 1px;
+        margin-top: 1rem;
+    }
+    &__weekNum {
+        font-weight: bold;
+        justify-self: flex-start;
+    }
+    &__day {
+        padding: 0.5rem 0.5rem;
+        margin-right: 1px;
+        margin-top: 1rem;
+        font-weight: bold;
+    }
+    .typo-element {
+        font-size: 0.9rem;
+        margin-bottom: -0.2rem;
+        font-weight: normal;
+    }
+    .timeInput__inputWrapper {
+        width: 3rem;
+    }
+    &__contentWrapper {
+        display: block;
+        min-height: 2.5rem;
+        position: relative;
+        padding-top: 2rem;
+        border: 1px solid rgba(0,0,0,.55);
+        margin: 1px;
+        border-radius: .125rem;
+        background-color: #fff;
+    }
+    &--noData {
+        background-color: transparent;
+        background-image: linear-gradient(-45deg, rgba(0,0,0,.05) 25%, transparent 25%, transparent 50%, rgba(0,0,0,.05) 50%, rgba(0,0,0,.05) 75%, transparent 75%, rgba(0,0,0,.02));
+        background-size: 5px 5px;
+    }
+    &__date {
+        font-size: .8rem;
+        opacity: 1;
+        position: absolute;
+        top: .25rem;
+        left: .5rem;
+    }
+}
