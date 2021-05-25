@@ -51,7 +51,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
             infoRenderer={({ data }) => {
                 return (
                     <OmsorgstilbudInfo
-                        omsorgdager={filterDagerIPeriode(data, fraDato, tilDato)}
+                        omsorgsdager={filterDagerIPeriode(data, fraDato, tilDato)}
                         fraDato={fraDato}
                         tilDato={tilDato}
                     />

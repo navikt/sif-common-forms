@@ -1,47 +1,24 @@
 import React, { useState } from 'react';
-import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import dayjs from 'dayjs';
-import { Omsorgsdag } from './types';
-import { Time } from '@navikt/sif-common-formik/lib';
-import CalendarGrid from './CalendarGrid';
 import { Clock } from '@navikt/ds-icons';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 import AriaText from '@navikt/sif-common-core/lib/components/aria/AriaText';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
+import { Time } from '@navikt/sif-common-formik/lib';
+import dayjs from 'dayjs';
+import { groupBy } from 'lodash';
+import { EtikettInfo } from 'nav-frontend-etiketter';
 import Tabs from 'nav-frontend-tabs';
 import Tab from 'nav-frontend-tabs/lib/tab';
+import { Element, Undertittel } from 'nav-frontend-typografi';
+import CalendarGrid from './CalendarGrid';
+import { Omsorgsdag } from './types';
 
 interface Props {
-    omsorgdager: Omsorgsdag[];
+    omsorgsdager: Omsorgsdag[];
     fraDato: Date;
     tilDato: Date;
 }
-
-interface OmsorgsdagInfo {
-    dato: Date;
-    tid: Time;
-    dagnavn: string;
-    ukenummer: number;
-    årstall: number;
-    årOgUke: string;
-    datoTittel: string;
-}
-
-const getOmsorgsdagInfo = ({ dato, tid }: Omsorgsdag): OmsorgsdagInfo => {
-    const date = dayjs(dato);
-    const ukenummer = date.isoWeek();
-    const årstall = date.year();
-    const dagnavn = date.format('dddd');
-    return {
-        dato,
-        tid,
-        ukenummer,
-        årstall,
-        dagnavn,
-        årOgUke: `${ukenummer},  ${årstall}`,
-        datoTittel: `${dagnavn.substring(0, 3)}. ${prettifyDate(dato)}`,
-    };
-};
 
 const bem = bemUtils('omsorgstilbudListe');
 
@@ -60,38 +37,43 @@ const formatTime = (time: Partial<Time>): JSX.Element => {
 const formatTimeFull = (time: Partial<Time>): string => {
     const timer = time.hours || '0';
     const minutter = time.minutes || '0';
-    return `${timer} timer ${minutter} minutter`;
+    return `${timer} ${pluralize(timer, 'time', 'timer')}, ${minutter} ${pluralize(minutter, 'minutt', 'minutter')}`;
 };
+
+const pluralize = (tall: number | string, singular: string, plural: string): string =>
+    typeof tall === 'number' ? (tall === 1 ? singular : plural) : tall === '1' ? singular : plural;
 
 const DagContent = ({ tid }: { tid: Time }) => {
     return (
-        <span className={'varighet'}>
-            <span className="varighet__ikon">
-                <Clock />
-            </span>
-            <span className="varighet__tid">
-                <AriaAlternative visibleText={formatTime(tid)} ariaText={formatTimeFull(tid)} />
-            </span>
-        </span>
+        <EtikettInfo className={'varighet'}>
+            <div className={'varighet__info'}>
+                <span className="varighet__info__ikon">
+                    <Clock />
+                </span>
+                <span className="varighet__info__tid">
+                    <AriaAlternative visibleText={formatTime(tid)} ariaText={formatTimeFull(tid)} />
+                </span>
+            </div>
+        </EtikettInfo>
     );
 };
 
-const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgdager, fraDato, tilDato }) => {
+const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgsdager, fraDato, tilDato }) => {
     const [visning, setVisning] = useState<'liste' | 'kalender'>('kalender');
-    if (omsorgdager.length === 0) {
+    if (omsorgsdager.length === 0) {
         return <>Ingen dager registrert</>;
     }
-    const måned = omsorgdager[0].dato;
+    const måned = omsorgsdager[0].dato;
     return (
         <>
-            <Tabs
+            {/* <Tabs
                 defaultAktiv={1}
                 onChange={(_, idx) => {
                     setVisning(idx === 0 ? 'liste' : 'kalender');
                 }}>
                 <Tab>Vis liste</Tab>
                 <Tab>Vis kalender</Tab>
-            </Tabs>
+            </Tabs> */}
             {visning === 'kalender' && (
                 <CalendarGrid
                     month={måned}
@@ -100,36 +82,68 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgdager, fraDat
                     dateFormatter={(date: Date) => (
                         <AriaAlternative
                             visibleText={dayjs(date).format('D.')}
-                            ariaText={dayjs(date).format('DD.MM.YYYY')}
+                            ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
                         />
                     )}
                     noContentRenderer={() => {
+                        // return <AriaAlternative visibleText={''} ariaText={'Ingen tid registrert'} />;
                         return <AriaText>Ingen tid registrert</AriaText>;
                     }}
-                    content={omsorgdager.map((dag) => ({
+                    content={omsorgsdager.map((dag) => ({
                         date: dag.dato,
                         content: <DagContent tid={dag.tid} />,
                     }))}
                 />
             )}
-            {visning === 'liste' && (
-                <ol className={bem.block}>
-                    {omsorgdager.map((dag) => {
-                        const timer = dag.tid.hours || 0;
-                        const minutter = dag.tid.minutes || 0;
-                        const { datoTittel } = getOmsorgsdagInfo(dag);
+            {visning === 'liste' && <OmsorgsdagerListe omsorgsdager={omsorgsdager} />}
+        </>
+    );
+};
 
-                        return (
-                            <li key={datoTittel} className={bem.element('dag')}>
-                                <span className={bem.element('dato')}>{datoTittel}</span>
-                                <span className={bem.element('tid')}>
-                                    {timer} timer, {minutter} minutter
-                                </span>
-                            </li>
-                        );
-                    })}
-                </ol>
-            )}
+const sortDays = (d1: Omsorgsdag, d2: Omsorgsdag): number => (dayjs(d1.dato).isSameOrBefore(d2.dato) ? -1 : 1);
+
+const OmsorgsdagerListe = ({ omsorgsdager }: { omsorgsdager: Omsorgsdag[] }) => {
+    if (omsorgsdager.length === 0) {
+        return <>Ingen omsorgsdager registrert</>;
+    }
+
+    const weeksWithDays = groupBy(omsorgsdager, (dag) => `${dag.dato.getFullYear()}-${dayjs(dag.dato).isoWeek()}`);
+    return (
+        <>
+            <Undertittel className="m-caps">{dayjs(omsorgsdager[0].dato).format('MMM YYYY')}</Undertittel>
+            <div className={bem.block}>
+                {Object.keys(weeksWithDays).map((key) => {
+                    const days = weeksWithDays[key];
+                    return (
+                        <div key={key}>
+                            <Box margin="l">
+                                <Element tag="h3">Uke {dayjs(days[0].dato).isoWeek()}</Element>
+                            </Box>
+                            <Box margin="m">
+                                {days.sort(sortDays).map((dag, idx) => {
+                                    const timer = dag.tid.hours || '0';
+                                    const minutter = dag.tid.minutes || '0';
+
+                                    return (
+                                        <EtikettInfo
+                                            className={bem.element('dag')}
+                                            key={idx}
+                                            style={{ marginRight: '.5rem', marginBottom: '.5rem' }}>
+                                            <span className={bem.element('dato')}>
+                                                {dayjs(dag.dato).format('dddd D.')}
+                                            </span>
+                                            <br />
+                                            <span className={bem.element('tid')}>
+                                                {formatTime({ hours: timer, minutes: minutter })}
+                                            </span>
+                                        </EtikettInfo>
+                                    );
+                                })}
+                            </Box>
+                        </div>
+                    );
+                })}
+            </div>
         </>
     );
 };

@@ -135,12 +135,12 @@ const OmsorgstilbudExample = () => {
                                     name: FormField.periodeTil,
                                 }}
                             />
-                            {måneder.map((m, idx) => {
+                            {måneder.map((m) => {
                                 const mndOgÅr = dayjs(m.from).format('MMMM YYYY');
                                 const inputName = `omsorgstilbud-${dayjs(m.from).format('MM-YY')}`;
                                 const skalIOmsorgstilbud = values[inputName] === YesOrNo.YES;
                                 return (
-                                    <Box key={idx} margin="xl">
+                                    <Box key={dayjs(m.from).format('MM.YYYY')} margin="xl">
                                         <FormComponents.YesOrNoQuestion
                                             name={inputName as any}
                                             legend={`Skal barnet i omsorgstilbud ${mndOgÅr}`}

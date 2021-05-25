@@ -158,10 +158,10 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                                                 srOnlyLabels: true,
                                                                 layout: isWide ? 'horizontal' : undefined,
                                                                 suffix: { hours: 'tim', minutes: 'min' },
-                                                                placeholders: {
-                                                                    hours: '0',
-                                                                    minutes: '0',
-                                                                },
+                                                                // placeholders: {
+                                                                //     hours: '0',
+                                                                //     minutes: '0',
+                                                                // },
                                                             }}
                                                             validate={(time) => {
                                                                 const error = getTimeValidator({

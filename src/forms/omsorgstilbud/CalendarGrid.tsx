@@ -4,6 +4,8 @@ import { DateRange, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateU
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import './calendarGrid.less';
+import { groupBy } from 'lodash';
+import { guid } from 'nav-frontend-js-utils';
 
 dayjs.extend(minMax);
 
@@ -18,6 +20,7 @@ interface Props {
     min?: Date;
     max?: Date;
     dateFormatter?: (date: Date) => React.ReactNode;
+    dateFormatterFull?: (date: Date) => React.ReactNode;
     noContentRenderer?: (date: Date) => React.ReactNode;
 }
 
@@ -64,6 +67,8 @@ const getDaysToRender = (
     return days;
 };
 
+const getWeekKey = (date: Date) => `${date.getFullYear()}_${dayjs(date).isoWeek()}`;
+
 const bem = bemUtils('calendarGrid');
 
 const CalendarGrid: React.FunctionComponent<Props> = ({
@@ -72,10 +77,11 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     min,
     max,
     dateFormatter = prettifyDate,
+    dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
 }) => {
     const days = getDaysToRender(month, content, { from: min, to: max });
-    let weekNum: number;
+    const weeks = groupBy(days, (day) => getWeekKey(day.date));
     return (
         <div className={bem.block}>
             <span role="presentation" aria-hidden={true} className={bem.element('day')}>
@@ -96,36 +102,43 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             <span role="presentation" aria-hidden={true} className={bem.element('day')}>
                 Fredag
             </span>
-            {days.map((d) => {
-                const dayWeekNum = dayjs(d.date).isoWeek();
-                const content =
-                    dayjs(d.date).isSame(month, 'month') === false || (min && dayjs(d.date).isBefore(min)) ? (
-                        <div />
-                    ) : (
-                        <div
-                            aria-hidden={d.content === undefined}
-                            className={bem.classNames(
-                                bem.element('contentWrapper'),
-                                bem.modifierConditional('noData', d.content === undefined)
-                            )}>
-                            <div className={bem.element('date')}>{dateFormatter(d.date)}</div>
-                            <div className={bem.element('dateContent')}>
-                                {d.content || (noContentRenderer !== undefined ? noContentRenderer(d.date) : null)}
+            {Object.keys(weeks).map((key) => {
+                const daysInWeek = weeks[key];
+                const weekNum = dayjs(daysInWeek[0].date).isoWeek();
+                return [
+                    <span role="presentation" aria-hidden={true} className={bem.element('weekNum')} key={guid()}>
+                        <span className={bem.element('weekNum_label')}>Uke {` `}</span>
+                        <span>{weekNum}</span>
+                    </span>,
+                    daysInWeek.map((d) => {
+                        return dayjs(d.date).isSame(month, 'month') === false ||
+                            (min && dayjs(d.date).isBefore(min)) ? (
+                            <div
+                                key={guid()}
+                                aria-hidden={true}
+                                className={bem.classNames(bem.element('contentWrapper', 'outsideMonth'))}
+                            />
+                        ) : (
+                            <div
+                                key={guid()}
+                                aria-hidden={d.content === undefined}
+                                className={bem.classNames(
+                                    bem.element('contentWrapper'),
+                                    bem.modifierConditional('noData', d.content === undefined)
+                                )}>
+                                <div className={bem.element('date')}>
+                                    <span className={bem.classNames(bem.element('date__full'), 'capsFirstLetter')}>
+                                        <span className="capsFirstLetter">{dateFormatterFull(d.date)}</span>
+                                    </span>
+                                    <span className={bem.element('date__short')}>{dateFormatter(d.date)}</span>
+                                </div>
+                                <div className={bem.element('dateContent')}>
+                                    {d.content || (noContentRenderer !== undefined ? noContentRenderer(d.date) : null)}
+                                </div>
                             </div>
-                        </div>
-                    );
-                if (weekNum !== dayWeekNum) {
-                    weekNum = dayWeekNum;
-                    return (
-                        <>
-                            <span role="presentation" aria-hidden={true} className={bem.element('weekNum')}>
-                                {weekNum}
-                            </span>
-                            {content}
-                        </>
-                    );
-                }
-                return content;
+                        );
+                    }),
+                ];
             })}
         </div>
     );
