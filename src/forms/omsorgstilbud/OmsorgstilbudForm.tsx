@@ -86,7 +86,7 @@ const mapOmsorgsdagerToFormValues = (omsorgsdager?: Omsorgsdag[]) => {
 
 const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
-    const isWide = useMediaQuery({ minWidth: 600 });
+    const isWide = useMediaQuery({ minWidth: 450 });
 
     const onFormikSubmit = (formDager: Partial<FormValues>) => {
         const submitDager: Omsorgsdag[] = [];
@@ -155,9 +155,9 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                                             }
                                                             label={<span className="caps">{day.label}</span>}
                                                             timeInputLayout={{
-                                                                srOnlyLabels: true,
+                                                                srOnlyLabels: false,
                                                                 layout: isWide ? 'horizontal' : undefined,
-                                                                suffix: { hours: 'tim', minutes: 'min' },
+                                                                // suffix: { hours: 'tim', minutes: 'min' },
                                                                 // placeholders: {
                                                                 //     hours: '0',
                                                                 //     minutes: '0',

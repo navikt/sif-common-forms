@@ -8,8 +8,6 @@ import { Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
 import { EtikettInfo } from 'nav-frontend-etiketter';
-import Tabs from 'nav-frontend-tabs';
-import Tab from 'nav-frontend-tabs/lib/tab';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import CalendarGrid from './CalendarGrid';
 import { Omsorgsdag } from './types';
@@ -59,7 +57,7 @@ const DagContent = ({ tid }: { tid: Time }) => {
 };
 
 const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgsdager, fraDato, tilDato }) => {
-    const [visning, setVisning] = useState<'liste' | 'kalender'>('kalender');
+    // const [visning, setVisning] = useState<'liste' | 'kalender'>('kalender');
     if (omsorgsdager.length === 0) {
         return <>Ingen dager registrert</>;
     }
@@ -74,35 +72,35 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgsdager, fraDa
                 <Tab>Vis liste</Tab>
                 <Tab>Vis kalender</Tab>
             </Tabs> */}
-            {visning === 'kalender' && (
-                <CalendarGrid
-                    month={måned}
-                    min={fraDato}
-                    max={tilDato}
-                    dateFormatter={(date: Date) => (
-                        <AriaAlternative
-                            visibleText={dayjs(date).format('D.')}
-                            ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
-                        />
-                    )}
-                    noContentRenderer={() => {
-                        // return <AriaAlternative visibleText={''} ariaText={'Ingen tid registrert'} />;
-                        return <AriaText>Ingen tid registrert</AriaText>;
-                    }}
-                    content={omsorgsdager.map((dag) => ({
-                        date: dag.dato,
-                        content: <DagContent tid={dag.tid} />,
-                    }))}
-                />
-            )}
-            {visning === 'liste' && <OmsorgsdagerListe omsorgsdager={omsorgsdager} />}
+            {/* {visning === 'kalender' && ( */}
+            <CalendarGrid
+                month={måned}
+                min={fraDato}
+                max={tilDato}
+                dateFormatter={(date: Date) => (
+                    <AriaAlternative
+                        visibleText={dayjs(date).format('D.')}
+                        ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
+                    />
+                )}
+                noContentRenderer={() => {
+                    // return <AriaAlternative visibleText={''} ariaText={'Ingen tid registrert'} />;
+                    return <AriaText>Ingen tid registrert</AriaText>;
+                }}
+                content={omsorgsdager.map((dag) => ({
+                    date: dag.dato,
+                    content: <DagContent tid={dag.tid} />,
+                }))}
+            />
+            {/* )}
+            {visning === 'liste' && <OmsorgsdagerListe omsorgsdager={omsorgsdager} />} */}
         </>
     );
 };
 
 const sortDays = (d1: Omsorgsdag, d2: Omsorgsdag): number => (dayjs(d1.dato).isSameOrBefore(d2.dato) ? -1 : 1);
 
-const OmsorgsdagerListe = ({ omsorgsdager }: { omsorgsdager: Omsorgsdag[] }) => {
+export const OmsorgsdagerListe = ({ omsorgsdager }: { omsorgsdager: Omsorgsdag[] }) => {
     if (omsorgsdager.length === 0) {
         return <>Ingen omsorgsdager registrert</>;
     }

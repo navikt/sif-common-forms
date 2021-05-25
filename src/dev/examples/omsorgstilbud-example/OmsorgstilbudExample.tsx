@@ -16,6 +16,7 @@ import OmsorgstilbudInfoAndDialog from '../../../forms/omsorgstilbud/Omsorgstilb
 import { Omsorgsdag } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
 import Panel from 'nav-frontend-paneler';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 enum FormField {
     periodeFra = 'periodeFra',
@@ -147,7 +148,7 @@ const OmsorgstilbudExample = () => {
                                         />
                                         {skalIOmsorgstilbud && (
                                             <FormBlock margin="l">
-                                                <Panel>
+                                                <ResponsivePanel className={'omsorgstilbudInfoDialogWrapper'}>
                                                     <OmsorgstilbudInfoAndDialog
                                                         name={`${m.key}`}
                                                         fraDato={m.from}
@@ -161,7 +162,7 @@ const OmsorgstilbudExample = () => {
                                                             modalTitle: `Omsorgstilbud - ${mndOgÅr}`,
                                                         }}
                                                     />
-                                                </Panel>
+                                                </ResponsivePanel>
                                             </FormBlock>
                                         )}
                                     </Box>

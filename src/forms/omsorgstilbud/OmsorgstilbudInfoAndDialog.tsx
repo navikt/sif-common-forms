@@ -37,6 +37,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
             labels={labels}
             renderEditButtons={true}
             dialogClassName={'omsorgstilbudDialog'}
+            wrapInfoInPanel={false}
             formRenderer={({ onSubmit, onCancel, data = [] }) => {
                 return (
                     <OmsorgstilbudForm
