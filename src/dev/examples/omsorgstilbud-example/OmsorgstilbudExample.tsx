@@ -31,7 +31,7 @@ interface FormValues {
 }
 
 const initialValues: FormValues = {
-    periodeFra: datepickerUtils.getDateStringFromValue(new Date()),
+    periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(15, 'days').toDate()),
 };
 

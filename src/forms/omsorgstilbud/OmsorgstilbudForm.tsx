@@ -86,7 +86,8 @@ const mapOmsorgsdagerToFormValues = (omsorgsdager?: Omsorgsdag[]) => {
 
 const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
-    const isWide = useMediaQuery({ minWidth: 450 });
+    const isNarrow = useMediaQuery({ maxWidth: 700 });
+    const isWide = useMediaQuery({ minWidth: 1050 });
 
     const onFormikSubmit = (formDager: Partial<FormValues>) => {
         const submitDager: Omsorgsdag[] = [];
@@ -136,7 +137,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                     <strong>Du kan registrere opp til 7 timer og 30 minutter på én dag.</strong>
                                 </p>
                             </Box>
-                            <div className={bem.classNames(bem.block, bem.modifierConditional('wide', isWide))}>
+                            <div className={bem.classNames(bem.block, bem.modifier())}>
                                 {Object.keys(weeks).map((key) => {
                                     const weekDates = weeks[key];
                                     const mndYearAndWeek = weekDates[0].yearAndWeek;
@@ -144,41 +145,48 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                         <Box key={key} margin="m">
                                             <ResponsivePanel>
                                                 <Undertittel>Uke {mndYearAndWeek}</Undertittel>
-                                                {weekDates.map((day) => (
-                                                    <Box key={day.key} margin={isWide ? 'm' : 'l'}>
-                                                        <Form.TimeInput
-                                                            name={day.key}
-                                                            className={
-                                                                hasValue(day.time?.hours) || hasValue(day.time?.minutes)
-                                                                    ? 'with-value'
-                                                                    : undefined
-                                                            }
-                                                            label={<span className="caps">{day.label}</span>}
-                                                            timeInputLayout={{
-                                                                srOnlyLabels: false,
-                                                                layout: isWide ? 'horizontal' : undefined,
-                                                                // suffix: { hours: 'tim', minutes: 'min' },
-                                                                // placeholders: {
-                                                                //     hours: '0',
-                                                                //     minutes: '0',
-                                                                // },
-                                                            }}
-                                                            validate={(time) => {
-                                                                const error = getTimeValidator({
-                                                                    required: false,
-                                                                    max: { hours: 7, minutes: 30 },
-                                                                })(time);
-                                                                return error
-                                                                    ? {
-                                                                          key: `omsorgstilbud.validation.${error}`,
-                                                                          values: { dag: day.label, maksTimer: 7 },
-                                                                          keepKeyUnaltered: true,
-                                                                      }
-                                                                    : undefined;
-                                                            }}
-                                                        />
-                                                    </Box>
-                                                ))}
+                                                <div className={isWide ? 'omsorgstilbud__uke' : undefined}>
+                                                    {weekDates.map((day) => (
+                                                        <Box key={day.key} margin={isWide ? 'm' : 'l'}>
+                                                            <Form.TimeInput
+                                                                name={day.key}
+                                                                className={
+                                                                    hasValue(day.time?.hours) ||
+                                                                    hasValue(day.time?.minutes)
+                                                                        ? 'with-value'
+                                                                        : undefined
+                                                                }
+                                                                label={<span className="caps">{day.label}</span>}
+                                                                timeInputLayout={{
+                                                                    srOnlyLabels: false,
+                                                                    layout: isNarrow
+                                                                        ? 'compactWithSpace'
+                                                                        : isWide
+                                                                        ? undefined
+                                                                        : 'horizontal',
+                                                                    // suffix: { hours: 'tim', minutes: 'min' },
+                                                                    // placeholders: {
+                                                                    //     hours: '0',
+                                                                    //     minutes: '0',
+                                                                    // },
+                                                                }}
+                                                                validate={(time) => {
+                                                                    const error = getTimeValidator({
+                                                                        required: false,
+                                                                        max: { hours: 7, minutes: 30 },
+                                                                    })(time);
+                                                                    return error
+                                                                        ? {
+                                                                              key: `omsorgstilbud.validation.${error}`,
+                                                                              values: { dag: day.label, maksTimer: 7 },
+                                                                              keepKeyUnaltered: true,
+                                                                          }
+                                                                        : undefined;
+                                                                }}
+                                                            />
+                                                        </Box>
+                                                    ))}
+                                                </div>
                                             </ResponsivePanel>
                                         </Box>
                                     );
