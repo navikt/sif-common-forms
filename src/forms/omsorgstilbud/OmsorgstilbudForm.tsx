@@ -4,10 +4,15 @@ import { useMediaQuery } from 'react-responsive';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { dateToISOString, getTypedFormComponents, ISOStringToDate, Time } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, Time } from '@navikt/sif-common-formik/lib';
+import {
+    isValidTime,
+    TimeInputLayoutProps,
+} from '@navikt/sif-common-formik/lib/components/formik-time-input/TimeInput';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -15,8 +20,6 @@ import groupby from 'lodash.groupby';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { Omsorgsdag } from './types';
 import './omsorgstilbudForm.less';
-import { isValidTime } from '@navikt/sif-common-formik/lib/components/formik-time-input/TimeInput';
-import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 
 dayjs.extend(isoWeek);
 dayjs.extend(weekOfYear);
@@ -29,45 +32,51 @@ interface Props {
     onCancel?: () => void;
 }
 
-type OmsorgsgdagFormType = { [key: string]: Partial<Time> };
-
+enum FormField {
+    omsorgsdager = 'omsorgsdager',
+}
 interface FormValues {
-    [key: string]: Partial<Time>;
+    [FormField.omsorgsdager]: Array<Partial<Time>>;
 }
 
-const Form = getTypedFormComponents<string, FormValues, ValidationError>();
+const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
-interface DateInput {
-    key: string;
+interface DateInfo {
+    index: number;
+    date: Date;
     dayOfWeek: number;
-    dayName: string;
-    dateString: string;
-    week: number;
     yearAndWeek: string;
+    weekNum: number;
+    year: number;
     label: string;
+    labelFull: string;
     time?: Time;
 }
 
-const getDates = (from: Date, to: Date): DateInput[] => {
-    const dates: DateInput[] = [];
+interface WeekInfo {
+    year: number;
+    weekNum: number;
+    dates: DateInfo[];
+}
+
+const getDates = (from: Date, to: Date): DateInfo[] => {
+    const dates: DateInfo[] = [];
     let date = dayjs(from);
+    let index = 0;
     while (date.isSameOrBefore(to, 'day')) {
         const dayOfWeek = date.isoWeekday();
         if (dayOfWeek <= 5) {
-            const dayName = date.format('dddd');
-            const dateString = date.format('DD.MM.YYYY');
-            const week = date.isoWeek();
-            const year = date.year();
-            const yearAndWeek = `${week},  ${year}`;
             dates.push({
-                key: dateToISOString(date.toDate()),
+                index,
+                date: date.toDate(),
                 dayOfWeek,
-                dayName,
-                dateString,
-                week,
-                yearAndWeek,
-                label: `${dayName.substring(0, 3)}. ${dateString}`,
+                weekNum: date.isoWeek(),
+                year: date.year(),
+                yearAndWeek: `${date.year()}.${date.isoWeek()}`,
+                label: `${date.format('dddd').substring(0, 3)}. ${date.format('DD.MM.YYYY')}`,
+                labelFull: `${date.format('dddd')} ${date.format('DD. MMM')}`,
             });
+            index++;
         }
         date = date.add(1, 'day');
     }
@@ -75,63 +84,72 @@ const getDates = (from: Date, to: Date): DateInput[] => {
 };
 const bem = bemUtils('omsorgstilbudDager');
 
-const mapOmsorgsdagerToFormValues = (omsorgsdager?: Omsorgsdag[]) => {
-    const omsorgsdag: OmsorgsgdagFormType = {};
-    omsorgsdager?.forEach((dag) => {
-        const key = dateToISOString(dag.dato);
-        omsorgsdag[key] = dag.tid;
-    });
-    return omsorgsdag;
-};
-
-const getEmptyContent = (num: number): JSX.Element[] => {
+const renderEmptyNodes = (num: number): JSX.Element[] | undefined => {
+    if (num === 0) {
+        return undefined;
+    }
     let x = 0;
     const items: JSX.Element[] = [];
     do {
-        items.push(<span />);
+        items.push(<span key={x} />);
         x++;
     } while (x < num);
-
     return items;
 };
+
+const getWeeks = (days: DateInfo[]): WeekInfo[] => {
+    const weekAndDates = groupby(days, (date) => date.yearAndWeek);
+    const weeks = Object.keys(weekAndDates).map((key): WeekInfo => {
+        const dates = weekAndDates[key];
+        return { year: dates[0].year, weekNum: dates[0].weekNum, dates: weekAndDates[key] };
+    });
+    return weeks;
+};
+
+const getInitialValues = (omsorgsdager: Omsorgsdag[], dagerIPerioden: DateInfo[]): FormValues => {
+    return {
+        omsorgsdager: dagerIPerioden.map((dag) => {
+            const omsorgsdag = omsorgsdager?.find((od) => dayjs(od.dato).isSame(dag.date, 'day'));
+            return omsorgsdag ? omsorgsdag.tid : { hours: '', minutes: '' };
+        }),
+    };
+};
+
+const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayoutProps => ({
+    srOnlyLabels: false,
+    justifyContent: 'right',
+    layout: isNarrow ? 'compactWithSpace' : isWide ? undefined : 'horizontal',
+});
 
 const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
+    const dates = getDates(fraDato, tilDato);
+    const weeks = getWeeks(dates);
 
-    const onFormikSubmit = (formDager: Partial<FormValues>) => {
-        const submitDager: Omsorgsdag[] = [];
-        if (formDager) {
-            Object.keys(formDager).forEach((key) => {
-                const time = formDager[key];
-                const date = ISOStringToDate(key);
-                if (date && time && isValidTime(time)) {
-                    submitDager.push({
-                        dato: date,
-                        tid: time,
-                    });
-                }
-            });
-        }
-        onSubmit(submitDager.filter((dag) => hasValue(dag.tid.hours) || hasValue(dag.tid.minutes)));
-    };
-
-    const fromDate = dayjs(fraDato);
-    const toDate = dayjs(tilDato);
-
-    if (fromDate.isAfter(toDate)) {
+    if (dayjs(fraDato).isAfter(tilDato)) {
         return <div>Fra dato er før til-dato</div>;
     }
 
-    const dates = getDates(fraDato, tilDato);
-    const weeks = groupby(dates, (date) => date.yearAndWeek);
-    const mndOgÅr = fromDate.format('MMMM YYYY');
+    const onFormikSubmit = (formDager: Partial<FormValues>) => {
+        const submitDager: Omsorgsdag[] = [];
+        formDager.omsorgsdager?.forEach((time, index) => {
+            const date = dates[index]?.date;
+            if (date && time && isValidTime(time)) {
+                submitDager.push({
+                    dato: date,
+                    tid: time,
+                });
+            }
+        });
+        onSubmit(submitDager.filter((dag) => hasValue(dag.tid.hours) || hasValue(dag.tid.minutes)));
+    };
 
     return (
         <Normaltekst tag="div">
             <Form.FormikWrapper
-                initialValues={mapOmsorgsdagerToFormValues(omsorgsdager)}
+                initialValues={getInitialValues(omsorgsdager || [], dates)}
                 onSubmit={onFormikSubmit}
                 renderForm={() => {
                     return (
@@ -139,7 +157,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                             onCancel={onCancel}
                             formErrorHandler={getFormErrorHandler(intl, 'tidsperiodeForm')}
                             includeButtons={true}>
-                            <Systemtittel tag="h1">Omsorgstilbud - {mndOgÅr}</Systemtittel>
+                            <Systemtittel tag="h1">Omsorgstilbud - {dayjs(fraDato).format('MMMM YYYY')}</Systemtittel>
                             <Box margin="l">
                                 <p>
                                     Fyll ut antall timer og minutter de dagene barnet skal være i omsorgstilbud. Dager
@@ -149,46 +167,25 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                     <strong>Du kan registrere opp til 7 timer og 30 minutter på én dag.</strong>
                                 </p>
                             </Box>
-                            <div className={bem.classNames(bem.block, bem.modifier())}>
-                                {Object.keys(weeks).map((key) => {
-                                    const weekDates = weeks[key];
-                                    const mndYearAndWeek = weekDates[0].yearAndWeek;
-                                    const emptyDays = weekDates[0].dayOfWeek - 1;
+                            <div className={bem.block}>
+                                {weeks.map(({ dates, year, weekNum }) => {
+                                    const preDaysInWeek = dates[0].dayOfWeek - 1;
                                     return (
-                                        <Box key={key} margin="m">
+                                        <Box key={weekNum} margin="m">
                                             <ResponsivePanel>
                                                 <Undertittel style={{ marginBottom: '1rem' }}>
-                                                    Uke {mndYearAndWeek}
+                                                    Uke {weekNum}, {year}
                                                 </Undertittel>
                                                 <div className={isWide ? 'omsorgstilbud__uke' : undefined}>
-                                                    {emptyDays > 0
-                                                        ? getEmptyContent(emptyDays).map((_, idx) => <span key={idx} />)
-                                                        : undefined}
-                                                    {weekDates.map((day) => (
-                                                        <div key={day.key} className={bem.element('dagWrapper')}>
+                                                    {renderEmptyNodes(preDaysInWeek)}
+                                                    {dates.map((day) => (
+                                                        <div
+                                                            key={day.date.getTime()}
+                                                            className={bem.element('dagWrapper')}>
                                                             <Form.TimeInput
-                                                                name={day.key}
-                                                                className={
-                                                                    hasValue(day.time?.hours) ||
-                                                                    hasValue(day.time?.minutes)
-                                                                        ? 'with-value'
-                                                                        : undefined
-                                                                }
+                                                                name={`${FormField.omsorgsdager}.${day.index}` as any}
                                                                 label={<span className="caps">{day.label}</span>}
-                                                                timeInputLayout={{
-                                                                    srOnlyLabels: false,
-                                                                    justifyContent: 'right',
-                                                                    layout: isNarrow
-                                                                        ? 'compactWithSpace'
-                                                                        : isWide
-                                                                        ? undefined
-                                                                        : 'horizontal',
-                                                                    // suffix: { hours: 'tim', minutes: 'min' },
-                                                                    // placeholders: {
-                                                                    //     hours: '0',
-                                                                    //     minutes: '0',
-                                                                    // },
-                                                                }}
+                                                                timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
                                                                 validate={(time) => {
                                                                     const error = getTimeValidator({
                                                                         required: false,
@@ -197,7 +194,10 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                                                     return error
                                                                         ? {
                                                                               key: `omsorgstilbud.validation.${error}`,
-                                                                              values: { dag: day.label, maksTimer: 7 },
+                                                                              values: {
+                                                                                  dag: day.labelFull,
+                                                                                  maksTimer: 7,
+                                                                              },
                                                                               keepKeyUnaltered: true,
                                                                           }
                                                                         : undefined;

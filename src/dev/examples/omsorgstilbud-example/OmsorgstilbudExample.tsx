@@ -1,7 +1,5 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Clock } from '@navikt/ds-icons';
-import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
@@ -12,26 +10,32 @@ import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/in
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
-import CalendarGrid from '../../../forms/omsorgstilbud/CalendarGrid';
 import OmsorgstilbudInfoAndDialog from '../../../forms/omsorgstilbud/OmsorgstilbudInfoAndDialog';
+import { getMonthsInDateRange } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
+import { OmsorgstilbudPeriodeFormValue } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
-import { getAlleMånederIPerioden } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
 
 enum FormField {
     periodeFra = 'periodeFra',
     periodeTil = 'periodeTil',
+    omsorgstilbud = 'omsorgstilbud',
 }
 
-// type OmsorgsdagerFormValue = {[key: string]: Omsor[]}
+enum OmsorgstilbudFormField {
+    skalHaOmsorgstilbud = 'skalHaOmsorgstilbud',
+    omsorgsdager = 'omsorgsdager',
+}
+
 interface FormValues {
     [FormField.periodeFra]?: string;
     [FormField.periodeTil]?: string;
-    // [FormField.omsorgsdager]: Om
+    [FormField.omsorgstilbud]: OmsorgstilbudPeriodeFormValue[];
 }
 
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(15, 'days').toDate()),
+    [FormField.omsorgstilbud]: [],
 };
 
 const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
@@ -54,40 +58,13 @@ const OmsorgstilbudExample = () => {
                         datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
 
                     const range = { from, to };
-                    const måneder = getAlleMånederIPerioden(range, values as any);
+                    const måneder = getMonthsInDateRange(range);
 
                     return (
                         <FormComponents.Form
-                            includeButtons={true}
+                            includeButtons={false}
                             submitButtonLabel="Valider skjema"
                             formErrorHandler={getIntlFormErrorHandler(intl)}>
-                            <FormBlock>
-                                {1 + 1 === 3 && (
-                                    <CalendarGrid
-                                        month={new Date()}
-                                        dateFormatter={(date: Date) => (
-                                            <AriaAlternative
-                                                visibleText={dayjs(date).format('D.')}
-                                                ariaText={dayjs(date).format('DD.MM.YYYY')}
-                                            />
-                                        )}
-                                        content={[
-                                            {
-                                                date: new Date(),
-                                                content: (
-                                                    <span className={'varighet'}>
-                                                        <span className="varighet__ikon">
-                                                            <Clock />
-                                                        </span>
-                                                        <span className="varighet__tid">1t 20 min</span>
-                                                    </span>
-                                                ),
-                                            },
-                                        ]}
-                                    />
-                                )}
-                            </FormBlock>
-
                             <FormComponents.DateIntervalPicker
                                 fromDatepickerProps={{
                                     label: 'Fra',
@@ -98,32 +75,29 @@ const OmsorgstilbudExample = () => {
                                     name: FormField.periodeTil,
                                 }}
                             />
-                            {måneder.map((m) => {
+                            {måneder.map((m, index) => {
                                 const mndOgÅr = dayjs(m.from).format('MMMM YYYY');
-                                const inputName = `omsorgstilbud-${dayjs(m.from).format('MM-YY')}`;
-                                const skalIOmsorgstilbud = values[inputName] === YesOrNo.YES;
+                                const getFieldName = (field: OmsorgstilbudFormField): any =>
+                                    `${FormField.omsorgstilbud}.${index}.${field}`;
+                                const skalIOmsorgstilbud =
+                                    values.omsorgstilbud[index]?.skalHaOmsorgstilbud === YesOrNo.YES;
                                 return (
                                     <Box key={dayjs(m.from).format('MM.YYYY')} margin="xl">
                                         <FormComponents.YesOrNoQuestion
-                                            name={inputName as any}
+                                            name={getFieldName(OmsorgstilbudFormField.skalHaOmsorgstilbud)}
                                             legend={`Skal barnet i omsorgstilbud ${mndOgÅr}?`}
                                         />
                                         {skalIOmsorgstilbud && (
                                             <FormBlock margin="l">
                                                 <ResponsivePanel className={'omsorgstilbudInfoDialogWrapper'}>
                                                     <OmsorgstilbudInfoAndDialog
-                                                        name={`${m.key}`}
+                                                        name={getFieldName(OmsorgstilbudFormField.omsorgsdager)}
                                                         fraDato={m.from}
                                                         tilDato={m.to}
-                                                        omsorgsdager={m.omsorgsdager}
                                                         labels={{
                                                             addLabel: `Legg til timer`,
                                                             deleteLabel: `Fjern alle timer`,
                                                             editLabel: `Endre`,
-                                                            infoTitle:
-                                                                m.omsorgsdager.length === 0
-                                                                    ? `Omsorgstilbud - ${mndOgÅr}`
-                                                                    : undefined,
                                                             modalTitle: `Omsorgstilbud - ${mndOgÅr}`,
                                                         }}
                                                     />

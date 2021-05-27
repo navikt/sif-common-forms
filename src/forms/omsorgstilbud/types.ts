@@ -6,11 +6,9 @@ export interface Omsorgsdag {
     tid: Time;
 }
 
-export interface OmsorgsdagerIMåned {
-    key: string;
+export interface Måned {
     from: Date;
     to: Date;
-    omsorgsdager: Omsorgsdag[];
 }
 
 export interface OmsorgstilbudPeriodeFormValue {
