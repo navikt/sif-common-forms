@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
 import { Clock } from '@navikt/ds-icons';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { DateRange, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
@@ -13,21 +14,19 @@ import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import CalendarGrid from '../../../forms/omsorgstilbud/CalendarGrid';
 import OmsorgstilbudInfoAndDialog from '../../../forms/omsorgstilbud/OmsorgstilbudInfoAndDialog';
-import { Omsorgsdag } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
-import Panel from 'nav-frontend-paneler';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
+import { getAlleMånederIPerioden } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
 
 enum FormField {
     periodeFra = 'periodeFra',
     periodeTil = 'periodeTil',
-    omsorgsdager = 'omsorgsdager',
 }
 
+// type OmsorgsdagerFormValue = {[key: string]: Omsor[]}
 interface FormValues {
     [FormField.periodeFra]?: string;
     [FormField.periodeTil]?: string;
-    [FormField.omsorgsdager]?: Omsorgsdag[];
+    // [FormField.omsorgsdager]: Om
 }
 
 const initialValues: FormValues = {
@@ -37,44 +36,7 @@ const initialValues: FormValues = {
 
 const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
-interface OmsorgsdagerIMåned {
-    key: string;
-    from: Date;
-    to: Date;
-    omsorgsdager: Omsorgsdag[];
-}
-
-export const datoErIPeriode = (dato: Date, range: DateRange): boolean =>
-    dayjs(dato).isSameOrAfter(range.from, 'day') && dayjs(dato).isSameOrBefore(range.to, 'day');
-
-const getAlleMånederIPerioden = (range: DateRange, omsorgsdager: Omsorgsdag[]): OmsorgsdagerIMåned[] => {
-    const måneder: OmsorgsdagerIMåned[] = [];
-    let current = dayjs(range.from);
-
-    do {
-        const monthRange: DateRange = { from: current.toDate(), to: current.endOf('month').toDate() };
-        const dager = omsorgsdager.filter(
-            (dag) =>
-                dayjs(dag.dato).isSameOrAfter(monthRange.from, 'day') &&
-                dayjs(dag.dato).isSameOrBefore(monthRange.to, 'day')
-        );
-
-        måneder.push({
-            key: `${FormField.omsorgsdager}-${current.format('MM-YY')}`,
-            omsorgsdager: dager,
-            from: monthRange.from,
-            to: dayjs(monthRange.to).isAfter(range.to) ? range.to : monthRange.to,
-        });
-        current = current.add(1, 'month').startOf('month');
-    } while (current.isBefore(range.to));
-    return måneder;
-};
-
 const OmsorgstilbudExample = () => {
-    const [formValues, setFormValues] = useState<FormValues>({
-        periodeFra: datepickerUtils.getDateStringFromValue(new Date()),
-        periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(15, 'days').toDate()),
-    });
     const intl = useIntl();
     return (
         <>
@@ -84,15 +46,15 @@ const OmsorgstilbudExample = () => {
             </Box>
             <FormComponents.FormikWrapper
                 initialValues={initialValues}
-                onSubmit={setFormValues}
+                onSubmit={() => null}
                 renderForm={({ values }) => {
-                    const { omsorgsdager, periodeFra, periodeTil } = values;
+                    const { periodeFra, periodeTil } = values;
                     const from = datepickerUtils.getDateFromDateString(periodeFra) || dateToday;
                     const to =
                         datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
 
                     const range = { from, to };
-                    const måneder = getAlleMånederIPerioden(range, omsorgsdager || []);
+                    const måneder = getAlleMånederIPerioden(range, values as any);
 
                     return (
                         <FormComponents.Form
@@ -144,7 +106,7 @@ const OmsorgstilbudExample = () => {
                                     <Box key={dayjs(m.from).format('MM.YYYY')} margin="xl">
                                         <FormComponents.YesOrNoQuestion
                                             name={inputName as any}
-                                            legend={`Skal barnet i omsorgstilbud ${mndOgÅr}`}
+                                            legend={`Skal barnet i omsorgstilbud ${mndOgÅr}?`}
                                         />
                                         {skalIOmsorgstilbud && (
                                             <FormBlock margin="l">
@@ -157,8 +119,11 @@ const OmsorgstilbudExample = () => {
                                                         labels={{
                                                             addLabel: `Legg til timer`,
                                                             deleteLabel: `Fjern alle timer`,
-                                                            editLabel: `Endre timer`,
-                                                            infoTitle: `Omsorgstilbud - ${mndOgÅr}`,
+                                                            editLabel: `Endre`,
+                                                            infoTitle:
+                                                                m.omsorgsdager.length === 0
+                                                                    ? `Omsorgstilbud - ${mndOgÅr}`
+                                                                    : undefined,
                                                             modalTitle: `Omsorgstilbud - ${mndOgÅr}`,
                                                         }}
                                                     />

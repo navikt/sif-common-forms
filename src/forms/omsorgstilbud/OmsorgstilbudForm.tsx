@@ -84,9 +84,20 @@ const mapOmsorgsdagerToFormValues = (omsorgsdager?: Omsorgsdag[]) => {
     return omsorgsdag;
 };
 
+const getEmptyContent = (num: number): JSX.Element[] => {
+    let x = 0;
+    const items: JSX.Element[] = [];
+    do {
+        items.push(<span />);
+        x++;
+    } while (x < num);
+
+    return items;
+};
+
 const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
-    const isNarrow = useMediaQuery({ maxWidth: 700 });
+    const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
 
     const onFormikSubmit = (formDager: Partial<FormValues>) => {
@@ -103,7 +114,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                 }
             });
         }
-        onSubmit(submitDager);
+        onSubmit(submitDager.filter((dag) => hasValue(dag.tid.hours) || hasValue(dag.tid.minutes)));
     };
 
     const fromDate = dayjs(fraDato);
@@ -116,6 +127,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
     const dates = getDates(fraDato, tilDato);
     const weeks = groupby(dates, (date) => date.yearAndWeek);
     const mndOgÅr = fromDate.format('MMMM YYYY');
+
     return (
         <Normaltekst tag="div">
             <Form.FormikWrapper
@@ -141,13 +153,19 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                 {Object.keys(weeks).map((key) => {
                                     const weekDates = weeks[key];
                                     const mndYearAndWeek = weekDates[0].yearAndWeek;
+                                    const emptyDays = weekDates[0].dayOfWeek - 1;
                                     return (
                                         <Box key={key} margin="m">
                                             <ResponsivePanel>
-                                                <Undertittel>Uke {mndYearAndWeek}</Undertittel>
+                                                <Undertittel style={{ marginBottom: '1rem' }}>
+                                                    Uke {mndYearAndWeek}
+                                                </Undertittel>
                                                 <div className={isWide ? 'omsorgstilbud__uke' : undefined}>
+                                                    {emptyDays > 0
+                                                        ? getEmptyContent(emptyDays).map((_, idx) => <span key={idx} />)
+                                                        : undefined}
                                                     {weekDates.map((day) => (
-                                                        <Box key={day.key} margin={isWide ? 'm' : 'l'}>
+                                                        <div key={day.key} className={bem.element('dagWrapper')}>
                                                             <Form.TimeInput
                                                                 name={day.key}
                                                                 className={
@@ -159,6 +177,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                                                 label={<span className="caps">{day.label}</span>}
                                                                 timeInputLayout={{
                                                                     srOnlyLabels: false,
+                                                                    justifyContent: 'right',
                                                                     layout: isNarrow
                                                                         ? 'compactWithSpace'
                                                                         : isWide
@@ -184,7 +203,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                                                         : undefined;
                                                                 }}
                                                             />
-                                                        </Box>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </ResponsivePanel>

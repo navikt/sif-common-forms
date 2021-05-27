@@ -10,7 +10,7 @@
         display: inline-block;
         position: relative;
     }
-    @media (min-width: 700px) {
+    @media (min-width: 737px) {
         .varighet__info__ikon {
             display: none;
         }
@@ -37,12 +37,27 @@
             display: block;
         }
     }
+    &__dagWrapper {
+        @media (max-width: 1050px) {
+            padding: .5rem 0;
+            margin-bottom: .5rem;
+            border-bottom: 1px solid rgba(0,0,0,.15);
+            &:first-child {
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top:1px solid rgba(0,0,0,.15);
+            }
+        }
+    }
     .timeInput__contentWrapper {
         padding-bottom: 1.5rem;
+        justify-content: flex-end;
+        max-width: 14rem;
     }
     .caps {
         text-transform: capitalize;
     }
+
 
     input::-webkit-input-placeholder {
         .placeholder();
@@ -124,4 +139,8 @@
         border: none;
         padding: 0;
     }
+}
+
+.ingenTidRegistrert {
+    padding-right: .5rem;
 }

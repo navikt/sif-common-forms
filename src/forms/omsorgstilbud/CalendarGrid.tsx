@@ -84,7 +84,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     const weeks = groupBy(days, (day) => getWeekKey(day.date));
     return (
         <div className={bem.block}>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('day', 'week')}>
                 Uke
             </span>
             <span role="presentation" aria-hidden={true} className={bem.element('day')}>
