@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "14.2.0-beta.1",
+    "version": "14.2.0-beta.2",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -38,8 +38,8 @@
         "/lib"
     ],
     "peerDependencies": {
-        "@navikt/sif-common-core": "^9.4.x",
-        "@navikt/sif-common-formik": "^19.2.x"
+        "@navikt/sif-common-core": "^9.4.0-beta.0",
+        "@navikt/sif-common-formik": "^19.2.0-beta.1"
     },
     "devDependencies": {
         "@craco/craco": "^5.5.0",
