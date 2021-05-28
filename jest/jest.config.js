@@ -10,6 +10,7 @@ module.exports = {
         '^app/(.*)': '<rootDir>/src/app/$1',
         '^common/(.*)': '<rootDir>/src/common/$1',
     },
+    testEnvironment: 'jsdom',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     modulePathIgnorePatterns: ['lib'],
     transformIgnorePatterns: ['node_modules/(?!(nav-frontend-spinner-style)/)'],

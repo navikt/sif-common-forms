@@ -4,7 +4,7 @@
     &__ikon {
         display: inline-block;
         margin-right: 0.5rem;
-        line-height: .75rem;
+        line-height: 0.75rem;
     }
     &__tid {
         display: inline-block;
@@ -16,73 +16,9 @@
         }
     }
 }
-.placeholder() {
-    opacity: 0.7;
-    font-size: 0.9rem;
-}
+
 .m-caps {
     text-transform: capitalize;
-}
-
-.omsorgstilbudDager {
-    legend {
-        .typo-element {
-            font-weight: normal;
-        }
-    }
-    &--wide {
-        .skjemagruppe__legend {
-            min-width: 10rem;
-            text-align: left;
-            display: block;
-        }
-    }
-    &__dagWrapper {
-        @media (max-width: 1050px) {
-            padding: .5rem 0;
-            margin-bottom: .5rem;
-            border-bottom: 1px solid rgba(0,0,0,.15);
-            &:first-child {
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top:1px solid rgba(0,0,0,.15);
-            }
-        }
-    }
-    .timeInput__contentWrapper {
-        padding-bottom: 1.5rem;
-        justify-content: flex-end;
-        max-width: 14rem;
-    }
-    .caps {
-        text-transform: capitalize;
-    }
-
-
-    input::-webkit-input-placeholder {
-        .placeholder();
-    }
-    input:-ms-input-placeholder {
-        .placeholder();
-    }
-    input::placeholder {
-        .placeholder();
-    }
-    input:focus::placeholder {
-        opacity: 0;
-    }
-    .skjemaelement__feilmelding {
-        margin-bottom: 1rem;
-    }
-}
-
-.modal {
-    &__content {
-        padding: 1rem 1rem 2rem 1rem;
-        @media (max-width: 736px) {
-            padding: 1rem 0 1rem 0;
-        }
-    }
 }
 
 .omsorgstilbudDialog {
@@ -93,7 +29,7 @@
     }
 }
 
-.omsorgstilbud__uke {
+.omsorgstilbud__ukegrid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 }
@@ -126,10 +62,11 @@
 }
 
 .omsorgstilbudListe {
-    &__dag {display: inline-block;
+    &__dag {
+        display: inline-block;
         // margin-right: .25rem;
     }
-    .omsorgstilbudListe__dato  {
+    .omsorgstilbudListe__dato {
         text-transform: capitalize;
     }
 }
@@ -142,5 +79,53 @@
 }
 
 .ingenTidRegistrert {
-    padding-right: .5rem;
+    padding-right: 0.5rem;
+}
+
+.omsorgstilbudForm {
+    legend {
+        .typo-element {
+            font-weight: normal;
+        }
+    }
+    &__uke {
+        &__ukedager--grid {
+            display: grid;
+            margin-top: 1rem;
+            grid-template-columns: repeat(5, 1fr);
+        }
+        &__ukedager--liste {
+            border-top: 1px solid rgba(0, 0, 0, 0.15);
+            padding-top: 0.5rem;
+            margin-top: 1rem;
+        }
+        &--wide {
+            .skjemagruppe__legend {
+                min-width: 10rem;
+                text-align: left;
+                display: block;
+            }
+        }
+    }
+    &__dag {
+        @media (max-width: 1050px) {
+            padding: 0.5rem 0;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        }
+        &__label {
+            text-transform: capitalize;
+        }
+    }
+
+    /** Overrides */
+    .timeInput__contentWrapper {
+        padding-bottom: 1.5rem;
+        justify-content: flex-end;
+        max-width: 14rem;
+    }
+
+    .skjemaelement__feilmelding {
+        margin-bottom: 1rem;
+    }
 }

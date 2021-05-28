@@ -33,87 +33,77 @@ interface Props {
 }
 
 enum FormField {
-    omsorgsdager = 'omsorgsdager',
+    tidIOmsorg = 'tidIOmsorg',
 }
 interface FormValues {
-    [FormField.omsorgsdager]: Array<Partial<Time>>;
+    [FormField.tidIOmsorg]: Array<Partial<Time>>;
 }
 
-const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
-
-interface DateInfo {
+interface Daginfo {
     index: number;
-    date: Date;
-    dayOfWeek: number;
-    yearAndWeek: string;
-    weekNum: number;
-    year: number;
+    dato: Date;
+    ukedag: number;
+    årOgUke: string;
+    ukenummer: number;
+    år: number;
     label: string;
     labelFull: string;
-    time?: Time;
+    tid?: Time;
 }
 
-interface WeekInfo {
-    year: number;
-    weekNum: number;
-    dates: DateInfo[];
+interface Ukeinfo {
+    år: number;
+    ukenummer: number;
+    dager: Daginfo[];
 }
 
-const getDates = (from: Date, to: Date): DateInfo[] => {
-    const dates: DateInfo[] = [];
-    let date = dayjs(from);
+// -- UTILS -----------------------------
+
+const getDatoinfo = (from: Date, to: Date): Daginfo[] => {
+    const dager: Daginfo[] = [];
+    let dayjsDato = dayjs(from);
     let index = 0;
-    while (date.isSameOrBefore(to, 'day')) {
-        const dayOfWeek = date.isoWeekday();
-        if (dayOfWeek <= 5) {
-            dates.push({
+    while (dayjsDato.isSameOrBefore(to, 'day')) {
+        const ukedag = dayjsDato.isoWeekday();
+        if (ukedag <= 5) {
+            dager.push({
                 index,
-                date: date.toDate(),
-                dayOfWeek,
-                weekNum: date.isoWeek(),
-                year: date.year(),
-                yearAndWeek: `${date.year()}.${date.isoWeek()}`,
-                label: `${date.format('dddd').substring(0, 3)}. ${date.format('DD.MM.YYYY')}`,
-                labelFull: `${date.format('dddd')} ${date.format('DD. MMM')}`,
+                dato: dayjsDato.toDate(),
+                ukedag,
+                ukenummer: dayjsDato.isoWeek(),
+                år: dayjsDato.year(),
+                årOgUke: `${dayjsDato.year()}.${dayjsDato.isoWeek()}`,
+                label: `${dayjsDato.format('dddd').substring(0, 3)}. ${dayjsDato.format('DD.MM.YYYY')}`,
+                labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('DD. MMM')}`,
             });
             index++;
         }
-        date = date.add(1, 'day');
+        dayjsDato = dayjsDato.add(1, 'day');
     }
-    return dates;
-};
-const bem = bemUtils('omsorgstilbudDager');
-
-const renderEmptyNodes = (num: number): JSX.Element[] | undefined => {
-    if (num === 0) {
-        return undefined;
-    }
-    let x = 0;
-    const items: JSX.Element[] = [];
-    do {
-        items.push(<span key={x} />);
-        x++;
-    } while (x < num);
-    return items;
+    return dager;
 };
 
-const getWeeks = (days: DateInfo[]): WeekInfo[] => {
-    const weekAndDates = groupby(days, (date) => date.yearAndWeek);
-    const weeks = Object.keys(weekAndDates).map((key): WeekInfo => {
-        const dates = weekAndDates[key];
-        return { year: dates[0].year, weekNum: dates[0].weekNum, dates: weekAndDates[key] };
+const getEmptyElements = (num: number): JSX.Element[] | undefined => {
+    return num === 0
+        ? undefined
+        : Array.from({ length: num }).map((_, index) => React.createElement('span', { key: index }));
+};
+
+const getUker = (dager: Daginfo[]): Ukeinfo[] => {
+    const ukerOgDager = groupby(dager, (dag) => dag.årOgUke);
+    const uker = Object.keys(ukerOgDager).map((key): Ukeinfo => {
+        const dagerIUke = ukerOgDager[key];
+        return { år: dagerIUke[0].år, ukenummer: dagerIUke[0].ukenummer, dager: dagerIUke };
     });
-    return weeks;
+    return uker;
 };
 
-const getInitialValues = (omsorgsdager: Omsorgsdag[], dagerIPerioden: DateInfo[]): FormValues => {
-    return {
-        omsorgsdager: dagerIPerioden.map((dag) => {
-            const omsorgsdag = omsorgsdager?.find((od) => dayjs(od.dato).isSame(dag.date, 'day'));
-            return omsorgsdag ? omsorgsdag.tid : { hours: '', minutes: '' };
-        }),
-    };
-};
+const getInitialFormValues = (omsorgsdager: Omsorgsdag[] = [], dagerIPerioden: Daginfo[]): FormValues => ({
+    tidIOmsorg: dagerIPerioden.map((dag) => {
+        const omsorgsdag = omsorgsdager?.find((od) => dayjs(od.dato).isSame(dag.dato, 'day'));
+        return omsorgsdag ? omsorgsdag.tid : { hours: '', minutes: '' };
+    }),
+});
 
 const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayoutProps => ({
     srOnlyLabels: false,
@@ -121,35 +111,62 @@ const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayout
     layout: isNarrow ? 'compactWithSpace' : isWide ? undefined : 'horizontal',
 });
 
+const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, dager: Daginfo[]): Omsorgsdag[] => {
+    const omsorgsdager: Omsorgsdag[] = [];
+    tidIOmsorg?.forEach((tid, index) => {
+        const dato = dager[index]?.dato;
+        if (dato && tid && (hasValue(tid.hours) || hasValue(tid.minutes)) && isValidTime(tid)) {
+            omsorgsdager.push({
+                dato,
+                tid,
+            });
+        }
+    });
+    return omsorgsdager;
+};
+
+const getTidIOmsorgValidator = (dag: Daginfo) => (tid: Time) => {
+    const error = getTimeValidator({
+        required: false,
+        max: { hours: 7, minutes: 30 },
+    })(tid);
+    return error
+        ? {
+              key: `omsorgstilbud.validation.${error}`,
+              values: {
+                  dag: dag.labelFull,
+                  maksTimer: 7,
+              },
+              keepKeyUnaltered: true,
+          }
+        : undefined;
+};
+
+// -- Component -----------------------------
+
+const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
+
+const bem = bemUtils('omsorgstilbudForm');
+
 const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
-    const dates = getDates(fraDato, tilDato);
-    const weeks = getWeeks(dates);
+    const datoer = getDatoinfo(fraDato, tilDato);
+    const uker = getUker(datoer);
 
     if (dayjs(fraDato).isAfter(tilDato)) {
         return <div>Fra dato er før til-dato</div>;
     }
 
-    const onFormikSubmit = (formDager: Partial<FormValues>) => {
-        const submitDager: Omsorgsdag[] = [];
-        formDager.omsorgsdager?.forEach((time, index) => {
-            const date = dates[index]?.date;
-            if (date && time && isValidTime(time)) {
-                submitDager.push({
-                    dato: date,
-                    tid: time,
-                });
-            }
-        });
-        onSubmit(submitDager.filter((dag) => hasValue(dag.tid.hours) || hasValue(dag.tid.minutes)));
+    const onFormikSubmit = ({ tidIOmsorg = [] }: Partial<FormValues>) => {
+        onSubmit(mapTidIOmsorgToOmsorgsdager(tidIOmsorg, datoer));
     };
 
     return (
-        <Normaltekst tag="div">
+        <Normaltekst tag="div" className={bem.block}>
             <Form.FormikWrapper
-                initialValues={getInitialValues(omsorgsdager || [], dates)}
+                initialValues={getInitialFormValues(omsorgsdager, datoer)}
                 onSubmit={onFormikSubmit}
                 renderForm={() => {
                     return (
@@ -167,46 +184,11 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                     <strong>Du kan registrere opp til 7 timer og 30 minutter på én dag.</strong>
                                 </p>
                             </Box>
-                            <div className={bem.block}>
-                                {weeks.map(({ dates, year, weekNum }) => {
-                                    const preDaysInWeek = dates[0].dayOfWeek - 1;
+                            <div className={bem.element()}>
+                                {uker.map((week) => {
                                     return (
-                                        <Box key={weekNum} margin="m">
-                                            <ResponsivePanel>
-                                                <Undertittel style={{ marginBottom: '1rem' }}>
-                                                    Uke {weekNum}, {year}
-                                                </Undertittel>
-                                                <div className={isWide ? 'omsorgstilbud__uke' : undefined}>
-                                                    {renderEmptyNodes(preDaysInWeek)}
-                                                    {dates.map((day) => (
-                                                        <div
-                                                            key={day.date.getTime()}
-                                                            className={bem.element('dagWrapper')}>
-                                                            <Form.TimeInput
-                                                                name={`${FormField.omsorgsdager}.${day.index}` as any}
-                                                                label={<span className="caps">{day.label}</span>}
-                                                                timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
-                                                                validate={(time) => {
-                                                                    const error = getTimeValidator({
-                                                                        required: false,
-                                                                        max: { hours: 7, minutes: 30 },
-                                                                    })(time);
-                                                                    return error
-                                                                        ? {
-                                                                              key: `omsorgstilbud.validation.${error}`,
-                                                                              values: {
-                                                                                  dag: day.labelFull,
-                                                                                  maksTimer: 7,
-                                                                              },
-                                                                              keepKeyUnaltered: true,
-                                                                          }
-                                                                        : undefined;
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </ResponsivePanel>
+                                        <Box key={week.ukenummer} margin="m">
+                                            <UkeFormPart ukeinfo={week} isNarrow={isNarrow} isWide={isWide} />
                                         </Box>
                                     );
                                 })}
@@ -216,6 +198,39 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                 }}
             />
         </Normaltekst>
+    );
+};
+
+// -- Sub components -----------------------------
+
+const UkeFormPart = ({
+    ukeinfo: { dager, ukenummer, år },
+    isNarrow,
+    isWide,
+}: {
+    ukeinfo: Ukeinfo;
+    isNarrow: boolean;
+    isWide: boolean;
+}) => {
+    return (
+        <ResponsivePanel className={bem.element('uke')}>
+            <Undertittel className={bem.element('uke__tittel')}>
+                Uke {ukenummer}, {år}
+            </Undertittel>
+            <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
+                {getEmptyElements(dager[0].ukedag - 1)}
+                {dager.map((dag) => (
+                    <div key={dag.dato.getTime()} className={bem.element('dag')}>
+                        <Form.TimeInput
+                            name={`${FormField.tidIOmsorg}.${dag.index}` as any}
+                            label={<span className={bem.element('dag__label')}>{dag.label}</span>}
+                            timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
+                            validate={getTidIOmsorgValidator(dag)}
+                        />
+                    </div>
+                ))}
+            </div>
+        </ResponsivePanel>
     );
 };
 
