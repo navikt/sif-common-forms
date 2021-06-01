@@ -18,17 +18,17 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import groupby from 'lodash.groupby';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
-import { Omsorgsdag } from './types';
+import { OmsorgstilbudDag } from './types';
 import './omsorgstilbudForm.less';
 
 dayjs.extend(isoWeek);
 dayjs.extend(weekOfYear);
 
 interface Props {
-    omsorgsdager?: Omsorgsdag[];
+    omsorgsdager?: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
-    onSubmit: (omsorgsdager: Omsorgsdag[]) => void;
+    onSubmit: (omsorgsdager: OmsorgstilbudDag[]) => void;
     onCancel?: () => void;
 }
 
@@ -98,7 +98,7 @@ const getUker = (dager: Daginfo[]): Ukeinfo[] => {
     return uker;
 };
 
-const getInitialFormValues = (omsorgsdager: Omsorgsdag[] = [], dagerIPerioden: Daginfo[]): FormValues => ({
+const getInitialFormValues = (omsorgsdager: OmsorgstilbudDag[] = [], dagerIPerioden: Daginfo[]): FormValues => ({
     tidIOmsorg: dagerIPerioden.map((dag) => {
         const omsorgsdag = omsorgsdager?.find((od) => dayjs(od.dato).isSame(dag.dato, 'day'));
         return omsorgsdag ? omsorgsdag.tid : { hours: '', minutes: '' };
@@ -111,8 +111,8 @@ const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayout
     layout: isNarrow ? 'compactWithSpace' : isWide ? undefined : 'horizontal',
 });
 
-const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, dager: Daginfo[]): Omsorgsdag[] => {
-    const omsorgsdager: Omsorgsdag[] = [];
+const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, dager: Daginfo[]): OmsorgstilbudDag[] => {
+    const omsorgsdager: OmsorgstilbudDag[] = [];
     tidIOmsorg?.forEach((tid, index) => {
         const dato = dager[index]?.dato;
         if (dato && tid && (hasValue(tid.hours) || hasValue(tid.minutes)) && isValidTime(tid)) {

@@ -7,14 +7,14 @@ import {
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import OmsorgstilbudForm from './OmsorgstilbudForm';
 import OmsorgstilbudInfo from './OmsorgstilbudInfo';
-import { Omsorgsdag } from './types';
+import { OmsorgstilbudDag } from './types';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     fraDato: Date;
     tilDato: Date;
-    onAfterChange?: (omsorgsdager: Omsorgsdag[]) => void;
+    onAfterChange?: (omsorgsdager: OmsorgstilbudDag[]) => void;
 }
 
 function OmsorgstilbudInfoAndDialog<FieldNames>({
@@ -26,7 +26,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     onAfterChange,
 }: Props<FieldNames>) {
     return (
-        <FormikModalFormAndInfo<FieldNames, Omsorgsdag[], ValidationError>
+        <FormikModalFormAndInfo<FieldNames, OmsorgstilbudDag[], ValidationError>
             name={name}
             validate={validate}
             labels={labels}

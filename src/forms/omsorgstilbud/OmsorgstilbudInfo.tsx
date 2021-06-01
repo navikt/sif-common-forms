@@ -7,11 +7,11 @@ import dayjs from 'dayjs';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Undertekst, Undertittel } from 'nav-frontend-typografi';
 import FormattedTimeText from './FormattedTimeText';
-import { Omsorgsdag } from './types';
+import { OmsorgstilbudDag } from './types';
 import CalendarGrid from '../components/calendar-grid/CalendarGrid';
 
 interface Props {
-    omsorgsdager: Omsorgsdag[];
+    omsorgsdager: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
 }

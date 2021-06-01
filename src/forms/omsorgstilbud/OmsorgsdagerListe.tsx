@@ -6,13 +6,14 @@ import { groupBy } from 'lodash';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import FormattedTimeText from './FormattedTimeText';
-import { Omsorgsdag } from './types';
+import { OmsorgstilbudDag } from './types';
 
 interface Props {
-    omsorgsdager: Omsorgsdag[];
+    omsorgsdager: OmsorgstilbudDag[];
 }
 
-const sortDays = (d1: Omsorgsdag, d2: Omsorgsdag): number => (dayjs(d1.dato).isSameOrBefore(d2.dato) ? -1 : 1);
+const sortDays = (d1: OmsorgstilbudDag, d2: OmsorgstilbudDag): number =>
+    dayjs(d1.dato).isSameOrBefore(d2.dato) ? -1 : 1;
 
 const bem = bemUtils('omsorgstilbudListe');
 
