@@ -6,9 +6,9 @@ import { Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Undertekst, Undertittel } from 'nav-frontend-typografi';
-import CalendarGrid from './CalendarGrid';
 import FormattedTimeText from './FormattedTimeText';
 import { Omsorgsdag } from './types';
+import CalendarGrid from '../components/calendar-grid/CalendarGrid';
 
 interface Props {
     omsorgsdager: Omsorgsdag[];

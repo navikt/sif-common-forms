@@ -3,19 +3,25 @@ import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { DateRange, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
-import './calendarGrid.less';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
+import './calendarGrid.less';
 
 dayjs.extend(minMax);
 
-interface CalendarDayContent {
+interface Day {
     date: Date;
     content: JSX.Element | undefined;
 }
 
+interface Week {
+    year: number;
+    weekNumber: number;
+    days: Day[];
+}
+
 interface Props {
-    content: CalendarDayContent[];
+    content: Day[];
     month: Date;
     min?: Date;
     max?: Date;
@@ -24,18 +30,7 @@ interface Props {
     noContentRenderer?: (date: Date) => React.ReactNode;
 }
 
-const getFirstWeekdayInMonth = (month: Date): Date => {
-    const firstDayInMonth = dayjs(month).startOf('month');
-    const firstWeekday = firstDayInMonth.isoWeekday();
-    if (firstWeekday <= 5) {
-        return firstDayInMonth.toDate();
-    } else if (firstWeekday === 6) {
-        return firstDayInMonth.add(2, 'days').toDate();
-    }
-    return firstDayInMonth.add(1, 'day').toDate();
-};
-
-const getFirstWeekdayOnOrAfter = (date: Date): Date => {
+const getFirstWeekdayOnOrAfterDate = (date: Date): Date => {
     const weekday = dayjs(date).isoWeekday();
     if (weekday <= 5) {
         return date;
@@ -45,17 +40,11 @@ const getFirstWeekdayOnOrAfter = (date: Date): Date => {
     return dayjs(date).add(1, 'day').toDate();
 };
 
-const getDaysToRender = (
-    month: Date,
-    calendarDayContent: CalendarDayContent[],
-    range?: Partial<DateRange>
-): CalendarDayContent[] => {
-    const from = range?.from ? getFirstWeekdayOnOrAfter(range.from) : getFirstWeekdayInMonth(month);
+const getDays = (month: Date, calendarDayContent: Day[], range?: Partial<DateRange>): Day[] => {
+    const from = getFirstWeekdayOnOrAfterDate(range?.from || month);
     const to = range?.to || dayjs(month).endOf('month');
-    const days: Array<CalendarDayContent> = [];
-
+    const days: Array<Day> = [];
     let current = dayjs(from).subtract(dayjs(from).isoWeekday() - 1, 'days');
-
     do {
         const date = current.toDate();
         if (current.isoWeekday() <= 5) {
@@ -67,7 +56,16 @@ const getDaysToRender = (
     return days;
 };
 
-const getWeekKey = (date: Date) => `${date.getFullYear()}_${dayjs(date).isoWeek()}`;
+const getWeeks = (days: Day[]): Week[] => {
+    const weeksAndDays = groupBy(days, (day) => `${day.date.getFullYear()}_${dayjs(day.date).isoWeek()}`);
+    const weeks = Object.keys(weeksAndDays).map((key): Week => {
+        const days = weeksAndDays[key];
+        const weekNumber = dayjs(days[0].date).isoWeek();
+        const year = dayjs(days[0].date).year();
+        return { year, weekNumber, days };
+    });
+    return weeks;
+};
 
 const bem = bemUtils('calendarGrid');
 
@@ -80,31 +78,31 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
 }) => {
-    const days = getDaysToRender(month, content, { from: min, to: max });
-    const weeks = groupBy(days, (day) => getWeekKey(day.date));
+    const days = getDays(month, content, { from: min, to: max });
+    const weeks = getWeeks(days);
     return (
         <div className={bem.block}>
-            <span role="presentation" aria-hidden={true} className={bem.element('day', 'week')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader', 'week')}>
                 Uke
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 Mandag
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 Tirsdag
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 Onsdag
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 Torsdag
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('day')}>
+            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 Fredag
             </span>
-            {Object.keys(weeks).map((key) => {
-                const daysInWeek = weeks[key];
-                const weekNum = dayjs(daysInWeek[0].date).isoWeek();
+            {weeks.map((week) => {
+                const daysInWeek = week.days;
+                const weekNum = week.weekNumber;
                 return [
                     <span role="presentation" aria-hidden={true} className={bem.element('weekNum')} key={guid()}>
                         <span className={bem.element('weekNum_label')}>Uke {` `}</span>
@@ -116,23 +114,23 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                             <div
                                 key={guid()}
                                 aria-hidden={true}
-                                className={bem.classNames(bem.element('contentWrapper', 'outsideMonth'))}
+                                className={bem.classNames(bem.element('day', 'outsideMonth'))}
                             />
                         ) : (
                             <div
                                 key={guid()}
                                 aria-hidden={d.content === undefined}
                                 className={bem.classNames(
-                                    bem.element('contentWrapper'),
-                                    bem.modifierConditional('noData', d.content === undefined)
+                                    bem.element('day'),
+                                    bem.modifierConditional('empty', d.content === undefined)
                                 )}>
                                 <div className={bem.element('date')}>
-                                    <span className={bem.classNames(bem.element('date__full'), 'capsFirstLetter')}>
-                                        <span className="capsFirstLetter">{dateFormatterFull(d.date)}</span>
+                                    <span className={bem.classNames(bem.element('date__full'))}>
+                                        <span>{dateFormatterFull(d.date)}</span>
                                     </span>
                                     <span className={bem.element('date__short')}>{dateFormatter(d.date)}</span>
                                 </div>
-                                <div className={bem.element('dateContent')}>
+                                <div>
                                     {d.content || (noContentRenderer !== undefined ? noContentRenderer(d.date) : null)}
                                 </div>
                             </div>

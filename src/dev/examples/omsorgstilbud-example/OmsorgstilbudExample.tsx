@@ -35,7 +35,29 @@ interface FormValues {
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(15, 'days').toDate()),
-    [FormField.omsorgstilbud]: [],
+    [FormField.omsorgstilbud]: [
+        {
+            omsorgsdager: [
+                {
+                    dato: dayjs().subtract(7, 'days').toDate(),
+                    tid: { hours: '2', minutes: '0' },
+                },
+                {
+                    dato: dayjs().subtract(6, 'days').toDate(),
+                    tid: { hours: '2', minutes: '0' },
+                },
+                {
+                    dato: dayjs().subtract(5, 'days').toDate(),
+                    tid: { hours: '2', minutes: '0' },
+                },
+                {
+                    dato: dayjs().subtract(1, 'days').toDate(),
+                    tid: { hours: '2', minutes: '30' },
+                },
+            ],
+            skalHaOmsorgstilbud: YesOrNo.YES,
+        },
+    ],
 };
 
 const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
