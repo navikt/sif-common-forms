@@ -1,14 +1,13 @@
 import React from 'react';
-import { Clock } from '@navikt/ds-icons';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import { Undertekst, Undertittel } from 'nav-frontend-typografi';
+import CalendarGrid from '../components/calendar-grid/CalendarGrid';
 import FormattedTimeText from './FormattedTimeText';
 import { OmsorgstilbudDag } from './types';
-import CalendarGrid from '../components/calendar-grid/CalendarGrid';
 
 interface Props {
     omsorgsdager: OmsorgstilbudDag[];
@@ -29,9 +28,6 @@ const DagContent = ({ tid }: { tid: Time }) => {
     return (
         <EtikettInfo className={'varighet'}>
             <div className={'varighet__info'}>
-                <span className="varighet__info__ikon">
-                    <Clock />
-                </span>
                 <span className="varighet__info__tid">
                     <AriaAlternative visibleText={<FormattedTimeText time={tid} />} ariaText={formatTimeFull(tid)} />
                 </span>
@@ -41,22 +37,12 @@ const DagContent = ({ tid }: { tid: Time }) => {
 };
 
 const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgsdager, fraDato, tilDato }) => {
-    // const [visning, setVisning] = useState<'liste' | 'kalender'>('kalender');
     if (omsorgsdager.length === 0) {
         return <>Ingen dager registrert</>;
     }
     const måned = omsorgsdager[0].dato;
     return (
         <>
-            {/* <Tabs
-                defaultAktiv={1}
-                onChange={(_, idx) => {
-                    setVisning(idx === 0 ? 'liste' : 'kalender');
-                }}>
-                <Tab>Vis liste</Tab>
-                <Tab>Vis kalender</Tab>
-            </Tabs> */}
-            {/* {visning === 'kalender' && ( */}
             <Undertittel>Omsorgstilbud {dayjs(måned).format('MMM YYYY')}</Undertittel>
             <Box margin="s">
                 <CalendarGrid
@@ -78,8 +64,6 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({ omsorgsdager, fraDa
                     }))}
                 />
             </Box>
-            {/* )}
-            {visning === 'liste' && <OmsorgsdagerListe omsorgsdager={omsorgsdager} />} */}
         </>
     );
 };

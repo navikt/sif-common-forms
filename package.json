@@ -38,7 +38,6 @@
         "/lib"
     ],
     "peerDependencies": {
-        "@navikt/ds-icons": "^0.3.x",
         "@navikt/sif-common-core": "^9.4.x",
         "@navikt/sif-common-formik": "^19.2.x",
         "nav-frontend-etiketter": "^3.0.x"
@@ -46,7 +45,6 @@
     "devDependencies": {
         "@craco/craco": "^5.5.0",
         "@formatjs/intl-pluralrules": "^4.0.22",
-        "@navikt/ds-icons": "^0.3.2",
         "@navikt/sif-common-core": "^9.4.1",
         "@navikt/sif-common-formik": "^19.2.2",
         "@testing-library/jest-dom": "^5.12.0",
