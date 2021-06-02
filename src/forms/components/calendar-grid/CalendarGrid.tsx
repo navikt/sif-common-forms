@@ -25,6 +25,7 @@ interface Props {
     month: Date;
     min?: Date;
     max?: Date;
+    hideEmptyContentInListMode?: boolean;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
     noContentRenderer?: (date: Date) => React.ReactNode;
@@ -77,11 +78,16 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     dateFormatter = prettifyDate,
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
+    hideEmptyContentInListMode,
 }) => {
     const days = getDays(month, content, { from: min, to: max });
     const weeks = getWeeks(days);
     return (
-        <div className={bem.block}>
+        <div
+            className={bem.classNames(
+                bem.block,
+                bem.modifierConditional('hideEmptyContentInListMode', hideEmptyContentInListMode)
+            )}>
             <span role="presentation" aria-hidden={true} className={bem.element('dayHeader', 'week')}>
                 Uke
             </span>
@@ -103,8 +109,13 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             {weeks.map((week) => {
                 const daysInWeek = week.days;
                 const weekNum = week.weekNumber;
+                const hasDaysWithContent = daysInWeek.some((d) => d.content !== undefined);
                 return [
-                    <span role="presentation" aria-hidden={true} className={bem.element('weekNum')} key={guid()}>
+                    <span
+                        role="presentation"
+                        aria-hidden={true}
+                        className={bem.element('weekNum', hasDaysWithContent === false ? 'empty' : undefined)}
+                        key={guid()}>
                         <span className={bem.element('weekNum_label')}>Uke {` `}</span>
                         <span>{weekNum}</span>
                     </span>,

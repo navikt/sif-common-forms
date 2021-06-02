@@ -13,6 +13,7 @@ interface Props {
     omsorgsdager: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
+    skjulTommeDagerIListe?: boolean;
 }
 
 const formatTimeFull = (time: Partial<Time>): string => {
@@ -35,7 +36,13 @@ const DagContent = ({ tid }: { tid: Time }) => {
         </EtikettInfo>
     );
 };
-const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({ måned, fraDato, tilDato, omsorgsdager }) => {
+const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({
+    måned,
+    fraDato,
+    tilDato,
+    omsorgsdager,
+    skjulTommeDagerIListe,
+}) => {
     return (
         <CalendarGrid
             month={måned}
@@ -54,6 +61,7 @@ const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({ måned, fraDato
                 date: dag.dato,
                 content: <DagContent tid={dag.tid} />,
             }))}
+            hideEmptyContentInListMode={skjulTommeDagerIListe}
         />
     );
 };
