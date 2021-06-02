@@ -40,7 +40,8 @@
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.4.x",
         "@navikt/sif-common-formik": "^19.2.x",
-        "nav-frontend-etiketter": "^3.0.x"
+        "nav-frontend-etiketter": "^3.0.x",
+        "nav-frontend-etiketter-style": "^2.0.x"
     },
     "devDependencies": {
         "@craco/craco": "^5.5.0",
