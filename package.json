@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "14.2.0-beta.15",
+    "version": "14.2.0-beta.16",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -37,11 +37,15 @@
         "package.json",
         "/lib"
     ],
+    "dependencies": {
+        "@types/lodash.groupby": "^4.6.6",
+        "lodash.groupby": "^4.6.0",
+        "nav-frontend-etiketter": "^3.0.1",
+        "nav-frontend-etiketter-style": "^2.0.1"
+    },
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.4.x",
-        "@navikt/sif-common-formik": "^19.2.x",
-        "nav-frontend-etiketter": "^3.0.x",
-        "nav-frontend-etiketter-style": "^2.0.x"
+        "@navikt/sif-common-formik": "^19.2.x"
     },
     "devDependencies": {
         "@craco/craco": "^5.5.0",
@@ -85,8 +89,6 @@
         "nav-frontend-chevron": "^1.0.30",
         "nav-frontend-chevron-style": "^1.0.4",
         "nav-frontend-core": "^6.0.1",
-        "nav-frontend-etiketter": "^3.0.1",
-        "nav-frontend-etiketter-style": "^2.0.1",
         "nav-frontend-hjelpetekst": "^3.0.2",
         "nav-frontend-hjelpetekst-style": "^3.0.1",
         "nav-frontend-ikoner-assets": "^3.0.1",
@@ -149,9 +151,5 @@
     },
     "homepage": "https://navikt.github.io/sif-common-forms",
     "main": "lib/index.js",
-    "types": "lib/index.d.js",
-    "dependencies": {
-        "@types/lodash.groupby": "^4.6.6",
-        "lodash.groupby": "^4.6.0"
-    }
+    "types": "lib/index.d.js"
 }
