@@ -10,12 +10,14 @@ interface Props {
     fraDato: Date;
     tilDato: Date;
     skjulTommeDagerIListe?: boolean;
+    tittelRenderer?: (fraDato: Date, tilDato: Date, omsorgsdager: OmsorgstilbudDag[]) => React.ReactNode;
 }
 
 const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
     omsorgsdager,
     fraDato,
     tilDato,
+    tittelRenderer,
     skjulTommeDagerIListe,
 }) => {
     if (omsorgsdager.length === 0) {
@@ -24,7 +26,12 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
     const måned = omsorgsdager[0].dato;
     return (
         <>
-            <Undertittel>Omsorgstilbud {dayjs(måned).format('MMM YYYY')}</Undertittel>
+            {tittelRenderer ? (
+                tittelRenderer(fraDato, tilDato, omsorgsdager)
+            ) : (
+                <Undertittel tag="h3">Omsorgstilbud {dayjs(måned).format('MMM YYYY')}</Undertittel>
+            )}
+
             <Box margin="s">
                 <OmsorgstilbudCalendar
                     måned={måned}

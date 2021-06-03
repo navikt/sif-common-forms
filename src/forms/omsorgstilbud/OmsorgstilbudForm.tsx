@@ -246,19 +246,26 @@ interface OmsorgstilbudUkeFormProps {
     ukeinfo: Ukeinfo;
     isNarrow: boolean;
     isWide: boolean;
+    tittelRenderer?: (ukeinfo: Ukeinfo) => React.ReactNode;
 }
 
 const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> = ({
     fieldName,
-    ukeinfo: { dager, ukenummer, år },
+    ukeinfo,
+    tittelRenderer,
     isNarrow,
     isWide,
 }) => {
+    const { dager, ukenummer, år } = ukeinfo;
     return (
         <ResponsivePanel className={bem.element('uke')}>
-            <Undertittel className={bem.element('uke__tittel')}>
-                Uke {ukenummer}, {år}
-            </Undertittel>
+            {tittelRenderer ? (
+                tittelRenderer(ukeinfo)
+            ) : (
+                <Undertittel tag="h3">
+                    Uke {ukenummer}, {år}
+                </Undertittel>
+            )}
             <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
                 {getEmptyElements(dager[0].ukedag - 1)}
                 {dager.map((dag) => (
