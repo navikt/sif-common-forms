@@ -16,6 +16,11 @@ import { OmsorgstilbudPeriodeFormValue } from '../../../forms/omsorgstilbud/type
 // import { getMonthsInDateRange } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
 // import { OmsorgstilbudFormField, OmsorgstilbudPeriodeFormValue } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
+import {
+    getDatoerForOmsorgstilbudPeriode,
+    OmsorgstilbudInlineForm,
+} from '../../../forms/omsorgstilbud/OmsorgstilbudForm';
+import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 enum FormField {
     periodeFra = 'periodeFra',
@@ -31,7 +36,7 @@ interface FormValues {
 
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
-    periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(15, 'days').toDate()),
+    periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(12, 'days').toDate()),
     [FormField.omsorgstilbud]: [
         {
             periode: {
@@ -67,10 +72,11 @@ const OmsorgstilbudExample = () => {
                 initialValues={initialValues}
                 onSubmit={() => null}
                 renderForm={({ values }) => {
-                    // const { periodeFra, periodeTil } = values;
-                    // const from = datepickerUtils.getDateFromDateString(periodeFra) || dateToday;
-                    // const to =
-                    //     datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
+                    const { periodeFra, periodeTil } = values;
+                    const from = datepickerUtils.getDateFromDateString(periodeFra) || dateToday;
+                    const to =
+                        datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
+                    const datoer = getDatoerForOmsorgstilbudPeriode(from, to);
 
                     // const range = { from, to };
                     // const måneder = getMonthsInDateRange(range);
@@ -94,6 +100,8 @@ const OmsorgstilbudExample = () => {
                                 omsorgstilbud={values.omsorgstilbud}
                                 fieldName={FormField.omsorgstilbud}
                             />
+
+                            <OmsorgstilbudInlineForm fieldName={`enkeltdager`} datoer={datoer} />
                         </FormComponents.Form>
                     );
                 }}

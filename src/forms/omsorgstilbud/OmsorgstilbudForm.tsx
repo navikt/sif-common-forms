@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { getTypedFormComponents, Time } from '@navikt/sif-common-formik/lib';
+import { FormikTimeInput, getTypedFormComponents, Time } from '@navikt/sif-common-formik/lib';
 import {
     isValidTime,
     TimeInputLayoutProps,
@@ -59,7 +59,7 @@ interface Ukeinfo {
 
 // -- UTILS -----------------------------
 
-const getDatoinfo = (from: Date, to: Date): Daginfo[] => {
+export const getDatoerForOmsorgstilbudPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];
     let dayjsDato = dayjs(from);
     let index = 0;
@@ -108,7 +108,7 @@ const getInitialFormValues = (omsorgsdager: OmsorgstilbudDag[] = [], dagerIPerio
 const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayoutProps => ({
     srOnlyLabels: false,
     justifyContent: 'right',
-    layout: isNarrow ? 'compactWithSpace' : isWide ? undefined : 'horizontal',
+    layout: isNarrow ? 'compact' : isWide ? 'compact' : 'horizontalCompact',
 });
 
 const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, dager: Daginfo[]): OmsorgstilbudDag[] => {
@@ -152,7 +152,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
     const intl = useIntl();
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
-    const datoer = getDatoinfo(fraDato, tilDato);
+    const datoer = getDatoerForOmsorgstilbudPeriode(fraDato, tilDato);
     const uker = getUker(datoer);
 
     if (dayjs(fraDato).isAfter(tilDato)) {
@@ -184,11 +184,16 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
                                     <strong>Du kan registrere opp til 7 timer og 30 minutter på én dag.</strong>
                                 </p>
                             </Box>
-                            <div className={bem.element()}>
+                            <div>
                                 {uker.map((week) => {
                                     return (
                                         <Box key={week.ukenummer} margin="m">
-                                            <UkeFormPart ukeinfo={week} isNarrow={isNarrow} isWide={isWide} />
+                                            <OmsorgstilbudUkeForm
+                                                fieldName={FormField.tidIOmsorg}
+                                                ukeinfo={week}
+                                                isNarrow={isNarrow}
+                                                isWide={isWide}
+                                            />
                                         </Box>
                                     );
                                 })}
@@ -203,14 +208,51 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
 
 // -- Sub components -----------------------------
 
-const UkeFormPart = ({
-    ukeinfo: { dager, ukenummer, år },
-    isNarrow,
-    isWide,
-}: {
+interface OmsorgstilbudInlineFormProps {
+    fieldName: string;
+    datoer: Daginfo[];
+}
+
+export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlineFormProps> = ({
+    fieldName,
+    datoer,
+}) => {
+    const isNarrow = useMediaQuery({ maxWidth: 400 });
+    const isWide = useMediaQuery({ minWidth: 1050 });
+    const uker = getUker(datoer);
+
+    return (
+        <>
+            {uker.map((week) => {
+                return (
+                    <Box key={week.ukenummer} margin="m">
+                        <OmsorgstilbudUkeForm
+                            fieldName={fieldName}
+                            ukeinfo={week}
+                            isNarrow={isNarrow}
+                            isWide={isWide}
+                        />
+                    </Box>
+                );
+            })}
+        </>
+    );
+};
+
+// -- Sub components -----------------------------
+
+interface OmsorgstilbudUkeFormProps {
+    fieldName: string;
     ukeinfo: Ukeinfo;
     isNarrow: boolean;
     isWide: boolean;
+}
+
+const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> = ({
+    fieldName,
+    ukeinfo: { dager, ukenummer, år },
+    isNarrow,
+    isWide,
 }) => {
     return (
         <ResponsivePanel className={bem.element('uke')}>
@@ -221,8 +263,8 @@ const UkeFormPart = ({
                 {getEmptyElements(dager[0].ukedag - 1)}
                 {dager.map((dag) => (
                     <div key={dag.dato.getTime()} className={bem.element('dag')}>
-                        <Form.TimeInput
-                            name={`${FormField.tidIOmsorg}.${dag.index}` as any}
+                        <FormikTimeInput
+                            name={`${fieldName}.${dag.index}` as any}
                             label={<span className={bem.element('dag__label')}>{dag.label}</span>}
                             timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
                             validate={getTidIOmsorgValidator(dag)}
