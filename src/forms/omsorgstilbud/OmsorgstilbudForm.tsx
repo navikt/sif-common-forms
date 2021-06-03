@@ -211,6 +211,7 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
 interface OmsorgstilbudInlineFormProps {
     fieldName: string;
     datoer: Daginfo[];
+    ukeTittelRenderer?: OmsorgstilbudUkeTittelRenderer;
 }
 
 export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlineFormProps> = ({
@@ -241,12 +242,13 @@ export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlin
 
 // -- Sub components -----------------------------
 
+type OmsorgstilbudUkeTittelRenderer = (ukeinfo: Ukeinfo) => React.ReactNode;
 interface OmsorgstilbudUkeFormProps {
     fieldName: string;
     ukeinfo: Ukeinfo;
     isNarrow: boolean;
     isWide: boolean;
-    tittelRenderer?: (ukeinfo: Ukeinfo) => React.ReactNode;
+    tittelRenderer?: OmsorgstilbudUkeTittelRenderer;
 }
 
 const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> = ({
