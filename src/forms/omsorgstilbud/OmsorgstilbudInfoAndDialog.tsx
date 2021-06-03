@@ -14,6 +14,8 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     labels: ModalFormAndInfoLabels;
     fraDato: Date;
     tilDato: Date;
+    alleOmsorgsdager: OmsorgstilbudDag[];
+    indexFørsteDagIPeriode: number;
     onAfterChange?: (omsorgsdager: OmsorgstilbudDag[]) => void;
 }
 
@@ -21,6 +23,8 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     name,
     fraDato,
     tilDato,
+    indexFørsteDagIPeriode,
+    alleOmsorgsdager,
     labels,
     validate,
     onAfterChange,
@@ -34,19 +38,20 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
             renderDeleteButton={false}
             dialogClassName={'omsorgstilbudDialog'}
             wrapInfoInPanel={false}
-            formRenderer={({ onSubmit, onCancel, data = [] }) => {
+            formRenderer={({ onSubmit, onCancel }) => {
                 return (
                     <OmsorgstilbudForm
                         fraDato={fraDato}
                         tilDato={tilDato}
-                        omsorgsdager={data}
+                        alleOmsorgsdager={alleOmsorgsdager}
+                        indexFørsteDagIPeriode={indexFørsteDagIPeriode}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                     />
                 );
             }}
-            infoRenderer={({ data }) => {
-                return <OmsorgstilbudInfo omsorgsdager={data} fraDato={fraDato} tilDato={tilDato} />;
+            infoRenderer={() => {
+                return <OmsorgstilbudInfo alleOmsorgsdager={alleOmsorgsdager} fraDato={fraDato} tilDato={tilDato} />;
             }}
             onAfterChange={onAfterChange}
         />

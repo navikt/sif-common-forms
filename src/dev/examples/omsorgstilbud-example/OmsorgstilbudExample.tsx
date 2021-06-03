@@ -1,9 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-// import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-// import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
-// import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
@@ -11,48 +9,33 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import OmsorgstilbudFormPart from '../../../forms/omsorgstilbud/OmsorgstilbudFormPart';
-import { OmsorgstilbudPeriodeFormValue } from '../../../forms/omsorgstilbud/types';
-// import OmsorgstilbudInfoAndDialog from '../../../forms/omsorgstilbud/OmsorgstilbudInfoAndDialog';
-// import { getMonthsInDateRange } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
-// import { OmsorgstilbudFormField, OmsorgstilbudPeriodeFormValue } from '../../../forms/omsorgstilbud/types';
+import { OmsorgstilbudDag, OmsorgstilbudPeriode } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
-import {
-    getDatoerForOmsorgstilbudPeriode,
-    OmsorgstilbudInlineForm,
-} from '../../../forms/omsorgstilbud/OmsorgstilbudForm';
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 enum FormField {
     periodeFra = 'periodeFra',
     periodeTil = 'periodeTil',
-    omsorgstilbud = 'omsorgstilbud',
+    perioder = 'perioder',
+    dager = 'dager',
 }
 
 interface FormValues {
     [FormField.periodeFra]?: string;
     [FormField.periodeTil]?: string;
-    [FormField.omsorgstilbud]: OmsorgstilbudPeriodeFormValue[];
+    [FormField.perioder]: OmsorgstilbudPeriode[];
+    [FormField.dager]: OmsorgstilbudDag[];
 }
 
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(12, 'days').toDate()),
-    [FormField.omsorgstilbud]: [
+    dager: [],
+    [FormField.perioder]: [
         {
             periode: {
                 from: dayjs('2021-06-01').toDate(),
                 to: dayjs('2021-06-30').toDate(),
             },
-            omsorgsdager: [
-                {
-                    dato: dayjs('2021-06-03').toDate(),
-                    tid: { hours: '2', minutes: '0' },
-                },
-                {
-                    dato: dayjs('2021-06-07').toDate(),
-                    tid: { hours: '2', minutes: '0' },
-                },
-            ],
             skalHaOmsorgstilbud: YesOrNo.YES,
         },
     ],
@@ -76,36 +59,22 @@ const OmsorgstilbudExample = () => {
                     const from = datepickerUtils.getDateFromDateString(periodeFra) || dateToday;
                     const to =
                         datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
-                    const datoer = getDatoerForOmsorgstilbudPeriode(from, to);
-
-                    // const range = { from, to };
-                    // const måneder = getMonthsInDateRange(range);
-
                     return (
                         <FormComponents.Form
                             includeButtons={false}
                             submitButtonLabel="Valider skjema"
                             formErrorHandler={getIntlFormErrorHandler(intl)}>
-                            {/* <FormComponents.DateIntervalPicker
-                                fromDatepickerProps={{
-                                    label: 'Fra',
-                                    name: FormField.periodeFra,
-                                }}
-                                toDatepickerProps={{
-                                    label: 'Til',
-                                    name: FormField.periodeTil,
-                                }}
-                            /> */}
+                            <p>
+                                Fra: {prettifyDate(from)} - Tilo: {prettifyDate(to)}
+                            </p>
                             <OmsorgstilbudFormPart
-                                omsorgstilbud={values.omsorgstilbud}
-                                fieldName={FormField.omsorgstilbud}
+                                perioder={values.perioder}
+                                dager={values.dager}
+                                søknadsperiode={{ from, to }}
+                                perioderFieldName={FormField.perioder}
+                                dagerFieldName={FormField.dager}
                             />
-
-                            <OmsorgstilbudInlineForm
-                                fieldName={`enkeltdager`}
-                                datoer={datoer}
-                                ukeTittelRenderer={() => <>asaa</>}
-                            />
+                            {/* <OmsorgstilbudInlineForm fieldName={FormField.dager} datoer={datoer} /> */}
                         </FormComponents.Form>
                     );
                 }}

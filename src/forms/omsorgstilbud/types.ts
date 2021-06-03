@@ -7,13 +7,11 @@ export interface OmsorgstilbudDag {
     tid: Time;
 }
 
-export interface OmsorgstilbudPeriodeFormValue {
+export interface OmsorgstilbudPeriode {
     periode: DateRange;
     skalHaOmsorgstilbud: YesOrNo;
-    omsorgsdager: OmsorgstilbudDag[];
 }
 
-export enum OmsorgstilbudFormField {
+export enum SkalHaOmsorgstilbudFormField {
     skalHaOmsorgstilbud = 'skalHaOmsorgstilbud',
-    omsorgsdager = 'omsorgsdager',
 }

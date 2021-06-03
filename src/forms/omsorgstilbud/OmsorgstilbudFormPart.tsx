@@ -3,37 +3,59 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikYesOrNoQuestion } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
+import { getDatoerForOmsorgstilbudPeriode } from './OmsorgstilbudForm';
 import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
-import { OmsorgstilbudFormField, OmsorgstilbudPeriodeFormValue } from './types';
+import { OmsorgstilbudDag, OmsorgstilbudPeriode, SkalHaOmsorgstilbudFormField } from './types';
+import { getMonthsInDateRange } from './omsorgstilbudUtils';
 
 interface Props {
-    omsorgstilbud: OmsorgstilbudPeriodeFormValue[];
-    fieldName: string;
+    perioder: OmsorgstilbudPeriode[];
+    dager: OmsorgstilbudDag[];
+    søknadsperiode: DateRange;
+    perioderFieldName: string;
+    dagerFieldName: string;
 }
 
-const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({ omsorgstilbud = [], fieldName }) => {
-    const getFieldName = (field: OmsorgstilbudFormField, index: number): string => `${fieldName}.${index}.${field}`;
+const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({
+    perioder,
+    dager,
+    perioderFieldName,
+    dagerFieldName,
+    søknadsperiode,
+}) => {
+    const omsorgstilbudDatoerISøknadsperiode = getDatoerForOmsorgstilbudPeriode(
+        søknadsperiode.from,
+        søknadsperiode.to,
+        0
+    );
+    const måneder = getMonthsInDateRange(søknadsperiode);
     return (
         <>
-            {omsorgstilbud.map((m, index) => {
-                const { from, to } = m.periode;
+            {måneder.map((periode, index) => {
+                const { from, to } = periode;
                 const mndOgÅr = dayjs(from).format('MMMM YYYY');
-                const skalIOmsorgstilbud = omsorgstilbud[index]?.skalHaOmsorgstilbud === YesOrNo.YES;
+                const skalIOmsorgstilbud = perioder[index]?.skalHaOmsorgstilbud === YesOrNo.YES;
+                const indexFørsteDagIPeriode = omsorgstilbudDatoerISøknadsperiode.findIndex((d) =>
+                    dayjs(d.dato).isSame(from, 'day')
+                );
                 return (
                     <Box key={dayjs(from).format('MM.YYYY')} margin="xl">
                         <FormikYesOrNoQuestion
-                            name={getFieldName(OmsorgstilbudFormField.skalHaOmsorgstilbud, index)}
+                            name={`${perioderFieldName}.${index}.${SkalHaOmsorgstilbudFormField.skalHaOmsorgstilbud}`}
                             legend={`Skal barnet i omsorgstilbud ${mndOgÅr}?`}
                         />
                         {skalIOmsorgstilbud && (
                             <FormBlock margin="l">
                                 <ResponsivePanel className={'omsorgstilbudInfoDialogWrapper'}>
                                     <OmsorgstilbudInfoAndDialog
-                                        name={getFieldName(OmsorgstilbudFormField.omsorgsdager, index)}
+                                        name={dagerFieldName}
                                         fraDato={from}
                                         tilDato={to}
+                                        alleOmsorgsdager={dager}
+                                        indexFørsteDagIPeriode={indexFørsteDagIPeriode}
                                         labels={{
                                             addLabel: `Legg til timer`,
                                             deleteLabel: `Fjern alle timer`,

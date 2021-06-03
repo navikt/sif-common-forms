@@ -1,5 +1,12 @@
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import { OmsorgstilbudDag } from './types';
+
+dayjs.extend(isBetween);
+
+export const getOmsorgsdagerIPeriode = (omsorgsdager: OmsorgstilbudDag[], periode: DateRange): OmsorgstilbudDag[] =>
+    omsorgsdager.filter((dag) => dayjs(dag.dato).isBetween(periode.from, periode.to, 'day', '[]'));
 
 export const getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];

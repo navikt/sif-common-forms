@@ -20,14 +20,16 @@ import groupby from 'lodash.groupby';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { OmsorgstilbudDag } from './types';
 import './omsorgstilbudForm.less';
+import { getOmsorgsdagerIPeriode } from './omsorgstilbudUtils';
 
 dayjs.extend(isoWeek);
 dayjs.extend(weekOfYear);
 
 interface Props {
-    omsorgsdager?: OmsorgstilbudDag[];
+    alleOmsorgsdager?: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
+    indexFørsteDagIPeriode: number;
     onSubmit: (omsorgsdager: OmsorgstilbudDag[]) => void;
     onCancel?: () => void;
 }
@@ -39,7 +41,7 @@ interface FormValues {
     [FormField.tidIOmsorg]: Array<Partial<Time>>;
 }
 
-interface Daginfo {
+export interface Daginfo {
     index: number;
     dato: Date;
     ukedag: number;
@@ -59,10 +61,10 @@ interface Ukeinfo {
 
 // -- UTILS -----------------------------
 
-export const getDatoerForOmsorgstilbudPeriode = (from: Date, to: Date): Daginfo[] => {
+export const getDatoerForOmsorgstilbudPeriode = (from: Date, to: Date, startIndex: number): Daginfo[] => {
     const dager: Daginfo[] = [];
     let dayjsDato = dayjs(from);
-    let index = 0;
+    let index = startIndex;
     while (dayjsDato.isSameOrBefore(to, 'day')) {
         const ukedag = dayjsDato.isoWeekday();
         if (ukedag <= 5) {
@@ -111,18 +113,23 @@ const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayout
     layout: isNarrow ? 'compact' : isWide ? 'compact' : 'horizontalCompact',
 });
 
-const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, dager: Daginfo[]): OmsorgstilbudDag[] => {
-    const omsorgsdager: OmsorgstilbudDag[] = [];
+const mapTidIOmsorgToOmsorgsdager = (
+    tidIOmsorg: Array<Partial<Time>>,
+    datoerIForm: Daginfo[],
+    startIndex: number,
+    omsorgsdager: OmsorgstilbudDag[]
+): OmsorgstilbudDag[] => {
+    const oppdaterteOmsorgsdager = [...omsorgsdager];
     tidIOmsorg?.forEach((tid, index) => {
-        const dato = dager[index]?.dato;
+        const dato = datoerIForm[index]?.dato;
         if (dato && tid && (hasValue(tid.hours) || hasValue(tid.minutes)) && isValidTime(tid)) {
-            omsorgsdager.push({
+            oppdaterteOmsorgsdager[index + startIndex] = {
                 dato,
                 tid,
-            });
+            };
         }
     });
-    return omsorgsdager;
+    return oppdaterteOmsorgsdager;
 };
 
 const getTidIOmsorgValidator = (dag: Daginfo) => (tid: Time) => {
@@ -148,25 +155,34 @@ const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
 const bem = bemUtils('omsorgstilbudForm');
 
-const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
+const OmsorgstilbudForm = ({
+    fraDato,
+    tilDato,
+    alleOmsorgsdager = [],
+    indexFørsteDagIPeriode,
+    onSubmit,
+    onCancel,
+}: Props) => {
     const intl = useIntl();
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
-    const datoer = getDatoerForOmsorgstilbudPeriode(fraDato, tilDato);
-    const uker = getUker(datoer);
+    const datoerIForm = getDatoerForOmsorgstilbudPeriode(fraDato, tilDato, indexFørsteDagIPeriode);
+    const omsorgsdager = getOmsorgsdagerIPeriode(alleOmsorgsdager, { from: fraDato, to: tilDato });
+
+    const uker = getUker(datoerIForm);
 
     if (dayjs(fraDato).isAfter(tilDato)) {
         return <div>Fra dato er før til-dato</div>;
     }
 
     const onFormikSubmit = ({ tidIOmsorg = [] }: Partial<FormValues>) => {
-        onSubmit(mapTidIOmsorgToOmsorgsdager(tidIOmsorg, datoer));
+        onSubmit(mapTidIOmsorgToOmsorgsdager(tidIOmsorg, datoerIForm, indexFørsteDagIPeriode, alleOmsorgsdager || []));
     };
 
     return (
         <Normaltekst tag="div" className={bem.block}>
             <Form.FormikWrapper
-                initialValues={getInitialFormValues(omsorgsdager, datoer)}
+                initialValues={getInitialFormValues(omsorgsdager, datoerIForm)}
                 onSubmit={onFormikSubmit}
                 renderForm={() => {
                     return (
