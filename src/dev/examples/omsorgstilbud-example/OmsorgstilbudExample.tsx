@@ -101,7 +101,11 @@ const OmsorgstilbudExample = () => {
                                 fieldName={FormField.omsorgstilbud}
                             />
 
-                            <OmsorgstilbudInlineForm fieldName={`enkeltdager`} datoer={datoer} />
+                            <OmsorgstilbudInlineForm
+                                fieldName={`enkeltdager`}
+                                datoer={datoer}
+                                ukeTittelRenderer={() => <>asaa</>}
+                            />
                         </FormComponents.Form>
                     );
                 }}
