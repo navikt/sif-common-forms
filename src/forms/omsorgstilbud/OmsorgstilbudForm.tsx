@@ -217,6 +217,7 @@ interface OmsorgstilbudInlineFormProps {
 export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlineFormProps> = ({
     fieldName,
     datoer,
+    ukeTittelRenderer,
 }) => {
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
@@ -232,6 +233,7 @@ export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlin
                             ukeinfo={week}
                             isNarrow={isNarrow}
                             isWide={isWide}
+                            tittelRenderer={ukeTittelRenderer}
                         />
                     </Box>
                 );
