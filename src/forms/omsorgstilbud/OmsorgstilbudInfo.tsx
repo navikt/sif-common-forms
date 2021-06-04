@@ -4,10 +4,9 @@ import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import OmsorgstilbudCalendar from './OmsorgstilbudCalendar';
 import { OmsorgstilbudDag } from './types';
-import { getOmsorgsdagerIPeriode } from './omsorgstilbudUtils';
 
 interface Props {
-    alleOmsorgsdager: OmsorgstilbudDag[];
+    omsorgsdager: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
     skjulTommeDagerIListe?: boolean;
@@ -15,21 +14,20 @@ interface Props {
 }
 
 const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
-    alleOmsorgsdager,
+    omsorgsdager,
     fraDato,
     tilDato,
     tittelRenderer,
     skjulTommeDagerIListe,
 }) => {
-    const omsorgsdagerIPeriode = getOmsorgsdagerIPeriode(alleOmsorgsdager, { from: fraDato, to: tilDato });
-    if (omsorgsdagerIPeriode.length === 0) {
+    if (omsorgsdager.length === 0) {
         return <>Ingen dager registrert</>;
     }
-    const måned = omsorgsdagerIPeriode[0].dato;
+    const måned = omsorgsdager[0].dato;
     return (
         <>
             {tittelRenderer ? (
-                tittelRenderer(fraDato, tilDato, omsorgsdagerIPeriode)
+                tittelRenderer(fraDato, tilDato, omsorgsdager)
             ) : (
                 <Undertittel tag="h3">Omsorgstilbud {dayjs(måned).format('MMM YYYY')}</Undertittel>
             )}
@@ -39,7 +37,7 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
                     måned={måned}
                     fraDato={fraDato}
                     tilDato={tilDato}
-                    omsorgsdager={omsorgsdagerIPeriode}
+                    omsorgsdager={omsorgsdager}
                     skjulTommeDagerIListe={skjulTommeDagerIListe}
                 />
             </Box>

@@ -6,13 +6,12 @@ import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikYesOrNoQuestion } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import { getDatoerForOmsorgstilbudPeriode } from './OmsorgstilbudForm';
 import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
-import { OmsorgstilbudDag, OmsorgstilbudPeriode, SkalHaOmsorgstilbudFormField } from './types';
 import { getMonthsInDateRange } from './omsorgstilbudUtils';
+import { OmsorgstilbudDag, OmsorgstilbudMåned, SkalHaOmsorgstilbudFormField } from './types';
 
 interface Props {
-    perioder: OmsorgstilbudPeriode[];
+    måneder: OmsorgstilbudMåned[];
     dager: OmsorgstilbudDag[];
     søknadsperiode: DateRange;
     perioderFieldName: string;
@@ -20,27 +19,18 @@ interface Props {
 }
 
 const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({
-    perioder,
+    måneder,
     dager,
     perioderFieldName,
     dagerFieldName,
     søknadsperiode,
 }) => {
-    const omsorgstilbudDatoerISøknadsperiode = getDatoerForOmsorgstilbudPeriode(
-        søknadsperiode.from,
-        søknadsperiode.to,
-        0
-    );
-    const måneder = getMonthsInDateRange(søknadsperiode);
     return (
         <>
-            {måneder.map((periode, index) => {
+            {getMonthsInDateRange(søknadsperiode).map((periode, index) => {
                 const { from, to } = periode;
                 const mndOgÅr = dayjs(from).format('MMMM YYYY');
-                const skalIOmsorgstilbud = perioder[index]?.skalHaOmsorgstilbud === YesOrNo.YES;
-                const indexFørsteDagIPeriode = omsorgstilbudDatoerISøknadsperiode.findIndex((d) =>
-                    dayjs(d.dato).isSame(from, 'day')
-                );
+                const skalIOmsorgstilbud = måneder[index]?.skalHaOmsorgstilbud === YesOrNo.YES;
                 return (
                     <Box key={dayjs(from).format('MM.YYYY')} margin="xl">
                         <FormikYesOrNoQuestion
@@ -54,8 +44,8 @@ const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({
                                         name={dagerFieldName}
                                         fraDato={from}
                                         tilDato={to}
-                                        alleOmsorgsdager={dager}
-                                        indexFørsteDagIPeriode={indexFørsteDagIPeriode}
+                                        omsorgsdager={dager}
+                                        søknadsperiode={søknadsperiode}
                                         labels={{
                                             addLabel: `Legg til timer`,
                                             deleteLabel: `Fjern alle timer`,

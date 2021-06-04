@@ -1,5 +1,4 @@
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Time } from '@navikt/sif-common-formik/lib';
 
 export interface OmsorgstilbudDag {
@@ -7,8 +6,7 @@ export interface OmsorgstilbudDag {
     tid: Time;
 }
 
-export interface OmsorgstilbudPeriode {
-    periode: DateRange;
+export interface OmsorgstilbudMåned {
     skalHaOmsorgstilbud: YesOrNo;
 }
 

@@ -2,43 +2,43 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, Time, YesOrNo } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
+import { OmsorgstilbudInlineForm } from '../../../forms/omsorgstilbud/OmsorgstilbudForm';
 import OmsorgstilbudFormPart from '../../../forms/omsorgstilbud/OmsorgstilbudFormPart';
-import { OmsorgstilbudDag, OmsorgstilbudPeriode } from '../../../forms/omsorgstilbud/types';
+import { OmsorgstilbudDag, OmsorgstilbudMåned } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
 
 enum FormField {
     periodeFra = 'periodeFra',
     periodeTil = 'periodeTil',
-    perioder = 'perioder',
+    måneder = 'måneder',
     dager = 'dager',
+    tidIOmsorg = 'tidIOmsorg',
 }
 
 interface FormValues {
     [FormField.periodeFra]?: string;
     [FormField.periodeTil]?: string;
-    [FormField.perioder]: OmsorgstilbudPeriode[];
+    [FormField.måneder]: OmsorgstilbudMåned[];
     [FormField.dager]: OmsorgstilbudDag[];
+    [FormField.tidIOmsorg]: { [isoDateString: string]: Partial<Time> };
 }
 
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(12, 'days').toDate()),
     dager: [],
-    [FormField.perioder]: [
+    [FormField.måneder]: [
         {
-            periode: {
-                from: dayjs('2021-06-01').toDate(),
-                to: dayjs('2021-06-30').toDate(),
-            },
             skalHaOmsorgstilbud: YesOrNo.YES,
         },
     ],
+    tidIOmsorg: {},
 };
 
 const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
@@ -68,13 +68,13 @@ const OmsorgstilbudExample = () => {
                                 Fra: {prettifyDate(from)} - Tilo: {prettifyDate(to)}
                             </p>
                             <OmsorgstilbudFormPart
-                                perioder={values.perioder}
+                                måneder={values.måneder}
                                 dager={values.dager}
                                 søknadsperiode={{ from, to }}
-                                perioderFieldName={FormField.perioder}
+                                perioderFieldName={FormField.måneder}
                                 dagerFieldName={FormField.dager}
                             />
-                            {/* <OmsorgstilbudInlineForm fieldName={FormField.dager} datoer={datoer} /> */}
+                            <OmsorgstilbudInlineForm fieldName={FormField.tidIOmsorg} søknadsperiode={{ from, to }} />
                         </FormComponents.Form>
                     );
                 }}
