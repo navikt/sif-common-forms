@@ -16,6 +16,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     labels: ModalFormAndInfoLabels;
     fraDato: Date;
     tilDato: Date;
+    skjulTommeDagerIListe?: boolean;
     onAfterChange?: (omsorgsdager: TidIOmsorgstilbud) => void;
 }
 
@@ -24,6 +25,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     fraDato,
     tilDato,
     labels,
+    skjulTommeDagerIListe,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
@@ -62,7 +64,14 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                     }
                     return false;
                 });
-                return <OmsorgstilbudInfo omsorgsdager={omsorgsdager} fraDato={fraDato} tilDato={tilDato} />;
+                return (
+                    <OmsorgstilbudInfo
+                        omsorgsdager={omsorgsdager}
+                        fraDato={fraDato}
+                        tilDato={tilDato}
+                        skjulTommeDagerIListe={skjulTommeDagerIListe}
+                    />
+                );
             }}
             onAfterChange={onAfterChange}
         />
