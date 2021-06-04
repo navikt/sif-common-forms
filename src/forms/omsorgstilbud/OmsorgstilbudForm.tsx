@@ -11,22 +11,18 @@ import {
     getTypedFormComponents,
     Time,
 } from '@navikt/sif-common-formik/lib';
-import {
-    isValidTime,
-    TimeInputLayoutProps,
-} from '@navikt/sif-common-formik/lib/components/formik-time-input/TimeInput';
+import { TimeInputLayoutProps } from '@navikt/sif-common-formik/lib/components/formik-time-input/TimeInput';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import groupby from 'lodash.groupby';
-import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
-import { OmsorgstilbudDag } from './types';
-import './omsorgstilbudForm.less';
 import { ISODateString } from 'nav-datovelger/lib/types';
+import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
+import { TidIOmsorgstilbud } from './types';
+import './omsorgstilbudForm.less';
 
 dayjs.extend(isoWeek);
 dayjs.extend(weekOfYear);
@@ -34,8 +30,8 @@ dayjs.extend(weekOfYear);
 interface Props {
     fraDato: Date;
     tilDato: Date;
-    omsorgsdager: OmsorgstilbudDag[];
-    onSubmit: (omsorgsdager: OmsorgstilbudDag[]) => void;
+    tidIOmsorgstilbud: TidIOmsorgstilbud;
+    onSubmit: (tidIOmsorgstilbud: TidIOmsorgstilbud) => void;
     onCancel?: () => void;
 }
 
@@ -43,7 +39,7 @@ enum FormField {
     tidIOmsorg = 'tidIOmsorg',
 }
 interface FormValues {
-    [FormField.tidIOmsorg]: Array<Partial<Time>>;
+    [FormField.tidIOmsorg]: TidIOmsorgstilbud;
 }
 
 export interface Daginfo {
@@ -54,7 +50,8 @@ export interface Daginfo {
     årOgUke: string;
     ukenummer: number;
     år: number;
-    label: string;
+    labelDag: string;
+    labelDato: string;
     labelFull: string;
     tid?: Time;
 }
@@ -85,7 +82,8 @@ export const getDatoerForOmsorgstilbudPeriode = (from: Date, to: Date): Daginfo[
                 ukenummer: dayjsDato.isoWeek(),
                 år: dayjsDato.year(),
                 årOgUke: `${dayjsDato.year()}.${dayjsDato.isoWeek()}`,
-                label: `${dayjsDato.format('dddd').substring(0, 3)}. ${dayjsDato.format('DD.MM.YYYY')}`,
+                labelDag: `${dayjsDato.format('dddd')}`,
+                labelDato: `${dayjsDato.format('DD.MM.YYYY')}`,
                 labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('DD. MMM')}`,
             });
             index++;
@@ -110,32 +108,10 @@ const getUker = (dager: Daginfo[]): Ukeinfo[] => {
     return uker;
 };
 
-const getInitialFormValues = (omsorgsdager: OmsorgstilbudDag[] = [], dagerIPerioden: Daginfo[]): FormValues => ({
-    tidIOmsorg: dagerIPerioden.map((dag) => {
-        const omsorgsdag = dag ? omsorgsdager?.find((od) => od && dayjs(od.dato).isSame(dag.dato, 'day')) : undefined;
-        return omsorgsdag ? omsorgsdag.tid : { hours: '', minutes: '' };
-    }),
-});
-
 const getTimeInputLayout = (isNarrow: boolean, isWide: boolean): TimeInputLayoutProps => ({
-    srOnlyLabels: false,
     justifyContent: 'right',
-    layout: isNarrow ? 'compact' : isWide ? 'compact' : 'horizontalCompact',
+    direction: isNarrow || isWide ? 'vertical' : 'horizontal',
 });
-
-const mapTidIOmsorgToOmsorgsdager = (tidIOmsorg: Array<Partial<Time>>, datoerIForm: Daginfo[]): OmsorgstilbudDag[] => {
-    const dager: OmsorgstilbudDag[] = [];
-    tidIOmsorg?.forEach((tid, index) => {
-        const dato = datoerIForm[index]?.dato;
-        if (dato && tid && (hasValue(tid.hours) || hasValue(tid.minutes)) && isValidTime(tid)) {
-            dager[index] = {
-                dato,
-                tid,
-            };
-        }
-    });
-    return dager;
-};
 
 const getTidIOmsorgValidator = (dag: Daginfo) => (tid: Time) => {
     const error = getTimeValidator({
@@ -160,9 +136,9 @@ const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
 const bem = bemUtils('omsorgstilbudForm');
 
-const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel }: Props) => {
+const OmsorgstilbudForm = ({ fraDato, tilDato, tidIOmsorgstilbud, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
-    const isNarrow = useMediaQuery({ maxWidth: 400 });
+    const isNarrow = useMediaQuery({ maxWidth: 450 });
     const isWide = useMediaQuery({ minWidth: 1050 });
     const datoerIForm = getDatoerForOmsorgstilbudPeriode(fraDato, tilDato);
 
@@ -172,14 +148,14 @@ const OmsorgstilbudForm = ({ fraDato, tilDato, omsorgsdager, onSubmit, onCancel 
         return <div>Fra dato er før til-dato</div>;
     }
 
-    const onFormikSubmit = ({ tidIOmsorg = [] }: Partial<FormValues>) => {
-        onSubmit(mapTidIOmsorgToOmsorgsdager(tidIOmsorg, datoerIForm));
+    const onFormikSubmit = ({ tidIOmsorg = {} }: Partial<FormValues>) => {
+        onSubmit(tidIOmsorg);
     };
 
     return (
         <Normaltekst tag="div" className={bem.block}>
             <Form.FormikWrapper
-                initialValues={getInitialFormValues(omsorgsdager, datoerIForm)}
+                initialValues={{ tidIOmsorg: tidIOmsorgstilbud }}
                 onSubmit={onFormikSubmit}
                 renderForm={() => {
                     return (
@@ -240,7 +216,7 @@ export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlin
     const uker = getUker(datoer);
 
     return (
-        <>
+        <div className={bem.classNames(bem.block, bem.modifier('inlineForm'))}>
             {uker.map((week) => {
                 return (
                     <Box key={week.ukenummer} margin="m">
@@ -254,7 +230,7 @@ export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlin
                     </Box>
                 );
             })}
-        </>
+        </div>
     );
 };
 
@@ -267,12 +243,14 @@ interface OmsorgstilbudUkeFormProps {
     isNarrow: boolean;
     isWide: boolean;
     tittelRenderer?: OmsorgstilbudUkeTittelRenderer;
+    dagLabelRenderer?: (dag: Daginfo) => React.ReactNode;
 }
 
 const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> = ({
     getFieldName,
     ukeinfo,
     tittelRenderer,
+    dagLabelRenderer,
     isNarrow,
     isWide,
 }) => {
@@ -292,7 +270,18 @@ const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> =
                     <div key={dag.dato.getTime()} className={bem.element('dag')}>
                         <FormikTimeInput
                             name={getFieldName(dag)}
-                            label={<span className={bem.element('dag__label')}>{dag.label}</span>}
+                            label={
+                                <span className={bem.element('dag__label')}>
+                                    {dagLabelRenderer ? (
+                                        dagLabelRenderer(dag)
+                                    ) : (
+                                        <>
+                                            <span className={bem.element('dag__label__dagnavn')}>{dag.labelDag}</span>
+                                            <span className={bem.element('dag__label__dato')}>{dag.labelDato}</span>
+                                        </>
+                                    )}
+                                </span>
+                            }
                             timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
                             validate={getTidIOmsorgValidator(dag)}
                         />

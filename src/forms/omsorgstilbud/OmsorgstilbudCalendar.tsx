@@ -25,7 +25,7 @@ const formatTimeFull = (time: Partial<Time>): string => {
 const pluralize = (tall: number | string, singular: string, plural: string): string =>
     typeof tall === 'number' ? (tall === 1 ? singular : plural) : tall === '1' ? singular : plural;
 
-const DagContent = ({ tid }: { tid: Time }) => {
+const DagContent = ({ tid }: { tid: Partial<Time> }) => {
     return (
         <EtikettInfo className={'varighet'}>
             <div className={'varighet__info'}>

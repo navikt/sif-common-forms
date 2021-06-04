@@ -6,25 +6,27 @@ import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { FormikYesOrNoQuestion } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
-import { getMonthsInDateRange } from './omsorgstilbudUtils';
-import { OmsorgstilbudDag, OmsorgstilbudMåned, SkalHaOmsorgstilbudFormField } from './types';
+import { OmsorgstilbudInfo } from './OmsorgstilbudExample';
+import { OmsorgstilbudInlineForm } from '../../../forms/omsorgstilbud/OmsorgstilbudForm';
+import { getMonthsInDateRange } from '../../../forms/omsorgstilbud/omsorgstilbudUtils';
+import OmsorgstilbudInfoAndDialog from '../../../forms/omsorgstilbud/OmsorgstilbudInfoAndDialog';
+import { SkalHaOmsorgstilbudFormField } from '../../../forms/omsorgstilbud/types';
+import { OmsorgstilbudFormField } from './OmsorgstilbudExample';
 
 interface Props {
-    måneder: OmsorgstilbudMåned[];
-    dager: OmsorgstilbudDag[];
+    info: OmsorgstilbudInfo;
     søknadsperiode: DateRange;
-    perioderFieldName: string;
-    dagerFieldName: string;
 }
 
-const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({
-    måneder,
-    dager,
-    perioderFieldName,
-    dagerFieldName,
-    søknadsperiode,
-}) => {
+const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({ info, søknadsperiode }) => {
+    const måneder = info.måneder || [];
+    const søknadsperiodeVarighet = dayjs(søknadsperiode.to).diff(søknadsperiode.from, 'days');
+
+    if (søknadsperiodeVarighet < 20) {
+        return (
+            <OmsorgstilbudInlineForm fieldName={OmsorgstilbudFormField.enkeltdager} søknadsperiode={søknadsperiode} />
+        );
+    }
     return (
         <>
             {getMonthsInDateRange(søknadsperiode).map((periode, index) => {
@@ -34,18 +36,16 @@ const OmsorgstilbudFormPart: React.FunctionComponent<Props> = ({
                 return (
                     <Box key={dayjs(from).format('MM.YYYY')} margin="xl">
                         <FormikYesOrNoQuestion
-                            name={`${perioderFieldName}.${index}.${SkalHaOmsorgstilbudFormField.skalHaOmsorgstilbud}`}
+                            name={`${OmsorgstilbudFormField.måneder}.${index}.${SkalHaOmsorgstilbudFormField.skalHaOmsorgstilbud}`}
                             legend={`Skal barnet i omsorgstilbud ${mndOgÅr}?`}
                         />
                         {skalIOmsorgstilbud && (
                             <FormBlock margin="l">
                                 <ResponsivePanel className={'omsorgstilbudInfoDialogWrapper'}>
                                     <OmsorgstilbudInfoAndDialog
-                                        name={dagerFieldName}
+                                        name={OmsorgstilbudFormField.enkeltdager}
                                         fraDato={from}
                                         tilDato={to}
-                                        omsorgsdager={dager}
-                                        søknadsperiode={søknadsperiode}
                                         labels={{
                                             addLabel: `Legg til timer`,
                                             deleteLabel: `Fjern alle timer`,

@@ -23,7 +23,7 @@
 
 .omsorgstilbudDialog {
     width: 100%;
-    max-width: 60rem;
+    max-width: 45rem;
     .dialogFormWrapper {
         width: 100%;
     }
@@ -34,32 +34,9 @@
     grid-template-columns: repeat(5, 1fr);
 }
 
-.timeInput__suffix {
-    margin-top: 0.1rem;
-    font-size: 0.6rem;
-}
-.timeInput--withHours {
-    .timeInput__suffix--hours {
-        margin-top: 0;
-        font-size: 0.8rem;
-        opacity: 1;
-        right: 0.4rem;
-    }
-}
-.timeInput--withMinutes,
-.timeInput--withMinute {
-    .timeInput__suffix--min {
-        margin-top: 0;
-        font-size: 0.8rem;
-        opacity: 1;
-        right: 0.3rem;
-    }
-}
-
 .omsorgstilbudListe {
     &__dag {
         display: inline-block;
-        // margin-right: .25rem;
     }
     .omsorgstilbudListe__dato {
         text-transform: capitalize;
@@ -108,16 +85,21 @@
             margin-bottom: 0.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.15);
         }
+        @media (min-width: 1051px) {
+            &__label {
+                &__dagnavn {
+                    display: block;
+                    font-size: 0.8rem;
+                }
+            }
+        }
         &__label {
             text-transform: capitalize;
+            font-weight: normal;
+            &__dagnavn:after {
+                content: ', ';
+            }
         }
-    }
-
-    /** Overrides */
-    .timeInput__contentWrapper {
-        padding-bottom: 1.5rem;
-        justify-content: flex-end;
-        max-width: 14rem;
     }
 
     .skjemaelement__feilmelding {

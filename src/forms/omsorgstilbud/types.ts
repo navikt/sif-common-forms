@@ -3,8 +3,10 @@ import { Time } from '@navikt/sif-common-formik/lib';
 
 export interface OmsorgstilbudDag {
     dato: Date;
-    tid: Time;
+    tid: Partial<Time>;
 }
+
+export type TidIOmsorgstilbud = { [isoDateString: string]: Partial<Time> };
 
 export interface OmsorgstilbudMåned {
     skalHaOmsorgstilbud: YesOrNo;

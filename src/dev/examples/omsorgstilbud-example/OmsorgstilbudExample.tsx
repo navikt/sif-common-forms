@@ -2,46 +2,48 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { getTypedFormComponents, Time, YesOrNo } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, YesOrNo } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import { OmsorgstilbudInlineForm } from '../../../forms/omsorgstilbud/OmsorgstilbudForm';
-import OmsorgstilbudFormPart from '../../../forms/omsorgstilbud/OmsorgstilbudFormPart';
-import { OmsorgstilbudDag, OmsorgstilbudMåned } from '../../../forms/omsorgstilbud/types';
+import { OmsorgstilbudMåned, TidIOmsorgstilbud } from '../../../forms/omsorgstilbud/types';
 import PageIntro from '../../components/page-intro/PageIntro';
+import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
+import OmsorgstilbudFormPart from './OmsorgstilbudFormPart';
 
-enum FormField {
+export enum OmsorgstilbudFormField {
     periodeFra = 'periodeFra',
     periodeTil = 'periodeTil',
     måneder = 'måneder',
-    dager = 'dager',
-    tidIOmsorg = 'tidIOmsorg',
+    enkeltdager = 'enkeltdager',
 }
-
 interface FormValues {
-    [FormField.periodeFra]?: string;
-    [FormField.periodeTil]?: string;
-    [FormField.måneder]: OmsorgstilbudMåned[];
-    [FormField.dager]: OmsorgstilbudDag[];
-    [FormField.tidIOmsorg]: { [isoDateString: string]: Partial<Time> };
+    [OmsorgstilbudFormField.periodeFra]?: string;
+    [OmsorgstilbudFormField.periodeTil]?: string;
+    [OmsorgstilbudFormField.måneder]: OmsorgstilbudMåned[];
+    [OmsorgstilbudFormField.enkeltdager]: TidIOmsorgstilbud;
 }
 
 const initialValues: FormValues = {
     periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(12, 'days').toDate()),
-    dager: [],
-    [FormField.måneder]: [
+    [OmsorgstilbudFormField.måneder]: [
         {
             skalHaOmsorgstilbud: YesOrNo.YES,
         },
     ],
-    tidIOmsorg: {},
+    enkeltdager: {},
 };
 
-const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
+export interface OmsorgstilbudInfo {
+    måneder?: OmsorgstilbudMåned[];
+    enkeltdager?: TidIOmsorgstilbud /** Brukes hvor tid oppgis inline i skjema, ikke i dialog */;
+}
+
+const FormComponents = getTypedFormComponents<OmsorgstilbudFormField, FormValues, ValidationError>();
 
 const OmsorgstilbudExample = () => {
     const intl = useIntl();
@@ -68,13 +70,15 @@ const OmsorgstilbudExample = () => {
                                 Fra: {prettifyDate(from)} - Tilo: {prettifyDate(to)}
                             </p>
                             <OmsorgstilbudFormPart
-                                måneder={values.måneder}
-                                dager={values.dager}
+                                info={{ enkeltdager: values.enkeltdager, måneder: values.måneder }}
                                 søknadsperiode={{ from, to }}
-                                perioderFieldName={FormField.måneder}
-                                dagerFieldName={FormField.dager}
                             />
-                            <OmsorgstilbudInlineForm fieldName={FormField.tidIOmsorg} søknadsperiode={{ from, to }} />
+                            <EkspanderbartPanel tittel="abc">
+                                <OmsorgstilbudInlineForm
+                                    fieldName={OmsorgstilbudFormField.enkeltdager}
+                                    søknadsperiode={{ from, to }}
+                                />
+                            </EkspanderbartPanel>
                         </FormComponents.Form>
                     );
                 }}
