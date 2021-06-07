@@ -7,12 +7,15 @@ import { Undertekst } from 'nav-frontend-typografi';
 import CalendarGrid from '../components/calendar-grid/CalendarGrid';
 import FormattedTimeText from './FormattedTimeText';
 import { OmsorgstilbudDag } from './types';
+import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 
 interface Props {
     måned: Date;
     omsorgsdager: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
+    brukEtikettForInnhold?: boolean;
+    visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
 }
 
@@ -25,15 +28,19 @@ const formatTimeFull = (time: Partial<Time>): string => {
 const pluralize = (tall: number | string, singular: string, plural: string): string =>
     typeof tall === 'number' ? (tall === 1 ? singular : plural) : tall === '1' ? singular : plural;
 
-const DagContent = ({ tid }: { tid: Partial<Time> }) => {
-    return (
-        <EtikettInfo className={'varighet'}>
-            <div className={'varighet__info'}>
-                <span className="varighet__info__tid">
-                    <AriaAlternative visibleText={<FormattedTimeText time={tid} />} ariaText={formatTimeFull(tid)} />
-                </span>
-            </div>
-        </EtikettInfo>
+const DagContent = ({ tid, brukEtikettForInnhold = true }: { tid: Partial<Time>; brukEtikettForInnhold?: boolean }) => {
+    const bem = bemUtils('tidIOmsorgstilbud');
+    const content = (
+        <div className={bem.element('info')}>
+            <span className={bem.element('info__tid')}>
+                <AriaAlternative visibleText={<FormattedTimeText time={tid} />} ariaText={formatTimeFull(tid)} />
+            </span>
+        </div>
+    );
+    return brukEtikettForInnhold ? (
+        <EtikettInfo className={bem.block}>{content}</EtikettInfo>
+    ) : (
+        <div className={bem.block}>{content}</div>
     );
 };
 const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({
@@ -41,6 +48,8 @@ const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({
     fraDato,
     tilDato,
     omsorgsdager,
+    brukEtikettForInnhold,
+    visSomListe,
     skjulTommeDagerIListe,
 }) => {
     return (
@@ -48,6 +57,7 @@ const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({
             month={måned}
             min={fraDato}
             max={tilDato}
+            renderAsList={visSomListe}
             dateFormatter={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}
@@ -59,7 +69,7 @@ const OmsorgstilbudCalendar: React.FunctionComponent<Props> = ({
             }}
             content={omsorgsdager.map((dag) => ({
                 date: dag.dato,
-                content: <DagContent tid={dag.tid} />,
+                content: <DagContent tid={dag.tid} brukEtikettForInnhold={brukEtikettForInnhold} />,
             }))}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
         />

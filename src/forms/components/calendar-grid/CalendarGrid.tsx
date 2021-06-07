@@ -25,6 +25,7 @@ interface Props {
     month: Date;
     min?: Date;
     max?: Date;
+    renderAsList?: boolean;
     hideEmptyContentInListMode?: boolean;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
@@ -78,6 +79,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     dateFormatter = prettifyDate,
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
+    renderAsList,
     hideEmptyContentInListMode,
 }) => {
     const days = getDays(month, content, { from: min, to: max });
@@ -86,7 +88,8 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
         <div
             className={bem.classNames(
                 bem.block,
-                bem.modifierConditional('hideEmptyContentInListMode', hideEmptyContentInListMode)
+                bem.modifierConditional('hideEmptyContentInListMode', hideEmptyContentInListMode),
+                bem.modifier(renderAsList ? 'list' : 'grid')
             )}>
             <span role="presentation" aria-hidden={true} className={bem.element('dayHeader', 'week')}>
                 Uke

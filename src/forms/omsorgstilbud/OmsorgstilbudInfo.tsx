@@ -9,6 +9,7 @@ interface Props {
     omsorgsdager: OmsorgstilbudDag[];
     fraDato: Date;
     tilDato: Date;
+    brukEtikettForTid?: boolean;
     skjulTommeDagerIListe?: boolean;
     tittelRenderer?: (fraDato: Date, tilDato: Date, omsorgsdager: OmsorgstilbudDag[]) => React.ReactNode;
 }
@@ -17,6 +18,7 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
     omsorgsdager,
     fraDato,
     tilDato,
+    brukEtikettForTid,
     tittelRenderer,
     skjulTommeDagerIListe,
 }) => {
@@ -38,6 +40,8 @@ const OmsorgstilbudInfo: React.FunctionComponent<Props> = ({
                     fraDato={fraDato}
                     tilDato={tilDato}
                     omsorgsdager={omsorgsdager}
+                    brukEtikettForInnhold={brukEtikettForTid}
+                    visSomListe={false}
                     skjulTommeDagerIListe={skjulTommeDagerIListe}
                 />
             </Box>
