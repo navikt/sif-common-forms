@@ -22,6 +22,8 @@ import groupby from 'lodash.groupby';
 import { ISODateString } from 'nav-datovelger/lib/types';
 import { Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { TidIOmsorgstilbud } from './types';
+import { Close } from '@navikt/ds-icons';
+
 import './omsorgstilbudForm.less';
 
 dayjs.extend(isoWeek);
@@ -304,6 +306,9 @@ const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> =
                         role="presentation"
                         aria-hidden={true}>
                         <DagLabel dag={dag} customRenderer={dagLabelRenderer} />
+                        <div className={bem.element('dag__utenforPeriodeIkon')}>
+                            <Close />
+                        </div>
                     </div>
                 ))}
                 {dager.map((dag) => (

@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "14.2.0-beta.29",
+    "version": "14.2.0-beta.30",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -38,6 +38,7 @@
         "/lib"
     ],
     "dependencies": {
+        "@navikt/ds-icons": "^0.3.2",
         "@types/lodash.groupby": "^4.6.6",
         "lodash.groupby": "^4.6.0",
         "nav-frontend-etiketter": "^3.0.1",
