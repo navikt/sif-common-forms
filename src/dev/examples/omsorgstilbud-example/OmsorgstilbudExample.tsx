@@ -63,7 +63,7 @@ const OmsorgstilbudExample = () => {
                         datepickerUtils.getDateFromDateString(periodeTil) || dayjs(from).add(1, 'month').toDate();
                     return (
                         <FormComponents.Form
-                            includeButtons={false}
+                            includeButtons={true}
                             submitButtonLabel="Valider skjema"
                             formErrorHandler={getIntlFormErrorHandler(intl)}>
                             <p>
