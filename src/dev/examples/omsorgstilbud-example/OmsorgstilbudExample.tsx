@@ -28,7 +28,7 @@ interface FormValues {
 }
 
 const initialValues: FormValues = {
-    periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(10, 'days').toDate()),
+    periodeFra: datepickerUtils.getDateStringFromValue(dayjs().subtract(12, 'days').toDate()),
     periodeTil: datepickerUtils.getDateStringFromValue(dayjs().add(12, 'days').toDate()),
     [OmsorgstilbudFormField.måneder]: [
         {
@@ -73,7 +73,7 @@ const OmsorgstilbudExample = () => {
                                 info={{ enkeltdager: values.enkeltdager, måneder: values.måneder }}
                                 søknadsperiode={{ from, to }}
                             />
-                            <EkspanderbartPanel tittel="abc">
+                            <EkspanderbartPanel tittel="abc" apen={true}>
                                 <OmsorgstilbudInlineForm
                                     fieldName={OmsorgstilbudFormField.enkeltdager}
                                     søknadsperiode={{ from, to }}

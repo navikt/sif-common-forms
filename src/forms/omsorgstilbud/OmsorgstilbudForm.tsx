@@ -44,7 +44,6 @@ interface FormValues {
 
 export interface Daginfo {
     isoDateString: ISODateString;
-    index: number;
     dato: Date;
     ukedag: number;
     årOgUke: string;
@@ -62,31 +61,35 @@ interface Ukeinfo {
     dager: Daginfo[];
 }
 
+type DagLabelRenderer = (dag: Daginfo) => React.ReactNode;
+
 // -- UTILS -----------------------------
 
 export const getOmsorgstilbudTidFieldName = (fieldName: string, dag: Daginfo): string =>
     `${fieldName}.${dag.isoDateString}`;
 
+const getDagInfo = (date: Date): Daginfo => {
+    const dayjsDato = dayjs(date);
+    return {
+        isoDateString: dateToISOString(dayjsDato.toDate()),
+        dato: dayjsDato.toDate(),
+        ukedag: dayjsDato.isoWeekday(),
+        ukenummer: dayjsDato.isoWeek(),
+        år: dayjsDato.year(),
+        årOgUke: `${dayjsDato.year()}.${dayjsDato.isoWeek()}`,
+        labelDag: `${dayjsDato.format('dddd')}`,
+        labelDato: `${dayjsDato.format('DD.MM.YYYY')}`,
+        labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('DD. MMM')}`,
+    };
+};
+
 export const getDatoerForOmsorgstilbudPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];
     let dayjsDato = dayjs(from);
-    let index = 0;
     while (dayjsDato.isSameOrBefore(to, 'day')) {
         const ukedag = dayjsDato.isoWeekday();
         if (ukedag <= 5) {
-            dager.push({
-                isoDateString: dateToISOString(dayjsDato.toDate()),
-                index,
-                dato: dayjsDato.toDate(),
-                ukedag,
-                ukenummer: dayjsDato.isoWeek(),
-                år: dayjsDato.year(),
-                årOgUke: `${dayjsDato.year()}.${dayjsDato.isoWeek()}`,
-                labelDag: `${dayjsDato.format('dddd')}`,
-                labelDato: `${dayjsDato.format('DD.MM.YYYY')}`,
-                labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('DD. MMM')}`,
-            });
-            index++;
+            dager.push(getDagInfo(dayjsDato.toDate()));
         }
         dayjsDato = dayjsDato.add(1, 'day');
     }
@@ -234,27 +237,56 @@ export const OmsorgstilbudInlineForm: React.FunctionComponent<OmsorgstilbudInlin
     );
 };
 
+const DagLabel = ({ dag, customRenderer }: { dag: Daginfo; customRenderer?: DagLabelRenderer }): JSX.Element => {
+    return (
+        <span className={bem.element('dag__label')}>
+            {customRenderer ? (
+                customRenderer(dag)
+            ) : (
+                <>
+                    <span className={bem.element('dag__label__dagnavn')}>{dag.labelDag}</span>
+                    <span className={bem.element('dag__label__dato')}>{dag.labelDato}</span>
+                </>
+            )}
+        </span>
+    );
+};
+
 // -- Sub components -----------------------------
 
 type OmsorgstilbudUkeTittelRenderer = (ukeinfo: Ukeinfo) => React.ReactNode;
+
+const getForegåendeDagerIUke = (dag: Daginfo): Daginfo[] => {
+    const dager = getEmptyElements(dag.ukedag - 1);
+    if (dager && dager.length > 0) {
+        const firstDayOfWeek = dayjs(dag.dato).subtract(dag.ukedag - 1, 'days');
+        return dager.map((c, idx) => {
+            const date = firstDayOfWeek.add(idx, 'days').toDate();
+            return getDagInfo(date);
+        });
+    }
+    return [];
+};
+
 interface OmsorgstilbudUkeFormProps {
     getFieldName: (dag: Daginfo) => string;
     ukeinfo: Ukeinfo;
     isNarrow: boolean;
     isWide: boolean;
     tittelRenderer?: OmsorgstilbudUkeTittelRenderer;
-    dagLabelRenderer?: (dag: Daginfo) => React.ReactNode;
+    dagLabelRenderer?: DagLabelRenderer;
 }
 
 const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> = ({
-    getFieldName,
     ukeinfo,
+    getFieldName,
     tittelRenderer,
     dagLabelRenderer,
     isNarrow,
     isWide,
 }) => {
     const { dager, ukenummer, år } = ukeinfo;
+
     return (
         <ResponsivePanel className={bem.element('uke')}>
             {tittelRenderer ? (
@@ -265,23 +297,20 @@ const OmsorgstilbudUkeForm: React.FunctionComponent<OmsorgstilbudUkeFormProps> =
                 </Undertittel>
             )}
             <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
-                {getEmptyElements(dager[0].ukedag - 1)}
+                {getForegåendeDagerIUke(dager[0]).map((dag) => (
+                    <div
+                        className={bem.element('dag', 'utenforPeriode')}
+                        key={dag.isoDateString}
+                        role="presentation"
+                        aria-hidden={true}>
+                        <DagLabel dag={dag} customRenderer={dagLabelRenderer} />
+                    </div>
+                ))}
                 {dager.map((dag) => (
-                    <div key={dag.dato.getTime()} className={bem.element('dag')}>
+                    <div key={dag.isoDateString} className={bem.element('dag')}>
                         <FormikTimeInput
                             name={getFieldName(dag)}
-                            label={
-                                <span className={bem.element('dag__label')}>
-                                    {dagLabelRenderer ? (
-                                        dagLabelRenderer(dag)
-                                    ) : (
-                                        <>
-                                            <span className={bem.element('dag__label__dagnavn')}>{dag.labelDag}</span>
-                                            <span className={bem.element('dag__label__dato')}>{dag.labelDato}</span>
-                                        </>
-                                    )}
-                                </span>
-                            }
+                            label={<DagLabel dag={dag} key={dag.isoDateString} customRenderer={dagLabelRenderer} />}
                             timeInputLayout={getTimeInputLayout(isNarrow, isWide)}
                             validate={getTidIOmsorgValidator(dag)}
                         />
