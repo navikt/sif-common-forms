@@ -55,11 +55,19 @@ export interface Virksomhet {
     [VirksomhetFormField.regnskapsfører_telefon]?: string;
 }
 export type VirksomhetFormValues = Partial<
-    Omit<Virksomhet, 'fom' | 'tom' | 'blittYrkesaktivDato' | 'varigEndringINæringsinntekt_dato'> & {
+    Omit<
+        Virksomhet,
+        | 'fom'
+        | 'tom'
+        | 'blittYrkesaktivDato'
+        | 'varigEndringINæringsinntekt_dato'
+        | 'varigEndringINæringsinntekt_inntektEtterEndring'
+    > & {
         [VirksomhetFormField.fom]: string;
         [VirksomhetFormField.tom]?: string;
         [VirksomhetFormField.blittYrkesaktivDato]?: string;
         [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: string;
+        [VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring]?: string;
     }
 >;
 
