@@ -73,11 +73,9 @@ export const mapFormValuesToVirksomhet = (
         fom: ISOStringToDate(formValues.fom),
         tom: ISOStringToDate(formValues.tom),
         blittYrkesaktivDato: ISOStringToDate(formValues.blittYrkesaktivDato),
-        næringsinntekt: næringsinntekt !== undefined ? Math.round(næringsinntekt) : undefined,
+        næringsinntekt,
         varigEndringINæringsinntekt_dato: ISOStringToDate(formValues.varigEndringINæringsinntekt_dato),
-        varigEndringINæringsinntekt_inntektEtterEndring: inntektEtterVarigEndring
-            ? Math.round(inntektEtterVarigEndring)
-            : undefined,
+        varigEndringINæringsinntekt_inntektEtterEndring: inntektEtterVarigEndring,
     };
 };
 

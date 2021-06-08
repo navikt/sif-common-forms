@@ -155,8 +155,7 @@ const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
     if (visNæringsinntekt(values)) {
-        const næringsinntekt = getNumberFromNumberInputValue(values.næringsinntekt);
-        return næringsinntekt !== undefined ? Math.round(næringsinntekt) : næringsinntekt;
+        return getNumberFromNumberInputValue(values.næringsinntekt);
     }
     return undefined;
 };
