@@ -37,12 +37,10 @@ interface FormValues {
 const initialValues: FormValues = { [FormField.perioder]: [], [FormField.dager]: [] };
 
 const FraværExample: React.FunctionComponent = () => {
-    const [fraværPeriodeSingleFormValues, setFraværPeriodeSingleFormValues] = useState<
-        Partial<FraværPeriode> | undefined
-    >(undefined);
-    const [fraværDagSingleFormValues, setFraværDagSingleFormValues] = useState<Partial<FraværDag> | undefined>(
-        undefined
-    );
+    const [fraværPeriodeSingleFormValues, setFraværPeriodeSingleFormValues] =
+        useState<Partial<FraværPeriode> | undefined>(undefined);
+    const [fraværDagSingleFormValues, setFraværDagSingleFormValues] =
+        useState<Partial<FraværDag> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const intl = useIntl();
     return (

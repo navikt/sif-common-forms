@@ -19,12 +19,14 @@ export const mapFormValuesToVirksomhet = (
     const varigEndringINæringsinntekt_inntektEtterEndring = getNumberFromStringInput(
         formValues.varigEndringINæringsinntekt_inntektEtterEndring
     );
+    const næringsinntekt = getNumberFromStringInput(formValues.næringsinntekt);
     return {
         ...formValues,
         id: id || guid(),
         fom: ISOStringToDate(formValues.fom),
         tom: ISOStringToDate(formValues.tom),
         blittYrkesaktivDato: ISOStringToDate(formValues.blittYrkesaktivDato),
+        næringsinntekt: næringsinntekt !== undefined ? Math.round(næringsinntekt) : undefined,
         varigEndringINæringsinntekt_dato: ISOStringToDate(formValues.varigEndringINæringsinntekt_dato),
         varigEndringINæringsinntekt_inntektEtterEndring: varigEndringINæringsinntekt_inntektEtterEndring
             ? Math.round(varigEndringINæringsinntekt_inntektEtterEndring)
@@ -38,7 +40,10 @@ export const mapVirksomhetToFormValues = (virksomhet: Virksomhet): VirksomhetFor
         fom: dateToISOString(virksomhet.fom),
         tom: dateToISOString(virksomhet.tom),
         blittYrkesaktivDato: dateToISOString(virksomhet.blittYrkesaktivDato),
+        næringsinntekt: virksomhet.næringsinntekt ? `${virksomhet.næringsinntekt}` : undefined,
         varigEndringINæringsinntekt_dato: dateToISOString(virksomhet.varigEndringINæringsinntekt_dato),
-        varigEndringINæringsinntekt_inntektEtterEndring: `${virksomhet.varigEndringINæringsinntekt_inntektEtterEndring}`,
+        varigEndringINæringsinntekt_inntektEtterEndring: virksomhet.varigEndringINæringsinntekt_inntektEtterEndring
+            ? `${virksomhet.varigEndringINæringsinntekt_inntektEtterEndring}`
+            : undefined,
     };
 };
