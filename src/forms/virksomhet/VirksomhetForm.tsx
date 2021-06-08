@@ -7,7 +7,12 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { date3YearsAgo, date4YearsAgo, dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import {
+    getNumberFromNumberInputValue,
+    getTypedFormComponents,
+    ISOStringToDate,
+    YesOrNo,
+} from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
     getDateValidator,
@@ -149,7 +154,8 @@ const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
     if (visNæringsinntekt(values)) {
-        return values.næringsinntekt;
+        const næringsinntekt = getNumberFromNumberInputValue(values.næringsinntekt);
+        return næringsinntekt !== undefined ? Math.round(næringsinntekt) : næringsinntekt;
     }
     return undefined;
 };

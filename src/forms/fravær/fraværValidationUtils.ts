@@ -20,17 +20,17 @@ export enum FraværFieldValidationErrors {
     dager_overlapper_med_andre_dager = 'dager_overlapper_med_andre_dager',
 }
 
-export const validateLessOrEqualTo = (maybeMaxValue: number | undefined): ValidationFunction<any> => (
-    maybeValue: string | undefined
-) => {
-    const maybeValueFloat: number | undefined = maybeValue ? parseFloat(maybeValue) : undefined;
-    if (maybeMaxValue && maybeValueFloat) {
-        return maybeValueFloat <= maybeMaxValue
-            ? undefined
-            : FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer;
-    }
-    return undefined;
-};
+export const validateLessOrEqualTo =
+    (maybeMaxValue: number | undefined): ValidationFunction<any> =>
+    (maybeValue: string | undefined) => {
+        const maybeValueFloat: number | undefined = maybeValue ? parseFloat(maybeValue) : undefined;
+        if (maybeMaxValue && maybeValueFloat) {
+            return maybeValueFloat <= maybeMaxValue
+                ? undefined
+                : FraværFieldValidationErrors.fravær_timer_mer_enn_arbeidstimer;
+        }
+        return undefined;
+    };
 
 export const validateErSammeÅr = (maybeDateFrom: string | undefined, maybeDateTo: string | undefined) => {
     const fromDate = ISOStringToDate(maybeDateFrom);

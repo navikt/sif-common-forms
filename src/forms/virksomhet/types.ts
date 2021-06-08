@@ -60,12 +60,14 @@ export type VirksomhetFormValues = Partial<
         | 'fom'
         | 'tom'
         | 'blittYrkesaktivDato'
+        | 'næringsinntekt'
         | 'varigEndringINæringsinntekt_dato'
         | 'varigEndringINæringsinntekt_inntektEtterEndring'
     > & {
         [VirksomhetFormField.fom]: string;
         [VirksomhetFormField.tom]?: string;
         [VirksomhetFormField.blittYrkesaktivDato]?: string;
+        [VirksomhetFormField.næringsinntekt]?: string;
         [VirksomhetFormField.varigEndringINæringsinntekt_dato]?: string;
         [VirksomhetFormField.varigEndringINæringsinntekt_inntektEtterEndring]?: string;
     }
