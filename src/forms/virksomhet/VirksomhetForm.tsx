@@ -37,6 +37,7 @@ import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
 import {
+    cleanupVirksomhetFormValues,
     erVirksomhetRegnetSomNyoppstartet,
     harFiskerNæringstype,
     mapFormValuesToVirksomhet,
@@ -189,7 +190,8 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                     <Form.Form
                         includeValidationSummary={true}
                         onCancel={onCancel}
-                        formErrorHandler={getFormErrorHandler(intl, 'virksomhetForm')}>
+                        formErrorHandler={getFormErrorHandler(intl, 'virksomhetForm')}
+                        cleanup={cleanupVirksomhetFormValues}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
                                 {harFlereVirksomheter
@@ -398,6 +400,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         required: true,
                                                         min: 0,
                                                         max: MAKS_INNTEKT,
+                                                        allowDecimals: false,
                                                     })(value);
                                                     return error
                                                         ? {
@@ -526,6 +529,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                 required: true,
                                                                 min: 0,
                                                                 max: MAKS_INNTEKT,
+                                                                allowDecimals: false,
                                                             })(value);
                                                             return error
                                                                 ? {
