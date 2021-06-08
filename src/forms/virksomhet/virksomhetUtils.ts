@@ -31,6 +31,9 @@ export const cleanupVirksomhetFormValues = (formValues: VirksomhetFormValues): V
         values.varigEndringINæringsinntekt_dato = undefined;
         values.varigEndringINæringsinntekt_forklaring = undefined;
         values.varigEndringINæringsinntekt_inntektEtterEndring = undefined;
+        if (values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.NO) {
+            values.blittYrkesaktivDato = undefined;
+        }
     }
     if (fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) === false) {
         values.næringsinntekt = undefined;

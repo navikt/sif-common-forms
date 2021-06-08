@@ -108,6 +108,7 @@ const virksomhetMessages = {
         'virksomhetForm.tom.toDateIsBeforeFromDate':
             'Sluttdatoen for når du avsluttet virksomheten kan ikke være før startdatoen. Skriv inn eller velg sluttdato fra datovelgeren.',
         'virksomhetForm.næringsinntekt.numberHasNoValue': 'Du må oppgi næringsinntekten i {navn}.',
+        'virksomhetForm.næringsinntekt.numberHasDecimals': 'Du må oppgi næringsinntekten i {navn} uten desimaler.',
         'virksomhetForm.næringsinntekt.numberHasInvalidFormat':
             'Du må oppgi et gyldig tall for næringsinntekten i {navn}. Et gyldig tall inneholder kun siffer.',
         'virksomhetForm.næringsinntekt.numberIsTooSmall':
@@ -136,6 +137,8 @@ const virksomhetMessages = {
             'Datoen for når du fikk varig endring i næringsinntekt kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
         'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasNoValue':
             'Du må oppgi inntekt etter inntektsendring for {navn}.',
+        'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasDecimals':
+            'Du må oppgi inntekt etter inntektsendring for {navn} uten desimaler.',
         'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberHasInvalidFormat':
             'Du må oppgi et gyldig tall for ny inntekt etter inntektsendring i {navn}. Et gyldig tall inneholder kun siffer.',
         'virksomhetForm.varigEndringINæringsinntekt_inntektEtterEndring.numberIsTooLarge':
