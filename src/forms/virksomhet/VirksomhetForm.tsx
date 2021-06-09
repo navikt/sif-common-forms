@@ -7,7 +7,12 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { date3YearsAgo, date4YearsAgo, dateToday, prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { getTypedFormComponents, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik/lib';
+import {
+    getNumberFromNumberInputValue,
+    getTypedFormComponents,
+    ISOStringToDate,
+    YesOrNo,
+} from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
     getDateValidator,
@@ -32,6 +37,7 @@ import { FormikProps } from 'formik';
 import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, VirksomhetFormValues } from './types';
 import {
+    cleanupVirksomhetFormValues,
     erVirksomhetRegnetSomNyoppstartet,
     harFiskerNæringstype,
     mapFormValuesToVirksomhet,
@@ -149,7 +155,7 @@ const visNæringsinntekt = (values: VirksomhetFormValues): boolean => {
 
 const ensureValidNæringsinntekt = (values: VirksomhetFormValues): number | undefined => {
     if (visNæringsinntekt(values)) {
-        return values.næringsinntekt;
+        return getNumberFromNumberInputValue(values.næringsinntekt);
     }
     return undefined;
 };
@@ -183,7 +189,8 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                     <Form.Form
                         includeValidationSummary={true}
                         onCancel={onCancel}
-                        formErrorHandler={getFormErrorHandler(intl, 'virksomhetForm')}>
+                        formErrorHandler={getFormErrorHandler(intl, 'virksomhetForm')}
+                        cleanup={cleanupVirksomhetFormValues}>
                         <Box padBottom="l">
                             <Systemtittel tag="h1">
                                 {harFlereVirksomheter
@@ -392,6 +399,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                         required: true,
                                                         min: 0,
                                                         max: MAKS_INNTEKT,
+                                                        allowDecimals: false,
                                                     })(value);
                                                     return error
                                                         ? {
@@ -520,6 +528,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                 required: true,
                                                                 min: 0,
                                                                 max: MAKS_INNTEKT,
+                                                                allowDecimals: false,
                                                             })(value);
                                                             return error
                                                                 ? {
