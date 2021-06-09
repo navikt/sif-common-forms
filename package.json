@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "14.1.2-beta.2",
+    "version": "14.1.2-beta.3",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -17,9 +17,6 @@
         "patchit": "npm-run-all build-lib patch do-publish",
         "patch": "npm version patch",
         "do-publish": "npm publish"
-    },
-    "jest": {
-        "testEnvironment": "node"
     },
     "browserslist": {
         "production": [
@@ -39,13 +36,13 @@
     ],
     "peerDependencies": {
         "@navikt/sif-common-core": "^9.4.1",
-        "@navikt/sif-common-formik": "^19.4.0"
+        "@navikt/sif-common-formik": "^19.4.1"
     },
     "devDependencies": {
-        "@craco/craco": "^6.1.2",
+        "@craco/craco": "^5.5.0",
         "@formatjs/intl-pluralrules": "^4.0.27",
         "@navikt/sif-common-core": "^9.4.1",
-        "@navikt/sif-common-formik": "^19.4.0",
+        "@navikt/sif-common-formik": "^19.4.1",
         "@testing-library/jest-dom": "^5.13.0",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^13.1.9",
@@ -62,7 +59,6 @@
         "craco-less": "^1.17.1",
         "dayjs": "^1.10.5",
         "enzyme": "^3.11.0",
-        "enzyme-adapter-react-16": "^1.15.6",
         "eslint": "^7.28.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-jsx-a11y": "6.4.1",
@@ -145,5 +141,8 @@
     },
     "homepage": "https://navikt.github.io/sif-common-forms",
     "main": "lib/index.js",
-    "types": "lib/index.d.js"
+    "types": "lib/index.d.js",
+    "dependencies": {
+        "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1"
+    }
 }

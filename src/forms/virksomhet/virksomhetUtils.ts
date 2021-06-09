@@ -28,19 +28,15 @@ export const cleanupVirksomhetFormValues = (formValues: VirksomhetFormValues): V
 
     if (fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate)) {
         values.hattVarigEndringAvNæringsinntektSiste4Kalenderår = YesOrNo.UNANSWERED;
-        values.varigEndringINæringsinntekt_dato = undefined;
-        values.varigEndringINæringsinntekt_forklaring = undefined;
-        values.varigEndringINæringsinntekt_inntektEtterEndring = undefined;
-        if (values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === YesOrNo.NO) {
-            values.blittYrkesaktivDato = undefined;
-        }
     }
     if (fomDate && erVirksomhetRegnetSomNyoppstartet(fomDate) === false) {
         values.næringsinntekt = undefined;
         values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = YesOrNo.UNANSWERED;
+    }
+    if (values.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== YesOrNo.YES) {
         values.blittYrkesaktivDato = undefined;
     }
-    if (values.hattVarigEndringAvNæringsinntektSiste4Kalenderår === YesOrNo.NO) {
+    if (values.hattVarigEndringAvNæringsinntektSiste4Kalenderår !== YesOrNo.YES) {
         values.varigEndringINæringsinntekt_dato = undefined;
         values.varigEndringINæringsinntekt_forklaring = undefined;
         values.varigEndringINæringsinntekt_inntektEtterEndring = undefined;
@@ -48,13 +44,15 @@ export const cleanupVirksomhetFormValues = (formValues: VirksomhetFormValues): V
     if (values.registrertINorge === YesOrNo.NO) {
         values.organisasjonsnummer = undefined;
         values.harRegnskapsfører = YesOrNo.UNANSWERED;
-        values.regnskapsfører_navn = undefined;
         values.regnskapsfører_telefon = undefined;
     }
     if (values.registrertINorge === YesOrNo.YES) {
         values.registrertILand = undefined;
     }
-
+    if (values.harRegnskapsfører !== YesOrNo.YES) {
+        values.regnskapsfører_navn = undefined;
+        values.regnskapsfører_telefon = undefined;
+    }
     return values;
 };
 
