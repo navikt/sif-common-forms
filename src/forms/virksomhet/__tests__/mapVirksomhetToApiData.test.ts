@@ -12,7 +12,7 @@ const fom = new Date();
 const tom = new Date();
 
 const virksomhetFormData: Virksomhet = {
-    næringstyper: [Næringstype.ANNEN],
+    næringstype: Næringstype.ANNEN,
     navnPåVirksomheten: 'ABC',
     fom,
     erPågående: true,

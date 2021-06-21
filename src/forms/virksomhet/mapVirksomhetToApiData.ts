@@ -1,7 +1,7 @@
 import { formatDateToApiFormat } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { YesOrNo, getCountryName } from '@navikt/sif-common-formik/lib';
 import { Virksomhet, VirksomhetApiData } from './types';
-import { erVirksomhetRegnetSomNyoppstartet, harFiskerNæringstype } from './virksomhetUtils';
+import { erFiskerNæringstype, erVirksomhetRegnetSomNyoppstartet } from './virksomhetUtils';
 
 export const mapVirksomhetToVirksomhetApiData = (
     locale: string,
@@ -14,7 +14,7 @@ export const mapVirksomhetToVirksomhetApiData = (
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(virksomhet.fom);
 
     const data: VirksomhetApiData = {
-        næringstyper: [...virksomhet.næringstyper],
+        næringstyper: [virksomhet.næringstype],
         navnPåVirksomheten: virksomhet.navnPåVirksomheten,
         registrertINorge,
         ...(registrertINorge
@@ -35,7 +35,7 @@ export const mapVirksomhetToVirksomhetApiData = (
         harFlereAktiveVirksomheter: harFlereVirksomheter === true ? true : false,
     };
 
-    if (harFiskerNæringstype(virksomhet.næringstyper) && harBesvartFiskerPåBladB !== true) {
+    if (erFiskerNæringstype(virksomhet.næringstype) && harBesvartFiskerPåBladB !== true) {
         data.fiskerErPåBladB = virksomhet.fiskerErPåBladB === YesOrNo.YES;
     }
 

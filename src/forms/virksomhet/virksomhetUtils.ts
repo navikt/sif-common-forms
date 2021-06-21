@@ -9,6 +9,9 @@ import { Næringstype, Virksomhet, VirksomhetFormValues } from './types';
 export const harFiskerNæringstype = (næringstyper: Næringstype[]): boolean =>
     næringstyper.find((n) => n === Næringstype.FISKE) !== undefined;
 
+export const erFiskerNæringstype = (næringstype?: Næringstype): boolean =>
+    næringstype ? næringstype === Næringstype.FISKE : false;
+
 export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date) => {
     return dayjs(oppstartsdato).startOf('day').isAfter(date4YearsAgo);
 };
@@ -16,7 +19,7 @@ export const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: Date) => {
 export const cleanupVirksomhetFormValues = (formValues: VirksomhetFormValues): VirksomhetFormValues => {
     const values: VirksomhetFormValues = { ...formValues };
 
-    if (harFiskerNæringstype(values.næringstyper || []) === false) {
+    if (erFiskerNæringstype(values.næringstype) === false) {
         values.fiskerErPåBladB = YesOrNo.UNANSWERED;
     }
     const fomDate = ISOStringToDate(values.fom);

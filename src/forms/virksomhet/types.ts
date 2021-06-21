@@ -9,7 +9,7 @@ export enum Næringstype {
 }
 
 export enum VirksomhetFormField {
-    'næringstyper' = 'næringstyper',
+    'næringstype' = 'næringstype',
     'fiskerErPåBladB' = 'fiskerErPåBladB',
     'fom' = 'fom',
     'tom' = 'tom',
@@ -34,7 +34,7 @@ export enum VirksomhetFormField {
 
 export interface Virksomhet {
     id?: string;
-    [VirksomhetFormField.næringstyper]: Næringstype[];
+    [VirksomhetFormField.næringstype]: Næringstype;
     [VirksomhetFormField.fiskerErPåBladB]?: YesOrNo;
     [VirksomhetFormField.fom]: Date;
     [VirksomhetFormField.tom]?: Date;
