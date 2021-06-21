@@ -24,7 +24,7 @@ enum FormField {
 
 export const mockVirksomhet: Virksomhet = {
     id: '024782550-1402-01448-04932-71872390929312',
-    næringstyper: [Næringstype.ANNEN, Næringstype.DAGMAMMA, Næringstype.FISKE, Næringstype.JORDBRUK_SKOGBRUK],
+    næringstype: Næringstype.FISKE,
     fiskerErPåBladB: YesOrNo.YES,
     navnPåVirksomheten: 'Virksomhet AS',
     registrertINorge: YesOrNo.YES,

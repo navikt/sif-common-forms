@@ -16,7 +16,6 @@ import {
 import {
     getDateRangeValidator,
     getDateValidator,
-    getListValidator,
     getNumberValidator,
     getOrgNumberValidator,
     getRequiredFieldValidator,
@@ -24,7 +23,6 @@ import {
     getYesOrNoValidator,
     ValidateDateError,
     ValidateDateRangeError,
-    ValidateListError,
     ValidateNumberError,
     ValidateOrgNumberError,
     ValidateRequiredFieldError,
@@ -39,7 +37,7 @@ import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, Virksomhet
 import {
     cleanupVirksomhetFormValues,
     erVirksomhetRegnetSomNyoppstartet,
-    harFiskerNæringstype,
+    erFiskerNæringstype,
     mapFormValuesToVirksomhet,
     mapVirksomhetToFormValues,
 } from './virksomhetUtils';
@@ -56,8 +54,8 @@ interface Props {
 const MAKS_INNTEKT = 999999999;
 
 export const VirksomhetFormErrors = {
-    [VirksomhetFormField.næringstyper]: {
-        [ValidateListError.listIsEmpty]: 'virksomhetForm.næringstyper.listIsEmpty',
+    [VirksomhetFormField.næringstype]: {
+        [ValidateRequiredFieldError.noValue]: 'virksomhetForm.næringstype.noValue',
     },
     [VirksomhetFormField.fiskerErPåBladB]: {
         [ValidateYesOrNoError.yesOrNoIsUnanswered]: 'virksomhetForm.fiskerErPåBladB.yesOrNoIsUnanswered',
@@ -178,11 +176,11 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
 
     return (
         <Form.FormikWrapper
-            initialValues={virksomhet ? mapVirksomhetToFormValues(virksomhet) : { næringstyper: [] }}
+            initialValues={virksomhet ? mapVirksomhetToFormValues(virksomhet) : {}}
             onSubmit={onFormikSubmit}
             renderForm={(formik: FormikProps<VirksomhetFormValues>) => {
                 const { values, setFieldValue } = formik;
-                const { navnPåVirksomheten = 'virksomheten', næringstyper = [] } = values;
+                const { navnPåVirksomheten = 'virksomheten', næringstype } = values;
                 const fomDate = ISOStringToDate(values.fom);
                 const tomDate = ISOStringToDate(values.tom);
                 return (
@@ -199,10 +197,10 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                             </Systemtittel>
                         </Box>
 
-                        <Form.CheckboxPanelGroup
-                            name={VirksomhetFormField.næringstyper}
+                        <Form.RadioPanelGroup
+                            name={VirksomhetFormField.næringstype}
                             legend={getText('sifForms.virksomhet.hvilken_type_virksomhet')}
-                            checkboxes={[
+                            radios={[
                                 {
                                     value: Næringstype.FISKE,
                                     label: getText(`sifForms.virksomhet.næringstype_${Næringstype.FISKE}`),
@@ -220,10 +218,10 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                     label: getText(`sifForms.virksomhet.næringstype_${Næringstype.ANNEN}`),
                                 },
                             ]}
-                            validate={getListValidator({ required: true })}
+                            validate={getRequiredFieldValidator()}
                         />
 
-                        {harFiskerNæringstype(næringstyper) && (
+                        {erFiskerNæringstype(næringstype) && (
                             <Box margin="xl">
                                 <Form.YesOrNoQuestion
                                     name={VirksomhetFormField.fiskerErPåBladB}
@@ -248,7 +246,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                 legend={getText('sifForms.virksomhet.registert_i_norge', { navnPåVirksomheten })}
                                 validate={getYesOrNoValidator()}
                                 description={
-                                    harFiskerNæringstype(næringstyper) ? (
+                                    erFiskerNæringstype(næringstype) ? (
                                         <ExpandableInfo
                                             title={intlHelper(intl, 'sifForms.virksomhet.veileder_fisker.tittel')}>
                                             <FormattedMessage
