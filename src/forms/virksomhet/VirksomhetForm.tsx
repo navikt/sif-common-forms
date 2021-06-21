@@ -37,7 +37,6 @@ import { isVirksomhet, Næringstype, Virksomhet, VirksomhetFormField, Virksomhet
 import {
     cleanupVirksomhetFormValues,
     erVirksomhetRegnetSomNyoppstartet,
-    //harFiskerNæringstype,
     erFiskerNæringstype,
     mapFormValuesToVirksomhet,
     mapVirksomhetToFormValues,
