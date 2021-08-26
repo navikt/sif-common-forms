@@ -18,8 +18,7 @@ const ferieuttakMessages = {
             'Startdatoen for ferien må være før sluttdatoen, eller på samme dag som sluttdatoen. Skriv inn eller velg dato fra datovelgeren.',
         'ferieuttakForm.tom.dateHasNoValue':
             'Du må oppgi når ferien sluttet. Skriv inn eller velg dato fra datovelgeren.',
-        'ferieuttakForm.tom.dateIsAfterMax':
-            'Datoen for når ferien sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+        'ferieuttakForm.tom.dateIsAfterMax': 'Du har lagt inn ferie som er utenfor søknadsperioden.',
         'ferieuttakForm.tom.dateIsBeforeMin':
             'Datoen for når ferien sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
         'ferieuttakForm.tom.dateHasInvalidFormat':
