@@ -33,7 +33,7 @@ const utenlandsoppholdMessages = {
         'utenlandsoppholdForm.tom.dateHasNoValue':
             'Du må oppgi når utenlandsoppholdet sluttet. Skriv inn eller velg dato fra datovelgeren.',
         'utenlandsoppholdForm.tom.dateIsAfterMax':
-            'Datoen for når utenlandsoppholdet sluttet kan ikke være etter dagens dato. Skriv inn eller velg dato fra datovelgeren.',
+            'Du har lagt inn et utenlandsopphold som er utenfor søknadsperioden.',
         'utenlandsoppholdForm.tom.dateIsBeforeMin':
             'Datoen for når utenlandsoppholdet sluttet kan ikke være før {dato}. Skriv inn eller velg dato fra datovelgeren.',
         'utenlandsoppholdForm.tom.dateHasInvalidFormat':
