@@ -618,6 +618,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                     required: true,
                                                                     minLength: 5,
                                                                     maxLength: 15,
+                                                                    formatRegExp: /^[\w+\s()]+$/,
                                                                 })(value);
 
                                                                 return error
