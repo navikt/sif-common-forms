@@ -163,6 +163,8 @@ const virksomhetMessages = {
             'Telefonnummeret til regnskapsfører kan ikke inneholde flere enn {maks} tegn.',
         'virksomhetForm.regnskapsfører_telefon.stringIsTooShort':
             'Telefonnummeret til regnskapsfører må inneholde minst {min} tegn.',
+        'virksomhetForm.regnskapsfører_telefon.stringHasInvalidFormat':
+            'Telefonnummeret du har lagt inn inneholder ugyldige tegn. Hvis du har limt inn telefonnummeret kan det være at du har fått med tegn som ikke vises. Prøv derfor å skrive det inn selv, i stedet for å lime det inn. Telefonnummeret kan kun inneholde tall, mellomrom og +-tegnet.',
     },
     nn: {
         'sifForms.virksomhet.næringstype_FISKE': 'Fisker',
