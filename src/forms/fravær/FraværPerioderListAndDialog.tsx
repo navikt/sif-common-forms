@@ -20,6 +20,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     dateRangesToDisable?: DateRange[];
     begrensTilSammeÅr?: boolean;
     helgedagerIkkeTillat?: boolean;
+    begrensTilSammeÅrAlertStripeTekst?: string;
 }
 
 function FraværPerioderListAndDialog<FieldNames>({
@@ -30,6 +31,7 @@ function FraværPerioderListAndDialog<FieldNames>({
     periodeDescription,
     formHeaderContent,
     begrensTilSammeÅr = true,
+    begrensTilSammeÅrAlertStripeTekst,
     validate,
     labels,
     helgedagerIkkeTillat,
@@ -54,6 +56,7 @@ function FraværPerioderListAndDialog<FieldNames>({
                         dateRangesToDisable={dateRangesToDisable}
                         helgedagerIkkeTillat={helgedagerIkkeTillat}
                         begrensTilSammeÅr={begrensTilSammeÅr}
+                        begrensTilSammeÅrAlertStripeTekst={begrensTilSammeÅrAlertStripeTekst}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
                     />
