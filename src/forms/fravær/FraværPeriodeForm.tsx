@@ -34,6 +34,7 @@ import { getFraværÅrsakRadios } from './fraværÅrsakRadios';
 import { FraværPeriode, FraværPeriodeFormValues } from './types';
 import ÅrsakInfo from './ÅrsakInfo';
 import { handleDateRangeValidationError } from '../utils';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export interface FraværPeriodeFormLabels {
     tittel: string;
@@ -54,6 +55,7 @@ interface Props {
     dateRangesToDisable?: DateRange[];
     helgedagerIkkeTillat?: boolean;
     begrensTilSammeÅr?: boolean;
+    begrensTilSammeÅrAlertStripeTekst?: string;
     headerContent?: JSX.Element;
     onSubmit: (values: FraværPeriode) => void;
     onCancel: () => void;
@@ -114,6 +116,7 @@ const FraværPeriodeForm = ({
     helgedagerIkkeTillat,
     headerContent,
     begrensTilSammeÅr,
+    begrensTilSammeÅrAlertStripeTekst,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -246,6 +249,11 @@ const FraværPeriodeForm = ({
                                         },
                                     }}
                                 />
+                                {begrensTilSammeÅr &&
+                                    begrensTilSammeÅrAlertStripeTekst &&
+                                    validateErSammeÅr(fraOgMed, tilOgMed) && (
+                                        <AlertStripe type="advarsel">{begrensTilSammeÅrAlertStripeTekst}</AlertStripe>
+                                    )}
                             </FormBlock>
                             <FormBlock>
                                 <Form.YesOrNoQuestion
