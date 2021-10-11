@@ -47,10 +47,8 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
 
     return (
         <>
-            <IntlLabelValue labelKey="sifForms.virksomhet.summary.navn">
-                {virksomhet.navnPåVirksomheten}.
-            </IntlLabelValue>
-            <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}. </IntlLabelValue>
+            <IntlLabelValue labelKey="sifForms.virksomhet.summary.navn">{virksomhet.navnPåVirksomheten}</IntlLabelValue>
+            <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}</IntlLabelValue>
             <div>
                 <FormattedMessage id="sifForms.virksomhet.summary.registrertILand" values={{ land }} />
                 {virksomhet.registrertINorge && (
@@ -59,7 +57,7 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
                         values={{ orgnr: virksomhet.organisasjonsnummer }}
                     />
                 )}
-                . <br />
+                <br />
                 {tidsinfo}
             </div>
         </>
