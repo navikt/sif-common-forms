@@ -36,7 +36,7 @@
     ],
     "peerDependencies": {
         "@navikt/sif-common-core": ">= 9.4.x",
-        "@navikt/sif-common-formik": "^20.2.0"
+        "@navikt/sif-common-formik": "^20.2.0 || ^21.x"
     },
     "devDependencies": {
         "@craco/craco": "^6.2.0",
