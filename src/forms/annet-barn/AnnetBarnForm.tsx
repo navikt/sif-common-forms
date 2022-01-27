@@ -154,7 +154,7 @@ const AnnetBarnForm = ({
                             placeholder={formLabels.placeholderFnr}
                         />
                     </FormBlock>
-                    {!visÅrsakenTilÅLeggeBarnet && (
+                    {visÅrsakenTilÅLeggeBarnet && (
                         <FormBlock>
                             <Form.RadioGroup
                                 name={AnnetBarnFormFields.årsakenTilÅLeggeBarnet}
