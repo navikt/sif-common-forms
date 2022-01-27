@@ -7,6 +7,11 @@ const annetBarnMessages = {
         'annetBarn.form.okButton': 'Ok',
         'annetBarn.form.cancelButton': 'Avbryt',
         'annetBarn.list.født': 'Født',
+        'annetBarn.form.årsak.spm': 'Kryss av for årsaken til at du la til dette barnet selv:',
+        'annetBarn.form.årsak.FOSTERBARN': 'Barnet er mitt fosterbarn',
+        'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET': 'Barnet bor i utlandet',
+        'annetBarn.form.årsak.ANNET': 'Annet',
+
         'annetBarnForm.navn.stringHasNoValue': 'Skriv inn barnets navn',
         'annetBarnForm.fødselsdato.dateHasNoValue':
             'Du må oppgi barnets fødselsdato. Skriv inn eller velg dato fra datovelgeren.',
@@ -22,6 +27,8 @@ const annetBarnMessages = {
             'Du har oppgitt et ugyldig fødselsnummer. Et gyldig fødselsnummer består av 11 siffer.',
         'annetBarnForm.fnr.fødselsnummerIsNotAllowed':
             'Du har oppgitt ditt eget fødselsnummer som barnets fødselsnummer. Skriv inn barnets fødselsnummer.',
+        'annetBarnForm.årsakenTilÅLeggeBarnet.noValue':
+            'Du må krysse av for årsaken til at du la til dette barnet selv.',
     },
     nn: {
         'annetBarn.form.title': 'Legg til barn',

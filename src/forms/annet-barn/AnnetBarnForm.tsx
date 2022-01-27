@@ -7,6 +7,7 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
+    getRequiredFieldValidator,
     getStringValidator,
     ValidateDateError,
     ValidateFødselsnummerError,
@@ -16,7 +17,7 @@ import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFo
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
-import { AnnetBarn, AnnetBarnFormValues } from './types';
+import { AnnetBarn, AnnetBarnFormValues, Årsak } from './types';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -28,12 +29,14 @@ export interface AnnetBarnFormLabels {
     okButton: string;
     cancelButton: string;
     aldersGrenseText?: string;
+    årsakenTilÅLeggeBarnet?: string;
 }
 
 enum AnnetBarnFormFields {
     fnr = 'fnr',
     fødselsdato = 'fødselsdato',
     navn = 'navn',
+    årsakenTilÅLeggeBarnet = 'årsakenTilÅLeggeBarnet',
 }
 
 export const AnnetBarnFormErrors = {
@@ -58,6 +61,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     disallowedFødselsnumre?: string[];
+    visÅrsakenTilÅLeggeBarnet?: boolean;
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
 }
@@ -70,6 +74,7 @@ const AnnetBarnForm = ({
     minDate,
     maxDate,
     disallowedFødselsnumre,
+    visÅrsakenTilÅLeggeBarnet,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -149,6 +154,29 @@ const AnnetBarnForm = ({
                             placeholder={formLabels.placeholderFnr}
                         />
                     </FormBlock>
+                    {!visÅrsakenTilÅLeggeBarnet && (
+                        <FormBlock>
+                            <Form.RadioGroup
+                                name={AnnetBarnFormFields.årsakenTilÅLeggeBarnet}
+                                legend={intlHelper(intl, 'annetBarn.form.årsak.spm')}
+                                radios={[
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.FOSTERBARN'),
+                                        value: Årsak.fosterbarn,
+                                    },
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET'),
+                                        value: Årsak.barnetBorIUtlandet,
+                                    },
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.ANNET'),
+                                        value: Årsak.annet,
+                                    },
+                                ]}
+                                validate={getRequiredFieldValidator()}
+                            />
+                        </FormBlock>
+                    )}
                 </Form.Form>
             )}
         />

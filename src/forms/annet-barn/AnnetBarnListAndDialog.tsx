@@ -18,6 +18,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     aldersGrenseText?: string;
     placeholderFnr?: string;
     placeholderNavn?: string;
+    visÅrsakenTilÅLeggeBarnet?: boolean;
 }
 
 function AnnetBarnListAndDialog<FieldNames>({
@@ -30,6 +31,7 @@ function AnnetBarnListAndDialog<FieldNames>({
     aldersGrenseText,
     placeholderFnr,
     placeholderNavn,
+    visÅrsakenTilÅLeggeBarnet,
 }: Props<FieldNames>) {
     return (
         <>
@@ -46,6 +48,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                         minDate={minDate}
                         maxDate={maxDate}
                         disallowedFødselsnumre={disallowedFødselsnumre}
+                        visÅrsakenTilÅLeggeBarnet={visÅrsakenTilÅLeggeBarnet}
                         labels={{
                             aldersGrenseText: aldersGrenseText,
                             placeholderFnr: placeholderFnr,
