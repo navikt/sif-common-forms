@@ -69,7 +69,7 @@ interface Props {
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues, ValidationError>();
 
 const AnnetBarnForm = ({
-    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
+    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined, årsakenTilÅLeggeBarnet: undefined },
     labels,
     minDate,
     maxDate,
