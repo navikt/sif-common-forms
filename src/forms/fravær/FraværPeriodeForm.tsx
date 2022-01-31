@@ -154,7 +154,7 @@ const FraværPeriodeForm = ({
               );
           })
         : undefined;
-
+    console.log(fraværPeriode);
     return (
         <>
             <Form.FormikWrapper

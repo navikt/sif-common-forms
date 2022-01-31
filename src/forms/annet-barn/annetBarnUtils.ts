@@ -24,6 +24,7 @@ const mapAnnetBarnToFormValues = (annetBarn: Partial<AnnetBarn>): AnnetBarnFormV
         fnr: annetBarn.fnr,
         navn: annetBarn.navn,
         fødselsdato: dateToISOString(annetBarn.fødselsdato),
+        type: annetBarn.type,
     };
 };
 

@@ -17,7 +17,7 @@ import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFo
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
-import { AnnetBarn, AnnetBarnFormValues, Årsak } from './types';
+import { AnnetBarn, AnnetBarnFormValues, BarnType } from './types';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -29,14 +29,14 @@ export interface AnnetBarnFormLabels {
     okButton: string;
     cancelButton: string;
     aldersGrenseText?: string;
-    årsakenTilÅLeggeBarnet?: string;
+    visBarnTypeValg?: string;
 }
 
 enum AnnetBarnFormFields {
     fnr = 'fnr',
     fødselsdato = 'fødselsdato',
     navn = 'navn',
-    årsakenTilÅLeggeBarnet = 'årsakenTilÅLeggeBarnet',
+    type = 'type',
 }
 
 export const AnnetBarnFormErrors = {
@@ -61,7 +61,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     disallowedFødselsnumre?: string[];
-    visÅrsakenTilÅLeggeBarnet?: boolean;
+    visBarnTypeValg?: boolean;
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
 }
@@ -69,12 +69,12 @@ interface Props {
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues, ValidationError>();
 
 const AnnetBarnForm = ({
-    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined, årsakenTilÅLeggeBarnet: undefined },
+    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined, type: undefined },
     labels,
     minDate,
     maxDate,
     disallowedFødselsnumre,
-    visÅrsakenTilÅLeggeBarnet,
+    visBarnTypeValg,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -154,23 +154,23 @@ const AnnetBarnForm = ({
                             placeholder={formLabels.placeholderFnr}
                         />
                     </FormBlock>
-                    {visÅrsakenTilÅLeggeBarnet && (
+                    {visBarnTypeValg && (
                         <FormBlock>
-                            <Form.RadioGroup
-                                name={AnnetBarnFormFields.årsakenTilÅLeggeBarnet}
+                            <Form.RadioPanelGroup
+                                name={AnnetBarnFormFields.type}
                                 legend={intlHelper(intl, 'annetBarn.form.årsak.spm')}
                                 radios={[
                                     {
                                         label: intlHelper(intl, 'annetBarn.form.årsak.FOSTERBARN'),
-                                        value: Årsak.fosterbarn,
+                                        value: BarnType.fosterbarn,
                                     },
                                     {
                                         label: intlHelper(intl, 'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET'),
-                                        value: Årsak.barnetBorIUtlandet,
+                                        value: BarnType.barnetBorIUtlandet,
                                     },
                                     {
                                         label: intlHelper(intl, 'annetBarn.form.årsak.ANNET'),
-                                        value: Årsak.annet,
+                                        value: BarnType.annet,
                                     },
                                 ]}
                                 validate={getRequiredFieldValidator()}
