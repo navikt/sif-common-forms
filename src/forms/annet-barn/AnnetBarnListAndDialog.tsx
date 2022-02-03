@@ -19,6 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     placeholderFnr?: string;
     placeholderNavn?: string;
     visBarnTypeValg?: boolean;
+    onAfterChange?: (annetBarn: AnnetBarn[]) => void;
 }
 
 function AnnetBarnListAndDialog<FieldNames>({
@@ -32,6 +33,7 @@ function AnnetBarnListAndDialog<FieldNames>({
     placeholderFnr,
     placeholderNavn,
     visBarnTypeValg,
+    onAfterChange,
 }: Props<FieldNames>) {
     return (
         <>
@@ -59,6 +61,7 @@ function AnnetBarnListAndDialog<FieldNames>({
                 listRenderer={({ items, onEdit, onDelete }) => (
                     <AnnetBarnList annetBarn={items} onEdit={onEdit} onDelete={onDelete} />
                 )}
+                onAfterChange={onAfterChange}
             />
         </>
     );

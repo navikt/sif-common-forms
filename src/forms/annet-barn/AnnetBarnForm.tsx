@@ -11,6 +11,7 @@ import {
     getStringValidator,
     ValidateDateError,
     ValidateFødselsnummerError,
+    ValidateRequiredFieldError,
     ValidateStringError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
@@ -52,6 +53,9 @@ export const AnnetBarnFormErrors = {
         [ValidateFødselsnummerError.fødselsnummerIsInvalid]: 'annetBarnForm.fnr.fødselsnummerIsInvalid',
         [ValidateFødselsnummerError.fødselsnummerIsNot11Chars]: 'annetBarnForm.fnr.fødselsnummerIsNot11Chars',
         [ValidateFødselsnummerError.fødselsnummerIsNotAllowed]: 'annetBarnForm.fnr.fødselsnummerIsNotAllowed',
+    },
+    [AnnetBarnFormFields.type]: {
+        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.type.noValue',
     },
 };
 
