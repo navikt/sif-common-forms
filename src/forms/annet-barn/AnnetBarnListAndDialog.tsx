@@ -19,7 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     placeholderFnr?: string;
     placeholderNavn?: string;
     visBarnTypeValg?: boolean;
-    onAfterChange?: (annetBarn: AnnetBarn[]) => void;
+    onAfterChange?: (andreBarn: AnnetBarn[]) => void;
 }
 
 function AnnetBarnListAndDialog<FieldNames>({
