@@ -22,11 +22,13 @@ const AnnetBarnList = ({ annetBarn = [], onDelete, onEdit }: Props) => {
         return (
             <div className={bem.element('label')}>
                 <span className={bem.element('dato')}>{prettifyDate(annetBarn.fødselsdato)}</span>
-                <span className={bem.element('land')}>
+                <span className={bem.element('navn')}>
                     {onEdit && <ActionLink onClick={() => onEdit(annetBarn)}>{annetBarn.navn}</ActionLink>}
-                    {annetBarn.type && <> ({intlHelper(intl, `annetBarn.form.årsak.${annetBarn.type}`)})</>}
-                    {!onEdit && <span>{annetBarn.navn}</span>}
                 </span>
+                <span className={bem.element('type')}>
+                    {annetBarn.type && <> ({intlHelper(intl, `annetBarn.form.årsak.${annetBarn.type}`)})</>}
+                </span>
+                {!onEdit && <span>{annetBarn.navn}</span>}
             </div>
         );
     };
