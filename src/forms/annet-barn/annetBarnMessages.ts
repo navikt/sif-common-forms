@@ -26,7 +26,7 @@ const annetBarnMessages = {
         'annetBarnForm.fnr.fødselsnummerIsNot11Chars':
             'Du har oppgitt et ugyldig fødselsnummer. Et gyldig fødselsnummer består av 11 siffer.',
         'annetBarnForm.fnr.fødselsnummerIsNotAllowed':
-            'Du har oppgitt ditt eget fødselsnummer som barnets fødselsnummer. Skriv inn barnets fødselsnummer.',
+            'Du har oppgitt et fødselsnummer som du ikke kan bruke. Kontroller at du har tastet inn barnets fødselsnummer.',
         'annetBarnForm.type.noValue': 'Du må krysse av for årsaken til at du la til dette barnet selv.',
     },
     nn: {

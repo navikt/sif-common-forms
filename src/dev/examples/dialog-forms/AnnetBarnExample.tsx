@@ -30,6 +30,9 @@ const AnnetBarnExample = () => {
     const [singleFormValues, setSingleFormValues] = useState<Partial<AnnetBarn> | undefined>(undefined);
     const [listFormValues, setListFormValues] = useState<Partial<FormValues> | undefined>(undefined);
     const visBarnTypeValg = true;
+    const annetBarn = listFormValues?.[FormField.annetBarn];
+    const disallowedFødselsnumre = annetBarn ? annetBarn.map((barn) => barn.fnr) : undefined;
+
     return (
         <>
             <Box padBottom="l">
@@ -56,6 +59,7 @@ const AnnetBarnExample = () => {
                                     minDate={date4YearsAgo}
                                     maxDate={dateToday}
                                     visBarnTypeValg={visBarnTypeValg}
+                                    disallowedFødselsnumre={disallowedFødselsnumre}
                                 />
                             </TypedFormikForm>
                         );

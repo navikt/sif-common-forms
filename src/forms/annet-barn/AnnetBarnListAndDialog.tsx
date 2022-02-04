@@ -49,7 +49,11 @@ function AnnetBarnListAndDialog<FieldNames>({
                         onCancel={onCancel}
                         minDate={minDate}
                         maxDate={maxDate}
-                        disallowedFødselsnumre={disallowedFødselsnumre}
+                        disallowedFødselsnumre={
+                            item && item.fnr
+                                ? disallowedFødselsnumre?.filter((fnr) => fnr !== item.fnr)
+                                : disallowedFødselsnumre
+                        }
                         visBarnTypeValg={visBarnTypeValg}
                         labels={{
                             aldersGrenseText: aldersGrenseText,
