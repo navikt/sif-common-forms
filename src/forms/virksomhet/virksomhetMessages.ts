@@ -13,7 +13,7 @@ const virksomhetMessages = {
         'sifForms.virksomhet.veileder_fisker.tittel': `Hvis du ikke har organiasjonsnummer`,
         'sifForms.virksomhet.veileder_fisker': `Hvis du ikke har organisasjonsnummer, svarer du nei på spørsmålet "Er {navnPåVirksomheten} registrert i Norge?" I nedtrekkslisten velger du at virksomheten er registrert i Norge.`,
         'sifForms.virksomhet.registert_i_norge': `Er {navnPåVirksomheten} registert i Norge?`,
-        'sifForms.virksomhet.registert_i_hvilket_land': `I hvilket land er {navnPåVirksomheten} din registrert i?`,
+        'sifForms.virksomhet.registert_i_hvilket_land': `I hvilket land er {navnPåVirksomheten} registrert i?`,
         'sifForms.virksomhet.organisasjonsnummer': 'Hva er organisasjonsnummeret?',
         'sifForms.virksomhet.startdato': `Når startet du {navnPåVirksomheten}?`,
         'sifForms.virksomhet.kalender_fom': 'Startdato',
