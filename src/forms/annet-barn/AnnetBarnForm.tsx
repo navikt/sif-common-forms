@@ -7,16 +7,18 @@ import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateValidator,
     getFødselsnummerValidator,
+    getRequiredFieldValidator,
     getStringValidator,
     ValidateDateError,
     ValidateFødselsnummerError,
+    ValidateRequiredFieldError,
     ValidateStringError,
 } from '@navikt/sif-common-formik/lib/validation';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Systemtittel } from 'nav-frontend-typografi';
 import annetBarnUtils from './annetBarnUtils';
-import { AnnetBarn, AnnetBarnFormValues } from './types';
+import { AnnetBarn, AnnetBarnFormValues, BarnType } from './types';
 
 export interface AnnetBarnFormLabels {
     title: string;
@@ -28,12 +30,14 @@ export interface AnnetBarnFormLabels {
     okButton: string;
     cancelButton: string;
     aldersGrenseText?: string;
+    visBarnTypeValg?: string;
 }
 
 enum AnnetBarnFormFields {
     fnr = 'fnr',
     fødselsdato = 'fødselsdato',
     navn = 'navn',
+    type = 'type',
 }
 
 export const AnnetBarnFormErrors = {
@@ -50,6 +54,9 @@ export const AnnetBarnFormErrors = {
         [ValidateFødselsnummerError.fødselsnummerIsNot11Chars]: 'annetBarnForm.fnr.fødselsnummerIsNot11Chars',
         [ValidateFødselsnummerError.fødselsnummerIsNotAllowed]: 'annetBarnForm.fnr.fødselsnummerIsNotAllowed',
     },
+    [AnnetBarnFormFields.type]: {
+        [ValidateRequiredFieldError.noValue]: 'annetBarnForm.type.noValue',
+    },
 };
 
 interface Props {
@@ -58,6 +65,7 @@ interface Props {
     minDate: Date;
     maxDate: Date;
     disallowedFødselsnumre?: string[];
+    visBarnTypeValg?: boolean;
     onSubmit: (values: AnnetBarn) => void;
     onCancel: () => void;
 }
@@ -65,11 +73,12 @@ interface Props {
 const Form = getTypedFormComponents<AnnetBarnFormFields, AnnetBarnFormValues, ValidationError>();
 
 const AnnetBarnForm = ({
-    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined },
+    annetBarn = { fnr: '', navn: '', fødselsdato: undefined, id: undefined, type: undefined },
     labels,
     minDate,
     maxDate,
     disallowedFødselsnumre,
+    visBarnTypeValg,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -149,6 +158,29 @@ const AnnetBarnForm = ({
                             placeholder={formLabels.placeholderFnr}
                         />
                     </FormBlock>
+                    {visBarnTypeValg && (
+                        <FormBlock>
+                            <Form.RadioPanelGroup
+                                name={AnnetBarnFormFields.type}
+                                legend={intlHelper(intl, 'annetBarn.form.årsak.spm')}
+                                radios={[
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.FOSTERBARN'),
+                                        value: BarnType.fosterbarn,
+                                    },
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET'),
+                                        value: BarnType.barnetBorIUtlandet,
+                                    },
+                                    {
+                                        label: intlHelper(intl, 'annetBarn.form.årsak.ANNET'),
+                                        value: BarnType.annet,
+                                    },
+                                ]}
+                                validate={getRequiredFieldValidator()}
+                            />
+                        </FormBlock>
+                    )}
                 </Form.Form>
             )}
         />

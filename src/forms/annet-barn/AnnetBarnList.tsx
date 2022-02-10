@@ -5,6 +5,8 @@ import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { AnnetBarn } from './types';
 import './annetBarnList.less';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { useIntl } from 'react-intl';
 
 interface Props {
     annetBarn: AnnetBarn[];
@@ -15,14 +17,18 @@ interface Props {
 const bem = bemUtils('annetBarnList');
 
 const AnnetBarnList = ({ annetBarn = [], onDelete, onEdit }: Props) => {
+    const intl = useIntl();
     const renderAnnetBarnLabel = (annetBarn: AnnetBarn): React.ReactNode => {
         return (
             <div className={bem.element('label')}>
                 <span className={bem.element('dato')}>{prettifyDate(annetBarn.fødselsdato)}</span>
-                <span className={bem.element('land')}>
+                <span className={bem.element('navn')}>
                     {onEdit && <ActionLink onClick={() => onEdit(annetBarn)}>{annetBarn.navn}</ActionLink>}
-                    {!onEdit && <span>{annetBarn.navn}</span>}
                 </span>
+                <span className={bem.element('type')}>
+                    {annetBarn.type && <> ({intlHelper(intl, `annetBarn.form.årsak.${annetBarn.type}`)})</>}
+                </span>
+                {!onEdit && <span>{annetBarn.navn}</span>}
             </div>
         );
     };
