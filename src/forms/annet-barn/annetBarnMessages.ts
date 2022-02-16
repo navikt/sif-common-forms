@@ -9,7 +9,6 @@ const annetBarnMessages = {
         'annetBarn.list.født': 'Født',
         'annetBarn.form.årsak.spm': 'Kryss av for årsaken til at du la til dette barnet selv:',
         'annetBarn.form.årsak.FOSTERBARN': 'Barnet er mitt fosterbarn',
-        'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET': 'Barnet bor i utlandet',
         'annetBarn.form.årsak.ANNET': 'Annet',
 
         'annetBarnForm.navn.stringHasNoValue': 'Skriv inn barnets navn',
