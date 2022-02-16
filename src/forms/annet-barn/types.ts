@@ -1,6 +1,5 @@
 export enum BarnType {
     'fosterbarn' = 'FOSTERBARN',
-    'barnetBorIUtlandet' = 'BARNET_BOR_I_UTLANDET',
     'annet' = 'ANNET',
 }
 export interface AnnetBarn {

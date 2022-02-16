@@ -169,10 +169,6 @@ const AnnetBarnForm = ({
                                         value: BarnType.fosterbarn,
                                     },
                                     {
-                                        label: intlHelper(intl, 'annetBarn.form.årsak.BARNET_BOR_I_UTLANDET'),
-                                        value: BarnType.barnetBorIUtlandet,
-                                    },
-                                    {
                                         label: intlHelper(intl, 'annetBarn.form.årsak.ANNET'),
                                         value: BarnType.annet,
                                     },
