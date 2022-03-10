@@ -52,6 +52,7 @@ const UtenlandsoppholdExample = () => {
                                     minDate={date1YearAgo}
                                     maxDate={date1YearFromNow}
                                     name={FormField.utenlandsopphold}
+                                    notIncludeInnlagtQuestion={true}
                                     validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til utenlandsopphold',
@@ -84,6 +85,7 @@ const UtenlandsoppholdExample = () => {
                         opphold={initialValues.utenlandsopphold[0]}
                         minDate={date1YearAgo}
                         maxDate={date1YearFromNow}
+                        notIncludeInnlagtQuestion={true}
                         onSubmit={setSingleFormValues}
                         onCancel={() => console.log('cancel me')}
                     />
