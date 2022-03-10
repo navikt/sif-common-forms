@@ -15,7 +15,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     minDate: Date;
     maxDate: Date;
     labels: ModalFormAndListLabels;
-    notIncludeInnlagtQuestion?: boolean;
+    excludeInnlagtQuestion?: boolean;
 }
 
 function UtenlandsoppholdListAndDialog<FieldNames>({
@@ -24,7 +24,7 @@ function UtenlandsoppholdListAndDialog<FieldNames>({
     maxDate,
     validate,
     labels,
-    notIncludeInnlagtQuestion = false,
+    excludeInnlagtQuestion = false,
 }: Props<FieldNames>) {
     return (
         <FormikModalFormAndList<FieldNames, Utenlandsopphold, ValidationError>
@@ -39,7 +39,7 @@ function UtenlandsoppholdListAndDialog<FieldNames>({
                     alleOpphold={allItems}
                     minDate={minDate}
                     maxDate={maxDate}
-                    notIncludeInnlagtQuestion={notIncludeInnlagtQuestion}
+                    excludeInnlagtQuestion={excludeInnlagtQuestion}
                     onSubmit={onSubmit}
                     onCancel={onCancel}
                 />

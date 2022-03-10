@@ -12,7 +12,7 @@ const isValidUtenlandsopphold = (utenlandsopphold: Partial<Utenlandsopphold>): u
 
 const mapFormValuesToUtenlandsopphold = (
     formValues: UtenlandsoppholdFormValues,
-    notIncludeInnlagtQuestion: boolean,
+    excludeInnlagtQuestion: boolean,
     id: string | undefined
 ): Partial<Utenlandsopphold> => {
     const { barnInnlagtPerioder } = formValues;
@@ -21,17 +21,17 @@ const mapFormValuesToUtenlandsopphold = (
         id: id || guid(),
         fom: ISOStringToDate(formValues.fom),
         tom: ISOStringToDate(formValues.tom),
-        barnInnlagtPerioder: notIncludeInnlagtQuestion ? undefined : barnInnlagtPerioder,
+        barnInnlagtPerioder: excludeInnlagtQuestion ? undefined : barnInnlagtPerioder,
     };
 };
 
 const mapUtenlandsoppholdToFormValues = (
     { fom, tom, erBarnetInnlagt, barnInnlagtPerioder, landkode, årsak }: Partial<Utenlandsopphold>,
-    notIncludeInnlagtQuestion: boolean
+    excludeInnlagtQuestion: boolean
 ): UtenlandsoppholdFormValues => ({
     fom: dateToISOString(fom),
     tom: dateToISOString(tom),
-    erBarnetInnlagt: notIncludeInnlagtQuestion ? undefined : erBarnetInnlagt,
+    erBarnetInnlagt: excludeInnlagtQuestion ? undefined : erBarnetInnlagt,
     landkode,
     årsak,
     barnInnlagtPerioder,

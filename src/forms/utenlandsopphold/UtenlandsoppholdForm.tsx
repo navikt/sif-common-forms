@@ -30,7 +30,7 @@ interface Props {
     maxDate: Date;
     opphold?: Utenlandsopphold;
     alleOpphold?: Utenlandsopphold[];
-    notIncludeInnlagtQuestion: boolean;
+    excludeInnlagtQuestion: boolean;
     onSubmit: (values: Utenlandsopphold) => void;
     onCancel: () => void;
 }
@@ -86,7 +86,7 @@ const UtenlandsoppholdForm = ({
     maxDate,
     minDate,
     opphold,
-    notIncludeInnlagtQuestion,
+    excludeInnlagtQuestion,
     alleOpphold = [],
     onSubmit,
     onCancel,
@@ -96,7 +96,7 @@ const UtenlandsoppholdForm = ({
     const onFormikSubmit = (formValues: Partial<UtenlandsoppholdFormValues>) => {
         const utenlandsoppholdToSubmit = utils.mapFormValuesToUtenlandsopphold(
             formValues,
-            notIncludeInnlagtQuestion,
+            excludeInnlagtQuestion,
             opphold?.id
         );
         if (utils.isValidUtenlandsopphold(utenlandsoppholdToSubmit)) {
@@ -114,12 +114,12 @@ const UtenlandsoppholdForm = ({
             ? alleOpphold.map(mapFomTomToDateRange)
             : alleOpphold.filter((o) => o.id !== opphold.id).map(mapFomTomToDateRange);
 
-    if (notIncludeInnlagtQuestion) {
+    if (excludeInnlagtQuestion) {
         defaultFormValues.erBarnetInnlagt = undefined;
     }
 
     const initialValues = opphold
-        ? utils.mapUtenlandsoppholdToFormValues(opphold, notIncludeInnlagtQuestion)
+        ? utils.mapUtenlandsoppholdToFormValues(opphold, excludeInnlagtQuestion)
         : defaultFormValues;
     return (
         <Form.FormikWrapper
@@ -139,7 +139,7 @@ const UtenlandsoppholdForm = ({
                     landkode !== undefined &&
                     hasValue(landkode) &&
                     !countryIsMemberOfEøsOrEfta(landkode) &&
-                    !notIncludeInnlagtQuestion;
+                    !excludeInnlagtQuestion;
 
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
 
