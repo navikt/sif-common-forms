@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "16.7.1-beta.0",
+    "version": "17.0.0-beta.0",
     "private": false,
     "scripts": {
         "dev": "craco start",

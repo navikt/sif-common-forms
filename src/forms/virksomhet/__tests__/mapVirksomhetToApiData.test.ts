@@ -27,7 +27,7 @@ const virksomhetFormData: Virksomhet = {
 };
 
 const virksomhetApiData: VirksomhetApiData = {
-    næringstyper: [Næringstype.ANNEN],
+    næringstype: Næringstype.ANNEN,
     navnPåVirksomheten: 'ABC',
     fraOgMed: formatDateToApiFormat(fom),
     tilOgMed: null,

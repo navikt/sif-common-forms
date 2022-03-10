@@ -20,12 +20,12 @@ export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is Fra
     );
 };
 
-export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): fraværPeriode is FraværPeriode => {
-    return (
-        fraværPeriode.fraOgMed !== undefined &&
-        fraværPeriode.tilOgMed !== undefined &&
-        fraværPeriode.årsak !== undefined
-    );
+export const isFraværPeriode = (
+    fraværPeriode: Partial<FraværPeriode>,
+    ikkeBrukHjemmePgaKorona?: boolean
+): fraværPeriode is FraværPeriode => {
+    const validerÅrsak = ikkeBrukHjemmePgaKorona ? true : fraværPeriode.årsak !== undefined;
+    return fraværPeriode.fraOgMed !== undefined && fraværPeriode.tilOgMed !== undefined && validerÅrsak;
 };
 
 export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
@@ -144,13 +144,14 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
 
 export const mapFormValuesToFraværPeriode = (
     formValues: FraværPeriodeFormValues,
-    id: string | undefined
+    id: string | undefined,
+    ikkeBrukHjemmePgaKorona?: boolean
 ): Partial<FraværPeriode> => {
     return {
         id: id || guid(),
         fraOgMed: ISOStringToDate(formValues.fraOgMed),
         tilOgMed: ISOStringToDate(formValues.tilOgMed),
-        årsak: getÅrsakFromFraværFormValues(formValues),
+        årsak: ikkeBrukHjemmePgaKorona ? undefined : getÅrsakFromFraværFormValues(formValues),
     };
 };
 
