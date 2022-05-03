@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, ISOStringToDate } from '@navikt/sif-common-formik';
+import { ISOStringToDate } from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
@@ -15,7 +15,7 @@ import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFo
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
-import { handleDateRangeValidationError, mapFomTomToDateRange } from '../utils';
+import { handleDateRangeValidationError } from '../utils';
 import { OpptjeningUtlandFormValues, OpptjeningUtland, OppdragsgiverType } from './types';
 import utils from './opptjeningUtlandUtils';
 
@@ -72,7 +72,7 @@ const defaultFormValues: OpptjeningUtlandFormValues = {
 
 const Form = getTypedFormComponents<OpptjeningUtlandFormFields, OpptjeningUtlandFormValues, ValidationError>();
 
-const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, alleOpptjening = [], onSubmit, onCancel }: Props) => {
+const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, onSubmit, onCancel }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: Partial<OpptjeningUtlandFormValues>) => {
@@ -85,11 +85,6 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, alleOpptjening = [
             throw new Error('OpptjeningUtlandForm: Formvalues is not a valid Opptjening Utland on submit.');
         }
     };
-
-    const registrerteTidsperioder: DateRange[] | undefined =
-        opptjening === undefined
-            ? alleOpptjening.map(mapFomTomToDateRange)
-            : alleOpptjening.filter((o) => o.id !== opptjening.id).map(mapFomTomToDateRange);
 
     const initialValues = opptjening ? utils.mapOpptjeningUtlandToFormValues(opptjening) : defaultFormValues;
 
@@ -116,7 +111,6 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, alleOpptjening = [
                             <Form.DateRangePicker
                                 legend={intlHelper(intl, 'opptjeningUtland.form.tidsperiode.spm')}
                                 fullscreenOverlay={true}
-                                disabledDateRanges={registrerteTidsperioder}
                                 minDate={minDate}
                                 maxDate={maxDate}
                                 fromInputProps={{
