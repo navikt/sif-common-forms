@@ -16,7 +16,7 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import { Systemtittel } from 'nav-frontend-typografi';
 import { handleDateRangeValidationError } from '../utils';
-import { OpptjeningUtlandFormValues, OpptjeningUtland, OppdragsgiverType } from './types';
+import { OpptjeningUtlandFormValues, OpptjeningUtland, OpptjeningAktivitet } from './types';
 import utils from './opptjeningUtlandUtils';
 
 interface Props {
@@ -155,7 +155,7 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, onSubmit, onCancel
                                     <Form.RadioGroup
                                         legend={intlHelper(intl, 'opptjeningUtland.form.oppdragsgiverType.spm')}
                                         name={OpptjeningUtlandFormFields.type}
-                                        radios={Object.keys(OppdragsgiverType).map((type) => ({
+                                        radios={Object.keys(OpptjeningAktivitet).map((type) => ({
                                             label: intlHelper(intl, `opptjeningUtland.form.oppdragsgiverType.${type}`),
                                             value: type,
                                         }))}
@@ -169,7 +169,7 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, onSubmit, onCancel
                                             label={intlHelper(
                                                 intl,
                                                 `opptjeningUtland.form.${
-                                                    type === OppdragsgiverType.ARBEIDSTAKER
+                                                    type === OpptjeningAktivitet.ARBEIDSTAKER
                                                         ? 'arbeidsgiversNavn'
                                                         : 'oppdragsgiverNavn'
                                                 }`

@@ -1,4 +1,4 @@
-export enum OppdragsgiverType {
+export enum OpptjeningAktivitet {
     'ARBEIDSTAKER' = 'ARBEIDSTAKER',
     'FRILANSER' = 'FRILANSER',
 }
@@ -8,7 +8,7 @@ export interface OpptjeningUtland {
     fom: Date;
     tom: Date;
     landkode: string;
-    type: OppdragsgiverType;
+    type: OpptjeningAktivitet;
     navn: string;
 }
 
