@@ -8,7 +8,7 @@ export interface OpptjeningUtland {
     fom: Date;
     tom: Date;
     landkode: string;
-    type: OpptjeningAktivitet;
+    opptjeningType: OpptjeningAktivitet;
     navn: string;
 }
 

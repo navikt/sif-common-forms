@@ -26,13 +26,13 @@ const mapOpptjeningUtlandToFormValues = ({
     fom,
     tom,
     landkode,
-    type,
+    opptjeningType: type,
     navn,
 }: Partial<OpptjeningUtland>): OpptjeningUtlandFormValues => ({
     fom: dateToISOString(fom),
     tom: dateToISOString(tom),
     landkode,
-    type,
+    opptjeningType: type,
     navn,
 });
 

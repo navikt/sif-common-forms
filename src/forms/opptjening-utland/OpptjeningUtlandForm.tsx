@@ -32,7 +32,7 @@ enum OpptjeningUtlandFormFields {
     fom = 'fom',
     tom = 'tom',
     landkode = 'landkode',
-    type = 'type',
+    opptjeningType = 'opptjeningType',
     navn = 'navn',
 }
 
@@ -54,7 +54,7 @@ export const OpptjeningUtlandFormErrors = {
     [OpptjeningUtlandFormFields.landkode]: {
         [ValidateRequiredFieldError.noValue]: 'opptjeningUtlandForm.landkode.noValue',
     },
-    [OpptjeningUtlandFormFields.type]: {
+    [OpptjeningUtlandFormFields.opptjeningType]: {
         [ValidateRequiredFieldError.noValue]: 'opptjeningUtlandForm.type.noValue',
     },
     [OpptjeningUtlandFormFields.navn]: {
@@ -66,7 +66,7 @@ const defaultFormValues: OpptjeningUtlandFormValues = {
     fom: undefined,
     tom: undefined,
     landkode: undefined,
-    type: undefined,
+    opptjeningType: undefined,
     navn: undefined,
 };
 
@@ -94,7 +94,7 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, onSubmit, onCancel
             onSubmit={onFormikSubmit}
             renderForm={(formik) => {
                 const {
-                    values: { fom, tom, type },
+                    values: { fom, tom, opptjeningType },
                 } = formik;
 
                 const hasDateStringValues = hasValue(fom) && hasValue(tom);
@@ -153,23 +153,26 @@ const OpptjeningUtlandForm = ({ maxDate, minDate, opptjening, onSubmit, onCancel
                                 </FormBlock>
                                 <FormBlock>
                                     <Form.RadioGroup
-                                        legend={intlHelper(intl, 'opptjeningUtland.form.oppdragsgiverType.spm')}
-                                        name={OpptjeningUtlandFormFields.type}
-                                        radios={Object.keys(OpptjeningAktivitet).map((type) => ({
-                                            label: intlHelper(intl, `opptjeningUtland.form.oppdragsgiverType.${type}`),
-                                            value: type,
+                                        legend={intlHelper(intl, 'opptjeningUtland.form.opptjeningAktivitet.spm')}
+                                        name={OpptjeningUtlandFormFields.opptjeningType}
+                                        radios={Object.keys(OpptjeningAktivitet).map((opptjeningType) => ({
+                                            label: intlHelper(
+                                                intl,
+                                                `opptjeningUtland.form.opptjeningAktivitet.${opptjeningType}`
+                                            ),
+                                            value: opptjeningType,
                                         }))}
                                         validate={getRequiredFieldValidator()}
-                                        checked={type}
+                                        checked={opptjeningType}
                                     />
                                 </FormBlock>
-                                {type && (
+                                {opptjeningType && (
                                     <FormBlock>
                                         <Form.Input
                                             label={intlHelper(
                                                 intl,
                                                 `opptjeningUtland.form.${
-                                                    type === OpptjeningAktivitet.ARBEIDSTAKER
+                                                    opptjeningType === OpptjeningAktivitet.ARBEIDSTAKER
                                                         ? 'arbeidsgiversNavn'
                                                         : 'oppdragsgiverNavn'
                                                 }`
