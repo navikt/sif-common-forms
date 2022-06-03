@@ -6,6 +6,7 @@ import fosterbarnMessages from '../../../forms/fosterbarn/fosterbarnMessages';
 import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
+import opptjeningUtlandMessages from '../../../forms/opptjening-utland/opptjeningUtlandMessages';
 
 const commonNb = require('@navikt/sif-common-core/lib/i18n/common.nb.json');
 const commonNn = require('@navikt/sif-common-core/lib/i18n/common.nn.json');
@@ -20,6 +21,7 @@ const bokmålstekster = {
     ...ferieuttakMessages.nb,
     ...fosterbarnMessages.nb,
     ...utenlandsoppholdMessages.nb,
+    ...opptjeningUtlandMessages.nb,
     ...tidsperiodeMessages.nb,
     ...virksomhetMessages.nb,
     ...annetBarnMessages.nb,
@@ -34,6 +36,7 @@ const nynorsktekster = {
     ...ferieuttakMessages.nn,
     ...fosterbarnMessages.nn,
     ...utenlandsoppholdMessages.nn,
+    ...utenlandsoppholdMessages.nb,
     ...tidsperiodeMessages.nn,
     ...virksomhetMessages.nn,
     ...annetBarnMessages.nn,
