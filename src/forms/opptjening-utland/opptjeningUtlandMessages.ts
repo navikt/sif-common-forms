@@ -1,7 +1,7 @@
 const opptjeningUtlandMessages = {
     nb: {
         'opptjeningUtland.list.add': '+ Legg til jobb',
-        'opptjeningUtland.form.tittel': 'Jobb i annet EØS-land',
+        'opptjeningUtland.form.tittel': 'Jobbet i et annet EØS-land',
         'opptjeningUtland.form.tidsperiode.spm': 'Velg tidsperiode for jobb',
         'opptjeningUtland.form.tidsperiode.fraDato': 'Fra og med',
         'opptjeningUtland.form.tidsperiode.tilDato': 'Til og med',
@@ -36,10 +36,11 @@ const opptjeningUtlandMessages = {
         'opptjeningUtlandForm.type.noValue': 'Du må velge hva jobbet du som.',
         'opptjeningUtlandForm.oppdragsgiverNavn.noValue': 'Du må skrive inn {opptjeningAktivitet} navn.',
         'opptjeningUtlandForm.navn.noValue': 'Du må skrive inn navn.',
+        'opptjeningUtlandForm.opptjeningType.noValue': 'Du må oppgi hva jobbet du som.',
     },
     nn: {
         'opptjeningUtland.list.add': '+ Legg til jobb',
-        'opptjeningUtland.form.tittel': 'Jobb i annet EØS-land',
+        'opptjeningUtland.form.tittel': 'Jobbet i et annet EØS-land',
         'opptjeningUtland.form.tidsperiode.spm': 'Velg tidsperiode for jobb',
         'opptjeningUtland.form.tidsperiode.fraDato': 'Fra og med',
         'opptjeningUtland.form.tidsperiode.tilDato': 'Til og med',
@@ -74,6 +75,7 @@ const opptjeningUtlandMessages = {
         'opptjeningUtlandForm.type.noValue': 'Du må velge hva jobbet du som.',
         'opptjeningUtlandForm.oppdragsgiverNavn.noValue': 'Du må skrive inn {opptjeningAktivitet} navn.',
         'opptjeningUtlandForm.navn.noValue': 'Du må skrive inn navn.',
+        'opptjeningUtlandForm.opptjeningType.noValue': 'Du må oppgi hva jobbet du som.',
     },
 };
 
