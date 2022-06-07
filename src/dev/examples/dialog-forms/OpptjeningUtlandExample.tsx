@@ -57,7 +57,7 @@ const OpptjeningUtlandExample = () => {
                                     validate={getListValidator({ required: true })}
                                     labels={{
                                         addLabel: 'Legg til jobb i annet EØS-land',
-                                        listTitle: 'Registrerte jobb i annet EØS-land',
+                                        listTitle: 'Registrert jobb i annet EØS-land',
                                         modalTitle: 'Jobb i annet EØS-land',
                                         emptyListText: 'Ingen jobb i annet EØS-land er lagt til',
                                     }}
