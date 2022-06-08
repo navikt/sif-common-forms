@@ -20,11 +20,9 @@ interface Props {
 
 const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape) => {
     const land = virksomhet.registrertIUtlandet ? virksomhet.registrertIUtlandet.landnavn : 'Norge';
-    const næringstyper = virksomhet.næringstyper
-        .map((næring) => intlHelper(intl, `sifForms.virksomhet.næringstype_${næring}`))
-        .join(', ');
+    const næringstype = virksomhet.næringstype + ', ';
     const fiskerinfo =
-        harFiskerNæringstype(virksomhet.næringstyper) && virksomhet.fiskerErPåBladB !== undefined
+        harFiskerNæringstype(virksomhet.næringstype) && virksomhet.fiskerErPåBladB !== undefined
             ? {
                   erPåBladB: virksomhet.fiskerErPåBladB !== undefined && virksomhet.fiskerErPåBladB === true,
               }
@@ -41,7 +39,7 @@ const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape)
 
     return (
         <SummaryBlock header={virksomhet.navnPåVirksomheten} margin="none">
-            <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstyper}. </IntlLabelValue>
+            <IntlLabelValue labelKey="sifForms.virksomhet.summary.næringstype">{næringstype}. </IntlLabelValue>
             {fiskerinfo && (
                 <div>
                     {fiskerinfo.erPåBladB === false ? (
