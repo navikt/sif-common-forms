@@ -7,6 +7,7 @@ import virksomhetMessages from '../../../forms/virksomhet/virksomhetMessages';
 import tidsperiodeMessages from '../../../forms/tidsperiode/tidsperiodeMessages';
 import annetBarnMessages from '../../../forms/annet-barn/annetBarnMessages';
 import opptjeningUtlandMessages from '../../../forms/opptjening-utland/opptjeningUtlandMessages';
+import utenlandskNæringMessages from '../../../forms/utenlandsk-næring/utenlandskNæringMessages';
 
 const commonNb = require('@navikt/sif-common-core/lib/i18n/common.nb.json');
 const commonNn = require('@navikt/sif-common-core/lib/i18n/common.nn.json');
@@ -25,6 +26,7 @@ const bokmålstekster = {
     ...tidsperiodeMessages.nb,
     ...virksomhetMessages.nb,
     ...annetBarnMessages.nb,
+    ...utenlandskNæringMessages.nb,
     'common.fieldvalidation.ugyldigTall': 'Ugyldig tall',
 };
 
@@ -40,6 +42,7 @@ const nynorsktekster = {
     ...tidsperiodeMessages.nn,
     ...virksomhetMessages.nn,
     ...annetBarnMessages.nn,
+    ...utenlandskNæringMessages.nn,
     'common.fieldvalidation.ugyldigTall': 'Ugyldig tall',
 };
 

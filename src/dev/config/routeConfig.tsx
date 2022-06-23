@@ -17,6 +17,7 @@ export const routes: RouteConfig[] = [
         title: 'Forside',
         renderContent: () => <Intro />,
     },
+
     {
         path: 'dialog-forms',
         title: 'Dialogskjema',
@@ -27,6 +28,7 @@ export const routes: RouteConfig[] = [
         title: 'Næringsvirksomhet',
         renderContent: () => <VirksomhetExample />,
     },
+
     {
         path: 'texts',
         title: 'Tekster',
