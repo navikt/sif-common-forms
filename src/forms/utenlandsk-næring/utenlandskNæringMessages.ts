@@ -28,10 +28,7 @@ const virksomhetMessages = {
         'utenlandskNæringForm.navnPåVirksomheten.stringHasNoValue': 'Skriv inn navnet på virksomheten din.',
         'utenlandskNæringForm.land.noValue':
             'Du må velge hvilket land virksomheten din er registrert i. Velg land fra listen.',
-        'utenlandskNæringForm.identifikasjonsnummer.numberHasNoValue':
-            'Skriv inn organisasjonsnummeret. Et gyldig organsisasjonsnummer inneholder 9 siffer',
-        'utenlandskNæringForm.identifikasjonsnummer.numberHasInvalidFormat':
-            'Du har oppgitt et ugyldig organisasjonsnummer. Oppgi et gyldig organsisasjonsnummer.',
+        'utenlandskNæringForm.identifikasjonsnummer.noValue': 'Skriv inn organisasjonsnummeret.',
         'utenlandskNæringForm.fraOgMed.dateHasNoValue':
             'Du må oppgi hvilken dato du startet virksomheten. Skriv inn eller velg startdato fra datovelgeren.',
         'utenlandskNæringForm.fraOgMed.dateIsAfterMax':

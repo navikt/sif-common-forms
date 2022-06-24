@@ -6,12 +6,10 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
-    getNumberValidator,
     getRequiredFieldValidator,
     getStringValidator,
     ValidateDateError,
     ValidateDateRangeError,
-    ValidateNumberError,
     ValidateRequiredFieldError,
     ValidateStringError,
 } from '@navikt/sif-common-formik/lib/validation';
@@ -56,10 +54,9 @@ export const UtenlandskNæringFormErrors = {
         [ValidateRequiredFieldError.noValue]: 'utenlandskNæringForm.land.noValue',
     },
     [UtenlandskNæringFormField.identifikasjonsnummer]: {
-        [ValidateNumberError.numberHasNoValue]: 'utenlandskNæringForm.identifikasjonsnummer.numberHasNoValue',
-        [ValidateNumberError.numberHasInvalidFormat]:
-            'utenlandskNæringForm.identifikasjonsnummer.numberHasInvalidFormat',
+        [ValidateRequiredFieldError.noValue]: 'utenlandskNæringForm.identifikasjonsnummer.noValue',
     },
+
     [UtenlandskNæringFormField.fraOgMed]: {
         [ValidateDateError.dateHasNoValue]: 'utenlandskNæringForm.fraOgMed.dateHasNoValue',
         [ValidateDateError.dateIsAfterMax]: 'utenlandskNæringForm.fraOgMed.dateIsAfterMax',
@@ -181,7 +178,7 @@ const UtenlandskNæringForm = ({ utenlandskNæring, onSubmit, onCancel }: Props)
                                 label={getText('sifForms.utenlandskNæringForm.organisasjonsnummer')}
                                 style={{ maxWidth: '10rem' }}
                                 maxLength={30}
-                                validate={getNumberValidator({ required: true })}
+                                validate={getRequiredFieldValidator()}
                             />
                         </Box>
                         <Box margin="xl">
