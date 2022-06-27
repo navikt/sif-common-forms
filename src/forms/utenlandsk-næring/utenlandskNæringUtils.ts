@@ -34,7 +34,6 @@ export const mapFormValuesToUtenlandskNæring = (
 };
 
 export const mapUtenlandskNæringToFormValues = (utenlandskNæring: UtenlandskNæring): UtenlandskNæringFormValues => {
-    console.log('utenlandskNæring: ', utenlandskNæring);
     return {
         ...utenlandskNæring,
         fraOgMed: dateToISOString(utenlandskNæring.fraOgMed),

@@ -53,9 +53,6 @@ export const UtenlandskNæringFormErrors = {
     [UtenlandskNæringFormField.land]: {
         [ValidateRequiredFieldError.noValue]: 'utenlandskNæringForm.land.noValue',
     },
-    [UtenlandskNæringFormField.identifikasjonsnummer]: {
-        [ValidateRequiredFieldError.noValue]: 'utenlandskNæringForm.identifikasjonsnummer.noValue',
-    },
 
     [UtenlandskNæringFormField.fraOgMed]: {
         [ValidateDateError.dateHasNoValue]: 'utenlandskNæringForm.fraOgMed.dateHasNoValue',
@@ -178,7 +175,6 @@ const UtenlandskNæringForm = ({ utenlandskNæring, onSubmit, onCancel }: Props)
                                 label={getText('sifForms.utenlandskNæringForm.organisasjonsnummer')}
                                 style={{ maxWidth: '10rem' }}
                                 maxLength={30}
-                                validate={getRequiredFieldValidator()}
                             />
                         </Box>
                         <Box margin="xl">
