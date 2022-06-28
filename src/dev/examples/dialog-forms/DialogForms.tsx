@@ -12,6 +12,7 @@ import UtenlandsoppholdIPeriodenExample from './UtenlandsoppholdExample';
 import FraværExample from './FraværExample';
 import AnnetBarnExample from './AnnetBarnExample';
 import OpptjeningUtlandExample from './OpptjeningUtlandExample';
+import UtenlandskNæringExample from './UtenlandskNæringExample';
 
 const tabRoutes: RouteConfig[] = [
     {
@@ -53,6 +54,11 @@ const tabRoutes: RouteConfig[] = [
         path: 'opptjening-utland',
         renderContent: () => <OpptjeningUtlandExample />,
         title: 'Opptjening i utlandet',
+    },
+    {
+        path: 'utenlandsk-næring',
+        renderContent: () => <UtenlandskNæringExample />,
+        title: 'Utenlandsk Næring',
     },
 ];
 

@@ -20,7 +20,7 @@ interface Props {
 
 const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: IntlShape) => {
     const land = virksomhet.registrertIUtlandet ? virksomhet.registrertIUtlandet.landnavn : 'Norge';
-    const næringstype = virksomhet.næringstype + ', ';
+    const næringstype = virksomhet.næringstype;
     const fiskerinfo =
         harFiskerNæringstype(virksomhet.næringstype) && virksomhet.fiskerErPåBladB !== undefined
             ? {
