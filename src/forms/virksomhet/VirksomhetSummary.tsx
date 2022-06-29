@@ -31,7 +31,7 @@ export const renderVirksomhetSummary = (virksomhet: VirksomhetApiData, intl: Int
     const næringstype =
         virksomhet.næringstype === Næringstype.FISKE && virksomhet.fiskerErPåBladB !== undefined
             ? getFiskerNæringTekst(intl, virksomhet.fiskerErPåBladB)
-            : intlHelper(intl, `sifForms.virksomhet.næringstype_${virksomhet.næringstype}`) + ', ';
+            : intlHelper(intl, `sifForms.virksomhet.næringstype_${virksomhet.næringstype}`);
 
     const tidsinfo = virksomhet.tilOgMed
         ? intlHelper(intl, 'sifForms.virksomhet.summary.tidsinfo.avsluttet', {
