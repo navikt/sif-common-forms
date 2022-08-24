@@ -607,6 +607,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                           navn: navnPåVirksomheten,
                                                                           min: 2,
                                                                           maks: 1000,
+                                                                          disallowUnicodeCharacters: true,
                                                                       },
                                                                   }
                                                                 : undefined;
@@ -625,6 +626,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                     minLength: 5,
                                                                     maxLength: 15,
                                                                     formatRegExp: /^[\w+\s()]+$/,
+                                                                    disallowUnicodeCharacters: true,
                                                                 })(value);
 
                                                                 return error
