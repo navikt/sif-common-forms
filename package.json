@@ -1,6 +1,6 @@
 {
     "name": "@navikt/sif-common-forms",
-    "version": "17.4.1",
+    "version": "17.5.0",
     "private": false,
     "scripts": {
         "dev": "craco start",
@@ -39,18 +39,18 @@
         "@navikt/sif-common-formik": ">= 23.1.0"
     },
     "devDependencies": {
-        "@craco/craco": "^6.4.2",
-        "@formatjs/intl-pluralrules": "^4.1.6",
-        "@navikt/sif-common-core": "^11.3.0",
-        "@navikt/sif-common-formik": "^23.1.0",
-        "@testing-library/jest-dom": "^5.16.1",
+        "@craco/craco": "^6.4.5",
+        "@formatjs/intl-pluralrules": "^5.1.2",
+        "@navikt/sif-common-core": "^12.0.5",
+        "@navikt/sif-common-formik": "^23.2.0",
+        "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^12.1.2",
         "@testing-library/user-event": "^13.5.0",
         "@types/jest": "^27.0.3",
         "@types/node": "^16.11.12",
         "@types/react": "^17.0.37",
         "@types/react-dom": "^17.0.11",
-        "@types/react-responsive": "^8.0.4",
+        "@types/react-responsive": "^8.0.5",
         "@typescript-eslint/eslint-plugin": "5.6.0",
         "@typescript-eslint/parser": "5.6.0",
         "axios": "^0.21.4",
