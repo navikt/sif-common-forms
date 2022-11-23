@@ -21,7 +21,12 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
-import { isFraværPeriode, mapFormValuesToFraværPeriode, mapFraværPeriodeToFormValues } from './fraværUtilities';
+import {
+    brukKoronaIPerioderFør2023,
+    isFraværPeriode,
+    mapFormValuesToFraværPeriode,
+    mapFraværPeriodeToFormValues,
+} from './fraværUtilities';
 import {
     FraværFieldValidationErrors,
     validateErSammeÅr,
@@ -260,7 +265,7 @@ const FraværPeriodeForm = ({
                                         <AlertStripe type="advarsel">{begrensTilSammeÅrAlertStripeTekst}</AlertStripe>
                                     )}
                             </FormBlock>
-                            {!ikkeBrukHjemmePgaKorona && (
+                            {!ikkeBrukHjemmePgaKorona && brukKoronaIPerioderFør2023(fromDate, toDate) && (
                                 <>
                                     <FormBlock>
                                         <Form.YesOrNoQuestion

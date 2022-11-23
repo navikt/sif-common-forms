@@ -163,3 +163,17 @@ export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPer
         årsak: fraværPeriode.årsak,
     };
 };
+
+export const brukKoronaIPerioderFør2023 = (fra?: Date, til?: Date) => {
+    if (fra === undefined && til === undefined) {
+        return false;
+    }
+    return dayjs(fra).isBefore(dayjs('01.01.2023', 'year')) && dayjs(til).isBefore(dayjs('01.01.2023', 'year'));
+};
+
+export const brukKoronaIDagFør2023 = (dag?: Date) => {
+    if (dag === undefined) {
+        return false;
+    }
+    return dayjs(dag).isBefore(dayjs('01.01.2023', 'year'));
+};
