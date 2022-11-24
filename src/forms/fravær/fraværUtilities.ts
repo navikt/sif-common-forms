@@ -12,20 +12,28 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is FraværDag => {
+    const isValidÅrsak = brukHjemmePgaKoronaDagForm(fraværDag.dato) ? fraværDag.årsak !== undefined : true;
     return (
         fraværDag.dato !== undefined &&
         fraværDag.timerArbeidsdag !== undefined &&
         fraværDag.timerFravær !== undefined &&
-        fraværDag.årsak !== undefined
+        isValidÅrsak
     );
 };
 
 export const isFraværPeriode = (
     fraværPeriode: Partial<FraværPeriode>,
-    ikkeBrukHjemmePgaKorona?: boolean
+    brukeKoronaFunksjonalitet: boolean
 ): fraværPeriode is FraværPeriode => {
-    const validerÅrsak = ikkeBrukHjemmePgaKorona ? true : fraværPeriode.årsak !== undefined;
-    return fraværPeriode.fraOgMed !== undefined && fraværPeriode.tilOgMed !== undefined && validerÅrsak;
+    const isValidÅrsak = brukHjemmePgaKoronaPeriodeForm(
+        brukeKoronaFunksjonalitet,
+        fraværPeriode.fraOgMed,
+        fraværPeriode.tilOgMed
+    )
+        ? fraværPeriode.årsak !== undefined
+        : true;
+
+    return fraværPeriode.fraOgMed !== undefined && fraværPeriode.tilOgMed !== undefined && isValidÅrsak;
 };
 
 export const fraværDagToFraværDateRange = (fraværDag: FraværDag): DateRange => ({
@@ -128,7 +136,9 @@ export const mapFormValuesToFraværDag = (
         timerArbeidsdag: formValues.timerArbeidsdag,
         timerFravær: formValues.timerFravær,
         dato: ISOStringToDate(formValues.dato),
-        årsak: getÅrsakFromFraværFormValues(formValues),
+        årsak: brukHjemmePgaKoronaDagForm(ISOStringToDate(formValues.dato))
+            ? getÅrsakFromFraværFormValues(formValues)
+            : FraværÅrsak.ordinært,
     };
 };
 
@@ -137,7 +147,9 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
         timerArbeidsdag: fraværDag.timerArbeidsdag,
         timerFravær: fraværDag.timerFravær,
         dato: fraværDag.dato ? dateToISOString(fraværDag.dato) : '',
-        hjemmePgaKorona: getHjemmePgaKoronaFormValueFromFraværÅrsak(fraværDag.årsak),
+        hjemmePgaKorona: brukHjemmePgaKoronaDagForm(fraværDag.dato)
+            ? getHjemmePgaKoronaFormValueFromFraværÅrsak(fraværDag.årsak)
+            : YesOrNo.UNANSWERED,
         årsak: fraværDag.årsak,
     };
 };
@@ -145,13 +157,19 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
 export const mapFormValuesToFraværPeriode = (
     formValues: FraværPeriodeFormValues,
     id: string | undefined,
-    ikkeBrukHjemmePgaKorona?: boolean
+    brukeKoronaFunksjonalitet: boolean
 ): Partial<FraværPeriode> => {
+    const brukeOrdinærtÅrsak = !brukHjemmePgaKoronaPeriodeForm(
+        brukeKoronaFunksjonalitet,
+        ISOStringToDate(formValues.fraOgMed),
+        ISOStringToDate(formValues.tilOgMed)
+    );
+
     return {
         id: id || guid(),
         fraOgMed: ISOStringToDate(formValues.fraOgMed),
         tilOgMed: ISOStringToDate(formValues.tilOgMed),
-        årsak: ikkeBrukHjemmePgaKorona ? undefined : getÅrsakFromFraværFormValues(formValues),
+        årsak: brukeOrdinærtÅrsak ? FraværÅrsak.ordinært : getÅrsakFromFraværFormValues(formValues),
     };
 };
 
@@ -164,16 +182,26 @@ export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPer
     };
 };
 
-export const brukKoronaIPerioderFør2023 = (fra?: Date, til?: Date) => {
-    if (fra === undefined && til === undefined) {
+export const brukHjemmePgaKoronaPeriodeForm = (
+    brukeKoronaFunksjonalitet: boolean,
+    fraOgMed?: Date,
+    tilOgMed?: Date
+) => {
+    if (!brukeKoronaFunksjonalitet) {
         return false;
     }
-    return dayjs(fra).isBefore(dayjs('01.01.2023', 'year')) && dayjs(til).isBefore(dayjs('01.01.2023', 'year'));
+    if (fraOgMed === undefined || tilOgMed === undefined) {
+        return false;
+    }
+    return (
+        dayjs(fraOgMed).isBefore(dayjs('01.01.2023'), 'year') && dayjs(tilOgMed).isBefore(dayjs('01.01.2023'), 'year')
+    );
 };
 
-export const brukKoronaIDagFør2023 = (dag?: Date) => {
+export const brukHjemmePgaKoronaDagForm = (dag?: Date) => {
     if (dag === undefined) {
         return false;
     }
-    return dayjs(dag).isBefore(dayjs('01.01.2023', 'year'));
+
+    return dayjs(dag).isBefore(dayjs('01.01.2023'), 'year');
 };

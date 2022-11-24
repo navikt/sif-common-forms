@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
 import {
-    brukKoronaIPerioderFør2023,
+    brukHjemmePgaKoronaPeriodeForm,
     isFraværPeriode,
     mapFormValuesToFraværPeriode,
     mapFraværPeriodeToFormValues,
@@ -62,7 +62,7 @@ interface Props {
     begrensTilSammeÅr?: boolean;
     begrensTilSammeÅrAlertStripeTekst?: string;
     headerContent?: JSX.Element;
-    ikkeBrukHjemmePgaKorona?: boolean;
+    brukeKoronaFunksjonalitet: boolean;
     onSubmit: (values: FraværPeriode) => void;
     onCancel: () => void;
 }
@@ -123,7 +123,7 @@ const FraværPeriodeForm = ({
     headerContent,
     begrensTilSammeÅr,
     begrensTilSammeÅrAlertStripeTekst,
-    ikkeBrukHjemmePgaKorona,
+    brukeKoronaFunksjonalitet,
     onSubmit,
     onCancel,
 }: Props) => {
@@ -133,9 +133,9 @@ const FraværPeriodeForm = ({
         const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(
             formValues,
             fraværPeriode.id,
-            ikkeBrukHjemmePgaKorona
+            brukeKoronaFunksjonalitet
         );
-        if (isFraværPeriode(fraværPeriodeToSubmit, ikkeBrukHjemmePgaKorona)) {
+        if (isFraværPeriode(fraværPeriodeToSubmit, brukeKoronaFunksjonalitet)) {
             onSubmit(fraværPeriodeToSubmit);
         } else {
             throw new Error('FraværPeriodeForm: Formvalues is not a valid FraværPeriode on submit.');
@@ -174,6 +174,9 @@ const FraværPeriodeForm = ({
                     const { fraOgMed, tilOgMed } = formik.values;
                     const fromDate: Date | undefined = ISOStringToDate(fraOgMed);
                     const toDate: Date | undefined = ISOStringToDate(tilOgMed);
+
+                    const visKoronaSpm = brukHjemmePgaKoronaPeriodeForm(brukeKoronaFunksjonalitet, fromDate, toDate);
+
                     return (
                         <Form.Form
                             onCancel={onCancel}
@@ -265,7 +268,7 @@ const FraværPeriodeForm = ({
                                         <AlertStripe type="advarsel">{begrensTilSammeÅrAlertStripeTekst}</AlertStripe>
                                     )}
                             </FormBlock>
-                            {!ikkeBrukHjemmePgaKorona && brukKoronaIPerioderFør2023(fromDate, toDate) && (
+                            {visKoronaSpm && (
                                 <>
                                     <FormBlock>
                                         <Form.YesOrNoQuestion

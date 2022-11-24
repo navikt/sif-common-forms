@@ -24,7 +24,7 @@ import FormattedHtmlMessage from '../components/formatted-html-message/Formatted
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import FraværTimerSelect from './FraværTimerSelect';
 import {
-    brukKoronaIDagFør2023,
+    brukHjemmePgaKoronaDagForm,
     isFraværDag,
     mapFormValuesToFraværDag,
     mapFraværDagToFormValues,
@@ -220,7 +220,7 @@ const FraværDagFormView = ({
                                     maksTid={maksArbeidstidPerDag}
                                 />
                             </FormBlock>
-                            {brukKoronaIDagFør2023(valgtDato) && (
+                            {brukHjemmePgaKoronaDagForm(valgtDato) && (
                                 <>
                                     <FormBlock>
                                         <FraværDagForm.YesOrNoQuestion
