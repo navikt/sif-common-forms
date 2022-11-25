@@ -23,10 +23,10 @@ export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is Fra
 
 export const isFraværPeriode = (
     fraværPeriode: Partial<FraværPeriode>,
-    brukeKoronaFunksjonalitet: boolean
+    inkluderKoronaSpørsmål: boolean
 ): fraværPeriode is FraværPeriode => {
     const isValidÅrsak = brukHjemmePgaKoronaPeriodeForm(
-        brukeKoronaFunksjonalitet,
+        inkluderKoronaSpørsmål,
         fraværPeriode.fraOgMed,
         fraværPeriode.tilOgMed
     )
@@ -157,10 +157,10 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
 export const mapFormValuesToFraværPeriode = (
     formValues: FraværPeriodeFormValues,
     id: string | undefined,
-    brukeKoronaFunksjonalitet: boolean
+    inkluderKoronaSpørsmål: boolean
 ): Partial<FraværPeriode> => {
-    const brukeOrdinærtÅrsak = !brukHjemmePgaKoronaPeriodeForm(
-        brukeKoronaFunksjonalitet,
+    const brukOrdinærtÅrsak = !brukHjemmePgaKoronaPeriodeForm(
+        inkluderKoronaSpørsmål,
         ISOStringToDate(formValues.fraOgMed),
         ISOStringToDate(formValues.tilOgMed)
     );
@@ -169,7 +169,7 @@ export const mapFormValuesToFraværPeriode = (
         id: id || guid(),
         fraOgMed: ISOStringToDate(formValues.fraOgMed),
         tilOgMed: ISOStringToDate(formValues.tilOgMed),
-        årsak: brukeOrdinærtÅrsak ? FraværÅrsak.ordinært : getÅrsakFromFraværFormValues(formValues),
+        årsak: brukOrdinærtÅrsak ? FraværÅrsak.ordinært : getÅrsakFromFraværFormValues(formValues),
     };
 };
 
@@ -182,12 +182,8 @@ export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPer
     };
 };
 
-export const brukHjemmePgaKoronaPeriodeForm = (
-    brukeKoronaFunksjonalitet: boolean,
-    fraOgMed?: Date,
-    tilOgMed?: Date
-) => {
-    if (!brukeKoronaFunksjonalitet) {
+export const brukHjemmePgaKoronaPeriodeForm = (inkluderKoronaSpørsmål: boolean, fraOgMed?: Date, tilOgMed?: Date) => {
+    if (!inkluderKoronaSpørsmål) {
         return false;
     }
     if (fraOgMed === undefined || tilOgMed === undefined) {
