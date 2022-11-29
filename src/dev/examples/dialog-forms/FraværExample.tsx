@@ -149,7 +149,6 @@ const FraværExample: React.FunctionComponent = () => {
                             minDate={date1YearAgo}
                             maxDate={date1YearFromNow}
                             fraværPeriode={{}}
-                            inkluderKoronaSpørsmål={true}
                             onSubmit={setFraværPeriodeSingleFormValues}
                             onCancel={() => {
                                 // tslint:disable-next-line:no-console

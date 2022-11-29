@@ -21,7 +21,6 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     begrensTilSammeÅr?: boolean;
     helgedagerIkkeTillat?: boolean;
     begrensTilSammeÅrAlertStripeTekst?: string;
-    inkluderKoronaSpørsmål?: boolean;
 }
 
 function FraværPerioderListAndDialog<FieldNames>({
@@ -36,7 +35,6 @@ function FraværPerioderListAndDialog<FieldNames>({
     validate,
     labels,
     helgedagerIkkeTillat,
-    inkluderKoronaSpørsmål = true,
 }: Props<FieldNames>) {
     return (
         <>
@@ -61,7 +59,6 @@ function FraværPerioderListAndDialog<FieldNames>({
                         begrensTilSammeÅrAlertStripeTekst={begrensTilSammeÅrAlertStripeTekst}
                         onSubmit={onSubmit}
                         onCancel={onCancel}
-                        inkluderKoronaSpørsmål={inkluderKoronaSpørsmål}
                     />
                 )}
                 listRenderer={({ items, onEdit, onDelete }) => (

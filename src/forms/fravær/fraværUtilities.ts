@@ -21,15 +21,8 @@ export const isFraværDag = (fraværDag: Partial<FraværDag>): fraværDag is Fra
     );
 };
 
-export const isFraværPeriode = (
-    fraværPeriode: Partial<FraværPeriode>,
-    inkluderKoronaSpørsmål: boolean
-): fraværPeriode is FraværPeriode => {
-    const isValidÅrsak = brukHjemmePgaKoronaPeriodeForm(
-        inkluderKoronaSpørsmål,
-        fraværPeriode.fraOgMed,
-        fraværPeriode.tilOgMed
-    )
+export const isFraværPeriode = (fraværPeriode: Partial<FraværPeriode>): fraværPeriode is FraværPeriode => {
+    const isValidÅrsak = brukHjemmePgaKoronaPeriodeForm(fraværPeriode.fraOgMed, fraværPeriode.tilOgMed)
         ? fraværPeriode.årsak !== undefined
         : true;
 
@@ -156,11 +149,9 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
 
 export const mapFormValuesToFraværPeriode = (
     formValues: FraværPeriodeFormValues,
-    id: string | undefined,
-    inkluderKoronaSpørsmål: boolean
+    id: string | undefined
 ): Partial<FraværPeriode> => {
     const brukOrdinærtÅrsak = !brukHjemmePgaKoronaPeriodeForm(
-        inkluderKoronaSpørsmål,
         ISOStringToDate(formValues.fraOgMed),
         ISOStringToDate(formValues.tilOgMed)
     );
@@ -182,10 +173,7 @@ export const mapFraværPeriodeToFormValues = (fraværPeriode: Partial<FraværPer
     };
 };
 
-export const brukHjemmePgaKoronaPeriodeForm = (inkluderKoronaSpørsmål: boolean, fraOgMed?: Date, tilOgMed?: Date) => {
-    if (!inkluderKoronaSpørsmål) {
-        return false;
-    }
+export const brukHjemmePgaKoronaPeriodeForm = (fraOgMed?: Date, tilOgMed?: Date) => {
     if (fraOgMed === undefined || tilOgMed === undefined) {
         return false;
     }

@@ -62,7 +62,6 @@ interface Props {
     begrensTilSammeÅr?: boolean;
     begrensTilSammeÅrAlertStripeTekst?: string;
     headerContent?: JSX.Element;
-    inkluderKoronaSpørsmål: boolean;
     onSubmit: (values: FraværPeriode) => void;
     onCancel: () => void;
 }
@@ -123,19 +122,14 @@ const FraværPeriodeForm = ({
     headerContent,
     begrensTilSammeÅr,
     begrensTilSammeÅrAlertStripeTekst,
-    inkluderKoronaSpørsmål,
     onSubmit,
     onCancel,
 }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: FraværPeriodeFormValues) => {
-        const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(
-            formValues,
-            fraværPeriode.id,
-            inkluderKoronaSpørsmål
-        );
-        if (isFraværPeriode(fraværPeriodeToSubmit, inkluderKoronaSpørsmål)) {
+        const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(formValues, fraværPeriode.id);
+        if (isFraværPeriode(fraværPeriodeToSubmit)) {
             onSubmit(fraværPeriodeToSubmit);
         } else {
             throw new Error('FraværPeriodeForm: Formvalues is not a valid FraværPeriode on submit.');
@@ -175,7 +169,7 @@ const FraværPeriodeForm = ({
                     const fromDate: Date | undefined = ISOStringToDate(fraOgMed);
                     const toDate: Date | undefined = ISOStringToDate(tilOgMed);
 
-                    const visKoronaSpm = brukHjemmePgaKoronaPeriodeForm(inkluderKoronaSpørsmål, fromDate, toDate);
+                    const visKoronaSpm = brukHjemmePgaKoronaPeriodeForm(fromDate, toDate);
 
                     return (
                         <Form.Form
