@@ -131,7 +131,7 @@ export const mapFormValuesToFraværDag = (
         dato: ISOStringToDate(formValues.dato),
         årsak: brukHjemmePgaKoronaDagForm(ISOStringToDate(formValues.dato))
             ? getÅrsakFromFraværFormValues(formValues)
-            : FraværÅrsak.ordinært,
+            : undefined,
     };
 };
 
@@ -143,7 +143,7 @@ export const mapFraværDagToFormValues = (fraværDag: Partial<FraværDag>): Frav
         hjemmePgaKorona: brukHjemmePgaKoronaDagForm(fraværDag.dato)
             ? getHjemmePgaKoronaFormValueFromFraværÅrsak(fraværDag.årsak)
             : YesOrNo.UNANSWERED,
-        årsak: fraværDag.årsak,
+        årsak: brukHjemmePgaKoronaDagForm(fraværDag.dato) ? fraværDag.årsak : undefined,
     };
 };
 
@@ -151,7 +151,7 @@ export const mapFormValuesToFraværPeriode = (
     formValues: FraværPeriodeFormValues,
     id: string | undefined
 ): Partial<FraværPeriode> => {
-    const brukOrdinærtÅrsak = !brukHjemmePgaKoronaPeriodeForm(
+    const brukÅrsak = brukHjemmePgaKoronaPeriodeForm(
         ISOStringToDate(formValues.fraOgMed),
         ISOStringToDate(formValues.tilOgMed)
     );
@@ -160,7 +160,7 @@ export const mapFormValuesToFraværPeriode = (
         id: id || guid(),
         fraOgMed: ISOStringToDate(formValues.fraOgMed),
         tilOgMed: ISOStringToDate(formValues.tilOgMed),
-        årsak: brukOrdinærtÅrsak ? FraværÅrsak.ordinært : getÅrsakFromFraværFormValues(formValues),
+        årsak: brukÅrsak ? getÅrsakFromFraværFormValues(formValues) : undefined,
     };
 };
 
