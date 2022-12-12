@@ -625,7 +625,7 @@ const VirksomhetForm = ({ virksomhet, harFlereVirksomheter, onSubmit, onCancel, 
                                                                     required: true,
                                                                     minLength: 5,
                                                                     maxLength: 15,
-                                                                    formatRegExp: /^[\w+\s()]+$/,
+                                                                    formatRegExp: /^[0-9\s\+]+$/,
                                                                     disallowUnicodeCharacters: true,
                                                                 })(value);
 
