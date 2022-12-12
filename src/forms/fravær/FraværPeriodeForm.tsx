@@ -21,7 +21,12 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import dayjs from 'dayjs';
 import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
-import { isFraværPeriode, mapFormValuesToFraværPeriode, mapFraværPeriodeToFormValues } from './fraværUtilities';
+import {
+    brukHjemmePgaKoronaPeriodeForm,
+    isFraværPeriode,
+    mapFormValuesToFraværPeriode,
+    mapFraværPeriodeToFormValues,
+} from './fraværUtilities';
 import {
     FraværFieldValidationErrors,
     validateErSammeÅr,
@@ -57,7 +62,6 @@ interface Props {
     begrensTilSammeÅr?: boolean;
     begrensTilSammeÅrAlertStripeTekst?: string;
     headerContent?: JSX.Element;
-    ikkeBrukHjemmePgaKorona?: boolean;
     onSubmit: (values: FraværPeriode) => void;
     onCancel: () => void;
 }
@@ -118,19 +122,14 @@ const FraværPeriodeForm = ({
     headerContent,
     begrensTilSammeÅr,
     begrensTilSammeÅrAlertStripeTekst,
-    ikkeBrukHjemmePgaKorona,
     onSubmit,
     onCancel,
 }: Props) => {
     const intl = useIntl();
 
     const onFormikSubmit = (formValues: FraværPeriodeFormValues) => {
-        const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(
-            formValues,
-            fraværPeriode.id,
-            ikkeBrukHjemmePgaKorona
-        );
-        if (isFraværPeriode(fraværPeriodeToSubmit, ikkeBrukHjemmePgaKorona)) {
+        const fraværPeriodeToSubmit = mapFormValuesToFraværPeriode(formValues, fraværPeriode.id);
+        if (isFraværPeriode(fraværPeriodeToSubmit)) {
             onSubmit(fraværPeriodeToSubmit);
         } else {
             throw new Error('FraværPeriodeForm: Formvalues is not a valid FraværPeriode on submit.');
@@ -169,6 +168,9 @@ const FraværPeriodeForm = ({
                     const { fraOgMed, tilOgMed } = formik.values;
                     const fromDate: Date | undefined = ISOStringToDate(fraOgMed);
                     const toDate: Date | undefined = ISOStringToDate(tilOgMed);
+
+                    const visKoronaSpm = brukHjemmePgaKoronaPeriodeForm(fromDate, toDate);
+
                     return (
                         <Form.Form
                             onCancel={onCancel}
@@ -260,7 +262,7 @@ const FraværPeriodeForm = ({
                                         <AlertStripe type="advarsel">{begrensTilSammeÅrAlertStripeTekst}</AlertStripe>
                                     )}
                             </FormBlock>
-                            {!ikkeBrukHjemmePgaKorona && (
+                            {visKoronaSpm && (
                                 <>
                                     <FormBlock>
                                         <Form.YesOrNoQuestion

@@ -23,7 +23,13 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import FormattedHtmlMessage from '../components/formatted-html-message/FormattedHtmlMessage';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import FraværTimerSelect from './FraværTimerSelect';
-import { isFraværDag, mapFormValuesToFraværDag, mapFraværDagToFormValues, toMaybeNumber } from './fraværUtilities';
+import {
+    brukHjemmePgaKoronaDagForm,
+    isFraværDag,
+    mapFormValuesToFraværDag,
+    mapFraværDagToFormValues,
+    toMaybeNumber,
+} from './fraværUtilities';
 import {
     FraværFieldValidationErrors,
     validateFraværDagCollision,
@@ -214,28 +220,32 @@ const FraværDagFormView = ({
                                     maksTid={maksArbeidstidPerDag}
                                 />
                             </FormBlock>
-                            <FormBlock>
-                                <FraværDagForm.YesOrNoQuestion
-                                    legend={formLabels.hjemmePgaKorona}
-                                    name={FraværDagFormFields.hjemmePgaKorona}
-                                    validate={getYesOrNoValidator()}
-                                    description={
-                                        <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
-                                            <FormattedHtmlMessage id="info.smittevern.info.html" />
-                                        </ExpandableInfo>
-                                    }
-                                />
-                            </FormBlock>
-                            {values.hjemmePgaKorona === YesOrNo.YES && (
-                                <FormBlock>
-                                    <FraværDagForm.RadioPanelGroup
-                                        legend={formLabels.årsak}
-                                        name={FraværDagFormFields.årsak}
-                                        validate={getRequiredFieldValidator()}
-                                        radios={fraværÅrsakRadios}
-                                        description={<ÅrsakInfo />}
-                                    />
-                                </FormBlock>
+                            {brukHjemmePgaKoronaDagForm(valgtDato) && (
+                                <>
+                                    <FormBlock>
+                                        <FraværDagForm.YesOrNoQuestion
+                                            legend={formLabels.hjemmePgaKorona}
+                                            name={FraværDagFormFields.hjemmePgaKorona}
+                                            validate={getYesOrNoValidator()}
+                                            description={
+                                                <ExpandableInfo title={intlHelper(intl, 'info.smittevern.tittel')}>
+                                                    <FormattedHtmlMessage id="info.smittevern.info.html" />
+                                                </ExpandableInfo>
+                                            }
+                                        />
+                                    </FormBlock>
+                                    {values.hjemmePgaKorona === YesOrNo.YES && (
+                                        <FormBlock>
+                                            <FraværDagForm.RadioPanelGroup
+                                                legend={formLabels.årsak}
+                                                name={FraværDagFormFields.årsak}
+                                                validate={getRequiredFieldValidator()}
+                                                radios={fraværÅrsakRadios}
+                                                description={<ÅrsakInfo />}
+                                            />
+                                        </FormBlock>
+                                    )}
+                                </>
                             )}
                         </FraværDagForm.Form>
                     );
