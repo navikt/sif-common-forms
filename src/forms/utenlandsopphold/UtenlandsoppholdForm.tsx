@@ -1,9 +1,14 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { countryIsMemberOfEøsOrEfta } from '@navikt/sif-common-core/lib/utils/countryUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, getCountryName, ISOStringToDate, YesOrNo } from '@navikt/sif-common-formik';
+import {
+    countryIsMemberOfEøsOrEftaNew,
+    DateRange,
+    getCountryName,
+    ISOStringToDate,
+    YesOrNo,
+} from '@navikt/sif-common-formik';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import {
     getDateRangeValidator,
@@ -102,7 +107,7 @@ const UtenlandsoppholdForm = ({
         if (utils.isValidUtenlandsopphold(utenlandsoppholdToSubmit)) {
             onSubmit({
                 ...utenlandsoppholdToSubmit,
-                årsak: countryIsMemberOfEøsOrEfta(utenlandsoppholdToSubmit.landkode) ? undefined : formValues.årsak,
+                årsak: countryIsMemberOfEøsOrEftaNew(utenlandsoppholdToSubmit.landkode) ? undefined : formValues.årsak,
             });
         } else {
             throw new Error('UtenlandsoppholdForm: Formvalues is not a valid Utenlandsopphold on submit.');
@@ -138,7 +143,7 @@ const UtenlandsoppholdForm = ({
                 const includeInnlagtQuestion: boolean =
                     landkode !== undefined &&
                     hasValue(landkode) &&
-                    !countryIsMemberOfEøsOrEfta(landkode) &&
+                    !countryIsMemberOfEøsOrEftaNew(landkode) &&
                     !excludeInnlagtQuestion;
 
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
