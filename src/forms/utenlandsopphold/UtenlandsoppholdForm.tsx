@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import {
-    countryIsMemberOfEøsOrEftaNew,
+    countryIsMemberOfEøsOrEfta,
     DateRange,
     getCountryName,
     ISOStringToDate,
@@ -107,7 +107,7 @@ const UtenlandsoppholdForm = ({
         if (utils.isValidUtenlandsopphold(utenlandsoppholdToSubmit)) {
             onSubmit({
                 ...utenlandsoppholdToSubmit,
-                årsak: countryIsMemberOfEøsOrEftaNew(utenlandsoppholdToSubmit.landkode) ? undefined : formValues.årsak,
+                årsak: countryIsMemberOfEøsOrEfta(utenlandsoppholdToSubmit.landkode) ? undefined : formValues.årsak,
             });
         } else {
             throw new Error('UtenlandsoppholdForm: Formvalues is not a valid Utenlandsopphold on submit.');
@@ -143,7 +143,7 @@ const UtenlandsoppholdForm = ({
                 const includeInnlagtQuestion: boolean =
                     landkode !== undefined &&
                     hasValue(landkode) &&
-                    !countryIsMemberOfEøsOrEftaNew(landkode) &&
+                    !countryIsMemberOfEøsOrEfta(landkode) &&
                     !excludeInnlagtQuestion;
 
                 const showÅrsakQuestion = barnInnlagtPerioder.length > 0;
