@@ -51,7 +51,7 @@ interface Props {
     onCancel: () => void;
 }
 
-const MAKS_INNTEKT = 999999999;
+const MAKS_INNTEKT = 10000000;
 
 export const VirksomhetFormErrors = {
     [VirksomhetFormField.næringstype]: {
